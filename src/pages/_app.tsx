@@ -1,9 +1,50 @@
+import {theme} from 'theme';
+import {ThemeProvider} from 'styled-components';
+import Amplify from 'aws-amplify';
+import config from 'amplify.config';
+import {AuthProvider, useAuth} from 'context';
+import {Box, Navbar} from 'components';
+import {Spinner, ToasterProvider} from 'icruiting-ui';
+
 import 'styles/normalize.css';
 import 'styles/reset.locals.css';
 import 'styles/typography.css';
 
+Amplify.configure({...config, ssr: true});
+
 const App = ({Component, pageProps}) => {
-  return <Component {...pageProps} />;
+  const {isAuthenticating} = useAuth();
+
+  return (
+    <ThemeProvider theme={theme}>
+      <ToasterProvider>
+        {isAuthenticating ? (
+          <Box
+            height="100vh"
+            width="100vw"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Spinner />
+          </Box>
+        ) : (
+          <>
+            <Navbar />
+            <Component {...pageProps} />
+          </>
+        )}
+      </ToasterProvider>
+    </ThemeProvider>
+  );
 };
 
-export default App;
+const AuthWrapper = (props) => {
+  return (
+    <AuthProvider>
+      <App {...props} />
+    </AuthProvider>
+  );
+};
+
+export default AuthWrapper;
