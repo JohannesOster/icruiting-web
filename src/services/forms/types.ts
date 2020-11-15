@@ -1,5 +1,5 @@
-import {FormFieldComponent} from 'pages/Dashboard/Jobs/FormBuilder/types';
-
+// import {FormFieldComponent} from 'pages/Dashboard/Jobs/FormBuilder/types';
+type FormFieldComponent = string;
 export type FormCategory = 'application' | 'screening' | 'assessment';
 export enum FormFieldIntent {
   aggregate = 'aggregate',
