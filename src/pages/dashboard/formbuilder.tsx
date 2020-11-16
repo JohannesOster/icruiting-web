@@ -31,6 +31,7 @@ import {API, FormCategory} from 'services';
 import amplifyConfig from 'amplify.config';
 import {converter} from 'lib/formbuilder/converter';
 import {useRouter} from 'next/router';
+import {withAdmin} from 'requireAuth';
 
 const FormBuilder: React.FC = () => {
   const toaster = useToaster();
@@ -109,9 +110,7 @@ const FormBuilder: React.FC = () => {
     duplicateItem,
     onOutsideHover,
     onDrop,
-  } = useFormBuilder({
-    initialformFields: initialformFields,
-  });
+  } = useFormBuilder({initialformFields});
 
   const showEditItemForm = useCallback(
     (id: string) => {
@@ -331,4 +330,4 @@ const DnDWrapper = () => {
 };
 
 DnDWrapper.getLayout = getDashboardLayout;
-export default DnDWrapper;
+export default withAdmin(DnDWrapper);

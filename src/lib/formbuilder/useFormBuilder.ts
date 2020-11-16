@@ -45,7 +45,7 @@ export const useFormBuilder: (params: Params) => ReturnType = ({
   const [prevItems, setPrevItems] = useState(initialformFields);
 
   // update initial formFields on prop change
-  if (initialformFields.length !== prevItems.length) {
+  if (JSON.stringify(initialformFields) !== JSON.stringify(prevItems)) {
     setformFields(initialformFields);
     setPrevItems(initialformFields);
   }
