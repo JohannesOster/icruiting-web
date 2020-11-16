@@ -23,8 +23,9 @@ import {
 } from '@stripe/react-stripe-js';
 import {withAdmin} from 'requireAuth';
 
+console.log(process.env);
 const stripePromise = loadStripe(
-  process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY || '',
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '',
 );
 const PaymentMethods: React.FC = () => {
   const {spacing} = useTheme();
