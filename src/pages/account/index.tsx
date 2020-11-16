@@ -6,7 +6,7 @@ import {H3, Box, H6, Typography} from 'components';
 import {useAuth} from 'context';
 import {API} from 'services';
 import {Dialog, Button, useToaster} from 'icruiting-ui';
-import {withAuth} from 'requireAuth';
+import {withAuth} from 'components';
 
 const Account: React.FC = () => {
   const {currentUser, refetchUser} = useAuth();

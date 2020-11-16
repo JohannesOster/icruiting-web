@@ -7,7 +7,7 @@ import {API as AmplifyAPI} from 'aws-amplify';
 import {useTheme} from 'styled-components';
 import {Arrow} from 'icons';
 import {Radar} from 'react-chartjs-2';
-import {withAdmin} from 'requireAuth';
+import {withAdmin} from 'components';
 import {useRouter} from 'next/router';
 import {FormFieldIntent} from 'services';
 

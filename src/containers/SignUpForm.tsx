@@ -10,7 +10,7 @@ import {
 } from 'lib/form-validation';
 import {object} from 'yup';
 import {useForm} from 'react-hook-form';
-import {errorsFor} from 'utils/reactHookFormHelper';
+import {errorsFor} from 'lib/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
 import {useTheme} from 'styled-components';
 

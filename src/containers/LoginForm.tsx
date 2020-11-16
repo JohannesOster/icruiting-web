@@ -4,7 +4,7 @@ import {AuthForm, Typography} from 'components';
 import Link from 'next/link';
 import {useForm} from 'react-hook-form';
 import {email} from 'lib/form-validation';
-import {errorsFor} from 'utils/reactHookFormHelper';
+import {errorsFor} from 'lib/react-hook-form-errors-for';
 import {useTheme} from 'styled-components';
 import {yupResolver} from '@hookform/resolvers';
 import {object, string} from 'yup';

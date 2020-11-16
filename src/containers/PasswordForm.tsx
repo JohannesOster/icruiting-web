@@ -4,7 +4,7 @@ import {Button, Input} from 'icruiting-ui';
 import {AuthForm, Typography} from 'components';
 import {confirmationCode, password, passwordConfirm} from 'lib/form-validation';
 import {object} from 'yup';
-import {errorsFor} from 'utils/reactHookFormHelper';
+import {errorsFor} from 'lib/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
 
 export type PasswordFormValues = {

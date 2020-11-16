@@ -9,3 +9,4 @@ export * from './Box';
 export * from './Flexgrid';
 export * from './FormSectionHeader';
 export * from './DashboardLayout';
+export * from './withAuth';

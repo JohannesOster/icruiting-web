@@ -15,7 +15,7 @@ import {Button, Dialog, Spinner} from 'icruiting-ui';
 import {API, TForm} from 'services';
 import useSWR from 'swr';
 import {useRouter} from 'next/router';
-import {withAdmin} from 'requireAuth';
+import {withAdmin} from 'components';
 
 const JobDetails = () => {
   const {colors, spacing} = useTheme();

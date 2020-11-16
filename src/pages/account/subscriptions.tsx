@@ -5,7 +5,7 @@ import {useAuth} from 'context';
 import useSWR, {mutate} from 'swr';
 import {API} from 'services';
 import {Button, useToaster} from 'icruiting-ui';
-import {withAdmin} from 'requireAuth';
+import {withAdmin} from 'components';
 
 const Subscriptions: React.FC = () => {
   const {spacing} = useTheme();

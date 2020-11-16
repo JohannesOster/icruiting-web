@@ -4,7 +4,7 @@ import {H3, DataTable, TColumn, Box, getDashboardLayout} from 'components';
 import {API} from 'services';
 import {useTheme} from 'styled-components';
 import useSWR from 'swr';
-import {withAdmin} from 'requireAuth';
+import {withAdmin} from 'components';
 import {useRouter} from 'next/router';
 
 export const Ranking = () => {

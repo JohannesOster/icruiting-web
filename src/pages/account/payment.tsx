@@ -21,7 +21,7 @@ import {
   useStripe,
   IbanElement,
 } from '@stripe/react-stripe-js';
-import {withAdmin} from 'requireAuth';
+import {withAdmin} from 'components';
 
 console.log(process.env);
 const stripePromise = loadStripe(

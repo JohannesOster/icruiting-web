@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {useForm, useFieldArray} from 'react-hook-form';
-import {errorsFor} from 'utils/reactHookFormHelper';
+import {errorsFor} from 'lib/react-hook-form-errors-for';
 import {useTheme} from 'styled-components';
 import {object, array, string} from 'yup';
 import {H6, Box} from 'components';

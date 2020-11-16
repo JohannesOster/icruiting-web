@@ -6,7 +6,7 @@ import useSWR from 'swr';
 import {H3, Box, getDashboardLayout} from 'components';
 import {API, TForm} from 'services';
 import {useRouter} from 'next/router';
-import {withAuth} from 'requireAuth';
+import {withAuth} from 'components';
 import {stringToComponent} from 'lib/form-builder-utils';
 
 const Form = styled.form`

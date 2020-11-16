@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useForm, useFieldArray} from 'react-hook-form';
-import {errorsFor} from 'utils/reactHookFormHelper';
+import {errorsFor} from 'lib/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
 import {object, array, string, number} from 'yup';
 import {API, TJobRequest, TJob} from 'services';
@@ -12,7 +12,7 @@ import {useTheme} from 'styled-components';
 import {useToaster} from 'icruiting-ui';
 import {useRouter} from 'next/router';
 import styled from 'styled-components';
-import {withAdmin} from 'requireAuth';
+import {withAdmin} from 'components';
 
 const OptionContainer = styled.div`
   display: grid;

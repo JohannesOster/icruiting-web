@@ -8,7 +8,7 @@ import {yupResolver} from '@hookform/resolvers';
 import useSWR from 'swr';
 import {object, string} from 'yup';
 import {Button, Input, Link, Dialog, useToaster} from 'icruiting-ui';
-import {errorsFor} from 'utils/reactHookFormHelper';
+import {errorsFor} from 'lib/react-hook-form-errors-for';
 import {H3, H6, Box, Typography, getDashboardLayout} from 'components';
 import {Clipboard} from 'icons';
 import {DnDFormField, DnDSection, DnDSourceItem} from 'lib/formbuilder/DnD';
@@ -31,7 +31,7 @@ import {API, FormCategory} from 'services';
 import amplifyConfig from 'amplify.config';
 import {converter} from 'lib/formbuilder/converter';
 import {useRouter} from 'next/router';
-import {withAdmin} from 'requireAuth';
+import {withAdmin} from 'components';
 
 const FormBuilder: React.FC = () => {
   const toaster = useToaster();

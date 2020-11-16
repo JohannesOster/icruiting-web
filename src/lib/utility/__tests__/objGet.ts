@@ -1,4 +1,4 @@
-import {get} from '../objHelper';
+import {get} from '../objGet';
 
 describe('get', () => {
   it('returns non nested value', () => {
