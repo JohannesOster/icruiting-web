@@ -15,6 +15,8 @@ Amplify.configure({...config, ssr: true});
 const App = ({Component, pageProps}) => {
   const {isAuthenticating} = useAuth();
 
+  const getLayout = Component.getLayout || ((page) => <>{page}</>);
+
   return (
     <ThemeProvider theme={theme}>
       <ToasterProvider>
@@ -31,7 +33,7 @@ const App = ({Component, pageProps}) => {
         ) : (
           <>
             <Navbar />
-            <Component {...pageProps} />
+            {getLayout(<Component {...pageProps} />)}
           </>
         )}
       </ToasterProvider>

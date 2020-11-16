@@ -24,6 +24,7 @@
     "aws-amplify": "^3.3.8",
     "chart.js": "^2.9.4",
     "faker": "^4.1.0",
+    "hoist-non-react-statics": "^3.3.2",
     "icruiting-ui": "^0.2.5",
     "next": "10.0.1",
     "next-auth": "^3.1.0",

@@ -8,3 +8,4 @@ export * from './Typography';
 export * from './Box';
 export * from './Flexgrid';
 export * from './FormSectionHeader';
+export * from './DashboardLayout';

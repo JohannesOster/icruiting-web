@@ -1,4 +1,8 @@
 import React from 'react';
 import {withAuth} from 'requireAuth';
+import {getDashboardLayout} from 'components';
 
-export default withAuth(() => <div>Dashboard</div>);
+const Dashboard = () => <div>Dashboard</div>;
+
+Dashboard.getLayout = getDashboardLayout;
+export default withAuth(Dashboard);

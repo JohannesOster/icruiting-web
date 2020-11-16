@@ -1,4 +1,5 @@
 import {useAuth} from 'context';
+import hoistNonReactStatics from 'hoist-non-react-statics';
 import {useRouter} from 'next/router';
 import React, {FC} from 'react';
 
@@ -11,7 +12,7 @@ export function withAuth<T>(
   Component: FC,
   {requireAdmin = false, redirectTo = '/login'}: Options = {},
 ) {
-  return (props: T) => {
+  return hoistNonReactStatics((props: T) => {
     const {currentUser, isAuthenticating} = useAuth();
     const router = useRouter();
 
@@ -22,9 +23,12 @@ export function withAuth<T>(
     }
 
     return <Component {...props} />;
-  };
+  }, Component);
 }
 
 export function withAdmin<T>(Component: FC) {
-  return withAuth(Component, {requireAdmin: true, redirectTo: '/'});
+  return hoistNonReactStatics(
+    withAuth(Component, {requireAdmin: true, redirectTo: '/'}),
+    Component,
+  );
 }
