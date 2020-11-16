@@ -10,7 +10,7 @@ import {convertAPIApplicant} from './convert';
 export const Applicants = () => {
   const list = (
     jobId: string,
-    options?: {offset?: number; limit?: number; filter?: number},
+    options?: {offset?: number; limit?: number; filter?: string},
   ): Promise<ListResponse> => {
     const {offset, limit, filter} = options || {};
     let query = `?jobId=${jobId}`;
