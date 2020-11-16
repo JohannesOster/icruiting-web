@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useForm, useFieldArray} from 'react-hook-form';
 import {errorsFor} from 'utils/reactHookFormHelper';
 import {yupResolver} from '@hookform/resolvers';
-import * as yup from 'yup';
+import {object, array, string, mixed} from 'yup';
 import {API, TJobRequest} from 'services';
 import {Box, H3, H6, Flexgrid, getDashboardLayout} from 'components';
 import {Button, Input} from 'icruiting-ui';
@@ -50,20 +50,18 @@ const CreateJob = () => {
     criteriaMode: 'all',
     defaultValues: {jobRequirements: [{requirementLabel: ''}]},
     resolver: yupResolver(
-      yup.object().shape({
-        jobTitle: yup
-          .string()
+      object({
+        jobTitle: string()
           .min(5, 'Stellentitle muss mindestens 5 Zeichen lang sein.')
           .max(50, 'Stellentitle darf maximal 50 Zeichen lang sein.')
           .required('Stellentitel ist verpflichtend.'),
         // for each item add validationrule for the label
-        jobRequirements: yup.array().of(
-          yup.object().shape({
-            requirementLabel: yup
-              .string()
-              .required('Item ist verpflichtend auszufüllen oder zu löschen'),
-            minValue: yup
-              .mixed()
+        jobRequirements: array().of(
+          object({
+            requirementLabel: string().required(
+              'Item ist verpflichtend auszufüllen oder zu löschen',
+            ),
+            minValue: mixed()
               .test(
                 'isOptionalNumber',
                 'Mindestmaß muss eine Zahl sein.',

@@ -3,10 +3,11 @@ import {Button, Input} from 'icruiting-ui';
 import {AuthForm, Typography} from 'components';
 import Link from 'next/link';
 import {useForm} from 'react-hook-form';
-import {loginFormSchema} from 'utils/validationSchemas';
+import {email} from 'lib/form-validation';
 import {errorsFor} from 'utils/reactHookFormHelper';
 import {useTheme} from 'styled-components';
 import {yupResolver} from '@hookform/resolvers';
+import {object, string} from 'yup';
 
 export type LoginFormValues = {
   email: string;
@@ -21,7 +22,12 @@ export const LoginForm: React.FC<Props> = ({onSubmit}) => {
   const {spacing} = useTheme();
   const {register, errors, formState, handleSubmit} = useForm<LoginFormValues>({
     mode: 'onChange',
-    resolver: yupResolver(loginFormSchema),
+    resolver: yupResolver(
+      object({
+        email,
+        password: string().required('Passwort ist verpflichtend.'),
+      }),
+    ),
     criteriaMode: 'all',
   });
 

@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, Input, Textarea} from 'icruiting-ui';
 import {useForm} from 'react-hook-form';
 import {errorsFor} from 'utils/reactHookFormHelper';
-import * as yup from 'yup';
+import {object, string} from 'yup';
 import {Form} from './StyledForm.sc';
 import {yupResolver} from '@hookform/resolvers';
 
@@ -25,10 +25,7 @@ export const EditSectionHeaderFormFieldsForm: React.FC<Props> = ({
     criteriaMode: 'all',
     defaultValues: formValues,
     resolver: yupResolver(
-      yup.object().shape({
-        label: yup.string().required('Label ist verpflichtend'),
-        description: yup.string(),
-      }),
+      object({label: string().required('Label ist verpflichtend')}),
     ),
   });
 

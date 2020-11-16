@@ -6,7 +6,7 @@ import {useTheme} from 'styled-components';
 import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers';
 import useSWR from 'swr';
-import * as yup from 'yup';
+import {object, string} from 'yup';
 import {Button, Input, Link, Dialog, useToaster} from 'icruiting-ui';
 import {errorsFor} from 'utils/reactHookFormHelper';
 import {H3, H6, Box, Typography, getDashboardLayout} from 'components';
@@ -63,8 +63,8 @@ const FormBuilder: React.FC = () => {
   const {register, formState, errors, getValues, reset} = useForm({
     mode: 'onChange',
     resolver: yupResolver(
-      yup.object().shape({
-        formTitle: yup.string().required('Formulartitel ist verpflichtend!'),
+      object({
+        formTitle: string().required('Formulartitel ist verpflichtend!'),
       }),
     ),
     defaultValues: {formTitle: formToEdit?.formTitle},
