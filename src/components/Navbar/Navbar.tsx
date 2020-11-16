@@ -22,7 +22,7 @@ import {useAuth} from 'context';
 const Navbar: React.FC = () => {
   const {spacing} = useTheme();
   const router = useRouter();
-  const {currentUser, refetchUser} = useAuth();
+  const {currentUser, refetchUser, isAuthenticating} = useAuth();
 
   const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
@@ -178,20 +178,29 @@ const Navbar: React.FC = () => {
           />
         </Link>
       </div>
-      <NavContainer style={{marginLeft: 'auto'}}>
-        <Hamburger open={menuOpen} onClick={() => setMenuOpen((open) => !open)}>
-          <span></span>
-          <span></span>
-          <span></span>
-        </Hamburger>
-        <DesktopNav>
-          {currentUser ? authenticatedDesktopNav : unauthenticatedDesktopNav}
-        </DesktopNav>
-      </NavContainer>
-      <MobileNav open={menuOpen}>
-        <Separator />
-        {currentUser ? authenticatedMobileNav : unauthenticatedMobileNav}
-      </MobileNav>
+      {!isAuthenticating && (
+        <>
+          <NavContainer style={{marginLeft: 'auto'}}>
+            <Hamburger
+              open={menuOpen}
+              onClick={() => setMenuOpen((open) => !open)}
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </Hamburger>
+            <DesktopNav>
+              {currentUser
+                ? authenticatedDesktopNav
+                : unauthenticatedDesktopNav}
+            </DesktopNav>
+          </NavContainer>
+          <MobileNav open={menuOpen}>
+            <Separator />
+            {currentUser ? authenticatedMobileNav : unauthenticatedMobileNav}
+          </MobileNav>
+        </>
+      )}
     </Header>
   );
 };
