@@ -4,12 +4,13 @@ import {DataTable, H3, H6, TColumn, Flexgrid} from 'components';
 import {Button, Select, ChipInput, Dialog} from 'icruiting-ui';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers';
-import {errorsFor} from 'utils/reactHookFormHelper';
-import * as yup from 'yup';
+import {errorsFor} from 'lib/react-hook-form-errors-for';
+import {email} from 'lib/form-validation';
+import {object, array} from 'yup';
 import {useTheme} from 'styled-components';
 import useSWR from 'swr';
 import {useToaster} from 'icruiting-ui';
-import {withAdmin} from 'requireAuth';
+import {withAdmin} from 'components';
 import {getDashboardLayout} from 'components';
 import styled from 'styled-components';
 
@@ -54,9 +55,9 @@ export const Members = () => {
     {
       mode: 'onChange',
       resolver: yupResolver(
-        yup.object().shape({
-          emails: yup
-            .array()
+        object({
+          emails: array()
+            .of(object({email}))
             .required('Email(s) ist ein verpflichtendes Feld.'),
         }),
       ),

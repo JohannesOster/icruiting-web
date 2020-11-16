@@ -2,9 +2,15 @@ import React from 'react';
 import {Button, Input} from 'icruiting-ui';
 import {AuthForm, Typography} from 'components';
 import Link from 'next/link';
-import {signUpFormSchema} from 'utils/validationSchemas';
+import {
+  tenantName,
+  email,
+  password,
+  passwordConfirm,
+} from 'lib/form-validation';
+import {object} from 'yup';
 import {useForm} from 'react-hook-form';
-import {errorsFor} from 'utils/reactHookFormHelper';
+import {errorsFor} from 'lib/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
 import {useTheme} from 'styled-components';
 
@@ -24,7 +30,9 @@ export const SignUpForm: React.FC<Props> = ({onSubmit, submitting}) => {
   const {register, errors, formState, handleSubmit} = useForm<SignUpFormValues>(
     {
       mode: 'onChange',
-      resolver: yupResolver(signUpFormSchema),
+      resolver: yupResolver(
+        object({tenantName, email, password, passwordConfirm}),
+      ),
       criteriaMode: 'all',
     },
   );

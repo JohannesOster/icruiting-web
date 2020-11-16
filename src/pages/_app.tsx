@@ -20,6 +20,7 @@ const App = ({Component, pageProps}) => {
   return (
     <ThemeProvider theme={theme}>
       <ToasterProvider>
+        <Navbar />
         {isAuthenticating ? (
           <Box
             height="100vh"
@@ -31,10 +32,7 @@ const App = ({Component, pageProps}) => {
             <Spinner />
           </Box>
         ) : (
-          <>
-            <Navbar />
-            {getLayout(<Component {...pageProps} />)}
-          </>
+          getLayout(<Component {...pageProps} />)
         )}
       </ToasterProvider>
     </ThemeProvider>

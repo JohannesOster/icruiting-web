@@ -1,10 +1,10 @@
 import React from 'react';
-import {emailSchema} from 'utils/validationSchemas';
-import * as yup from 'yup';
+import {email} from 'lib/form-validation';
+import {object} from 'yup';
 import {useForm} from 'react-hook-form';
 import {Button, Input} from 'icruiting-ui';
 import {AuthForm} from 'components';
-import {errorsFor} from 'utils/reactHookFormHelper';
+import {errorsFor} from 'lib/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
 
 type EmailFormValues = {
@@ -18,7 +18,7 @@ type Props = {
 export const EmailForm: React.FC<Props> = ({onSubmit}) => {
   const {register, errors, formState, handleSubmit} = useForm<EmailFormValues>({
     mode: 'onChange',
-    resolver: yupResolver(yup.object().shape({email: emailSchema})),
+    resolver: yupResolver(object({email})),
     criteriaMode: 'all',
   });
 

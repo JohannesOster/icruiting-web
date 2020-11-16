@@ -2,9 +2,9 @@ import React from 'react';
 import {Box, H6} from 'components';
 import {Button, Input, Textarea, Select} from 'icruiting-ui';
 import {useForm, useFieldArray} from 'react-hook-form';
-import {errorsFor} from 'utils/reactHookFormHelper';
+import {errorsFor} from 'lib/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
-import * as yup from 'yup';
+import {object, string} from 'yup';
 import {Form} from './StyledForm.sc';
 import {Trash} from 'icons';
 import {useTheme} from 'styled-components';
@@ -36,10 +36,7 @@ export const EditACRatingGroupFormFields: React.FC<Props> = ({
     criteriaMode: 'all',
     defaultValues: formValues,
     resolver: yupResolver(
-      yup.object().shape({
-        label: yup.string().required('Label ist verpflichtend'),
-        description: yup.string(),
-      }),
+      object({label: string().required('Label ist verpflichtend')}),
     ),
   });
   const {spacing} = useTheme();

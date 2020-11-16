@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {useForm, useFieldArray} from 'react-hook-form';
-import {errorsFor} from 'utils/reactHookFormHelper';
+import {errorsFor} from 'lib/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
-import * as yup from 'yup';
+import {object, array, string, number} from 'yup';
 import {API, TJobRequest, TJob} from 'services';
 import {Box, H3, H6, Flexgrid, getDashboardLayout} from 'components';
 import {Button, Input, Spinner} from 'icruiting-ui';
@@ -12,7 +12,7 @@ import {useTheme} from 'styled-components';
 import {useToaster} from 'icruiting-ui';
 import {useRouter} from 'next/router';
 import styled from 'styled-components';
-import {withAdmin} from 'requireAuth';
+import {withAdmin} from 'components';
 
 const OptionContainer = styled.div`
   display: grid;
@@ -46,20 +46,18 @@ const EditJob = () => {
     criteriaMode: 'all',
     defaultValues: {...job},
     resolver: yupResolver(
-      yup.object().shape({
-        jobTitle: yup
-          .string()
+      object().shape({
+        jobTitle: string()
           .min(5, 'Stellentitle muss mindestens 5 Zeichen lang sein.')
           .max(50, 'Stellentitle darf maximal 50 Zeichen lang sein.')
           .required('Stellentitel ist verpflichtend.'),
         // for each item add validationrule for the label
-        jobRequirements: yup.array().of(
-          yup.object().shape({
-            requirementLabel: yup
-              .string()
-              .required('Item ist verpflichtend auszufüllen oder zu löschen'),
-            minValue: yup
-              .number()
+        jobRequirements: array().of(
+          object().shape({
+            requirementLabel: string().required(
+              'Item ist verpflichtend auszufüllen oder zu löschen',
+            ),
+            minValue: number()
               .nullable()
               .transform((value: string, originalValue?: string) => {
                 if (!originalValue) return null;

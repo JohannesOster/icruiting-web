@@ -5,7 +5,7 @@ import {Button, Dialog} from 'icruiting-ui';
 import {useTheme} from 'styled-components';
 import useSWR from 'swr';
 import {API} from 'services';
-import {withAdmin} from 'requireAuth';
+import {withAdmin} from 'components';
 import {getDashboardLayout} from 'components';
 import {useRouter} from 'next/router';
 

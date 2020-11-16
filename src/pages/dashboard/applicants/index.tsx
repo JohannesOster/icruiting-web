@@ -17,7 +17,7 @@ import {
 } from 'components';
 import {useForm} from 'react-hook-form';
 import {Table} from 'components/Table/Table.sc';
-import {withAuth} from 'requireAuth';
+import {withAuth} from 'components';
 import {getDashboardLayout} from 'components';
 
 const Applicants = () => {

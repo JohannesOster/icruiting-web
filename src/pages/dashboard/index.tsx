@@ -1,6 +1,6 @@
 import {useAuth} from 'context';
 import {useRouter} from 'next/router';
-import {withAuth} from 'requireAuth';
+import {withAuth} from 'components';
 
 // this component is responsible for redirecting admins vs non admins
 const Router = () => {

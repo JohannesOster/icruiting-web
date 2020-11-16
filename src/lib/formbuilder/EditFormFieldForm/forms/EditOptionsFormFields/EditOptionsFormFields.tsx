@@ -1,8 +1,8 @@
 import React, {FC} from 'react';
 import {useForm, useFieldArray} from 'react-hook-form';
-import {errorsFor} from 'utils/reactHookFormHelper';
+import {errorsFor} from 'lib/react-hook-form-errors-for';
 import {useTheme} from 'styled-components';
-import * as yup from 'yup';
+import {object, array, string} from 'yup';
 import {H6, Box} from 'components';
 import {Button, Input, Textarea, Checkbox} from 'icruiting-ui';
 import {Form} from '../StyledForm.sc';
@@ -34,22 +34,19 @@ export const EditOptionsFormFields: FC<Props> = ({
     criteriaMode: 'all',
     defaultValues: formValues,
     resolver: yupResolver(
-      yup.object().shape({
-        label: yup.string().required('Label ist verpflichtend'),
-        options: yup.array().of(
-          yup.object().shape({
+      object({
+        label: string().required('Label ist verpflichtend'),
+        options: array().of(
+          object({
             ...(!acceptEmptyOption
               ? {
-                  label: yup
-                    .string()
-                    .required(
-                      'Option ist verpflichtend auszufüllen oder zu löschen',
-                    ),
+                  label: string().required(
+                    'Option ist verpflichtend auszufüllen oder zu löschen',
+                  ),
                 }
-              : {label: yup.string()}),
+              : {}),
           }),
         ),
-        description: yup.string(),
       }),
     ),
   });

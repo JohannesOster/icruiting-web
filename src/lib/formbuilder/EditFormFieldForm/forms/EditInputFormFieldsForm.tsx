@@ -1,8 +1,8 @@
 import React from 'react';
 import {Button, Input, Select, Textarea, Checkbox} from 'icruiting-ui';
 import {useForm, Controller} from 'react-hook-form';
-import {errorsFor} from 'utils/reactHookFormHelper';
-import * as yup from 'yup';
+import {errorsFor} from 'lib/react-hook-form-errors-for';
+import {object, string} from 'yup';
 import {Form} from './StyledForm.sc';
 import {yupResolver} from '@hookform/resolvers';
 
@@ -30,11 +30,9 @@ export const EditInputFormFieldsForm: React.FC<Props> = ({
     criteriaMode: 'all',
     defaultValues: formValues,
     resolver: yupResolver(
-      yup.object().shape({
-        label: yup.string().required('Label ist verpflichtend'),
-        type: yup.string().required('Typ ist verpflichtend'),
-        placeholder: yup.string(),
-        description: yup.string(),
+      object({
+        label: string().required('Label ist verpflichtend'),
+        type: string().required('Typ ist verpflichtend'),
       }),
     ),
   });

@@ -16,7 +16,7 @@ import {API, TForm} from 'services';
 import useSWR from 'swr';
 import {Arrow, Edit} from 'icons';
 import {useAuth} from 'context';
-import {withAuth} from 'requireAuth';
+import {withAuth} from 'components';
 import {stringToComponent} from 'lib/form-builder-utils';
 
 const ApplicantDetails = () => {

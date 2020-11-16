@@ -1,8 +1,8 @@
 import React from 'react';
 import {Input, Button, Textarea, Select, Checkbox} from 'icruiting-ui';
 import {useForm} from 'react-hook-form';
-import {errorsFor} from 'utils/reactHookFormHelper';
-import * as yup from 'yup';
+import {errorsFor} from 'lib/react-hook-form-errors-for';
+import {object, string} from 'yup';
 import {Form} from './StyledForm.sc';
 import {yupResolver} from '@hookform/resolvers';
 
@@ -27,11 +27,7 @@ export const EditFileUploadFormFields: React.FC<Props> = ({
     criteriaMode: 'all',
     defaultValues: formValues,
     resolver: yupResolver(
-      yup.object().shape({
-        label: yup.string().required('Label ist verpflichtend'),
-        //accept: yup.string().required('Accept is required'),
-        description: yup.string(),
-      }),
+      object({label: string().required('Label ist verpflichtend')}),
     ),
   });
 

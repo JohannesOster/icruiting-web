@@ -7,7 +7,7 @@ import {useAuth} from 'context';
 import config from 'amplify.config';
 import {API} from 'services';
 import useSWR, {mutate} from 'swr';
-import {withAuth} from 'requireAuth';
+import {withAuth} from 'components';
 import {getDashboardLayout} from 'components';
 
 export const Theme = () => {

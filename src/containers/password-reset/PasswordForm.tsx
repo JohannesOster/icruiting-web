@@ -2,8 +2,9 @@ import React from 'react';
 import {useForm} from 'react-hook-form';
 import {Button, Input} from 'icruiting-ui';
 import {AuthForm, Typography} from 'components';
-import {passwordResetSchema} from 'utils/validationSchemas';
-import {errorsFor} from 'utils/reactHookFormHelper';
+import {confirmationCode, password, passwordConfirm} from 'lib/form-validation';
+import {object} from 'yup';
+import {errorsFor} from 'lib/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
 
 export type PasswordFormValues = {
@@ -23,7 +24,9 @@ export const PasswordForm: React.FC<Props> = ({onSubmit, email}) => {
     PasswordFormValues
   >({
     mode: 'onChange',
-    resolver: yupResolver(passwordResetSchema),
+    resolver: yupResolver(
+      object({confirmationCode, password, passwordConfirm}),
+    ),
     criteriaMode: 'all',
   });
 
