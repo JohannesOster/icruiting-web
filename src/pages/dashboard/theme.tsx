@@ -121,24 +121,27 @@ export const Theme = () => {
                   await uploadTheme();
                   formRef.current?.reset();
                 }}
-                style={{display: 'flex'}}
               >
-                <Input
-                  type="file"
-                  accept=".css"
-                  onChange={(event) => {
-                    const {files} = event.target;
-                    setFiles(files);
-                  }}
-                />
-                <Button
-                  kind="minimal"
-                  type="submit"
-                  isLoading={status === 'submitting'}
-                  disabled={!files?.length}
-                >
-                  hochladen
-                </Button>
+                <Flexgrid flexGap={spacing.scale200}>
+                  <Box maxWidth="200px" overflow="hidden">
+                    <Input
+                      type="file"
+                      accept=".css"
+                      onChange={(event) => {
+                        const {files} = event.target;
+                        setFiles(files);
+                      }}
+                    />
+                  </Box>
+                  <Button
+                    kind="minimal"
+                    type="submit"
+                    isLoading={status === 'submitting'}
+                    disabled={!files?.length}
+                  >
+                    hochladen
+                  </Button>
+                </Flexgrid>
               </form>
             </td>
             <td>
