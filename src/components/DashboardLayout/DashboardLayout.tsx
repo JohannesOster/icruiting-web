@@ -3,12 +3,10 @@ import {Users, World, Portfolio, Palette} from 'icons';
 import {useTheme} from 'styled-components';
 import {useAuth} from 'context';
 import {SideNav, NavList, Container} from './DashboardLayout.sc';
-import {useRouter} from 'next/router';
 import {NavLink} from './NavLink';
 
 const DashboardLayout: React.FC = ({children}) => {
   const {colors, spacing} = useTheme();
-  const {pathname} = useRouter();
   const {currentUser} = useAuth();
 
   const iconsStyles = {
@@ -23,26 +21,26 @@ const DashboardLayout: React.FC = ({children}) => {
       <SideNav>
         {currentUser?.userRole === 'admin' ? (
           <NavList>
-            <NavLink href={`${pathname}/jobs`}>
+            <NavLink href="/dashboard/jobs">
               <Portfolio style={iconsStyles} />
               Stellen
             </NavLink>
-            <NavLink href={`${pathname}/applicants`}>
+            <NavLink href="/dashboard/applicants">
               <Users style={iconsStyles} />
               Bewerbungen
             </NavLink>
-            <NavLink href={`${pathname}/members`}>
+            <NavLink href="/dashboard/members">
               <World style={iconsStyles} />
               Tenant
             </NavLink>
-            <NavLink href={`${pathname}/theme`}>
+            <NavLink href="/dashboard/theme">
               <Palette style={iconsStyles} />
               Theme
             </NavLink>
           </NavList>
         ) : (
           <NavList>
-            <NavLink href={`${pathname}/applicants`}>
+            <NavLink href="/dashboard/applicants">
               <Users style={iconsStyles} />
               Bewerbungen
             </NavLink>
