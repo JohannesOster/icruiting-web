@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Auth} from 'aws-amplify';
 import {
   LoginForm,
@@ -8,11 +8,17 @@ import {
 } from 'containers';
 import {useAuth} from 'context';
 import {useToaster} from 'icruiting-ui';
+import {useRouter} from 'next/router';
 
 const Login: React.FC = () => {
-  const {refetchUser} = useAuth();
+  const {refetchUser, currentUser} = useAuth();
   const toaster = useToaster();
+  const router = useRouter();
   const [credentials, setCredentials] = useState<LoginFormValues | null>(null);
+
+  useEffect(() => {
+    if (currentUser) router.replace('/dashboard');
+  }, [currentUser]);
 
   const handleLoginFormSubmit = async ({email, password}: LoginFormValues) => {
     await Auth.signIn(email, password)

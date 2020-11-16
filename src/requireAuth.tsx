@@ -17,9 +17,13 @@ export function withAuth<T>(
     const router = useRouter();
 
     if (isAuthenticating) return;
-    if (!currentUser) router.replace(redirectTo);
+    if (!currentUser) {
+      router.replace(redirectTo);
+      return;
+    }
     if (requireAdmin && currentUser.userRole !== 'admin') {
       router.replace(redirectTo);
+      return;
     }
 
     return <Component {...props} />;
