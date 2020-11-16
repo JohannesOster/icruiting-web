@@ -44,7 +44,7 @@ export const EditOptionsFormFields: FC<Props> = ({
                     'Option ist verpflichtend auszufüllen oder zu löschen',
                   ),
                 }
-              : {}),
+              : {label: string()}),
           }),
         ),
       }),
