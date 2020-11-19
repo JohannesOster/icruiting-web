@@ -8,7 +8,7 @@ const Privacy: FC = () => {
 
   return (
     <Box padding={spacing.scale400} display="grid" rowGap={spacing.scale200}>
-      <H3 style={{marginTop: 0}}>Datenschutzerklärung</H3>
+      <H3 style={{marginTop: 0}}>Datenschutzerklärung - Stand November 2020</H3>
       <Typography>
         Der Schutz Ihrer persönlichen Daten ist uns ein besonderes Anliegen. Wir
         verarbeiten Ihre Daten daher ausschließlich auf Grundlage der
@@ -61,10 +61,9 @@ const Privacy: FC = () => {
       <H6>Externes Hosting</H6>
       <Typography>
         Wir nutzen die Dienste von Heroku (Der Service wird von Salesforce.com,
-        Inc., San Francisco, California 94105, angeboten). Über die weitere Art
-        der Verarbeitung sowie über die Dauer der Speicherung der Daten haben
-        wir keine Kenntnis. Weitere Informationen zur Datennutzung durch Heroku
-        erhalten Sie in der Datenschutzerklärung von Heroku:{' '}
+        Inc., San Francisco, California 94105, angeboten). Die von uns genutzten
+        Server befinden sich in Dublin. Weitere Informationen zur Datennutzung
+        durch Heroku erhalten Sie in der Datenschutzerklärung von Heroku:{' '}
         <a
           href="https://www.salesforce.com/company/privacy/"
           target="_blank"
@@ -92,18 +91,49 @@ const Privacy: FC = () => {
         Erhalts der Betriebssicherheit dieser Webseiten gemäß Art. 6 Abs. 1 S. 1
         lit. f DSGVO.
       </Typography>
+      <H6>Datenspeicherung</H6>
+      <Typography>
+        Für die Dantenspeicherung verwenden wir ebenfalls Dienste von Heroku.
+        Dabei befinden sich die von uns genutzten Server in Dublin.Weitere
+        Informationen zur Datennutzung durch Heroku erhalten Sie in der
+        Datenschutzerklärung von Heroku:{' '}
+        <a
+          href="https://www.salesforce.com/company/privacy/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          https://www.salesforce.com/company/privacy/
+        </a>{' '}
+        . <br />
+        Zusätzlich greifen wir für die Speicherung von Dokumente, welche sowhol
+        direkt auf der Website als auch über ein von icruiting bereitgesteltes
+        Bewerbungsformular hochgeladen werden auf das Produkte „S3“ von Amazon
+        Web Services, Inc., 410 Terry Avenue North, Seattle WA 98109, USA,
+        („AWS“) zurück, der unsere Daten im Auftrag verarbeitet. Dabei erfolgt
+        die Verabeitung und Speicherung ausschließlich im AWS-Rechenzentrum in
+        Frankfurt a.M. AWS ist ferner Privacy-Shield-zertifiziert und garantiert
+        damit, auch außerhalb des europäischen Wirtschaftsraums die
+        personenbezogenen Daten entsprechend europäischer Datenschutzgesetze zu
+        verarbeiten.
+        <br />
+        Die Einbeziehung von AWS und Heroku erfolgt auf Grundlage unserer
+        berechtigten Interesse des Betriebes und des Erhalts der
+        Betriebssicherheit dieser Webseiten gem. Art. 6 Abs. 1 lit. f. DS-GVO.
+      </Typography>
       <H6>Registrierung, Anmeldung, Nutzerkonto</H6>
       <Typography>
-        Wir verwenden Amazon Cognito der Amazon Web Services (AWS) für
-        Authorisierungsdienste. Dafür werden die im Zuge der Registrierung sowie
-        dem Login angegebene Daten (Name, E-Mail-Addresse, Passwort) AWS
-        übermitelt. Nähere Informationen finden Sie auf{' '}
+        Wir verwenden Amazon Cognito von AWS für Authorisierungsdienste. Dafür
+        werden die im Zuge der Registrierung sowie dem Login angegebene Daten
+        (Name, E-Mail-Addresse, Passwort) AWS übermitelt. Hierbei werden die
+        empfangenen Daten in Frankfurt abgespeichert. Nähere Informationen
+        finden Sie auf{' '}
         <a href="https://docs.aws.amazon.com/cognito/latest/developerguide/data-protection.html">
           https://docs.aws.amazon.com/cognito/latest/developerguide/data-protection.html
         </a>
-        . Rechtsgrundlage ist unser berechtigtes Interesse des Betriebes und des
-        Erhalts der Betriebssicherheit dieser Webseiten gemäß Art. 6 Abs. 1 S. 1
-        lit. f DSGVO.
+        . Rechtsgrundlage für die Einbeziehung von AWS Cognito ist unser
+        berechtigtes Interesse des Betriebes und des Erhalts der
+        Betriebssicherheit dieser Webseiten gemäß Art. 6 Abs. 1 S. 1 lit. f
+        DSGVO.
       </Typography>
     </Box>
   );
