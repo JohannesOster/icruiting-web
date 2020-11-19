@@ -44,6 +44,7 @@ export const SignUpForm: React.FC<Props> = ({onSubmit, submitting}) => {
         name="tenantName"
         label="Tenantname"
         placeholder="Tenantname"
+        description="Der Name deiner Organisation, deiner Abteilung, deines Teams, etc."
         ref={register}
         errors={errorsFor(errors, 'tenantName')}
         required

@@ -116,7 +116,7 @@ const SignUp: React.FC = () => {
                     kind="secondary"
                     style={{fontSize: spacing.scale200}}
                   >
-                    <strong>Keine Kredikarte</strong>
+                    <strong>Keine Zahlungsmethode</strong>
                     <br />
                     notwendig
                   </Typography>
