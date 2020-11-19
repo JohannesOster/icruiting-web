@@ -129,6 +129,14 @@ const Privacy: FC = () => {
           berechtigten Interesse des Betriebes und des Erhalts der
           Betriebssicherheit dieser Webseiten gem. Art. 6 Abs. 1 lit. f. DS-GVO.
         </Typography>
+        <H6>Zahlungen</H6>
+        <Typography>
+          Bei der Zahlung mittels Lastschriftverfahren erfolgt die
+          Zahlungsabwicklung über Dienste des Zahlungsdienstleisters Stripe
+          Payments Europe Ltd, Block 4, Harcourt Centre, Harcourt Road, Dublin
+          2, Irland. Nähere Informationen zum Datenschutz von Stripe finden Sie
+          unter https://stripe.com/de/privacy#translation.
+        </Typography>
         <H6>Registrierung, Anmeldung, Nutzerkonto</H6>
         <Typography>
           Wir verwenden Amazon Cognito von AWS für Authorisierungsdienste. Dafür
