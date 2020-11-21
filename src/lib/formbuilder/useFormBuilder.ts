@@ -143,7 +143,14 @@ export const useFormBuilder: (params: Params) => ReturnType = ({
   };
 
   const deleteItem = useCallback((id: string) => {
-    setformFields((items) => items.filter((item) => item.id !== id));
+    setformFields((items) =>
+      items
+        .filter((item) => item.id !== id)
+        .map((item, index) => {
+          item.rowIndex = index;
+          return item;
+        }),
+    );
   }, []);
 
   const editItem = useCallback(
