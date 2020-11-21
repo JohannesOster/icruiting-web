@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useRef, useEffect} from 'react';
+import React, {useState, useCallback, useRef, useEffect, useMemo} from 'react';
 import {v4 as uuidv4} from 'uuid';
 import {DndProvider} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -95,11 +95,15 @@ const FormBuilder: React.FC = () => {
   const sourceItems = getSourceFormFields(
     formToEdit?.formCategory || formCategory,
   );
-  const initialformFields = formToEdit
-    ? formToEdit.formFields
-        .map(converter.toDnDItem)
-        .sort((one, two) => one.rowIndex - two.rowIndex)
-    : getInitialFormFields(formCategory);
+  const initialformFields = useMemo(
+    () =>
+      formToEdit
+        ? formToEdit.formFields
+            .map(converter.toDnDItem)
+            .sort((one, two) => one.rowIndex - two.rowIndex)
+        : getInitialFormFields(formCategory),
+    [formToEdit],
+  );
 
   const {
     formFields,
