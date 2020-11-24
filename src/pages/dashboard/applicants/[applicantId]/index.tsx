@@ -178,17 +178,20 @@ const ApplicantDetails = () => {
         </Table>
       </section>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Flexgrid alignItems="center" flexGap={spacing.scale100}>
-          <H6>Screeningformular</H6>
-          <Arrow
-            height={spacing.scale300}
-            onClick={() => setShowScreeningForm((curr) => !curr)}
-            style={{
-              transform: `rotate(${showScreeningForm ? '90deg' : '-90deg'})`,
-              cursor: 'pointer',
-            }}
-          />
-        </Flexgrid>
+        <div
+          onClick={() => setShowScreeningForm((curr) => !curr)}
+          style={{cursor: 'pointer'}}
+        >
+          <Flexgrid alignItems="center" flexGap={spacing.scale100}>
+            <H6>Screeningformular</H6>
+            <Arrow
+              height={spacing.scale300}
+              style={{
+                transform: `rotate(${showScreeningForm ? '90deg' : '-90deg'})`,
+              }}
+            />
+          </Flexgrid>
+        </div>
         {showScreeningForm && (
           <Box
             display="grid"
