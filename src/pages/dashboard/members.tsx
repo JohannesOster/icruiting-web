@@ -57,7 +57,7 @@ export const Members = () => {
       resolver: yupResolver(
         object({
           emails: array()
-            .of(object({email}))
+            .of(email)
             .required('Email(s) ist ein verpflichtendes Feld.'),
         }),
       ),
@@ -172,7 +172,11 @@ export const Members = () => {
                   description="Tab klicken um E-Mail-Adresse zu bestätigen"
                   placeholder="E-Mail-Addresse"
                   label="E-Mail-Adresse des neuen Mitarbeiters"
-                  errors={errorsFor(errors, 'emails')}
+                  errors={
+                    errorsFor(errors, 'emails').length
+                      ? errorsFor(errors, 'emails')
+                      : errorsFor(errors, 'emails[0]')
+                  }
                   autoFocus
                   {...props}
                 />
