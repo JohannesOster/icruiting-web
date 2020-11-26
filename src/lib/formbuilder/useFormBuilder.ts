@@ -34,21 +34,17 @@ type ReturnType = {
    * @returns number | null the id of the currentNewItemId if the droped item comes from the source, null otherwise
    */
   onDrop: () => number | null;
+  reset: (formFields: DnDItem[]) => void;
 };
 
 export const useFormBuilder: (params: Params) => ReturnType = ({
   initialformFields = [],
 }) => {
-  /** The actual form items state. This holds the final version of the form.
-   * It is responsible for rerendering the form after a new item hover the form section.  */
   const [formFields, setformFields] = useState<DnDItem[]>(initialformFields);
-  const [prevItems, setPrevItems] = useState(initialformFields);
 
-  // update initial formFields on prop change
-  if (JSON.stringify(initialformFields) !== JSON.stringify(prevItems)) {
-    setformFields(initialformFields);
-    setPrevItems(initialformFields);
-  }
+  const reset = (formFields: DnDItem[]) => {
+    setformFields(formFields);
+  };
 
   const moveItem = useCallback(
     (dragIndex: number, hoverIndex: number) => {
@@ -176,6 +172,7 @@ export const useFormBuilder: (params: Params) => ReturnType = ({
 
   return {
     formFields,
+    reset,
     moveItem,
     addItem,
     duplicateItem,

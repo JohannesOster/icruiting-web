@@ -118,7 +118,13 @@ const FormBuilder: React.FC = () => {
     duplicateItem,
     onOutsideHover,
     onDrop,
+    reset: resetFormBuilder,
   } = useFormBuilder({initialformFields});
+
+  useEffect(() => {
+    if (!formToEdit) return;
+    resetFormBuilder(initialformFields);
+  }, [initialformFields]);
 
   const showEditItemForm = useCallback(
     (id: string) => {
