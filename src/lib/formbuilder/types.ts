@@ -1,6 +1,5 @@
 import {ComponentType} from 'react';
 import {FormCategory} from 'services';
-import {string} from 'yup';
 
 export type FormFieldComponent =
   | 'section_header'

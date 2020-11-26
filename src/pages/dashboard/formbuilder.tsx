@@ -11,12 +11,16 @@ import {Button, Input, Link, Dialog, useToaster} from 'icruiting-ui';
 import {errorsFor} from 'lib/react-hook-form-errors-for';
 import {H3, H6, Box, Typography, getDashboardLayout} from 'components';
 import {Clipboard} from 'icons';
-import {DnDFormField, DnDSection, DnDSourceItem} from 'lib/formbuilder/DnD';
+import {
+  DnDFormField,
+  DnDSection,
+  DnDSourceItem,
+} from 'components/FormBuilder/DnD';
 import {DnDItem, ComponentToEdit} from 'lib/formbuilder/types';
-import {EditFormFieldForm} from 'lib/formbuilder/EditFormFieldForm';
+import {EditFormFieldForm} from 'components/FormBuilder/EditFormFieldForm';
 import {useFormBuilder} from 'lib/formbuilder/useFormBuilder';
-import {getSourceFormFields} from 'lib/formbuilder/sourceFormFields';
-import {getInitialFormFields} from 'lib/formbuilder/initialFormFields';
+import {getSourceFormFields} from 'components/FormBuilder/sourceFormFields';
+import {getInitialFormFields} from 'components/FormBuilder/initialFormFields';
 import {
   DragAndDropList,
   IconContainer,
@@ -26,10 +30,10 @@ import {
   DnDTargetSection,
   FormGrid,
   FormCodeTextarea,
-} from 'lib/formbuilder/FormBuilder.sc';
+} from 'components/FormBuilder/FormBuilder.sc';
 import {API, FormCategory} from 'services';
 import amplifyConfig from 'amplify.config';
-import {converter} from 'lib/formbuilder/converter';
+import {converter} from 'components/FormBuilder/converter';
 import {useRouter} from 'next/router';
 import {withAdmin} from 'components';
 

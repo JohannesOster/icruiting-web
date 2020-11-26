@@ -2,7 +2,7 @@ import React, {useRef} from 'react';
 import {useDrag, useDrop} from 'react-dnd';
 import {XYCoord} from 'dnd-core';
 import {ItemTypes} from './ItemTypes';
-import {DnDItem} from '../types';
+import {DnDItem} from '../../../lib/formbuilder/types';
 import {Move, Trash, Edit, Duplicate} from 'icons';
 import styled, {useTheme} from 'styled-components';
 
