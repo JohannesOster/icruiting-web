@@ -36,6 +36,7 @@ import amplifyConfig from 'amplify.config';
 import {converter} from 'components/FormBuilder/converter';
 import {useRouter} from 'next/router';
 import {withAdmin} from 'components';
+import {useFormBuilder} from 'lib/formbuilder/useFormBuilder';
 
 type Query = {
   formId?: string;
@@ -116,7 +117,7 @@ const FormBuilder: React.FC = () => {
     [formToEdit],
   );
 
-  const formFields = useFormFields(initialformFields);
+  const {formFields, ...formBuilder} = useFormBuilder(initialformFields);
 
   useEffect(() => {
     if (!formToEdit) return;
@@ -200,7 +201,7 @@ const FormBuilder: React.FC = () => {
 
   /** private on Drop to automatically show edit form for new items */
   const _onDrop = () => {
-    const tmp = formFields.onDrop();
+    const tmp = formBuilder.onDrop();
     if (tmp) showEditItemForm(tmp.toString());
   };
 
@@ -253,7 +254,7 @@ const FormBuilder: React.FC = () => {
       </Box>
       <Box display="flex" position="relative" marginBottom={spacing.scale600}>
         <DnDSection
-          onHover={formFields.onOutsideHover}
+          onHover={formBuilder.onOutsideHover}
           render={(targetID, drop) => <Overlay id={targetID} ref={drop} />}
         />
         <DnDSection
@@ -270,7 +271,7 @@ const FormBuilder: React.FC = () => {
           )}
         />
         <DnDSection
-          onHover={formFields.onOutsideHover}
+          onHover={formBuilder.onOutsideHover}
           render={(targetID, drop) => (
             <DnDSourceSection id={targetID} ref={drop}>
               <Box marginTop={sourceSectionMargin} transition="all 0.5s">
