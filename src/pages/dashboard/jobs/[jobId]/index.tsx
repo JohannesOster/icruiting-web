@@ -11,11 +11,12 @@ import {
   Table,
   getDashboardLayout,
 } from 'components';
-import {Button, Dialog, Spinner} from 'icruiting-ui';
+import {Button, Dialog, Spinner, Link as ExternalLink} from 'icruiting-ui';
 import {API, TForm} from 'services';
 import useSWR from 'swr';
 import {useRouter} from 'next/router';
 import {withAdmin} from 'components';
+import amplifyConfig from 'amplify.config';
 
 const JobDetails = () => {
   const {colors, spacing} = useTheme();
@@ -109,6 +110,19 @@ const JobDetails = () => {
       },
     },
     {title: 'Aktion', cell: actionCell},
+    {
+      title: 'Direktlink',
+      cell: ({formCategory, formId}) => {
+        if (formCategory !== 'application') return <Typography>-</Typography>;
+        const domain = amplifyConfig.API.endpoints[0].endpoint;
+        const iframeSrc = `${domain}/forms/${formId}/html`;
+        return (
+          <ExternalLink href={iframeSrc} newTab>
+            Direktlink
+          </ExternalLink>
+        );
+      },
+    },
   ];
 
   const formsTableData = ['application', 'screening'].map((formCategory) => {

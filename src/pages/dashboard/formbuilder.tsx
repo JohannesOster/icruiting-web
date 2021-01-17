@@ -295,11 +295,6 @@ const FormBuilder: React.FC = () => {
                   formToEdit?.formCategory === 'application') && (
                   <>
                     <Box marginTop={20}>
-                      <Link href={iframeSrc} newTab>
-                        Direktlink
-                      </Link>
-                    </Box>
-                    <Box marginTop={20}>
                       <Typography
                         style={{
                           cursor: 'pointer',
