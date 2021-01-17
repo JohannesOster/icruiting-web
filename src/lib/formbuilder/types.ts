@@ -43,7 +43,7 @@ export interface FormBuilderParams {
 }
 
 export interface ReturnType {
-  formFields: DnDItem[];
+  fields: DnDItem[];
 
   /** A function wich should be called if an existing item moves down or upwords.
    * @params dragIndex  The initial index of the dragged item
@@ -58,7 +58,7 @@ export interface ReturnType {
   /** A function wich should be called if the delete button is pressed.
    * The delete button will only be displayed if this function is provided.
    * @params id The id of the item to delete */
-  del?: (id: string) => void;
+  delete?: (id: string) => void;
   /** A function wich should be called if the edit button is pressed.
    * The edit button will only be displayed if this function is provided.
    * @params id The id of the item to edit

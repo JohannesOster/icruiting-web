@@ -18,7 +18,7 @@ import {
 } from 'components/FormBuilder/DnD';
 import {DnDItem, ComponentToEdit} from 'lib/formbuilder/types';
 import {EditFormFieldForm} from 'components/FormBuilder/EditFormFieldForm';
-import {useFormBuilder} from 'lib/formbuilder/useFormBuilder';
+import {useFormFields} from 'lib/formbuilder/useFormFields';
 import {getSourceFormFields} from 'components/FormBuilder/sourceFormFields';
 import {getInitialFormFields} from 'components/FormBuilder/initialFormFields';
 import {
@@ -116,20 +116,20 @@ const FormBuilder: React.FC = () => {
     [formToEdit],
   );
 
-  const {formFields, onOutsideHover, onDrop, ...formBuilder} = useFormBuilder({
-    initialformFields,
-  });
+  const formFields = useFormFields(initialformFields);
 
   useEffect(() => {
     if (!formToEdit) return;
-    formBuilder.reset(initialformFields);
+    formFields.reset(initialformFields);
   }, [initialformFields]);
 
   /** NOT UI END */
 
   const showEditItemForm = useCallback(
     (id: string) => {
-      const {component, props} = formFields.filter((item) => item.id === id)[0];
+      const {component, props} = formFields.fields.filter(
+        (item) => item.id === id,
+      )[0];
       setComponentToEdit({id: id, component, props});
     },
     [formFields],
@@ -151,17 +151,17 @@ const FormBuilder: React.FC = () => {
   });
 
   /** Map the array of formFields to actual jsx */
-  const Form = formFields.map((item: DnDItem) => {
+  const Form = formFields.fields.map((item: DnDItem) => {
     const Component = item.as;
     return (
       <DnDFormField
         key={item.id}
         id={item.id}
         rowIndex={item.rowIndex}
-        addItem={formBuilder.insert}
-        onMove={formBuilder.move}
-        onDuplicate={formBuilder.duplicate}
-        onDelete={item.deletable ? formBuilder.del : undefined}
+        addItem={formFields.insert}
+        onMove={formFields.move}
+        onDuplicate={formFields.duplicate}
+        onDelete={item.deletable ? formFields.delete : undefined}
         onEdit={item.editable ? showEditItemForm : undefined}
       >
         <Component {...item.props} />
@@ -177,7 +177,7 @@ const FormBuilder: React.FC = () => {
       jobId,
       formCategory: formCategory || formToEdit?.formCategory,
       formTitle: getValues().formTitle,
-      formFields: formFields.map(converter.toAPIFormField),
+      formFields: formFields.fields.map(converter.toAPIFormField),
     };
 
     const request = formToEdit ? API.forms.update : API.forms.create;
@@ -200,7 +200,7 @@ const FormBuilder: React.FC = () => {
 
   /** private on Drop to automatically show edit form for new items */
   const _onDrop = () => {
-    const tmp = onDrop();
+    const tmp = formFields.onDrop();
     if (tmp) showEditItemForm(tmp.toString());
   };
 
@@ -230,7 +230,7 @@ const FormBuilder: React.FC = () => {
           <EditFormFieldForm
             componentToEdit={componentToEdit}
             onSubmit={(values) => {
-              formBuilder.edit(componentToEdit.id, values);
+              formFields.edit(componentToEdit.id, values);
               setComponentToEdit(null);
             }}
             formCategory={formCategory || formToEdit?.formCategory}
@@ -253,7 +253,7 @@ const FormBuilder: React.FC = () => {
       </Box>
       <Box display="flex" position="relative" marginBottom={spacing.scale600}>
         <DnDSection
-          onHover={onOutsideHover}
+          onHover={formFields.onOutsideHover}
           render={(targetID, drop) => <Overlay id={targetID} ref={drop} />}
         />
         <DnDSection
@@ -270,7 +270,7 @@ const FormBuilder: React.FC = () => {
           )}
         />
         <DnDSection
-          onHover={onOutsideHover}
+          onHover={formFields.onOutsideHover}
           render={(targetID, drop) => (
             <DnDSourceSection id={targetID} ref={drop}>
               <Box marginTop={sourceSectionMargin} transition="all 0.5s">

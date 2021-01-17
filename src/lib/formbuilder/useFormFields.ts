@@ -2,13 +2,10 @@ import {arrInsert, arrMove} from 'lib/utility/arrUtils';
 import {useState, useRef, useCallback} from 'react';
 import {DnDItem, ReturnType} from './types';
 
-interface Params {
-  initialformFields?: DnDItem[];
-}
-export const useFormBuilder: (params: Params) => ReturnType = ({
-  initialformFields = [],
-}) => {
-  const [formFields, setformFields] = useState<DnDItem[]>(initialformFields);
+const randString = () => Math.random().toString(36).substring(7).toString();
+
+export const useFormFields = (init: DnDItem[] = []): ReturnType => {
+  const [formFields, setformFields] = useState(init);
 
   /**
    * Helper function to reasign the array index of a formField to its internal formField.
@@ -19,10 +16,6 @@ export const useFormBuilder: (params: Params) => ReturnType = ({
     return field;
   };
 
-  const randString = () => Math.random().toString(36).substring(7).toString();
-
-  const reset = (formFields: DnDItem[]) => setformFields(formFields);
-
   const move = useCallback(
     (from: number, to: number) => {
       setformFields((items) => arrMove(items, from, to).map(assignRowIndex));
@@ -30,17 +23,18 @@ export const useFormBuilder: (params: Params) => ReturnType = ({
     [formFields],
   );
 
-  /** Holds the idea of the currently dragged new Item from the DnDSourceSection.
+  /**
+   *  Holds the idea of the currently dragged new Item from the DnDSourceSection.
    *  This is used to be able to remove the item if it moves outside the actual Formsection.
-   *  The default value is null. Only if a new item is added and currently dragged this ref
+   *  The default value is null. Only if a new item is added and currently dragged, this ref
    *  will hold the coresponding id. To avoid weird behaviour this must be set back to null
-   *  once the item is dropped. Otherwise it will be removed it is dragged outside after the
+   *  once the item is dropped. Otherwise the newest item will be removed if it is dragged outside after the
    *  inital drop.
    */
   const currentNewItemId = useRef<null | number>(null);
 
   /** The current method of generating unique ids */
-  const idCounter = useRef(initialformFields?.length || 0);
+  const idCounter = useRef(init.length);
 
   /**
    * This function will be called if an item of the DnDSource section
@@ -123,13 +117,13 @@ export const useFormBuilder: (params: Params) => ReturnType = ({
   }, []);
 
   return {
-    formFields,
-    reset,
-    move,
+    fields: formFields,
     insert,
-    duplicate,
-    del,
     edit,
+    move,
+    delete: del,
+    duplicate,
+    reset: setformFields,
     onOutsideHover,
     onDrop,
   };
