@@ -7,7 +7,7 @@ import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers';
 import useSWR from 'swr';
 import {object, string} from 'yup';
-import {Button, Input, Link, Dialog, useToaster} from 'icruiting-ui';
+import {Button, Input, Dialog, useToaster} from 'icruiting-ui';
 import {errorsFor} from 'lib/react-hook-form-errors-for';
 import {H3, H6, Box, Typography, getDashboardLayout} from 'components';
 import {Clipboard} from 'icons';
