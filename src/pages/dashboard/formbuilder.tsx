@@ -37,23 +37,27 @@ import {converter} from 'components/FormBuilder/converter';
 import {useRouter} from 'next/router';
 import {withAdmin} from 'components';
 
+type Query = {
+  formId?: string;
+  formCategory?: FormCategory;
+  jobId: string;
+};
+
 const FormBuilder: React.FC = () => {
-  const toaster = useToaster();
   const {colors, spacing} = useTheme();
+  const toaster = useToaster();
   const router = useRouter();
   const {
     formId: formIdEdit,
     formCategory = 'application',
     jobId,
-  } = router.query as {
-    formId?: string;
-    formCategory?: FormCategory;
-    jobId: string;
-  };
-  const [status, setStatus] = useState('idle');
-  const formId = useRef(formIdEdit || uuidv4());
+  } = router.query as Query;
+
+  const [status, setStatus] = useState('idle'); // kinda UI
+  const formId = useRef(formIdEdit || uuidv4()); // not UI
   const [sourceSectionMargin, setSourceSectionMargin] = useState(0);
 
+  /** NOT UI */
   const formKey = formIdEdit ? [`GET /forms/${formId}`, formIdEdit] : null;
   const {data: formToEdit} = useSWR(formKey, (_key, formId) =>
     API.forms.find(formId),
@@ -80,6 +84,8 @@ const FormBuilder: React.FC = () => {
     reset({formTitle: formToEdit?.formTitle});
   }, [formToEdit, reset]);
 
+  /** NOT UI END */
+
   useEffect(() => {
     window.onscroll = () => {
       const shouldScroll = window.pageYOffset < 100;
@@ -92,6 +98,7 @@ const FormBuilder: React.FC = () => {
     };
   });
 
+  /** NOT UI */
   const [
     componentToEdit,
     setComponentToEdit,
@@ -109,31 +116,21 @@ const FormBuilder: React.FC = () => {
     [formToEdit],
   );
 
-  const {
-    formFields,
-    addItem,
-    moveItem,
-    editItem,
-    deleteItem,
-    duplicateItem,
-    onOutsideHover,
-    onDrop,
-    reset: resetFormBuilder,
-  } = useFormBuilder({initialformFields});
+  const {formFields, onOutsideHover, onDrop, ...formBuilder} = useFormBuilder({
+    initialformFields,
+  });
 
   useEffect(() => {
     if (!formToEdit) return;
-    resetFormBuilder(initialformFields);
+    formBuilder.reset(initialformFields);
   }, [initialformFields]);
+
+  /** NOT UI END */
 
   const showEditItemForm = useCallback(
     (id: string) => {
-      const item = formFields.filter((item) => item.id === id)[0];
-      setComponentToEdit({
-        id: id,
-        component: item.component,
-        props: item.props,
-      });
+      const {component, props} = formFields.filter((item) => item.id === id)[0];
+      setComponentToEdit({id: id, component, props});
     },
     [formFields],
   );
@@ -161,10 +158,10 @@ const FormBuilder: React.FC = () => {
         key={item.id}
         id={item.id}
         rowIndex={item.rowIndex}
-        moveItem={moveItem}
-        addItem={addItem}
-        duplicateItem={duplicateItem}
-        onDelete={item.deletable ? deleteItem : undefined}
+        addItem={formBuilder.insert}
+        onMove={formBuilder.move}
+        onDuplicate={formBuilder.duplicate}
+        onDelete={item.deletable ? formBuilder.del : undefined}
         onEdit={item.editable ? showEditItemForm : undefined}
       >
         <Component {...item.props} />
@@ -172,37 +169,34 @@ const FormBuilder: React.FC = () => {
     );
   });
 
+  /** NOT UI */
   const onSave = () => {
     setStatus('submitting');
     const form = {
       formId: formId.current,
-      jobId: jobId,
+      jobId,
       formCategory: formCategory || formToEdit?.formCategory,
       formTitle: getValues().formTitle,
       formFields: formFields.map(converter.toAPIFormField),
     };
 
     const request = formToEdit ? API.forms.update : API.forms.create;
-    const errorHandler = (error: Error) => {
-      toaster.danger(error.message);
-      setStatus('idle');
-    };
+    const sucessMsg = !formToEdit
+      ? 'Formular erfolgreich erstellt.'
+      : 'Formular erfolgreich bearbeitet!';
 
-    let promise;
-    if (!formToEdit) {
-      promise = request(form).then(() => {
-        toaster.success('Formular erfolgreich erstellt.');
+    request(form)
+      .then(() => {
+        toaster.success(sucessMsg);
         router.back();
+      })
+      .catch((error) => {
+        toaster.danger(error.message);
+        setStatus('idle');
       });
-    } else {
-      promise = request(form).then(() => {
-        toaster.success('Formular erfolgreich bearbeitet!');
-        router.back();
-      });
-    }
-
-    promise.catch(errorHandler);
   };
+
+  /** NOT UI END */
 
   /** private on Drop to automatically show edit form for new items */
   const _onDrop = () => {
@@ -210,6 +204,7 @@ const FormBuilder: React.FC = () => {
     if (tmp) showEditItemForm(tmp.toString());
   };
 
+  // SEMI UI
   const domain = amplifyConfig.API.endpoints[0].endpoint;
   const iframeSrc = `${domain}/forms/${formId.current}/html`;
   const formCode = `<!-- Begin icruiting webform --><iframe src="${iframeSrc}" style="width: 100%; border: none;" scroll="no" id="${formId.current}-iframe" ></iframe><script>window.addEventListener("message", (event) => {if (event.origin !== "${domain}") return;document.getElementById("${formId.current}-iframe").style.height=event.data + "px";});</script><!-- End icruiting webform -->`;
@@ -224,7 +219,7 @@ const FormBuilder: React.FC = () => {
       textarea.blur();
       toaster.success('Erfolgreich ins clipboard kopiert!');
     } else {
-      toaster.danger('Fehlgeschlagen. Bitte kopieren Sie es manuell!');
+      toaster.danger('Fehlgeschlagen. Bitte kopieren Sie den Code manuell!');
     }
   };
 
@@ -235,7 +230,7 @@ const FormBuilder: React.FC = () => {
           <EditFormFieldForm
             componentToEdit={componentToEdit}
             onSubmit={(values) => {
-              editItem && editItem(componentToEdit.id, values);
+              formBuilder.edit(componentToEdit.id, values);
               setComponentToEdit(null);
             }}
             formCategory={formCategory || formToEdit?.formCategory}

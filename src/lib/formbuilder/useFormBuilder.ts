@@ -1,3 +1,4 @@
+import {arrInsert, arrMove} from 'lib/utility/arrUtils';
 import {useState, useRef, useCallback} from 'react';
 import {DnDItem, ReturnType} from './types';
 
@@ -9,22 +10,22 @@ export const useFormBuilder: (params: Params) => ReturnType = ({
 }) => {
   const [formFields, setformFields] = useState<DnDItem[]>(initialformFields);
 
-  const reset = (formFields: DnDItem[]) => {
-    setformFields(formFields);
+  /**
+   * Helper function to reasign the array index of a formField to its internal formField.
+   * This might be used as a param for a .map function after reordering the formFields.
+   */
+  const assignRowIndex = (field: DnDItem, index: number) => {
+    field.rowIndex = index;
+    return field;
   };
 
-  const moveItem = useCallback(
-    (dragIndex: number, hoverIndex: number) => {
-      const dragItem = formFields[dragIndex];
-      setformFields((items) => {
-        const tmp = [...items];
-        tmp.splice(dragIndex, 1);
-        tmp.splice(hoverIndex, 0, dragItem);
-        return tmp.map((item, index) => {
-          item.rowIndex = index;
-          return item;
-        });
-      });
+  const randString = () => Math.random().toString(36).substring(7).toString();
+
+  const reset = (formFields: DnDItem[]) => setformFields(formFields);
+
+  const move = useCallback(
+    (from: number, to: number) => {
+      setformFields((items) => arrMove(items, from, to).map(assignRowIndex));
     },
     [formFields],
   );
@@ -41,36 +42,28 @@ export const useFormBuilder: (params: Params) => ReturnType = ({
   /** The current method of generating unique ids */
   const idCounter = useRef(initialformFields?.length || 0);
 
-  /** This function will be called if an item of the DnDSource section
-   * hovers the form sectoin. Since new items should be deletable, the
-   * deletable prop is passed to the tmp item. */
-  const addItem = useCallback((item: DnDItem, rowIndex: number) => {
+  /**
+   * This function will be called if an item of the DnDSource section
+   * hovers the form sectoin.
+   * */
+  const insert = useCallback((item: DnDItem, index: number) => {
     const tmp = {
       type: item.type,
-      rowIndex: rowIndex,
+      rowIndex: index,
       id: `${++idCounter.current}`,
       component: item.component,
       as: item.as,
-      props: {...item.props}, // otherwise reference is passed and next source items would point on same properties
+      props: {...item.props, name: randString()}, // otherwise reference is passed and next source items would point on same properties
       deletable: true,
       editable: true,
     };
-    // set unique name
-    tmp.props.name = `${Math.random().toString(36).substring(7)}`;
 
     currentNewItemId.current = idCounter.current;
 
-    setformFields((items) => {
-      const copy = [...items];
-      copy.splice(rowIndex, 0, tmp);
-      return copy.map((item, index) => {
-        item.rowIndex = index;
-        return item;
-      });
-    });
+    setformFields((items) => arrInsert(items, tmp, index).map(assignRowIndex));
   }, []);
 
-  const duplicateItem = useCallback(
+  const duplicate = useCallback(
     (id: string) => {
       const original = formFields.find((item) => item.id === id);
       if (!original) return;
@@ -78,10 +71,10 @@ export const useFormBuilder: (params: Params) => ReturnType = ({
       const duplicate = {...original, id: '', index: -1};
       delete duplicate.formFieldId;
 
-      addItem(duplicate, original.rowIndex + 1);
+      insert(duplicate, original.rowIndex + 1);
       currentNewItemId.current = null;
     },
-    [addItem, formFields],
+    [insert, formFields],
   );
 
   const onOutsideHover = useCallback((item: DnDItem) => {
@@ -105,46 +98,38 @@ export const useFormBuilder: (params: Params) => ReturnType = ({
     return tmp;
   };
 
-  const deleteItem = useCallback((id: string) => {
+  const del = useCallback((id: string) => {
     setformFields((items) =>
-      items
-        .filter((item) => item.id !== id)
-        .map((item, index) => {
-          item.rowIndex = index;
-          return item;
-        }),
+      items.filter((item) => item.id !== id).map(assignRowIndex),
     );
   }, []);
 
-  const editItem = useCallback(
-    (id: string, values: {[key: string]: string}) => {
-      setformFields((items) =>
-        /* map through all existing form items
-         * to filter the one to edit by its id */
-        items.map((item: DnDItem) => {
-          // if isn't the one to edit, do nothing
-          if (item.id !== id) return item;
-          /* Else go through all values to update by key */
-          Object.keys(values).forEach((key) => {
-            // actually update the value
-            item.props[key] = values[key];
-          });
+  const edit = useCallback((id: string, values: {[key: string]: string}) => {
+    setformFields((items) =>
+      /* map through all existing form items
+       * to filter the one to edit by its id */
+      items.map((item) => {
+        // if isn't the one to edit, do nothing
+        if (item.id !== id) return item;
+        /* Else go through all values to update by key */
+        Object.keys(values).forEach((key) => {
+          // actually update the value
+          item.props[key] = values[key];
+        });
 
-          return item;
-        }),
-      );
-    },
-    [],
-  );
+        return item;
+      }),
+    );
+  }, []);
 
   return {
     formFields,
     reset,
-    moveItem,
-    addItem,
-    duplicateItem,
-    deleteItem,
-    editItem,
+    move,
+    insert,
+    duplicate,
+    del,
+    edit,
     onOutsideHover,
     onDrop,
   };
