@@ -18,7 +18,6 @@ import {
 } from 'components/FormBuilder/DnD';
 import {DnDItem, ComponentToEdit} from 'lib/formbuilder/types';
 import {EditFormFieldForm} from 'components/FormBuilder/EditFormFieldForm';
-import {useFormBuilder} from 'lib/formbuilder/useFormBuilder';
 import {getSourceFormFields} from 'components/FormBuilder/sourceFormFields';
 import {getInitialFormFields} from 'components/FormBuilder/initialFormFields';
 import {
@@ -36,6 +35,7 @@ import amplifyConfig from 'amplify.config';
 import {converter} from 'components/FormBuilder/converter';
 import {useRouter} from 'next/router';
 import {withAdmin} from 'components';
+import {useFormBuilder} from 'lib/formbuilder/useFormBuilder';
 
 type Query = {
   formId?: string;
@@ -53,11 +53,10 @@ const FormBuilder: React.FC = () => {
     jobId,
   } = router.query as Query;
 
-  const [status, setStatus] = useState('idle'); // kinda UI
-  const formId = useRef(formIdEdit || uuidv4()); // not UI
+  const [status, setStatus] = useState('idle');
+  const formId = useRef(formIdEdit || uuidv4());
   const [sourceSectionMargin, setSourceSectionMargin] = useState(0);
 
-  /** NOT UI */
   const formKey = formIdEdit ? [`GET /forms/${formId}`, formIdEdit] : null;
   const {data: formToEdit} = useSWR(formKey, (_key, formId) =>
     API.forms.find(formId),
@@ -84,8 +83,6 @@ const FormBuilder: React.FC = () => {
     reset({formTitle: formToEdit?.formTitle});
   }, [formToEdit, reset]);
 
-  /** NOT UI END */
-
   useEffect(() => {
     window.onscroll = () => {
       const shouldScroll = window.pageYOffset < 100;
@@ -98,7 +95,6 @@ const FormBuilder: React.FC = () => {
     };
   });
 
-  /** NOT UI */
   const [
     componentToEdit,
     setComponentToEdit,
@@ -116,20 +112,18 @@ const FormBuilder: React.FC = () => {
     [formToEdit],
   );
 
-  const {formFields, onOutsideHover, onDrop, ...formBuilder} = useFormBuilder({
-    initialformFields,
-  });
+  const {formFields, ...formBuilder} = useFormBuilder(initialformFields);
 
   useEffect(() => {
     if (!formToEdit) return;
-    formBuilder.reset(initialformFields);
+    formFields.reset(initialformFields);
   }, [initialformFields]);
-
-  /** NOT UI END */
 
   const showEditItemForm = useCallback(
     (id: string) => {
-      const {component, props} = formFields.filter((item) => item.id === id)[0];
+      const {component, props} = formFields.fields.filter(
+        (item) => item.id === id,
+      )[0];
       setComponentToEdit({id: id, component, props});
     },
     [formFields],
@@ -151,17 +145,17 @@ const FormBuilder: React.FC = () => {
   });
 
   /** Map the array of formFields to actual jsx */
-  const Form = formFields.map((item: DnDItem) => {
+  const Form = formFields.fields.map((item: DnDItem) => {
     const Component = item.as;
     return (
       <DnDFormField
         key={item.id}
         id={item.id}
         rowIndex={item.rowIndex}
-        addItem={formBuilder.insert}
-        onMove={formBuilder.move}
-        onDuplicate={formBuilder.duplicate}
-        onDelete={item.deletable ? formBuilder.del : undefined}
+        addItem={formFields.insert}
+        onMove={formFields.move}
+        onDuplicate={formFields.duplicate}
+        onDelete={item.deletable ? formFields.delete : undefined}
         onEdit={item.editable ? showEditItemForm : undefined}
       >
         <Component {...item.props} />
@@ -177,7 +171,7 @@ const FormBuilder: React.FC = () => {
       jobId,
       formCategory: formCategory || formToEdit?.formCategory,
       formTitle: getValues().formTitle,
-      formFields: formFields.map(converter.toAPIFormField),
+      formFields: formFields.fields.map(converter.toAPIFormField),
     };
 
     const request = formToEdit ? API.forms.update : API.forms.create;
@@ -196,15 +190,12 @@ const FormBuilder: React.FC = () => {
       });
   };
 
-  /** NOT UI END */
-
   /** private on Drop to automatically show edit form for new items */
   const _onDrop = () => {
-    const tmp = onDrop();
+    const tmp = formBuilder.onDrop();
     if (tmp) showEditItemForm(tmp.toString());
   };
 
-  // SEMI UI
   const domain = amplifyConfig.API.endpoints[0].endpoint;
   const iframeSrc = `${domain}/forms/${formId.current}/html`;
   const formCode = `<!-- Begin icruiting webform --><iframe src="${iframeSrc}" style="width: 100%; border: none;" scroll="no" id="${formId.current}-iframe" ></iframe><script>window.addEventListener("message", (event) => {if (event.origin !== "${domain}") return;document.getElementById("${formId.current}-iframe").style.height=event.data + "px";});</script><!-- End icruiting webform -->`;
@@ -230,7 +221,7 @@ const FormBuilder: React.FC = () => {
           <EditFormFieldForm
             componentToEdit={componentToEdit}
             onSubmit={(values) => {
-              formBuilder.edit(componentToEdit.id, values);
+              formFields.edit(componentToEdit.id, values);
               setComponentToEdit(null);
             }}
             formCategory={formCategory || formToEdit?.formCategory}
@@ -253,7 +244,7 @@ const FormBuilder: React.FC = () => {
       </Box>
       <Box display="flex" position="relative" marginBottom={spacing.scale600}>
         <DnDSection
-          onHover={onOutsideHover}
+          onHover={formBuilder.onOutsideHover}
           render={(targetID, drop) => <Overlay id={targetID} ref={drop} />}
         />
         <DnDSection
@@ -270,7 +261,7 @@ const FormBuilder: React.FC = () => {
           )}
         />
         <DnDSection
-          onHover={onOutsideHover}
+          onHover={formBuilder.onOutsideHover}
           render={(targetID, drop) => (
             <DnDSourceSection id={targetID} ref={drop}>
               <Box marginTop={sourceSectionMargin} transition="all 0.5s">
