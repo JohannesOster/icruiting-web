@@ -10,6 +10,7 @@ import {
   DataTable,
   Table,
   getDashboardLayout,
+  Flexgrid,
 } from 'components';
 import {Button, Dialog, Spinner, Link as ExternalLink} from 'icruiting-ui';
 import {API, TForm} from 'services';
@@ -17,6 +18,7 @@ import useSWR from 'swr';
 import {useRouter} from 'next/router';
 import {withAdmin} from 'components';
 import amplifyConfig from 'amplify.config';
+import {Edit} from 'icons';
 
 const JobDetails = () => {
   const {colors, spacing} = useTheme();
@@ -173,7 +175,15 @@ const JobDetails = () => {
       )}
       <H3>{job?.jobTitle}</H3>
       <Box display="grid" gridRowGap={spacing.scale100}>
-        <H6>Anforderungsprofil</H6>
+        <div
+          style={{cursor: 'pointer'}}
+          onClick={() => router.push(`/dashboard/jobs/${jobId}/edit`)}
+        >
+          <Flexgrid gap={spacing.scale200} alignItems="center">
+            <H6>Anforderungsprofil</H6>
+            <Edit />
+          </Flexgrid>
+        </div>
         {isFetching && <Spinner color={colors.primary} />}
         {!isFetching && (
           <Table>
