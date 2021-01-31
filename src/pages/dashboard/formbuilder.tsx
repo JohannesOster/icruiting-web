@@ -280,29 +280,50 @@ const FormBuilder: React.FC = () => {
                 {(formCategory === 'application' ||
                   formToEdit?.formCategory === 'application') && (
                   <>
-                    <Box marginTop={20}>
-                      <Typography
-                        style={{
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                        }}
-                        onClick={copyCode}
-                      >
-                        Form einbinden
-                        <Clipboard
+                    <Box display="grid" rowGap={spacing.scale200}>
+                      <Box marginTop={20}>
+                        <Typography
                           style={{
-                            marginLeft: spacing.scale100,
-                            height: spacing.scale300,
-                            width: 'auto',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
                           }}
+                          onClick={copyCode}
+                        >
+                          Form einbinden
+                          <Clipboard
+                            style={{
+                              marginLeft: spacing.scale100,
+                              height: spacing.scale300,
+                              width: 'auto',
+                            }}
+                          />
+                        </Typography>
+                        <FormCodeTextarea
+                          rows={20}
+                          id="form-code"
+                          onClick={copyCode}
+                          defaultValue={formCode}
                         />
-                      </Typography>
-                      <FormCodeTextarea
-                        rows={20}
-                        id="form-code"
-                        onClick={copyCode}
-                        defaultValue={formCode}
+                      </Box>
+                      <Input
+                        type="file"
+                        label="Als .json importieren"
+                        onChange={(event) => {
+                          const {files} = event.target;
+                          const file = files[0];
+                          if (!file) return;
+                          const fileReader = new FileReader();
+                          fileReader.onload = () => {
+                            const json = fileReader.result as string;
+                            const result = JSON.parse(json);
+                            const _formFields = result.formFields
+                              .map(converter.toDnDItem)
+                              .sort((one, two) => one.rowIndex - two.rowIndex);
+                            formFields.reset(_formFields);
+                          };
+                          fileReader.readAsText(file);
+                        }}
                       />
                     </Box>
                   </>
