@@ -24,6 +24,7 @@ const JobDetails = () => {
   const {colors, spacing} = useTheme();
   const router = useRouter();
   const {jobId} = router.query as {jobId: string};
+  const [exporing, setExporting] = useState(false);
   const [deletingFormId, setDeletingFormId] = useState<string | null>(null);
   const [shouldDeleteFormId, setShouldDeleteFormId] = useState<string | null>(
     null,
@@ -122,6 +123,24 @@ const JobDetails = () => {
           <ExternalLink href={iframeSrc} newTab>
             Direktlink
           </ExternalLink>
+        );
+      },
+    },
+    {
+      title: 'JSON Export',
+      cell: ({formCategory, formId}) => {
+        if (formCategory !== 'application') return <Typography>-</Typography>;
+        return (
+          <Button
+            kind="minimal"
+            isLoading={exporing}
+            onClick={() => {
+              setExporting(true);
+              API.forms.exportJSON(formId).finally(() => setExporting(false));
+            }}
+          >
+            Als .json exportieren
+          </Button>
         );
       },
     },

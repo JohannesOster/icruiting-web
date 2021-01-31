@@ -11,6 +11,25 @@ export const Forms = () => {
     return API.get(`/forms/${formId}`);
   };
 
+  const exportJSON = (formId?: string): Promise<TForm[]> => {
+    return API.get(`/forms/${formId}/export`)
+      .then((response) => {
+        const blob = new Blob([JSON.stringify(response)], {
+          type: 'application/json;charset=utf-8',
+        });
+
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'form.json';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        return response;
+      })
+      .catch(console.error);
+  };
+
   const del = (formId: string): Promise<undefined> => {
     return API.del(`/forms/${formId}`);
   };
@@ -23,5 +42,5 @@ export const Forms = () => {
     return API.put(`/forms/${form.formId}`, {body: form});
   };
 
-  return {list, find, del, create, update};
+  return {list, find, del, create, update, exportJSON};
 };
