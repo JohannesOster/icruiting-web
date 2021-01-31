@@ -116,7 +116,8 @@ const JobDetails = () => {
     {
       title: 'Direktlink',
       cell: ({formCategory, formId}) => {
-        if (formCategory !== 'application') return <Typography>-</Typography>;
+        if (formCategory !== 'application' || !formId)
+          return <Typography>-</Typography>;
         const domain = amplifyConfig.API.endpoints[0].endpoint;
         const iframeSrc = `${domain}/forms/${formId}/html`;
         return (
@@ -129,7 +130,8 @@ const JobDetails = () => {
     {
       title: 'JSON Export',
       cell: ({formCategory, formId}) => {
-        if (formCategory !== 'application') return <Typography>-</Typography>;
+        if (formCategory !== 'application' || !formId)
+          return <Typography>-</Typography>;
         return (
           <Button
             kind="minimal"
