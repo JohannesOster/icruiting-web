@@ -25,8 +25,8 @@ export const Tenants = () => {
     return API.get(`/tenants/${tenantId}`);
   };
 
-  const del = (): Promise<undefined> => {
-    return API.del('/tenants');
+  const del = (tenantId: string): Promise<undefined> => {
+    return API.del(`/tenants/${tenantId}`);
   };
 
   const listPaymentMethods = (tenantId: string): Promise<any[]> => {

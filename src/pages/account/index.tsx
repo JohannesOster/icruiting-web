@@ -19,7 +19,7 @@ const Account: React.FC = () => {
   const _deleteTenant = useCallback(() => {
     setStatus('isDeleting');
     API.tenants
-      .del()
+      .del(currentUser.tenantId)
       .then(async () => await Auth.signOut())
       .then(() => refetchUser())
       .then(() => success('Tenant erfolgreich gelöscht.'))
