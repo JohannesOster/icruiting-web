@@ -23,7 +23,6 @@ import {
 } from '@stripe/react-stripe-js';
 import {withAdmin} from 'components';
 
-console.log(process.env);
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '',
 );
