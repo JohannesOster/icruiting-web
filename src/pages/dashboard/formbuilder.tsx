@@ -290,7 +290,7 @@ const FormBuilder: React.FC = () => {
                           }}
                           onClick={copyCode}
                         >
-                          Form einbinden
+                          Formular einbinden
                           <Clipboard
                             style={{
                               marginLeft: spacing.scale100,
@@ -308,7 +308,7 @@ const FormBuilder: React.FC = () => {
                       </Box>
                       <Input
                         type="file"
-                        label="Als .json importieren"
+                        label=".json Datei importieren"
                         onChange={(event) => {
                           const {files} = event.target;
                           const file = files[0];
