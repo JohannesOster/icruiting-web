@@ -25,11 +25,21 @@ type Report = {
   formCategoryScore: number;
   overallAvgFormCategoryScore: number;
   overallStdDevFormCategoryScore: number;
+  overallFormCategoryMax: number;
+  overallFormCategoryMin: number;
+  possibleFormCategoryMax: number;
+  possibleFormCategoryMin: number;
   formResults: {
     formId: string;
     formTitle: string;
     formScore: number;
-    avgFormScore: number;
+    stdDevFormScore: number;
+    overallAvgFormScore: number;
+    overallStdDevFormScore: number;
+    overallAvgStdDevFormScore: number;
+    overallFormMin: number;
+    overallFormMax: number;
+    possibleFormMin: number;
     possibleFormMax: number;
     formFieldScores: {
       formFieldId: string;
@@ -39,7 +49,10 @@ type Report = {
       label: string;
       aggregatedValues: string[];
       formFieldScore: number;
-      avgFormFieldScore: number;
+      stdDevFormFieldScores: number;
+      overallAvgFormFieldScore: number;
+      overallStdDevFormFieldScore: number;
+      overallAvgStdDevFormFieldScore: number;
       overallFormFieldMax: number;
       overallFormFieldMin: number;
       possibleFormFieldMax: number;
@@ -50,6 +63,7 @@ type Report = {
       // formSubmissionFieldMin: number;
     }[];
   }[];
+  // submissionsCount
   // jobRequirementResults: {
   //   jobRequirementId: string;
   //   jobRequirementScore: number;
@@ -90,7 +104,6 @@ const ApplicantReport = () => {
   // };
 
   // const {data = {}, options = {}} = _buildRadarChart();
-
   return (
     <Box display="grid" rowGap={spacing.scale200}>
       <H3>Gutachten</H3>
@@ -179,7 +192,9 @@ const ApplicantReport = () => {
                           : 'Assessment Formular')}
                     </th>
                     <th>
-                      {formScore.formScore}/{formScore.possibleFormMax}
+                      {formScore.formScore} aus [{formScore.possibleFormMin}-
+                      {formScore.possibleFormMax}] | σ ={' '}
+                      {formScore.stdDevFormScore}
                     </th>
                   </tr>
                   {formScore.formFieldScores.map((formFieldScore) => (
