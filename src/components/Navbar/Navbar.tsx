@@ -173,9 +173,11 @@ const Navbar: React.FC = () => {
     <Header>
       <div style={{zIndex: 25, cursor: 'pointer'}} onClick={closeMenu}>
         <Link href="/">
-          <IcruitingLogo
-            style={{width: '110px', height: 'auto', marginBottom: -10}}
-          />
+          <a>
+            <IcruitingLogo
+              style={{width: '110px', height: 'auto', marginBottom: -10}}
+            />
+          </a>
         </Link>
       </div>
       {!isAuthenticating && (

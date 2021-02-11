@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {API} from 'services';
+import {API, FormCategory} from 'services';
 import useSWR from 'swr';
 import {buildRadarChart, parseValue} from 'lib/report-utils';
 import {H3, H6, Table, Box, Flexgrid, getDashboardLayout} from 'components';
@@ -20,30 +20,42 @@ type RankingResultVal = {
 };
 
 type Report = {
-  formCategoryScore: string;
-  formCategoryResult: any[];
-  formCategoryJobRequirementsResult: KeyValuePair<
-    KeyValuePair<string | number>
-  >;
-  result: KeyValuePair<RankingResultVal>;
-  jobRequirementsResult: KeyValuePair<string>;
-  applicantId: string;
-  rank: string;
-  score: string;
-  formCategoryStddev: string;
-  submissionsCount: string;
-  submissions: {
-    formFieldId: string;
-    jobRequirementLabel: string | null;
-    value: string;
-    intent: FormFieldIntent;
-    label: string;
-  }[][];
-  normalization?: {
-    jobRequirementLabel: string;
-    mean: string;
-    values: string[];
+  rank: number;
+  formCategory: FormCategory;
+  formCategoryScore: number;
+  overallAvgFormCategoryScore: number;
+  overallStdDevFormCategoryScore: number;
+  formResults: {
+    formId: string;
+    formTitle: string;
+    formScore: number;
+    avgFormScore: number;
+    formFieldScores: {
+      formFieldId: string;
+      jobRequirementId: string;
+      rowIndex: number;
+      intent: FormFieldIntent;
+      label: string;
+      aggregatedValues: string[];
+      formFieldScore: number;
+      avgFormFieldScore: number;
+      overallFormFieldMax: number;
+      overallFormFieldMin: number;
+      possibleFormFieldMax: number;
+      possibleFormFieldMin: number;
+      /** Achieved max for this field */
+      // formSubmissionFieldMax: number;
+      // /** Achieved min for this field */
+      // formSubmissionFieldMin: number;
+    }[];
   }[];
+  // jobRequirementResults: {
+  //   jobRequirementId: string;
+  //   jobRequirementScore: number;
+  //   avgJobRequirementScore: number;
+  //   requirementLabel: string;
+  //   minValue: number;
+  // }[];
 };
 
 const ApplicantReport = () => {
@@ -69,14 +81,14 @@ const ApplicantReport = () => {
     ).then(setReport);
   }, [applicantId, formCategory]);
 
-  const _buildRadarChart = () => {
-    if (!(report && report.formCategoryJobRequirementsResult))
-      return {data: {}, options: {}};
+  // const _buildRadarChart = () => {
+  //   if (!(report && report.formCategoryJobRequirementsResult))
+  //     return {data: {}, options: {}};
 
-    return buildRadarChart(report.formCategoryJobRequirementsResult as any);
-  };
+  //   return buildRadarChart(report.formCategoryJobRequirementsResult as any);
+  // };
 
-  const {data = {}, options = {}} = _buildRadarChart();
+  // const {data = {}, options = {}} = _buildRadarChart();
 
   return (
     <Box display="grid" rowGap={spacing.scale200}>
@@ -138,10 +150,6 @@ const ApplicantReport = () => {
               <td>Gesamtscore</td>
               <td>{report?.formCategoryScore}</td>
             </tr>
-            <tr>
-              <td>Standardabweichung</td>
-              <td>{report?.formCategoryStddev}</td>
-            </tr>
           </tbody>
         </Table>
       </Box>
@@ -160,22 +168,22 @@ const ApplicantReport = () => {
         {showDetails && (
           <Table>
             <tbody>
-              {report?.formCategoryResult?.map((formResult: any) => (
-                <React.Fragment key={formResult.formId}>
+              {report?.formResults?.map((formScore) => (
+                <React.Fragment key={formScore.formId}>
                   <tr>
                     <th>
-                      {formResult.formTitle ||
+                      {formScore.formTitle ||
                         (formCategory === 'screening'
                           ? 'Screeningformular'
                           : 'Assessment Formular')}
                     </th>
                     <th></th>
                   </tr>
-                  {formResult?.formFieldsResult?.map((field: any) => (
-                    <tr key={field.formFieldId}>
-                      <td>{field.label}</td>
+                  {formScore.formFieldScores.map((formFieldScore) => (
+                    <tr key={formFieldScore.formFieldId}>
+                      <td>{formFieldScore.label}</td>
                       <td>
-                        {field.intent === 'aggregate' ? (
+                        {formFieldScore.intent === 'aggregate' ? (
                           <ul
                             style={{
                               listStylePosition: 'outside',
@@ -183,7 +191,7 @@ const ApplicantReport = () => {
                               paddingLeft: '1em',
                             }}
                           >
-                            {field.aggregatedValues?.map(
+                            {formFieldScore.aggregatedValues?.map(
                               (value: any, idx: number) => (
                                 <li key={idx}>{value}</li>
                               ),
@@ -191,9 +199,9 @@ const ApplicantReport = () => {
                           </ul>
                         ) : (
                           parseValue(
-                            field.formFieldAvg?.toString() ||
-                              field.aggregatedValues,
-                            field.intent,
+                            formFieldScore.formFieldScore?.toString() ||
+                              formFieldScore.aggregatedValues,
+                            formFieldScore.intent,
                           )
                         )}
                       </td>
@@ -205,7 +213,7 @@ const ApplicantReport = () => {
           </Table>
         )}
       </Box>
-      {report?.formCategoryJobRequirementsResult && (
+      {/* {report?.formCategoryJobRequirementsResult && (
         <Box display="grid" rowGap={spacing.scale100}>
           <Flexgrid alignItems="center" flexGap={spacing.scale100}>
             <H6>Anforderungsprofil</H6>
@@ -242,7 +250,7 @@ const ApplicantReport = () => {
             </>
           )}
         </Box>
-      )}
+      )} */}
     </Box>
   );
 };
