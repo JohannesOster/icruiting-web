@@ -30,6 +30,7 @@ type Report = {
     formTitle: string;
     formScore: number;
     avgFormScore: number;
+    possibleFormMax: number;
     formFieldScores: {
       formFieldId: string;
       jobRequirementId: string;
@@ -177,7 +178,9 @@ const ApplicantReport = () => {
                           ? 'Screeningformular'
                           : 'Assessment Formular')}
                     </th>
-                    <th></th>
+                    <th>
+                      {formScore.formScore}/{formScore.possibleFormMax}
+                    </th>
                   </tr>
                   {formScore.formFieldScores.map((formFieldScore) => (
                     <tr key={formFieldScore.formFieldId}>
