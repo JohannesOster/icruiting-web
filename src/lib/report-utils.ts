@@ -26,14 +26,14 @@ export const parseValue = (
 export const buildRadarChart = (requirementResults: {
   [jobRequirementId: string]: {
     requirementLabel: string;
-    avgJobRequirementScore: string;
+    jobRequirementScore: string;
     minValue: string;
   };
 }): KeyValuePair<any> => {
   const requirements = Object.values(requirementResults);
   const labels = requirements.map(({requirementLabel}) => requirementLabel);
   const scores = requirements.map(
-    ({avgJobRequirementScore}) => avgJobRequirementScore,
+    ({jobRequirementScore}) => jobRequirementScore,
   );
   const minValues = requirements.map(({minValue}) => minValue);
 

@@ -39,6 +39,12 @@ type Report = {
       stdDevFormFieldScores: number;
     }[];
   }[];
+  jobRequirementResults: {
+    jobRequirementId: string;
+    jobRequirementScore: number;
+    requirementLabel: string;
+    minValue?: number;
+  }[];
 };
 
 const ApplicantReport = () => {
@@ -64,14 +70,14 @@ const ApplicantReport = () => {
     ).then(setReport);
   }, [applicantId, formCategory]);
 
-  // const _buildRadarChart = () => {
-  //   if (!(report && report.formCategoryJobRequirementsResult))
-  //     return {data: {}, options: {}};
+  const _buildRadarChart = () => {
+    if (!(report && report.jobRequirementResults))
+      return {data: {}, options: {}};
 
-  //   return buildRadarChart(report.formCategoryJobRequirementsResult as any);
-  // };
+    return buildRadarChart(report.jobRequirementResults as any);
+  };
 
-  // const {data = {}, options = {}} = _buildRadarChart();
+  const {data = {}, options = {}} = _buildRadarChart();
   return (
     <Box display="grid" rowGap={spacing.scale200}>
       <H3>Gutachten</H3>
@@ -197,7 +203,7 @@ const ApplicantReport = () => {
           </Table>
         )}
       </Box>
-      {/* {report?.formCategoryJobRequirementsResult && (
+      {report?.jobRequirementResults && (
         <Box display="grid" rowGap={spacing.scale100}>
           <Flexgrid alignItems="center" flexGap={spacing.scale100}>
             <H6>Anforderungsprofil</H6>
@@ -214,27 +220,27 @@ const ApplicantReport = () => {
             <>
               <Table>
                 <tbody>
-                  {Object.entries(
-                    report?.formCategoryJobRequirementsResult || {},
-                  )
-                    .sort((a: any, b: any) =>
-                      a.requirementLabel > b.requirementLabel ? 1 : -1,
-                    )
-                    .map(([key, requirementResult]: any) => (
+                  {Object.entries(report?.jobRequirementResults || {}).map(
+                    ([key, requirementResult]) => (
                       <React.Fragment key={key}>
                         <tr>
                           <td>{requirementResult.requirementLabel}</td>
-                          <td>{requirementResult.avgJobRequirementScore}</td>
+                          <td>
+                            {Math.round(
+                              100 * requirementResult.jobRequirementScore,
+                            ) / 100}
+                          </td>
                         </tr>
                       </React.Fragment>
-                    ))}
+                    ),
+                  )}
                 </tbody>
               </Table>
               <Radar options={options} data={data} />
             </>
           )}
         </Box>
-      )} */}
+      )}
     </Box>
   );
 };
