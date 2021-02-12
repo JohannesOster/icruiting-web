@@ -23,24 +23,11 @@ type Report = {
   rank: number;
   formCategory: FormCategory;
   formCategoryScore: number;
-  overallAvgFormCategoryScore: number;
-  overallStdDevFormCategoryScore: number;
-  overallFormCategoryMax: number;
-  overallFormCategoryMin: number;
-  possibleFormCategoryMax: number;
-  possibleFormCategoryMin: number;
   formResults: {
     formId: string;
     formTitle: string;
     formScore: number;
     stdDevFormScore: number;
-    overallAvgFormScore: number;
-    overallStdDevFormScore: number;
-    overallAvgStdDevFormScore: number;
-    overallFormMin: number;
-    overallFormMax: number;
-    possibleFormMin: number;
-    possibleFormMax: number;
     formFieldScores: {
       formFieldId: string;
       jobRequirementId: string;
@@ -50,27 +37,8 @@ type Report = {
       aggregatedValues: string[];
       formFieldScore: number;
       stdDevFormFieldScores: number;
-      overallAvgFormFieldScore: number;
-      overallStdDevFormFieldScore: number;
-      overallAvgStdDevFormFieldScore: number;
-      overallFormFieldMax: number;
-      overallFormFieldMin: number;
-      possibleFormFieldMax: number;
-      possibleFormFieldMin: number;
-      /** Achieved max for this field */
-      // formSubmissionFieldMax: number;
-      // /** Achieved min for this field */
-      // formSubmissionFieldMin: number;
     }[];
   }[];
-  // submissionsCount
-  // jobRequirementResults: {
-  //   jobRequirementId: string;
-  //   jobRequirementScore: number;
-  //   avgJobRequirementScore: number;
-  //   requirementLabel: string;
-  //   minValue: number;
-  // }[];
 };
 
 const ApplicantReport = () => {
@@ -192,9 +160,7 @@ const ApplicantReport = () => {
                           : 'Assessment Formular')}
                     </th>
                     <th>
-                      {formScore.formScore} aus [{formScore.possibleFormMin}-
-                      {formScore.possibleFormMax}] | σ ={' '}
-                      {formScore.stdDevFormScore}
+                      {formScore.formScore} | σ = {formScore.stdDevFormScore}
                     </th>
                   </tr>
                   {formScore.formFieldScores.map((formFieldScore) => (
