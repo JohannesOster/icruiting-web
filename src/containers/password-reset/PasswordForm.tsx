@@ -20,9 +20,12 @@ type Props = {
 };
 
 export const PasswordForm: React.FC<Props> = ({onSubmit, email}) => {
-  const {register, errors, formState, handleSubmit} = useForm<
-    PasswordFormValues
-  >({
+  const {
+    register,
+    errors,
+    formState,
+    handleSubmit,
+  } = useForm<PasswordFormValues>({
     mode: 'onChange',
     resolver: yupResolver(
       object({confirmationCode, password, passwordConfirm}),
@@ -33,7 +36,7 @@ export const PasswordForm: React.FC<Props> = ({onSubmit, email}) => {
   return (
     <AuthForm title="Bestätigenscode" onSubmit={handleSubmit(onSubmit)}>
       <Typography style={{opacity: 0.7}}>
-        Wir haben den Bestätigenscode {email} gesendet.
+        Wir haben den Bestätigenscode an {email} gesendet.
         <br />
         (Kontrollieren Sie auch den Spam-Ordner)
       </Typography>

@@ -23,9 +23,14 @@ export const EditInputFormFieldsForm: React.FC<Props> = ({
   onSubmit,
   ...formValues
 }) => {
-  const {register, formState, errors, handleSubmit, trigger, control} = useForm<
-    FormValues
-  >({
+  const {
+    register,
+    formState,
+    errors,
+    handleSubmit,
+    trigger,
+    control,
+  } = useForm<FormValues>({
     mode: 'onChange',
     criteriaMode: 'all',
     defaultValues: formValues,
@@ -39,7 +44,7 @@ export const EditInputFormFieldsForm: React.FC<Props> = ({
 
   const inputTypesMap = {
     text: 'Text',
-    email: 'E-Mail-Addresse',
+    email: 'E-Mail-Adresse',
     tel: 'Telefonnummer',
     number: 'Nummer',
     date: 'Datum',

@@ -1,8 +1,8 @@
 import {string, ref, number} from 'yup';
 
 export const email = string()
-  .email('Bitte geben Sie eine gültige E-Mail-Addresse ein.')
-  .required('E-Mail-Addresse ist verpflichtend.');
+  .email('Bitte geben Sie eine gültige E-Mail-Adresse ein.')
+  .required('E-Mail-Adresse ist verpflichtend.');
 
 export const password = string()
   .min(6, 'Passwort muss mindestens 6 Zeichen lang sein.')

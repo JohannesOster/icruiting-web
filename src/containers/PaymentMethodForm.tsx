@@ -29,8 +29,8 @@ export const PaymentMethodForm: FC<Props> = ({onSubmit}) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box display="grid" rowGap={spacing.scale200}>
         <Input
-          label="E-Mail-Addresse"
-          placeholder="E-Mail-Addresse"
+          label="E-Mail-Adresse"
+          placeholder="E-Mail-Adresse"
           name="email"
           ref={register}
           required
