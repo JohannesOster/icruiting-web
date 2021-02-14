@@ -9,7 +9,7 @@ const Contact: FC = () => {
     <Box padding={spacing.scale400} display="grid" rowGap={spacing.scale100}>
       <H3>Kontakt</H3>
       Bitte kontaktieren Sie den Betreiber dieser Website unter der folgenden
-      E-Mail-Addresse:
+      E-Mail-Adresse:
       <a href="mailto:johannes.oster@icruiting.at">
         johannes.oster@icruiting.at
       </a>

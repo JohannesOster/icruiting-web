@@ -53,7 +53,7 @@ export const SignUpForm: React.FC<Props> = ({onSubmit, submitting}) => {
         type="email"
         name="email"
         label="Email-Mail-Addresse"
-        placeholder="E-Mail-Addresse"
+        placeholder="E-Mail-Adresse"
         ref={register}
         errors={errorsFor(errors, 'email')}
         required

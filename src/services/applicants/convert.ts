@@ -4,7 +4,7 @@ export const convertAPIApplicant = <T = Applicant>(
   applicant: ApplicantAPI,
 ): T => {
   const nameKey = 'Vollständiger Name';
-  const emailKey = 'E-Mail-Addresse';
+  const emailKey = 'E-Mail-Adresse';
 
   const attrTuple = applicant.attributes?.reduce(
     (acc, curr) => {

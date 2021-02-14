@@ -43,7 +43,7 @@ const SignUp: React.FC = () => {
       });
 
       toaster.success(
-        'Erfolgreich registriert. Bestätigen Sie bitte Ihre E-Mail-Addresse!',
+        'Erfolgreich registriert. Bestätigen Sie bitte Ihre E-Mail-Adresse!',
       );
 
       router.push('/login');

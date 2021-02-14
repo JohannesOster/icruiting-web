@@ -26,8 +26,8 @@ const applicationInitialformFields: Array<DnDItem> = [
     rowIndex: 1,
     props: {
       name: 'email',
-      placeholder: 'E-Mail-Addresse',
-      label: 'E-Mail-Addresse',
+      placeholder: 'E-Mail-Adresse',
+      label: 'E-Mail-Adresse',
       type: 'email',
       required: true,
     },

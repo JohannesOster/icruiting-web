@@ -141,7 +141,7 @@ const Privacy: FC = () => {
         <Typography>
           Wir verwenden Amazon Cognito von AWS für Authorisierungsdienste. Dafür
           werden die im Zuge der Registrierung sowie dem Login angegebene Daten
-          (Name, E-Mail-Addresse, Passwort) AWS übermitelt. Hierbei werden die
+          (Name, E-Mail-Adresse, Passwort) AWS übermitelt. Hierbei werden die
           empfangenen Daten in Frankfurt abgespeichert. Nähere Informationen
           finden Sie auf{' '}
           <a href="https://docs.aws.amazon.com/cognito/latest/developerguide/data-protection.html">

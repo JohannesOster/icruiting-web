@@ -26,8 +26,8 @@ export const EmailForm: React.FC<Props> = ({onSubmit}) => {
     <AuthForm title="Password Reset" onSubmit={handleSubmit(onSubmit)}>
       <Input
         autoFocus
-        label="E-Mail-Addresse"
-        placeholder="E-Mail-Addresse"
+        label="E-Mail-Adresse"
+        placeholder="E-Mail-Adresse"
         type="email"
         name="email"
         ref={register}

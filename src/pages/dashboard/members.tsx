@@ -170,7 +170,7 @@ export const Members = () => {
               render={(props) => (
                 <ChipInput
                   description="Tab klicken um E-Mail-Adresse zu bestätigen"
-                  placeholder="E-Mail-Addresse"
+                  placeholder="E-Mail-Adresse"
                   label="E-Mail-Adresse des neuen Mitarbeiters"
                   errors={
                     errorsFor(errors, 'emails').length

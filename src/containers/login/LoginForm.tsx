@@ -35,8 +35,8 @@ export const LoginForm: React.FC<Props> = ({onSubmit}) => {
     <AuthForm title="Anmelden" onSubmit={handleSubmit(onSubmit)}>
       <Input
         autoFocus
-        label="E-Mail-Addresse"
-        placeholder="E-Mail-Addresse"
+        label="E-Mail-Adresse"
+        placeholder="E-Mail-Adresse"
         type="email"
         name="email"
         ref={register}
