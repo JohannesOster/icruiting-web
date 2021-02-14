@@ -10,17 +10,21 @@ import {
   DataTable,
   Table,
   getDashboardLayout,
+  Flexgrid,
 } from 'components';
-import {Button, Dialog, Spinner} from 'icruiting-ui';
+import {Button, Dialog, Spinner, Link as ExternalLink} from 'icruiting-ui';
 import {API, TForm} from 'services';
 import useSWR from 'swr';
 import {useRouter} from 'next/router';
 import {withAdmin} from 'components';
+import amplifyConfig from 'amplify.config';
+import {Edit} from 'icons';
 
 const JobDetails = () => {
   const {colors, spacing} = useTheme();
   const router = useRouter();
   const {jobId} = router.query as {jobId: string};
+  const [exporing, setExporting] = useState(false);
   const [deletingFormId, setDeletingFormId] = useState<string | null>(null);
   const [shouldDeleteFormId, setShouldDeleteFormId] = useState<string | null>(
     null,
@@ -109,6 +113,39 @@ const JobDetails = () => {
       },
     },
     {title: 'Aktion', cell: actionCell},
+    {
+      title: 'Direktlink',
+      cell: ({formCategory, formId}) => {
+        if (formCategory !== 'application' || !formId)
+          return <Typography>-</Typography>;
+        const domain = amplifyConfig.API.endpoints[0].endpoint;
+        const iframeSrc = `${domain}/forms/${formId}/html`;
+        return (
+          <ExternalLink href={iframeSrc} newTab>
+            Direktlink
+          </ExternalLink>
+        );
+      },
+    },
+    {
+      title: 'JSON Export',
+      cell: ({formCategory, formId}) => {
+        if (formCategory !== 'application' || !formId)
+          return <Typography>-</Typography>;
+        return (
+          <Button
+            kind="minimal"
+            isLoading={exporing}
+            onClick={() => {
+              setExporting(true);
+              API.forms.exportJSON(formId).finally(() => setExporting(false));
+            }}
+          >
+            Als .json exportieren
+          </Button>
+        );
+      },
+    },
   ];
 
   const formsTableData = ['application', 'screening'].map((formCategory) => {
@@ -159,7 +196,15 @@ const JobDetails = () => {
       )}
       <H3>{job?.jobTitle}</H3>
       <Box display="grid" gridRowGap={spacing.scale100}>
-        <H6>Anforderungsprofil</H6>
+        <div
+          style={{cursor: 'pointer'}}
+          onClick={() => router.push(`/dashboard/jobs/${jobId}/edit`)}
+        >
+          <Flexgrid gap={spacing.scale200} alignItems="center">
+            <H6>Anforderungsprofil</H6>
+            <Edit />
+          </Flexgrid>
+        </div>
         {isFetching && <Spinner color={colors.primary} />}
         {!isFetching && (
           <Table>

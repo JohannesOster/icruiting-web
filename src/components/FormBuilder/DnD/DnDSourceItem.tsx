@@ -1,6 +1,6 @@
 import React from 'react';
 import {useDrag} from 'react-dnd';
-import {DnDItem} from '../types';
+import {DnDItem} from '../../../lib/formbuilder/types';
 import styled from 'styled-components';
 
 const Item = styled.div`

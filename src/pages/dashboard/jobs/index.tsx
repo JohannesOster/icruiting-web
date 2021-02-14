@@ -100,7 +100,7 @@ export const Jobs = () => {
         display="flex"
         justifyContent="space-between"
         alignItems="center"
-        marginBottom={spacing.scale300}
+        marginBottom={spacing.scale200}
       >
         <H3>Stellen</H3>
         <Button onClick={() => router.push(`${router.pathname}/create`)}>

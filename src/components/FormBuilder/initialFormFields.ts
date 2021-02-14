@@ -1,7 +1,7 @@
 import {RatingGroup} from 'components';
 import {Input, Textarea, Checkbox} from 'icruiting-ui';
 import {DnDItem} from './types';
-import {ItemTypes} from './DnD';
+import {ItemTypes} from '../../components/FormBuilder/DnD';
 import {FormCategory, FormFieldIntent} from 'services';
 
 const applicationInitialformFields: Array<DnDItem> = [

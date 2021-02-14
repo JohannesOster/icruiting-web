@@ -32,7 +32,7 @@ export function withAuth<T>(
 
 export function withAdmin<T>(Component: FC) {
   return hoistNonReactStatics(
-    withAuth(Component, {requireAdmin: true, redirectTo: '/'}),
+    withAuth(Component, {requireAdmin: true}),
     Component,
   );
 }

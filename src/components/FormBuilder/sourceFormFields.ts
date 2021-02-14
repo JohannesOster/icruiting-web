@@ -1,4 +1,4 @@
-import {ItemTypes} from './DnD';
+import {ItemTypes} from '../../components/FormBuilder/DnD';
 import {DnDItem} from './types';
 import {RatingGroup, FormSectionHeader} from 'components';
 import {Input, Select, Textarea, Radio, Checkbox} from 'icruiting-ui';

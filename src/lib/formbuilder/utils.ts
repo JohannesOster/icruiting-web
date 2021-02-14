@@ -20,3 +20,6 @@ export const stringToComponent = (componentName: string): any => {
   if (!component) throw new Error('Invalid component string');
   return component;
 };
+
+export const randString = () =>
+  Math.random().toString(36).substring(7).toString();

@@ -2,7 +2,7 @@ import React, {useRef} from 'react';
 import {useDrag, useDrop} from 'react-dnd';
 import {XYCoord} from 'dnd-core';
 import {ItemTypes} from './ItemTypes';
-import {DnDItem} from '../types';
+import {DnDItem} from '../../../lib/formbuilder/types';
 import {Move, Trash, Edit, Duplicate} from 'icons';
 import styled, {useTheme} from 'styled-components';
 
@@ -35,13 +35,13 @@ type Props = {
    * @params dragIndex  The initial index of the dragged item
    * @params hoverIndex The index of the hovered item
    */
-  moveItem: (dragIndex: number, hoverIndex: number) => void;
+  onMove: (dragIndex: number, hoverIndex: number) => void;
   /** A function wich will be called if a new item moves over an existing one.
    * @params item   The dragged item
    * @params index  The index of the hovered item
    */
   addItem: (item: DnDItem, index: number) => void;
-  duplicateItem: (id: string) => void;
+  onDuplicate: (id: string) => void;
   children: React.ReactNode;
   /** A function wich will be called if the delete button is pressed.
    * The delete button will only be displayed if this function is provided.
@@ -57,11 +57,11 @@ export const DnDFormField: React.FC<Props> = ({
   id,
   children,
   rowIndex,
-  moveItem,
+  onMove,
   addItem,
   onDelete,
   onEdit,
-  duplicateItem,
+  onDuplicate,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const {spacing} = useTheme();
@@ -110,7 +110,7 @@ export const DnDFormField: React.FC<Props> = ({
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
 
       // Time to actually perform the action
-      moveItem(dragIndex, hoverIndex);
+      onMove(dragIndex, hoverIndex);
 
       // Note: we're mutating the monitor item here!
       // Generally it's better to avoid mutations,
@@ -141,7 +141,7 @@ export const DnDFormField: React.FC<Props> = ({
         </div>
         {onEdit && (
           <>
-            <div style={{cursor: 'pointer'}} onClick={() => duplicateItem(id)}>
+            <div style={{cursor: 'pointer'}} onClick={() => onDuplicate(id)}>
               <Duplicate style={{width: 'auto', height: spacing.scale200}} />
             </div>
             <div

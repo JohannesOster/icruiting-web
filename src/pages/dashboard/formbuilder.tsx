@@ -7,16 +7,19 @@ import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers';
 import useSWR from 'swr';
 import {object, string} from 'yup';
-import {Button, Input, Link, Dialog, useToaster} from 'icruiting-ui';
+import {Button, Input, Dialog, useToaster} from 'icruiting-ui';
 import {errorsFor} from 'lib/react-hook-form-errors-for';
 import {H3, H6, Box, Typography, getDashboardLayout} from 'components';
 import {Clipboard} from 'icons';
-import {DnDFormField, DnDSection, DnDSourceItem} from 'lib/formbuilder/DnD';
+import {
+  DnDFormField,
+  DnDSection,
+  DnDSourceItem,
+} from 'components/FormBuilder/DnD';
 import {DnDItem, ComponentToEdit} from 'lib/formbuilder/types';
-import {EditFormFieldForm} from 'lib/formbuilder/EditFormFieldForm';
-import {useFormBuilder} from 'lib/formbuilder/useFormBuilder';
-import {getSourceFormFields} from 'lib/formbuilder/sourceFormFields';
-import {getInitialFormFields} from 'lib/formbuilder/initialFormFields';
+import {EditFormFieldForm} from 'components/FormBuilder/EditFormFieldForm';
+import {getSourceFormFields} from 'components/FormBuilder/sourceFormFields';
+import {getInitialFormFields} from 'components/FormBuilder/initialFormFields';
 import {
   DragAndDropList,
   IconContainer,
@@ -26,26 +29,30 @@ import {
   DnDTargetSection,
   FormGrid,
   FormCodeTextarea,
-} from 'lib/formbuilder/FormBuilder.sc';
+} from 'components/FormBuilder/FormBuilder.sc';
 import {API, FormCategory} from 'services';
 import amplifyConfig from 'amplify.config';
-import {converter} from 'lib/formbuilder/converter';
+import {converter} from 'components/FormBuilder/converter';
 import {useRouter} from 'next/router';
 import {withAdmin} from 'components';
+import {useFormBuilder} from 'lib/formbuilder/useFormBuilder';
+
+type Query = {
+  formId?: string;
+  formCategory?: FormCategory;
+  jobId: string;
+};
 
 const FormBuilder: React.FC = () => {
-  const toaster = useToaster();
   const {colors, spacing} = useTheme();
+  const toaster = useToaster();
   const router = useRouter();
   const {
     formId: formIdEdit,
     formCategory = 'application',
     jobId,
-  } = router.query as {
-    formId?: string;
-    formCategory?: FormCategory;
-    jobId: string;
-  };
+  } = router.query as Query;
+
   const [status, setStatus] = useState('idle');
   const formId = useRef(formIdEdit || uuidv4());
   const [sourceSectionMargin, setSourceSectionMargin] = useState(0);
@@ -105,25 +112,19 @@ const FormBuilder: React.FC = () => {
     [formToEdit],
   );
 
-  const {
-    formFields,
-    addItem,
-    moveItem,
-    editItem,
-    deleteItem,
-    duplicateItem,
-    onOutsideHover,
-    onDrop,
-  } = useFormBuilder({initialformFields});
+  const {formFields, ...formBuilder} = useFormBuilder(initialformFields);
+
+  useEffect(() => {
+    if (!formToEdit) return;
+    formFields.reset(initialformFields);
+  }, [initialformFields]);
 
   const showEditItemForm = useCallback(
     (id: string) => {
-      const item = formFields.filter((item) => item.id === id)[0];
-      setComponentToEdit({
-        id: id,
-        component: item.component,
-        props: item.props,
-      });
+      const {component, props} = formFields.fields.filter(
+        (item) => item.id === id,
+      )[0];
+      setComponentToEdit({id: id, component, props});
     },
     [formFields],
   );
@@ -144,17 +145,17 @@ const FormBuilder: React.FC = () => {
   });
 
   /** Map the array of formFields to actual jsx */
-  const Form = formFields.map((item: DnDItem) => {
+  const Form = formFields.fields.map((item: DnDItem) => {
     const Component = item.as;
     return (
       <DnDFormField
         key={item.id}
         id={item.id}
         rowIndex={item.rowIndex}
-        moveItem={moveItem}
-        addItem={addItem}
-        duplicateItem={duplicateItem}
-        onDelete={item.deletable ? deleteItem : undefined}
+        addItem={formFields.insert}
+        onMove={formFields.move}
+        onDuplicate={formFields.duplicate}
+        onDelete={item.deletable ? formFields.delete : undefined}
         onEdit={item.editable ? showEditItemForm : undefined}
       >
         <Component {...item.props} />
@@ -162,41 +163,36 @@ const FormBuilder: React.FC = () => {
     );
   });
 
+  /** NOT UI */
   const onSave = () => {
     setStatus('submitting');
     const form = {
       formId: formId.current,
-      jobId: jobId,
+      jobId,
       formCategory: formCategory || formToEdit?.formCategory,
       formTitle: getValues().formTitle,
-      formFields: formFields.map(converter.toAPIFormField),
+      formFields: formFields.fields.map(converter.toAPIFormField),
     };
 
     const request = formToEdit ? API.forms.update : API.forms.create;
-    const errorHandler = (error: Error) => {
-      toaster.danger(error.message);
-      setStatus('idle');
-    };
+    const sucessMsg = !formToEdit
+      ? 'Formular erfolgreich erstellt.'
+      : 'Formular erfolgreich bearbeitet!';
 
-    let promise;
-    if (!formToEdit) {
-      promise = request(form).then(() => {
-        toaster.success('Formular erfolgreich erstellt.');
+    request(form)
+      .then(() => {
+        toaster.success(sucessMsg);
         router.back();
+      })
+      .catch((error) => {
+        toaster.danger(error.message);
+        setStatus('idle');
       });
-    } else {
-      promise = request(form).then(() => {
-        toaster.success('Formular erfolgreich bearbeitet!');
-        router.back();
-      });
-    }
-
-    promise.catch(errorHandler);
   };
 
   /** private on Drop to automatically show edit form for new items */
   const _onDrop = () => {
-    const tmp = onDrop();
+    const tmp = formBuilder.onDrop();
     if (tmp) showEditItemForm(tmp.toString());
   };
 
@@ -214,7 +210,7 @@ const FormBuilder: React.FC = () => {
       textarea.blur();
       toaster.success('Erfolgreich ins clipboard kopiert!');
     } else {
-      toaster.danger('Fehlgeschlagen. Bitte kopieren Sie es manuell!');
+      toaster.danger('Fehlgeschlagen. Bitte kopieren Sie den Code manuell!');
     }
   };
 
@@ -225,7 +221,7 @@ const FormBuilder: React.FC = () => {
           <EditFormFieldForm
             componentToEdit={componentToEdit}
             onSubmit={(values) => {
-              editItem && editItem(componentToEdit.id, values);
+              formFields.edit(componentToEdit.id, values);
               setComponentToEdit(null);
             }}
             formCategory={formCategory || formToEdit?.formCategory}
@@ -248,7 +244,7 @@ const FormBuilder: React.FC = () => {
       </Box>
       <Box display="flex" position="relative" marginBottom={spacing.scale600}>
         <DnDSection
-          onHover={onOutsideHover}
+          onHover={formBuilder.onOutsideHover}
           render={(targetID, drop) => <Overlay id={targetID} ref={drop} />}
         />
         <DnDSection
@@ -265,7 +261,7 @@ const FormBuilder: React.FC = () => {
           )}
         />
         <DnDSection
-          onHover={onOutsideHover}
+          onHover={formBuilder.onOutsideHover}
           render={(targetID, drop) => (
             <DnDSourceSection id={targetID} ref={drop}>
               <Box marginTop={sourceSectionMargin} transition="all 0.5s">
@@ -284,34 +280,50 @@ const FormBuilder: React.FC = () => {
                 {(formCategory === 'application' ||
                   formToEdit?.formCategory === 'application') && (
                   <>
-                    <Box marginTop={20}>
-                      <Link href={iframeSrc} newTab>
-                        Direktlink
-                      </Link>
-                    </Box>
-                    <Box marginTop={20}>
-                      <Typography
-                        style={{
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                        }}
-                        onClick={copyCode}
-                      >
-                        Form einbinden
-                        <Clipboard
+                    <Box display="grid" rowGap={spacing.scale200}>
+                      <Box marginTop={20}>
+                        <Typography
                           style={{
-                            marginLeft: spacing.scale100,
-                            height: spacing.scale300,
-                            width: 'auto',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
                           }}
+                          onClick={copyCode}
+                        >
+                          Formular einbinden
+                          <Clipboard
+                            style={{
+                              marginLeft: spacing.scale100,
+                              height: spacing.scale300,
+                              width: 'auto',
+                            }}
+                          />
+                        </Typography>
+                        <FormCodeTextarea
+                          rows={20}
+                          id="form-code"
+                          onClick={copyCode}
+                          defaultValue={formCode}
                         />
-                      </Typography>
-                      <FormCodeTextarea
-                        rows={20}
-                        id="form-code"
-                        onClick={copyCode}
-                        defaultValue={formCode}
+                      </Box>
+                      <Input
+                        type="file"
+                        label=".json Datei importieren"
+                        onChange={(event) => {
+                          const {files} = event.target;
+                          const file = files[0];
+                          if (!file) return;
+                          const fileReader = new FileReader();
+                          fileReader.onload = () => {
+                            const json = fileReader.result as string;
+                            const result = JSON.parse(json);
+                            const _formFields = result.formFields
+                              .map(converter.toDnDItem)
+                              .sort((one, two) => one.rowIndex - two.rowIndex);
+                            formFields.reset(_formFields);
+                          };
+                          fileReader.readAsText(file);
+                        }}
                       />
                     </Box>
                   </>

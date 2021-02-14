@@ -1,6 +1,4 @@
 import {ComponentType} from 'react';
-import {FormCategory} from 'services';
-import {string} from 'yup';
 
 export type FormFieldComponent =
   | 'section_header'
@@ -33,12 +31,3 @@ export type ComponentToEdit = {
   component: FormFieldComponent;
   props: {[key: string]: any};
 };
-
-export interface FormBuilderQuery {
-  formId?: string;
-  formCategory?: FormCategory;
-}
-
-export interface FormBuilderParams {
-  jobId: string;
-}
