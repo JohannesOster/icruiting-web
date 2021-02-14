@@ -1,5 +1,4 @@
 import {ItemTypes} from '../../components/FormBuilder/DnD';
-import {DnDItem} from './types';
 import {RatingGroup, FormSectionHeader} from 'components';
 import {Input, Select, Textarea, Radio, Checkbox} from 'icruiting-ui';
 import {
@@ -13,6 +12,7 @@ import {
   Heading,
 } from 'icons';
 import {FormFieldIntent, FormCategory} from 'services';
+import {DnDItem} from 'lib/formbuilder/types';
 
 const DNDBase = {
   type: ItemTypes.FORM_FIELD,
