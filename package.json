@@ -16,6 +16,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "aws-amplify": "^3.0.20",
+    "chart.js": "^2.9.4",
     "faker": "^4.1.0",
     "hoist-non-react-statics": "^3.3.2",
     "icruiting-ui": "^0.2.6",
