@@ -30,7 +30,7 @@ const EditJob = () => {
   const {jobId} = router.query as {jobId: string};
   const [status, setStatus] = useState('idle');
 
-  const {data: job, isValidating} = useSWR(
+  const {data: job, error: jobError} = useSWR(
     [`GET /jobs/${jobId}`, jobId],
     (_key: string, jobId) =>
       API.jobs.find(jobId).then((job) => {
@@ -39,9 +39,14 @@ const EditJob = () => {
       }),
   );
 
-  const {register, errors, control, handleSubmit, formState, reset} = useForm<
-    TJobRequest
-  >({
+  const {
+    register,
+    errors,
+    control,
+    handleSubmit,
+    formState,
+    reset,
+  } = useForm<TJobRequest>({
     mode: 'onChange',
     criteriaMode: 'all',
     defaultValues: {...job},
@@ -106,7 +111,7 @@ const EditJob = () => {
           <Button onClick={() => router.back()}>Abbrechen</Button>
         </Box>
       </Flexgrid>
-      {isValidating ? (
+      {!(job || jobError) ? (
         <Spinner />
       ) : (
         <form>

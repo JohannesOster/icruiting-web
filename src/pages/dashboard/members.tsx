@@ -42,7 +42,7 @@ export const Members = () => {
     return API.get('icruiting-api', '/members', {});
   };
 
-  const {data, isValidating} = useSWR('/members', fetcher);
+  const {data, error} = useSWR('/members', fetcher);
   const [members, setMembers] = useState<Array<TMembere> | undefined>();
   const [memberToEdit, setMembereToEdit] = useState<{
     email: string;
@@ -208,7 +208,7 @@ export const Members = () => {
         <DataTable
           columns={columns}
           data={members || []}
-          isLoading={isValidating}
+          isLoading={!(data || error)}
         />
       </main>
     </>

@@ -2,7 +2,7 @@ import {TJob, TJobRequest} from './types';
 import API from '../request';
 
 export const Jobs = () => {
-  const list = (): Promise<TJob[]> => {
+  const list = async (): Promise<TJob[]> => {
     return API.get('/jobs');
   };
 

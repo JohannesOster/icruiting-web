@@ -14,20 +14,20 @@ export const Theme = () => {
   const {spacing} = useTheme();
   const {currentUser} = useAuth();
   type Status = 'idle' | 'submitting' | 'deleting' | 'fetching';
-  const [status, setStatus] = useState<Status>('idle');
+  const [status, setStatus] = useState<Status>('fetching');
   const {danger, success} = useToaster();
   const [files, setFiles] = useState<FileList | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
-  const {data: tenant, isValidating} = useSWR(
+  const {data: tenant} = useSWR(
     [`GET /tenants/${currentUser?.tenantId}`, currentUser?.tenantId],
     (_key, tenantId) => API.tenants.find(tenantId),
   );
 
   useEffect(() => {
-    if (isValidating) setStatus('fetching');
-    else setStatus('idle');
-  }, [isValidating]);
+    if (!tenant) return;
+    setStatus('idle');
+  }, [tenant]);
 
   const uploadTheme = async () => {
     try {

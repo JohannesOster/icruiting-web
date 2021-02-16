@@ -53,13 +53,19 @@ const Navbar: React.FC = () => {
         <a href="/docs/">Dokumentation</a>
       </MobileNavItem>
       <MobileNavItem onClick={closeMenu}>
-        <Link href="/contact">Kontakt</Link>
+        <Link href="/contact">
+          <a>Kontakt</a>
+        </Link>
       </MobileNavItem>
       <MobileNavItem onClick={closeMenu}>
-        <Link href="/login">Anmelden</Link>
+        <Link href="/login">
+          <a>Anmelden</a>
+        </Link>
       </MobileNavItem>
       <MobileNavItem onClick={closeMenu}>
-        <Link href="/signup">Registrieren</Link>
+        <Link href="/signup">
+          <a>Registrieren</a>
+        </Link>
       </MobileNavItem>
     </>
   );
@@ -78,16 +84,24 @@ const Navbar: React.FC = () => {
       {currentUser?.userRole === 'admin' && (
         <>
           <MobileNavItem onClick={closeMenu}>
-            <Link href="/dashboard/jobs">Stellen</Link>
+            <Link href="/dashboard/jobs">
+              <a>Stellen</a>
+            </Link>
           </MobileNavItem>
           <MobileNavItem onClick={closeMenu}>
-            <Link href="/dashboard/applicants">Bewerber*innen</Link>
+            <Link href="/dashboard/applicants">
+              <a>Bewerber*innen</a>
+            </Link>
           </MobileNavItem>
           <MobileNavItem onClick={closeMenu}>
-            <Link href="/dashboard/members">Tenant</Link>
+            <Link href="/dashboard/members">
+              <a>Tenant</a>
+            </Link>
           </MobileNavItem>
           <MobileNavItem onClick={closeMenu}>
-            <Link href={`/dashboard/theme`}>Theme</Link>
+            <Link href={`/dashboard/theme`}>
+              <a>Theme</a>
+            </Link>
           </MobileNavItem>
         </>
       )}
@@ -95,13 +109,19 @@ const Navbar: React.FC = () => {
         <Separator />
       </Box>
       <MobileNavItem onClick={closeMenu}>
-        <Link href="/account">Account</Link>
+        <Link href="/account">
+          <a>Account</a>
+        </Link>
       </MobileNavItem>
       <MobileNavItem onClick={closeMenu}>
-        <Link href="/contact">Kontakt</Link>
+        <Link href="/contact">
+          <a>Kontakt</a>
+        </Link>
       </MobileNavItem>
       <MobileNavItem onClick={closeMenu}>
-        <Typography onClick={() => handleLogout()}>Abmelden</Typography>
+        <Typography onClick={() => handleLogout()}>
+          <a>Abmelden</a>
+        </Typography>
       </MobileNavItem>
     </>
   );
@@ -118,10 +138,14 @@ const Navbar: React.FC = () => {
         </a>
       </NavItem>
       <NavItem>
-        <Link href="/contact">Kontakt</Link>
+        <Link href="/contact">
+          <a>Kontakt</a>
+        </Link>
       </NavItem>
       <NavItem>
-        <Link href="/login">Anmelden</Link>
+        <Link href="/login">
+          <a>Anmelden</a>
+        </Link>
       </NavItem>
       <NavItem>
         <Button onClick={() => router.push('/signup')}>Registrieren</Button>
@@ -141,10 +165,14 @@ const Navbar: React.FC = () => {
         </a>
       </NavItem>
       <NavItem>
-        <Link href="/contact">Kontakt</Link>
+        <Link href="/contact">
+          <a>Kontakt</a>
+        </Link>
       </NavItem>
       <NavItem>
-        <Link href="/dashboard">Dashboard</Link>
+        <Link href="/dashboard">
+          <a>Dashboard</a>
+        </Link>
       </NavItem>
       <NavItem>
         <DropDown label={currentUser?.email || 'Account'}>

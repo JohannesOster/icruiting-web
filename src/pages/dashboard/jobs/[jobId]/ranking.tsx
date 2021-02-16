@@ -17,12 +17,12 @@ export const Ranking = () => {
 
   const {
     data: applicants,
-    isValidating: isValidatingApplicants,
+    error: applicantsError,
   } = useSWR(`GET /applicants?jobId=${jobId}`, () =>
     API.applicants.list(jobId),
   );
 
-  const {data: ranking = [], isValidating: isValidatingRanking} = useSWR(
+  const {data: ranking, error: rankingError} = useSWR(
     [
       `GET /rankings/${jobId}?formCategory=${formCategory}`,
       jobId,
@@ -32,7 +32,8 @@ export const Ranking = () => {
       API.rankings.find(jobId, formCategory),
   );
 
-  const isLoading = isValidatingApplicants || isValidatingRanking;
+  const isLoading =
+    !(ranking || rankingError) || !(applicants || applicantsError);
 
   const columns: Array<TColumn> = [
     {title: 'Rang', cell: (row) => row.rank},
@@ -42,7 +43,7 @@ export const Ranking = () => {
         <Link
           href={`/dashboard/applicants/${row.applicantId}/report?formCategory=${formCategory}`}
         >
-          {row.name}
+          <a>{row.name}</a>
         </Link>
       ),
     },

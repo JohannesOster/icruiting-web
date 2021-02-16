@@ -15,15 +15,12 @@ const SignUp: React.FC = () => {
   const [status, setStatus] = useState<Status>('fetching');
   const [selectedPriceId, setSelectedPriceId] = useState<string | null>(null);
 
-  const {data: prices, isValidating} = useSWR(
-    'GET /stripe/prices',
-    API.stripe.prices.list,
-  );
+  const {data: prices} = useSWR('GET /stripe/prices', API.stripe.prices.list);
 
   useEffect(() => {
-    if (isValidating) setStatus('fetching');
-    else setStatus('idle');
-  }, [isValidating]);
+    if (!prices) return;
+    setStatus('idle');
+  }, [prices]);
 
   useEffect(() => {
     if (prices?.length) setSelectedPriceId(prices[prices.length - 1].id);

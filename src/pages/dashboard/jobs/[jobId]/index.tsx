@@ -39,13 +39,13 @@ const JobDetails = () => {
     });
   };
 
-  const {data: job, isValidating: isValidatingJobs} = useSWR(
+  const {data: job, error: jobError} = useSWR(
     [`GET /jobs/${jobId}`, jobId],
     (_key, jobId) => API.jobs.find(jobId),
   );
 
   const [forms, setForms] = useState<{[key: string]: TForm[]}>({});
-  const {data, isValidating: isValidatingForms, mutate} = useSWR(
+  const {data, error: formsError, mutate} = useSWR(
     [`GET /forms`, jobId],
     (_key, jobId) => API.forms.list(jobId),
   );
@@ -60,7 +60,7 @@ const JobDetails = () => {
     setForms(_forms);
   }, [data]);
 
-  const isFetching = isValidatingForms || isValidatingJobs;
+  const isFetching = !(data || formsError) || !(job || jobError);
 
   const formBuilderURL = `/dashboard/formbuilder/`;
   const actionCell = ({formCategory, formId}: {[key: string]: any}) => {
@@ -69,7 +69,7 @@ const JobDetails = () => {
         <Link
           href={`${formBuilderURL}?formCategory=${formCategory}&jobId=${jobId}`}
         >
-          hinzufügen
+          <a>hinzufügen</a>
         </Link>
       );
     }
@@ -83,7 +83,7 @@ const JobDetails = () => {
         alignItems="center"
       >
         <Link href={`${formBuilderURL}?formId=${formId}&jobId=${jobId}`}>
-          bearbeiten
+          <a>bearbeiten</a>
         </Link>
         <span>/</span>
         <Button
@@ -141,7 +141,7 @@ const JobDetails = () => {
               API.forms.exportJSON(formId).finally(() => setExporting(false));
             }}
           >
-            Als .json exportieren
+            JSON Export
           </Button>
         );
       },
@@ -241,7 +241,7 @@ const JobDetails = () => {
                 <Link
                   href={`/dashboard/jobs/${jobId}/ranking?formCategory=screening`}
                 >
-                  Screeningranking
+                  <a>Screeningranking</a>
                 </Link>
               </td>
             </tr>
@@ -250,7 +250,7 @@ const JobDetails = () => {
                 <Link
                   href={`/dashboard/jobs/${jobId}/ranking?formCategory=assessment`}
                 >
-                  Assessment Center ranking
+                  <a>Assessment Center ranking</a>
                 </Link>
               </td>
             </tr>
