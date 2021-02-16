@@ -3,7 +3,7 @@ import Link from 'next/link';
 import {useRouter} from 'next/router';
 import styled, {css} from 'styled-components';
 
-export const Wrapper = styled.span<{isActive: boolean}>`
+export const Wrapper = styled.a<{isActive: boolean}>`
   text-align: left;
   padding: ${({theme}) => theme.spacing.scale400};
   box-sizing: border-box;

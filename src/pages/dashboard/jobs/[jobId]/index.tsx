@@ -69,7 +69,7 @@ const JobDetails = () => {
         <Link
           href={`${formBuilderURL}?formCategory=${formCategory}&jobId=${jobId}`}
         >
-          hinzufügen
+          <a>hinzufügen</a>
         </Link>
       );
     }
@@ -83,7 +83,7 @@ const JobDetails = () => {
         alignItems="center"
       >
         <Link href={`${formBuilderURL}?formId=${formId}&jobId=${jobId}`}>
-          bearbeiten
+          <a>bearbeiten</a>
         </Link>
         <span>/</span>
         <Button
@@ -141,7 +141,7 @@ const JobDetails = () => {
               API.forms.exportJSON(formId).finally(() => setExporting(false));
             }}
           >
-            Als .json exportieren
+            JSON Export
           </Button>
         );
       },
@@ -241,7 +241,7 @@ const JobDetails = () => {
                 <Link
                   href={`/dashboard/jobs/${jobId}/ranking?formCategory=screening`}
                 >
-                  Screeningranking
+                  <a>Screeningranking</a>
                 </Link>
               </td>
             </tr>
@@ -250,7 +250,7 @@ const JobDetails = () => {
                 <Link
                   href={`/dashboard/jobs/${jobId}/ranking?formCategory=assessment`}
                 >
-                  Assessment Center ranking
+                  <a>Assessment Center ranking</a>
                 </Link>
               </td>
             </tr>

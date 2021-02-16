@@ -94,7 +94,9 @@ const Applicants = () => {
     {
       title: 'Name',
       cell: ({name, applicantId}) => (
-        <Link href={`${router.pathname}/${applicantId}`}>{name}</Link>
+        <Link href={`${router.pathname}/${applicantId}`}>
+          <a>{name}</a>
+        </Link>
       ),
     },
     {title: 'E-Mail-Adresse', cell: ({email}) => email},

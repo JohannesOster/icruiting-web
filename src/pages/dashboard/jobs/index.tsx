@@ -17,7 +17,7 @@ export const Jobs = () => {
     null,
   );
 
-  const {data: jobs, isValidating, mutate} = useSWR('GET /jobs', API.jobs.list);
+  const {data: jobs, error, mutate} = useSWR('GET /jobs', API.jobs.list);
 
   const onDelete = () => {
     if (!shouldDeleteJobId) return;
@@ -34,13 +34,17 @@ export const Jobs = () => {
     {
       title: 'Bezeichnung',
       cell: (row) => (
-        <Link href={`${router.pathname}/${row.jobId}`}>{row.jobTitle}</Link>
+        <Link href={`${router.pathname}/${row.jobId}`}>
+          <a>{row.jobTitle}</a>
+        </Link>
       ),
     },
     {
       title: 'Aktion',
       cell: (row) => (
-        <Link href={`${router.pathname}/${row.jobId}/edit`}>bearbeiten</Link>
+        <Link href={`${router.pathname}/${row.jobId}/edit`}>
+          <a>bearbeiten</a>
+        </Link>
       ),
     },
     {
@@ -107,7 +111,11 @@ export const Jobs = () => {
           Hinzufügen
         </Button>
       </Box>
-      <DataTable columns={columns} data={jobs || []} isLoading={isValidating} />
+      <DataTable
+        columns={columns}
+        data={jobs || []}
+        isLoading={!(jobs && error)}
+      />
     </main>
   );
 };
