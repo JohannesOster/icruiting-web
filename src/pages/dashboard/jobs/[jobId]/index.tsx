@@ -39,13 +39,13 @@ const JobDetails = () => {
     });
   };
 
-  const {data: job, isValidating: isValidatingJobs} = useSWR(
+  const {data: job, error: jobError} = useSWR(
     [`GET /jobs/${jobId}`, jobId],
     (_key, jobId) => API.jobs.find(jobId),
   );
 
   const [forms, setForms] = useState<{[key: string]: TForm[]}>({});
-  const {data, isValidating: isValidatingForms, mutate} = useSWR(
+  const {data, error: formsError, mutate} = useSWR(
     [`GET /forms`, jobId],
     (_key, jobId) => API.forms.list(jobId),
   );
@@ -60,7 +60,7 @@ const JobDetails = () => {
     setForms(_forms);
   }, [data]);
 
-  const isFetching = isValidatingForms || isValidatingJobs;
+  const isFetching = !(data || formsError) || !(job || jobError);
 
   const formBuilderURL = `/dashboard/formbuilder/`;
   const actionCell = ({formCategory, formId}: {[key: string]: any}) => {

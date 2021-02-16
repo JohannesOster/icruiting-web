@@ -32,10 +32,7 @@ const Applicants = () => {
 
   const [showAssessmentsSummary, setShowAssessmentsSummary] = useState(false);
 
-  const {data: jobs, isValidating: isValidatingJobs} = useSWR(
-    'GET /jobs',
-    API.jobs.list,
-  );
+  const {data: jobs, error: jobsError} = useSWR('GET /jobs', API.jobs.list);
   const [selectedJobId, setSelectedJobId] = useState(jobs && jobs[0]?.jobId);
   const [deletingApplicantId, setDeletingApplicantId] = useState<string | null>(
     null,
@@ -47,12 +44,9 @@ const Applicants = () => {
   const key = selectedJobId
     ? ['GET /applicants', selectedJobId, offset, limit, filter]
     : null;
-  const {
-    data: applicantsResponse,
-    isValidating: isValidationApplicants,
-    mutate,
-  } = useSWR(key, (_key, jobId) =>
-    API.applicants.list(jobId, {offset, limit, filter}),
+  const {data: applicantsResponse, error: applicantsError, mutate} = useSWR(
+    key,
+    (_key, jobId) => API.applicants.list(jobId, {offset, limit, filter}),
   );
 
   useEffect(() => {
@@ -60,7 +54,8 @@ const Applicants = () => {
     setSelectedJobId(jobs[0].jobId);
   }, [jobs]);
 
-  const isLoading = isValidationApplicants || isValidatingJobs;
+  const isLoading =
+    !(jobs || jobsError) && !(applicantsResponse || applicantsError);
 
   const onDelete = () => {
     if (!shouldDeleteApplicantId) return;

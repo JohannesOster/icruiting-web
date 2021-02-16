@@ -114,7 +114,7 @@ export const Jobs = () => {
       <DataTable
         columns={columns}
         data={jobs || []}
-        isLoading={!(jobs && error)}
+        isLoading={!(jobs || error)}
       />
     </main>
   );

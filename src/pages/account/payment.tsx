@@ -37,7 +37,7 @@ const PaymentMethods: React.FC = () => {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [fetchesClientSecret, setFetchesClientSecret] = useState(false);
 
-  const {data = [], isValidating} = useSWR(
+  const {data, error} = useSWR(
     [
       `GET /tenants/${currentUser?.tenantId}/paymentMethods`,
       currentUser?.tenantId,
@@ -170,7 +170,11 @@ const PaymentMethods: React.FC = () => {
           Neue Zahlungsmethode
         </Button>
       </Flexgrid>
-      <DataTable columns={columns} data={data} isLoading={isValidating} />
+      <DataTable
+        columns={columns}
+        data={data || []}
+        isLoading={!(data || error)}
+      />
       {clientSecret && (
         <Dialog onClose={() => setClientSecret(null)}>
           <Box display="grid" rowGap={spacing.scale100}>

@@ -14,15 +14,12 @@ const Subscriptions: React.FC = () => {
   const [addingId, setAddingId] = useState<string | null>(null);
   const {danger, success} = useToaster();
 
-  const {data: prices, isValidating: isValidatingPrices} = useSWR(
+  const {data: prices, error: pricesError} = useSWR(
     'GET /stripe/prices',
     API.stripe.prices.list,
   );
 
-  const {
-    data: subscriptions,
-    isValidating: isValidatingSubscriptions,
-  } = useSWR(
+  const {data: subscriptions, error: subscriptionsError} = useSWR(
     [
       `GET /tenants/${currentUser?.tenantId}/subscriptions`,
       currentUser?.tenantId,
@@ -110,7 +107,9 @@ const Subscriptions: React.FC = () => {
       <DataTable
         columns={columns}
         data={prices || []}
-        isLoading={isValidatingSubscriptions || isValidatingPrices}
+        isLoading={
+          !(prices || subscriptions) && !(pricesError || subscriptionsError)
+        }
       />
     </Box>
   );
