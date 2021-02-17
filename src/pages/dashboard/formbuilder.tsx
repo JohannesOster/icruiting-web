@@ -158,7 +158,6 @@ const FormBuilder: React.FC = () => {
     );
   });
 
-  /** NOT UI */
   const onSave = () => {
     setStatus('submitting');
     const form = {
