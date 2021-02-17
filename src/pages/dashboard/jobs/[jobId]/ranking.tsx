@@ -52,7 +52,7 @@ export const Ranking = () => {
     {title: '#Bewertungen', cell: (row) => row.submissionsCount},
   ];
 
-  const data = ranking.map((row, index) => {
+  const data = ranking?.map((row, index) => {
     const applicant = applicants?.applicants?.find(
       ({applicantId}) => applicantId === row.applicantId,
     );

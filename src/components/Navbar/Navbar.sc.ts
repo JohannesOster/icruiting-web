@@ -2,6 +2,7 @@ import styled, {css} from 'styled-components';
 
 export const Header = styled.header`
   height: 80px;
+  width: 100%;
   padding: ${({theme}) => `0 ${theme.spacing.scale400}`};
   border: 1px solid;
   border-color: ${({theme}) => theme.colors.inputBorder};
