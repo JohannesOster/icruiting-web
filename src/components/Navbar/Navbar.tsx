@@ -36,8 +36,7 @@ const Navbar: React.FC = () => {
     } else {
       // reset back to default
       const scrollY = document.body.style.top;
-      document.body.style.position = '';
-      document.body.style.top = '';
+      document.body.style.position = 'relative';
       window.scrollTo(0, parseInt(scrollY || '0') * -1);
     }
   }, [menuOpen]);
