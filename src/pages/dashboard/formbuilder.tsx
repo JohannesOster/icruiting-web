@@ -69,11 +69,6 @@ const FormBuilder: React.FC = () => {
 
   const {register, formState, errors, getValues, reset} = useForm({
     mode: 'onChange',
-    resolver: yupResolver(
-      object({
-        formTitle: string().required('Formulartitel ist verpflichtend!'),
-      }),
-    ),
     defaultValues: {formTitle: formToEdit?.formTitle},
     criteriaMode: 'all',
   });
@@ -271,7 +266,9 @@ const FormBuilder: React.FC = () => {
                     label="Formulartitel"
                     placeholder="z.B. Einzelinterview"
                     name="formTitle"
-                    ref={register}
+                    ref={register({
+                      required: 'Formulartitel ist verpflichtend!',
+                    })}
                     errors={errorsFor(errors, 'formTitle')}
                   />
                 )}
