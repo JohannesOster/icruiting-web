@@ -30,6 +30,8 @@ const Navbar: React.FC = () => {
       // https://css-tricks.com/prevent-page-scrolling-when-a-modal-is-open/
       // to avoid scrolling under mobile menu
       document.body.style.position = 'fixed';
+      document.body.style.left = '0';
+      document.body.style.right = '0';
       document.body.style.top = `-${window.scrollY}px`;
     } else {
       // reset back to default

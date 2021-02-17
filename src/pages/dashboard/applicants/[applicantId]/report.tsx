@@ -203,7 +203,7 @@ const ApplicantReport = () => {
           </Table>
         )}
       </Box>
-      {report?.jobRequirementResults && (
+      {report?.formCategory === 'assessment' && (
         <Box display="grid" rowGap={spacing.scale100}>
           <Flexgrid alignItems="center" flexGap={spacing.scale100}>
             <H6>Anforderungsprofil</H6>

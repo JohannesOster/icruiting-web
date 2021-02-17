@@ -4,9 +4,7 @@ import {DndProvider} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import {useTheme} from 'styled-components';
 import {useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers';
 import useSWR from 'swr';
-import {object, string} from 'yup';
 import {Button, Input, Dialog, useToaster} from 'icruiting-ui';
 import {errorsFor} from 'lib/react-hook-form-errors-for';
 import {H3, H6, Box, Typography, getDashboardLayout} from 'components';
@@ -69,11 +67,6 @@ const FormBuilder: React.FC = () => {
 
   const {register, formState, errors, getValues, reset} = useForm({
     mode: 'onChange',
-    resolver: yupResolver(
-      object({
-        formTitle: string().required('Formulartitel ist verpflichtend!'),
-      }),
-    ),
     defaultValues: {formTitle: formToEdit?.formTitle},
     criteriaMode: 'all',
   });
@@ -163,7 +156,6 @@ const FormBuilder: React.FC = () => {
     );
   });
 
-  /** NOT UI */
   const onSave = () => {
     setStatus('submitting');
     const form = {
@@ -271,7 +263,9 @@ const FormBuilder: React.FC = () => {
                     label="Formulartitel"
                     placeholder="z.B. Einzelinterview"
                     name="formTitle"
-                    ref={register}
+                    ref={register({
+                      required: 'Formulartitel ist verpflichtend!',
+                    })}
                     errors={errorsFor(errors, 'formTitle')}
                   />
                 )}
