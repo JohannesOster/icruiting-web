@@ -29,9 +29,13 @@ export const EditACRatingGroupFormFields: React.FC<Props> = ({
   jobRequirementOptions,
   ...formValues
 }) => {
-  const {register, formState, errors, handleSubmit, control} = useForm<
-    FormValues
-  >({
+  const {
+    register,
+    formState,
+    errors,
+    handleSubmit,
+    control,
+  } = useForm<FormValues>({
     mode: 'onChange',
     criteriaMode: 'all',
     defaultValues: formValues,

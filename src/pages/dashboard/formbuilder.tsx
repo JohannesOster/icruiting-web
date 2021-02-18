@@ -216,7 +216,7 @@ const FormBuilder: React.FC = () => {
               formFields.edit(componentToEdit.id, values);
               setComponentToEdit(null);
             }}
-            formCategory={formCategory || formToEdit?.formCategory}
+            formCategory={formToEdit?.formCategory || formCategory}
             job={job}
           />
         </Dialog>
