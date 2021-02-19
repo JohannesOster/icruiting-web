@@ -63,6 +63,7 @@ export const EditFormFieldForm: React.FC<Props> = ({
           required={props.required}
           jobRequirementId={props.jobRequirementId}
           intent={props.intent}
+          defaultValue={props.defaultValue}
           jobRequirementOptions={(job.jobRequirements || []).map((req) => ({
             label: req.requirementLabel,
             value: req.jobRequirementId,
@@ -76,6 +77,7 @@ export const EditFormFieldForm: React.FC<Props> = ({
           options={props.options}
           required={props.required}
           intent={props.intent}
+          defaultValue={props.defaultValue}
         />
       );
     case 'file_upload':

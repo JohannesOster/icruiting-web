@@ -4,7 +4,7 @@ import {Button, Checkbox, Input, Select, Textarea} from 'icruiting-ui';
 import {useForm, useFieldArray} from 'react-hook-form';
 import {errorsFor} from 'lib/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
-import {object, array, string} from 'yup';
+import {object, array, string, mixed, number} from 'yup';
 import {Form} from './StyledForm.sc';
 import {Trash} from 'icons';
 import {useTheme} from 'styled-components';
@@ -16,6 +16,7 @@ type FormValues = {
   options: Array<{label: string; value: string}>;
   intent: FormFieldIntent;
   required: boolean;
+  defaultValue?: string;
 };
 
 type Props = {
@@ -40,10 +41,16 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
     resolver: yupResolver(
       object({
         label: string().required('Label ist verpflichtend'),
+        defaultValue: mixed().transform((val) => (val ? val : null)),
         options: array().of(
           object({
             label: string().required(
               'Option ist verpflichtend auszufüllen oder zu löschen',
+            ),
+            value: mixed().test(
+              'testOptionValue',
+              'Geben sie einen eindeutigen Zahlenwert an!',
+              (val) => /^\d+$/.test(val) && !!val.length,
             ),
           }),
         ),
@@ -80,6 +87,19 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
         options={[
           {label: 'count_distinct', value: FormFieldIntent.countDistinct},
           {label: 'sum_up', value: FormFieldIntent.sumUp},
+        ]}
+      />
+      <Select
+        name="defaultValue"
+        label="Default"
+        ref={register}
+        defaultValue={'default'}
+        options={[
+          {label: undefined, value: null},
+          ...fields.map(({label, value}) => ({
+            label,
+            value,
+          })),
         ]}
       />
       <H6 style={{marginBottom: `-${spacing.scale200}`}}>
