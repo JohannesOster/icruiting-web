@@ -24,9 +24,13 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
   onSubmit,
   ...formValues
 }) => {
-  const {register, formState, errors, handleSubmit, control} = useForm<
-    FormValues
-  >({
+  const {
+    register,
+    formState,
+    errors,
+    handleSubmit,
+    control,
+  } = useForm<FormValues>({
     mode: 'onChange',
     criteriaMode: 'all',
     defaultValues: formValues,
@@ -91,6 +95,7 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
               placeholder="Wert"
               defaultValue={option.value}
               ref={register()}
+              type="number"
               errors={errorsFor(errors, `options[${idx}].value`)}
             />
 

@@ -96,6 +96,7 @@ export const EditACRatingGroupFormFields: React.FC<Props> = ({
               name={`options[${idx}].value`}
               placeholder="Wert"
               defaultValue={option.value}
+              type="number"
               ref={register()}
               errors={errorsFor(errors, `options[${idx}].value`)}
             />
