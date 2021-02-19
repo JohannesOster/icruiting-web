@@ -49,9 +49,15 @@ describe('arrInsert', () => {
     const array = [1, 2, 4];
     const item = 3;
     const negativeIdx = () => arrInsert(array, item, -1);
-    const toLargeIdx = () => arrInsert(array, item, array.length);
+    const toLargeIdx = () => arrInsert(array, item, array.length + 1);
 
     expect(negativeIdx).toThrow('Index is out of bounce');
     expect(toLargeIdx).toThrow('Index is out of bounce');
+  });
+
+  it('inserts item at the end', () => {
+    const array = [1, 2, 4];
+    const item = 5;
+    expect(arrInsert(array, item, array.length)).toStrictEqual([1, 2, 4, 5]);
   });
 });
