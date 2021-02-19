@@ -47,9 +47,11 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
             label: string().required(
               'Option ist verpflichtend auszufüllen oder zu löschen',
             ),
-            value: string()
-              .typeError('Option ist verpflichtend auszufüllen oder zu löschen')
-              .transform((val) => +val),
+            value: mixed().test(
+              'testOptionValue',
+              'Geben sie einen eindeutigen Zahlenwert an!',
+              (val) => /^\d+$/.test(val) && !!val.length,
+            ),
           }),
         ),
       }),
