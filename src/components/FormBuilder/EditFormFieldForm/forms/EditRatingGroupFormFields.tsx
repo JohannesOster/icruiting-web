@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box, H6} from 'components';
-import {Button, Input, Textarea} from 'icruiting-ui';
+import {Button, Checkbox, Input, Textarea} from 'icruiting-ui';
 import {useForm, useFieldArray} from 'react-hook-form';
 import {errorsFor} from 'lib/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
@@ -13,6 +13,7 @@ type FormValues = {
   label: string;
   description: string;
   options: Array<{label: string; value: string}>;
+  required: boolean;
 };
 
 type Props = {
@@ -109,6 +110,11 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
           Neues Item
         </Button>
       </div>
+      <Checkbox
+        name="required"
+        ref={register}
+        options={[{label: 'Verpflichtend', value: 'required'}]}
+      />
       <div>
         <Button disabled={!formState.isValid} type="submit">
           Speichern

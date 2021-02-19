@@ -115,7 +115,6 @@ const screeningSourceFields: Array<DnDItem> = [
       label: 'Rating',
       intent: FormFieldIntent.sumUp,
       name: `${Math.random().toString(36).substring(7)}`,
-      defaultValue: '0',
       options: [
         {label: '0', value: '0'},
         {label: '1', value: '1'},
@@ -138,7 +137,6 @@ const assessmentSourceFields: Array<DnDItem> = [
       intent: FormFieldIntent.sumUp,
       label: 'Rating',
       name: `${Math.random().toString(36).substring(7)}`,
-      defaultValue: '0',
       options: [
         {label: '0', value: '0'},
         {label: '1', value: '1'},

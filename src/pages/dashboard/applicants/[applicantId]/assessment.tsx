@@ -8,6 +8,7 @@ import {API, TForm} from 'services';
 import {useRouter} from 'next/router';
 import {withAuth} from 'components';
 import {stringToComponent} from 'lib/form-builder-utils';
+import {errorsFor} from 'lib/utility';
 
 const Form = styled.form`
   display: grid;
@@ -43,7 +44,9 @@ const ApplicantAssessment = () => {
     setForm(_form);
   }, [data, formId]);
 
-  const {register, handleSubmit} = useForm();
+  const {register, handleSubmit, errors, formState} = useForm({
+    mode: 'onChange',
+  });
 
   const onSubmit = (values: any) => {
     const body = {
@@ -85,7 +88,10 @@ const ApplicantAssessment = () => {
 
     return (
       <Component
-        ref={register}
+        ref={register({
+          ...(item.required ? {required: 'Dieses Feld ist verpflichtend'} : {}),
+        })}
+        errors={errorsFor(errors, item.formFieldId)}
         key={item.formFieldId}
         name={item.formFieldId}
         defaultValue={_defaultValue}
@@ -101,7 +107,11 @@ const ApplicantAssessment = () => {
       </H3>
       {formFields}
       <Box marginTop={20}>
-        <Button type="submit" isLoading={status === 'submitting'}>
+        <Button
+          type="submit"
+          isLoading={status === 'submitting'}
+          disabled={!formState.isValid}
+        >
           Speichern
         </Button>
       </Box>

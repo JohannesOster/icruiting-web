@@ -61,7 +61,6 @@ const screeningInitialformFields: Array<DnDItem> = [
       label: 'Die Bewerbung war professionell',
       intent: FormFieldIntent.sumUp,
       name: `${Math.random().toString(36).substring(7)}`,
-      defaultValue: '0',
       options: [
         {label: '0', value: '0'},
         {label: '1', value: '1'},
@@ -135,7 +134,6 @@ const assessmentInitialformFields: Array<DnDItem> = [
       intent: FormFieldIntent.sumUp,
       label: 'Der Bewerber trägt ästhetischen Haarschmuck',
       name: `${Math.random().toString(36).substring(7)}`,
-      defaultValue: '0',
       options: [
         {label: '0', value: '0'},
         {label: '1', value: '1'},

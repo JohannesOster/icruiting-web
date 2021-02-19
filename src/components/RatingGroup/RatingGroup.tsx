@@ -10,6 +10,7 @@ type Props = {
   options: Array<{label: string; value: string}>;
   value?: string;
   defaultValue?: string;
+  required: boolean;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -23,6 +24,7 @@ const RatingGroup = forwardRef<HTMLInputElement, Props>(
       <Box display="grid" gridRowGap={spacing.scale100}>
         <Typography as="label" htmlFor={name}>
           {label}
+          {props.required && '*'}
         </Typography>
         {description && <Typography kind="secondary">{description}</Typography>}
         <StyledRatingGroup>

@@ -18,6 +18,7 @@ import {Arrow, Edit} from 'icons';
 import {useAuth} from 'context';
 import {withAuth} from 'components';
 import {stringToComponent} from 'lib/form-builder-utils';
+import {errorsFor} from 'lib/utility';
 
 const ApplicantDetails = () => {
   const toaster = useToaster();
@@ -63,7 +64,9 @@ const ApplicantDetails = () => {
     API.formSubmissions.find(formId, applicantId),
   );
 
-  const {register, handleSubmit} = useForm();
+  const {register, handleSubmit, errors, formState} = useForm({
+    mode: 'onChange',
+  });
 
   const onSubmit = (values: any) => {
     if (!screeningForm) return;
@@ -108,7 +111,12 @@ const ApplicantDetails = () => {
     if (item.component === 'checkbox') {
       return (
         <Component
-          ref={register}
+          ref={register({
+            ...(item.required
+              ? {required: 'Dieses Feld ist verpflichtend'}
+              : {}),
+          })}
+          errors={errorsFor(errors, item.formFieldId)}
           key={item.formFieldId}
           name={item.formFieldId}
           defaultValue={(_defaultValue as string)?.split(',')}
@@ -119,7 +127,10 @@ const ApplicantDetails = () => {
 
     return (
       <Component
-        ref={register}
+        ref={register({
+          ...(item.required ? {required: 'Dieses Feld ist verpflichtend'} : {}),
+        })}
+        errors={errorsFor(errors, item.formFieldId)}
         key={item.formFieldId}
         name={item.formFieldId}
         defaultValue={_defaultValue}
@@ -201,7 +212,11 @@ const ApplicantDetails = () => {
             {formFields}
             {formFields?.length && (
               <Box marginTop={spacing.scale200}>
-                <Button type="submit" isLoading={status === 'submitting'}>
+                <Button
+                  type="submit"
+                  isLoading={status === 'submitting'}
+                  disabled={!formState.isValid}
+                >
                   Speichern
                 </Button>
               </Box>
