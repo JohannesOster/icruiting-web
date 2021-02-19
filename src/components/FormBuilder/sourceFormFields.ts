@@ -124,6 +124,18 @@ const screeningSourceFields: Array<DnDItem> = [
       ],
     },
   },
+  {
+    ...DNDBase,
+    icon: Area,
+    label: 'Textarea',
+    as: Textarea,
+    component: 'textarea',
+    props: {
+      label: 'Textarea',
+      placeholder: 'Textarea',
+      intent: FormFieldIntent.aggregate,
+    },
+  },
 ];
 
 const assessmentSourceFields: Array<DnDItem> = [
@@ -144,6 +156,18 @@ const assessmentSourceFields: Array<DnDItem> = [
         {label: '3', value: '3'},
         {label: '4', value: '4'},
       ],
+    },
+  },
+  {
+    ...DNDBase,
+    icon: Area,
+    label: 'Textarea',
+    as: Textarea,
+    component: 'textarea',
+    props: {
+      label: 'Textarea',
+      placeholder: 'Textarea',
+      intent: FormFieldIntent.aggregate,
     },
   },
 ];
