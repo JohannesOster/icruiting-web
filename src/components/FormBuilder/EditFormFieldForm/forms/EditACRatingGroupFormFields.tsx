@@ -4,7 +4,7 @@ import {Button, Input, Textarea, Select, Checkbox} from 'icruiting-ui';
 import {useForm, useFieldArray} from 'react-hook-form';
 import {errorsFor} from 'lib/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
-import {object, string} from 'yup';
+import {array, mixed, number, object, string} from 'yup';
 import {Form} from './StyledForm.sc';
 import {Trash} from 'icons';
 import {useTheme} from 'styled-components';
@@ -20,6 +20,7 @@ type FormValues = {
   options: Array<{label: string; value: string}>;
   intent: FormFieldIntent;
   required: boolean;
+  defaultValue?: string;
 };
 
 type Props = {
@@ -43,7 +44,20 @@ export const EditACRatingGroupFormFields: React.FC<Props> = ({
     criteriaMode: 'all',
     defaultValues: formValues,
     resolver: yupResolver(
-      object({label: string().required('Label ist verpflichtend')}),
+      object({
+        label: string().required('Label ist verpflichtend'),
+        options: array().of(
+          object({
+            label: string().required(
+              'Option ist verpflichtend auszufüllen oder zu löschen',
+            ),
+            value: number()
+              .typeError('Option ist verpflichtend auszufüllen oder zu löschen')
+              .transform((val) => +val),
+          }),
+        ),
+        defaultValue: mixed().transform((val) => (val ? val : null)),
+      }),
     ),
   });
   const {spacing} = useTheme();
@@ -82,6 +96,19 @@ export const EditACRatingGroupFormFields: React.FC<Props> = ({
         options={[
           {label: 'count_distinct', value: FormFieldIntent.countDistinct},
           {label: 'sum_up', value: FormFieldIntent.sumUp},
+        ]}
+      />
+      <Select
+        name="defaultValue"
+        label="Default"
+        ref={register}
+        defaultValue={'default'}
+        options={[
+          {label: undefined, value: null},
+          ...fields.map(({label, value}) => ({
+            label,
+            value,
+          })),
         ]}
       />
       <H6 style={{marginBottom: `-${spacing.scale200}`}}>

@@ -4,7 +4,7 @@ import {Button, Checkbox, Input, Select, Textarea} from 'icruiting-ui';
 import {useForm, useFieldArray} from 'react-hook-form';
 import {errorsFor} from 'lib/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
-import {object, array, string, mixed} from 'yup';
+import {object, array, string, mixed, number} from 'yup';
 import {Form} from './StyledForm.sc';
 import {Trash} from 'icons';
 import {useTheme} from 'styled-components';
@@ -28,12 +28,6 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
   onSubmit,
   ...formValues
 }) => {
-  /** DefaultValue Select:
-   * If value is null label will be taken as select value.
-   * To check weather this "no selection" value is selected, this global const is used in the selection options stm
-   * t and the yup transform function   */
-  const NO_SELECTION_LABEL = '-- Keine Angabe --';
-
   const {
     register,
     formState,
@@ -47,15 +41,15 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
     resolver: yupResolver(
       object({
         label: string().required('Label ist verpflichtend'),
-        defaultValue: mixed().transform((val) => {
-          if (!val || val === NO_SELECTION_LABEL) return null;
-          return val;
-        }),
+        defaultValue: mixed().transform((val) => (val ? val : null)),
         options: array().of(
           object({
             label: string().required(
               'Option ist verpflichtend auszufüllen oder zu löschen',
             ),
+            value: string()
+              .typeError('Option ist verpflichtend auszufüllen oder zu löschen')
+              .transform((val) => +val),
           }),
         ),
       }),
@@ -99,7 +93,7 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
         ref={register}
         defaultValue={'default'}
         options={[
-          {label: NO_SELECTION_LABEL, value: null},
+          {label: undefined, value: null},
           ...fields.map(({label, value}) => ({
             label,
             value,

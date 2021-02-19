@@ -63,6 +63,7 @@ export const EditFormFieldForm: React.FC<Props> = ({
           required={props.required}
           jobRequirementId={props.jobRequirementId}
           intent={props.intent}
+          defaultValue={props.defaultValue}
           jobRequirementOptions={(job.jobRequirements || []).map((req) => ({
             label: req.requirementLabel,
             value: req.jobRequirementId,

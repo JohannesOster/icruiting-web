@@ -1,5 +1,5 @@
 import {RatingGroup} from 'components';
-import {Input, Textarea, Checkbox} from 'icruiting-ui';
+import {Input} from 'icruiting-ui';
 import {ItemTypes} from '../../components/FormBuilder/DnD';
 import {FormCategory, FormFieldIntent} from 'services';
 import {DnDItem} from 'lib/formbuilder/types';
