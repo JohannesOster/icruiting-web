@@ -11,7 +11,7 @@ export const arrMove = (array: any[], from: number, to: number) => {
 };
 
 export const arrInsert = (array: any[], item: any, index: number) => {
-  if (index < 0 || index >= array.length)
+  if (index < 0 || index > array.length)
     throw new Error('Index is out of bounce');
 
   const tmp = [...array];

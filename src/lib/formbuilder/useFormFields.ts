@@ -78,7 +78,7 @@ export const useFormFields = (init: DnDItem[] = []): RType => {
     const original = formFields.find((item) => item.id === id);
     if (!original) return;
 
-    const duplicate = {...original, id: '', index: -1};
+    const duplicate = {...original, id: randString(), index: -1};
     delete duplicate.formFieldId;
 
     return _insert(formFields, duplicate, original.rowIndex + 1);
