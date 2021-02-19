@@ -2,27 +2,6 @@ import {FormFieldIntent} from 'services';
 
 type KeyValuePair<T> = {[key: string]: T};
 
-export const parseValue = (
-  value: string | string[] | KeyValuePair<string>,
-  intent: FormFieldIntent,
-): string | string[] => {
-  switch (intent) {
-    case FormFieldIntent.sumUp:
-      return value as string;
-    case FormFieldIntent.aggregate:
-      return value as string[];
-    case FormFieldIntent.countDistinct:
-      return Object.entries(
-        (value as string[]).reduce((acc, curr) => {
-          acc[curr] = (acc[curr] || 0) + 1;
-          return acc;
-        }, {} as any),
-      )
-        .map(([key, value]) => `${key}: ${value}`)
-        .join(', ');
-  }
-};
-
 export const buildRadarChart = (requirementResults: {
   [jobRequirementId: string]: {
     requirementLabel: string;

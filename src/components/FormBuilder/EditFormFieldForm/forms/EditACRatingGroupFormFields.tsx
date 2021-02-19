@@ -8,6 +8,7 @@ import {object, string} from 'yup';
 import {Form} from './StyledForm.sc';
 import {Trash} from 'icons';
 import {useTheme} from 'styled-components';
+import {FormFieldIntent} from 'services';
 
 type FormValues = {
   label: string;
@@ -17,6 +18,7 @@ type FormValues = {
   /** The currently selected JobRequirementId */
   jobRequirementId: string;
   options: Array<{label: string; value: string}>;
+  intent: FormFieldIntent;
   required: boolean;
 };
 
@@ -72,6 +74,15 @@ export const EditACRatingGroupFormFields: React.FC<Props> = ({
         placeholder="Beschreibung"
         ref={register}
         errors={errorsFor(errors, 'description')}
+      />
+      <Select
+        name="intent"
+        label="Intent"
+        ref={register}
+        options={[
+          {label: 'count_distinct', value: FormFieldIntent.countDistinct},
+          {label: 'sum_up', value: FormFieldIntent.sumUp},
+        ]}
       />
       <H6 style={{marginBottom: `-${spacing.scale200}`}}>
         Optionen (Label, Wert)

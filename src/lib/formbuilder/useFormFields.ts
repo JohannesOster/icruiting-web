@@ -71,7 +71,7 @@ export const useFormFields = (init: DnDItem[] = []): RType => {
       editable: true,
     };
 
-    return arrInsert(formFields, tmp, index);
+    return arrInsert(formFields, tmp, index).map(assignRowIndex);
   };
 
   const _duplicate = (formFields: DnDItem[], id: string) => {

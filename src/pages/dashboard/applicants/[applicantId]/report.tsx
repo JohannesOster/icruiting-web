@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {API, FormCategory} from 'services';
 import useSWR from 'swr';
-import {buildRadarChart, parseValue} from 'lib/report-utils';
+import {buildRadarChart} from 'lib/report-utils';
 import {H3, H6, Table, Box, Flexgrid, getDashboardLayout} from 'components';
 import {API as AmplifyAPI} from 'aws-amplify';
 import {useTheme} from 'styled-components';
@@ -10,14 +10,6 @@ import {Radar} from 'react-chartjs-2';
 import {withAdmin} from 'components';
 import {useRouter} from 'next/router';
 import {FormFieldIntent} from 'services';
-
-type KeyValuePair<T> = {[key: string]: T};
-
-type RankingResultVal = {
-  label: string;
-  intent: FormFieldIntent;
-  value: string | string[] | KeyValuePair<string>;
-};
 
 type Report = {
   rank: number;
@@ -35,6 +27,7 @@ type Report = {
       intent: FormFieldIntent;
       label: string;
       aggregatedValues: string[];
+      countDistinct: {[key: string]: number};
       formFieldScore: number;
       stdDevFormFieldScores: number;
     }[];
@@ -78,6 +71,7 @@ const ApplicantReport = () => {
   };
 
   const {data = {}, options = {}} = _buildRadarChart();
+
   return (
     <Box display="grid" rowGap={spacing.scale200}>
       <H3>Gutachten</H3>
@@ -173,7 +167,7 @@ const ApplicantReport = () => {
                     <tr key={formFieldScore.formFieldId}>
                       <td>{formFieldScore.label}</td>
                       <td>
-                        {formFieldScore.intent === 'aggregate' ? (
+                        {formFieldScore.intent === 'aggregate' && (
                           <ul
                             style={{
                               listStylePosition: 'outside',
@@ -187,13 +181,17 @@ const ApplicantReport = () => {
                               ),
                             )}
                           </ul>
-                        ) : (
-                          parseValue(
-                            formFieldScore.formFieldScore?.toString() ||
-                              formFieldScore.aggregatedValues,
-                            formFieldScore.intent,
-                          )
                         )}
+                        {formFieldScore.intent === 'sum_up' &&
+                          formFieldScore.formFieldScore}
+                        {formFieldScore.intent === 'count_distinct' &&
+                          Object.entries(formFieldScore.countDistinct).map(
+                            ([key, value], idx) => (
+                              <li key={idx}>
+                                {key}: {value}
+                              </li>
+                            ),
+                          )}
                       </td>
                     </tr>
                   ))}

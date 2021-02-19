@@ -45,11 +45,7 @@ const FormBuilder: React.FC = () => {
   const {colors, spacing} = useTheme();
   const toaster = useToaster();
   const router = useRouter();
-  const {
-    formId: formIdEdit,
-    formCategory = 'application',
-    jobId,
-  } = router.query as Query;
+  const {formId: formIdEdit, formCategory, jobId} = router.query as Query;
 
   const [status, setStatus] = useState('idle');
   const formId = useRef(formIdEdit || uuidv4());
@@ -161,7 +157,7 @@ const FormBuilder: React.FC = () => {
     const form = {
       formId: formId.current,
       jobId,
-      formCategory: formCategory || formToEdit?.formCategory,
+      formCategory: formToEdit?.formCategory || formCategory,
       formTitle: getValues().formTitle,
       formFields: formFields.fields.map(converter.toAPIFormField),
     };

@@ -56,11 +56,11 @@ const screeningInitialformFields: Array<DnDItem> = [
     rowIndex: 0,
     as: RatingGroup,
     component: 'rating_group',
-    editable: true,
     props: {
       label: 'Die Bewerbung war professionell',
       intent: FormFieldIntent.sumUp,
       name: `${Math.random().toString(36).substring(7)}`,
+      required: true,
       options: [
         {label: '0', value: '0'},
         {label: '1', value: '1'},
@@ -69,6 +69,7 @@ const screeningInitialformFields: Array<DnDItem> = [
         {label: '4', value: '4'},
       ],
     },
+    editable: true,
   },
   {
     id: '2',
@@ -81,6 +82,7 @@ const screeningInitialformFields: Array<DnDItem> = [
       intent: FormFieldIntent.countDistinct,
       name: `${Math.random().toString(36).substring(7)}`,
       defaultValue: 'Strong Hire',
+      required: true,
       options: [
         {label: 'Strong Decline', value: 'Strong Decline'},
         {label: 'Decline', value: 'Decline'},
@@ -88,6 +90,8 @@ const screeningInitialformFields: Array<DnDItem> = [
         {label: 'Strong Hire', value: 'Strong Hire'},
       ],
     },
+    deletable: true,
+    editable: true,
   },
   {
     id: '3',
@@ -106,6 +110,8 @@ const screeningInitialformFields: Array<DnDItem> = [
       ],
       name: Math.random().toString(36).substring(7),
     },
+    deletable: true,
+    editable: true,
   },
   {
     id: '4',
@@ -119,6 +125,7 @@ const screeningInitialformFields: Array<DnDItem> = [
       placeholder: 'Anmerkungen',
       name: Math.random().toString(36).substring(7),
     },
+    editable: true,
   },
 ];
 
@@ -134,6 +141,7 @@ const assessmentInitialformFields: Array<DnDItem> = [
       intent: FormFieldIntent.sumUp,
       label: 'Der Bewerber trägt ästhetischen Haarschmuck',
       name: `${Math.random().toString(36).substring(7)}`,
+      required: true,
       options: [
         {label: '0', value: '0'},
         {label: '1', value: '1'},
@@ -153,14 +161,17 @@ const assessmentInitialformFields: Array<DnDItem> = [
       label: 'Gesamteindruck',
       intent: FormFieldIntent.countDistinct,
       name: `${Math.random().toString(36).substring(7)}`,
+      required: true,
       defaultValue: 'Strong Hire',
       options: [
-        {label: 'Strong Decline', value: 'Strong Decline'},
-        {label: 'Decline', value: 'Decline'},
-        {label: 'Hire', value: 'Hire'},
-        {label: 'Strong Hire', value: 'Strong Hire'},
+        {label: 'Strong Decline', value: '0'},
+        {label: 'Decline', value: '1'},
+        {label: 'Hire', value: '2'},
+        {label: 'Strong Hire', value: '3'},
       ],
     },
+    deletable: true,
+    editable: true,
   },
   {
     id: '3',
@@ -174,6 +185,7 @@ const assessmentInitialformFields: Array<DnDItem> = [
       placeholder: 'Anmerkungen',
       name: Math.random().toString(36).substring(7),
     },
+    editable: true,
   },
 ];
 

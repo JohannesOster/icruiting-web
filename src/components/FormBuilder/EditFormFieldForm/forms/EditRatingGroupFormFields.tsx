@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box, H6} from 'components';
-import {Button, Checkbox, Input, Textarea} from 'icruiting-ui';
+import {Button, Checkbox, Input, Select, Textarea} from 'icruiting-ui';
 import {useForm, useFieldArray} from 'react-hook-form';
 import {errorsFor} from 'lib/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
@@ -8,11 +8,13 @@ import {object, array, string} from 'yup';
 import {Form} from './StyledForm.sc';
 import {Trash} from 'icons';
 import {useTheme} from 'styled-components';
+import {FormFieldIntent} from 'services';
 
 type FormValues = {
   label: string;
   description: string;
   options: Array<{label: string; value: string}>;
+  intent: FormFieldIntent;
   required: boolean;
 };
 
@@ -70,6 +72,15 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
         placeholder="Beschreibung"
         ref={register}
         errors={errorsFor(errors, 'description')}
+      />
+      <Select
+        name="intent"
+        label="Intent"
+        ref={register}
+        options={[
+          {label: 'count_distinct', value: FormFieldIntent.countDistinct},
+          {label: 'sum_up', value: FormFieldIntent.sumUp},
+        ]}
       />
       <H6 style={{marginBottom: `-${spacing.scale200}`}}>
         Optionen (Label, Wert)
