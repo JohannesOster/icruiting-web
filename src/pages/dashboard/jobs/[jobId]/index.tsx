@@ -164,6 +164,7 @@ const JobDetails = () => {
     {
       title: 'JSON Export',
       cell: ({formId}) => {
+        if (!formId) return <>-</>;
         return (
           <Button
             kind="minimal"
