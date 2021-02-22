@@ -177,6 +177,7 @@ export const getSourceFormFields = (category: FormCategory): Array<DnDItem> => {
     screening: screeningSourceFields,
     application: applicationFormSourceFields,
     assessment: assessmentSourceFields,
+    onboarding: assessmentSourceFields,
   };
   return map[category] || [];
 };

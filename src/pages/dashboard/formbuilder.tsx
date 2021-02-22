@@ -253,8 +253,10 @@ const FormBuilder: React.FC = () => {
           render={(targetID, drop) => (
             <DnDSourceSection id={targetID} ref={drop}>
               <Box marginTop={sourceSectionMargin} transition="all 0.5s">
-                {(formCategory === 'assessment' ||
-                  formToEdit?.formCategory === 'assessment') && (
+                {(['assessment', 'onboarding'].includes(formCategory) ||
+                  ['assessment', 'onboarding'].includes(
+                    formToEdit?.formCategory,
+                  )) && (
                   <Input
                     label="Formulartitel"
                     placeholder="z.B. Einzelinterview"

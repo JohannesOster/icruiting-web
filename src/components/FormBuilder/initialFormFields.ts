@@ -104,6 +104,7 @@ export const getInitialFormFields = (
     screening: screeningInitialformFields,
     application: applicationInitialformFields,
     assessment: assessmentInitialformFields,
+    onboarding: assessmentInitialformFields,
   };
   return map[category] || [];
 };

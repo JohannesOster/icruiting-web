@@ -104,9 +104,7 @@ const JobDetails = () => {
       title: 'Formular',
       cell: (row) => {
         const cat = row.formCategory;
-        if (cat === 'assessment' || cat === 'onboarding') {
-          return row.formTitle;
-        }
+        if (row.formTitle) return row.formTitle;
         const displayNames = {application: 'Bewerbung', screening: 'Screening'};
         return displayNames[cat];
       },
@@ -288,6 +286,25 @@ const JobDetails = () => {
         <DataTable
           columns={baseCols}
           data={forms['assessment'] || []}
+          isLoading={isFetching}
+        />
+      </Box>
+      <Box display="grid" gridRowGap={spacing.scale100}>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <H6>Onboarding-Formulare</H6>
+          <Button
+            onClick={() =>
+              router.push(
+                `/dashboard/formbuilder?formCategory=onboarding&jobId=${jobId}`,
+              )
+            }
+          >
+            Hinzufügen
+          </Button>
+        </Box>
+        <DataTable
+          columns={baseCols}
+          data={forms['onboarding'] || []}
           isLoading={isFetching}
         />
       </Box>
