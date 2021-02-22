@@ -233,24 +233,28 @@ const JobDetails = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>
-                <Link
-                  href={`/dashboard/jobs/${jobId}/ranking?formCategory=screening`}
-                >
-                  <a>Screeningranking</a>
-                </Link>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <Link
-                  href={`/dashboard/jobs/${jobId}/ranking?formCategory=assessment`}
-                >
-                  <a>Assessment Center ranking</a>
-                </Link>
-              </td>
-            </tr>
+            {[
+              {
+                title: 'Screeningranking',
+                url: `/dashboard/jobs/${jobId}/ranking?formCategory=screening`,
+              },
+              {
+                title: 'Assessmentranking',
+                url: `/dashboard/jobs/${jobId}/ranking?formCategory=assessment`,
+              },
+              {
+                title: 'Onboardingranking',
+                url: `/dashboard/jobs/${jobId}/ranking?formCategory=onboarding`,
+              },
+            ].map(({title, url}) => (
+              <tr>
+                <td>
+                  <Link href={url}>
+                    <a>{title}</a>
+                  </Link>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </Table>
       </Box>
