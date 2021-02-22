@@ -1,6 +1,6 @@
 import React from 'react';
-import {Button, Input, Select, Textarea, Checkbox} from 'icruiting-ui';
-import {useForm, Controller} from 'react-hook-form';
+import {Button, Input, Textarea, Checkbox} from 'icruiting-ui';
+import {useForm} from 'react-hook-form';
 import {errorsFor} from 'lib/react-hook-form-errors-for';
 import {object, string} from 'yup';
 import {Form} from './StyledForm.sc';
@@ -9,7 +9,6 @@ import {yupResolver} from '@hookform/resolvers';
 type FormValues = {
   label: string;
   placeholder?: string;
-  type: string;
   description: string;
   required?: boolean;
 };
@@ -19,26 +18,16 @@ type Props = {
   onSubmit: (values: FormValues) => void;
 } & FormValues;
 
-export const EditInputFormFieldsForm: React.FC<Props> = ({
+export const EditTextareaFormFieldsForm: React.FC<Props> = ({
   onSubmit,
   ...formValues
 }) => {
-  const {
-    register,
-    formState,
-    errors,
-    handleSubmit,
-    trigger,
-    control,
-  } = useForm<FormValues>({
+  const {register, formState, errors, handleSubmit} = useForm<FormValues>({
     mode: 'onChange',
     criteriaMode: 'all',
     defaultValues: formValues,
     resolver: yupResolver(
-      object({
-        label: string().required('Label ist verpflichtend'),
-        type: string().required('Typ ist verpflichtend'),
-      }),
+      object({label: string().required('Label ist verpflichtend')}),
     ),
   });
 
@@ -70,22 +59,6 @@ export const EditInputFormFieldsForm: React.FC<Props> = ({
         placeholder="Placeholder"
         ref={register}
         errors={errorsFor(errors, 'placeholder')}
-      />
-      <Controller
-        name="type"
-        control={control}
-        render={({onChange, ...props}) => (
-          <Select
-            label="Datentyp"
-            options={inputTypes}
-            errors={errorsFor(errors, 'type')}
-            onChange={(event) => {
-              onChange(event);
-              trigger('placeholder');
-            }}
-            {...props}
-          />
-        )}
       />
       <Textarea
         name="description"

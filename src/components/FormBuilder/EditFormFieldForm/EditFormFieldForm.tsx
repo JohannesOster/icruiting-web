@@ -8,6 +8,7 @@ import {
   EditOptionsFormFields,
   EditACRatingGroupFormFields,
   EditSectionHeaderFormFieldsForm,
+  EditTextareaFormFieldsForm,
 } from './forms';
 import {FormCategory, TJob} from 'services';
 
@@ -42,15 +43,22 @@ export const EditFormFieldForm: React.FC<Props> = ({
         />
       );
     case 'input':
+      <EditInputFormFieldsForm
+        onSubmit={onSubmit}
+        label={props.label}
+        placeholder={props.placeholder}
+        description={props.description}
+        required={props.required}
+        type={props.type}
+      />;
     case 'textarea':
       return (
-        <EditInputFormFieldsForm
+        <EditTextareaFormFieldsForm
           onSubmit={onSubmit}
           label={props.label}
           placeholder={props.placeholder}
           description={props.description}
           required={props.required}
-          type={props.type}
         />
       );
     case 'rating_group':
