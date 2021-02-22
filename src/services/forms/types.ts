@@ -1,6 +1,10 @@
 // import {FormFieldComponent} from 'pages/Dashboard/Jobs/FormBuilder/types';
 type FormFieldComponent = string;
-export type FormCategory = 'application' | 'screening' | 'assessment';
+export type FormCategory =
+  | 'application'
+  | 'screening'
+  | 'assessment'
+  | 'onboarding';
 export enum FormFieldIntent {
   aggregate = 'aggregate',
   countDistinct = 'count_distinct',
@@ -31,6 +35,7 @@ export type TForm = {
   formTitle?: string;
   jobId: string;
   formFields: FormField[];
+  replicaOf?: string;
 };
 
 export type TFormRequest = {
@@ -38,5 +43,6 @@ export type TFormRequest = {
   formCategory: FormCategory;
   formTitle?: string;
   jobId: string;
-  formFields: Array<FormFieldBase>;
+  formFields: FormFieldBase[];
+  replicaOf?: string;
 };

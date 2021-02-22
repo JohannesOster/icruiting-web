@@ -99,25 +99,26 @@ const JobDetails = () => {
     );
   };
 
-  const formsTableColumns: Array<TColumn> = [
+  const baseCols: TColumn[] = [
     {
-      title: 'Kategorie',
+      title: 'Formular',
       cell: (row) => {
-        const cat = row.formCategory as 'application';
-        const displayNames = {
-          application: 'Bewerbung',
-          screening: 'Screening',
-          assessment: 'Assessment',
-        };
+        const cat = row.formCategory;
+        if (cat === 'assessment' || cat === 'onboarding') {
+          return row.formTitle;
+        }
+        const displayNames = {application: 'Bewerbung', screening: 'Screening'};
         return displayNames[cat];
       },
     },
     {title: 'Aktion', cell: actionCell},
+  ];
+  const formsTableColumns: Array<TColumn> = [
+    ...baseCols,
     {
       title: 'Direktlink',
-      cell: ({formCategory, formId}) => {
-        if (formCategory !== 'application' || !formId)
-          return <Typography>-</Typography>;
+      cell: ({formId}) => {
+        if (!formId) return <Typography>-</Typography>;
         const domain = amplifyConfig.API.endpoints[0].endpoint;
         const iframeSrc = `${domain}/forms/${formId}/html`;
         return (
@@ -129,9 +130,7 @@ const JobDetails = () => {
     },
     {
       title: 'JSON Export',
-      cell: ({formCategory, formId}) => {
-        if (formCategory !== 'application' || !formId)
-          return <Typography>-</Typography>;
+      cell: ({formId}) => {
         return (
           <Button
             kind="minimal"
@@ -148,15 +147,15 @@ const JobDetails = () => {
     },
   ];
 
-  const formsTableData = ['application', 'screening'].map((formCategory) => {
+  const applicationFormsData = ['application'].map((formCategory) => {
     const form = forms[formCategory];
     return form ? {...form[0]} : {formCategory};
   });
 
-  const assessmentTableColumns: Array<TColumn> = [
-    {title: 'Bewertungsformulartitle', cell: (row) => row.formTitle},
-    {title: 'Aktion', cell: actionCell},
-  ];
+  const screeningFormsData = ['screening'].map((formCategory) => {
+    const form = forms[formCategory];
+    return form ? {...form[0]} : {formCategory};
+  });
 
   return (
     <main style={{display: 'grid', rowGap: spacing.scale300}}>
@@ -258,16 +257,24 @@ const JobDetails = () => {
         </Table>
       </Box>
       <Box display="grid" gridRowGap={spacing.scale100}>
-        <H6>Formulare</H6>
+        <H6>Bewerbungs-Formular</H6>
         <DataTable
           columns={formsTableColumns}
-          data={formsTableData}
+          data={applicationFormsData}
+          isLoading={isFetching}
+        />
+      </Box>
+      <Box display="grid" gridRowGap={spacing.scale100}>
+        <H6>Screening-Formular</H6>
+        <DataTable
+          columns={baseCols}
+          data={screeningFormsData}
           isLoading={isFetching}
         />
       </Box>
       <Box display="grid" gridRowGap={spacing.scale100}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <H6>Assessment - Übungen</H6>
+          <H6>Assessment-Formulare</H6>
           <Button
             onClick={() =>
               router.push(
@@ -279,7 +286,7 @@ const JobDetails = () => {
           </Button>
         </Box>
         <DataTable
-          columns={assessmentTableColumns}
+          columns={baseCols}
           data={forms['assessment'] || []}
           isLoading={isFetching}
         />
