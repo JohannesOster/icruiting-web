@@ -12,13 +12,21 @@ import {
   getDashboardLayout,
   Flexgrid,
 } from 'components';
-import {Button, Dialog, Spinner, Link as ExternalLink} from 'icruiting-ui';
+import {
+  Button,
+  Dialog,
+  Spinner,
+  Link as ExternalLink,
+  Input,
+} from 'icruiting-ui';
 import {API, TForm} from 'services';
 import useSWR from 'swr';
 import {useRouter} from 'next/router';
 import {withAdmin} from 'components';
 import amplifyConfig from 'amplify.config';
 import {Edit} from 'icons';
+import {useForm} from 'react-hook-form';
+import {v4 as uuidv4} from 'uuid';
 
 const JobDetails = () => {
   const {colors, spacing} = useTheme();
@@ -30,6 +38,26 @@ const JobDetails = () => {
     null,
   );
 
+  const {data: job, error: jobError} = useSWR(
+    [`GET /jobs/${jobId}`, jobId],
+    (_key, jobId) => API.jobs.find(jobId),
+  );
+
+  const [forms, setForms] = useState<{[key: string]: TForm[]}>({});
+  const {data, error: formsError, mutate, revalidate} = useSWR(
+    [`GET /forms`, jobId],
+    (_key, jobId) => API.forms.list(jobId),
+  );
+
+  const closeReplicaDialog = () => {
+    setReplicaToEdit(null);
+    setFormToReplicate(null);
+    reset({});
+  };
+  const [replicaToEdit, setReplicaToEdit] = useState<string | null>(null);
+  const [formToReplicate, setFormToReplicate] = useState<string | null>(null);
+  const {handleSubmit, register, reset} = useForm();
+
   const onDelete = () => {
     if (!shouldDeleteFormId) return;
     setDeletingFormId(shouldDeleteFormId);
@@ -39,24 +67,30 @@ const JobDetails = () => {
     });
   };
 
-  const {data: job, error: jobError} = useSWR(
-    [`GET /jobs/${jobId}`, jobId],
-    (_key, jobId) => API.jobs.find(jobId),
-  );
-
-  const [forms, setForms] = useState<{[key: string]: TForm[]}>({});
-  const {data, error: formsError, mutate} = useSWR(
-    [`GET /forms`, jobId],
-    (_key, jobId) => API.forms.list(jobId),
-  );
-
   useEffect(() => {
     if (!data) return;
     const _forms = data.reduce((acc, curr) => {
       const cat = curr.formCategory;
       acc[cat] = acc[cat] ? acc[cat].concat(curr) : [curr];
       return acc;
+    }, {} as {[key: string]: TForm[]});
+    if (!_forms['onboarding'].length) return setForms(_forms);
+
+    const onboarding = _forms['onboarding'].reduce((acc, curr) => {
+      if (!curr.replicaOf) {
+        acc[curr.formId] = curr;
+        return acc;
+      }
+
+      if (!acc[curr.replicaOf].replicas) acc[curr.replicaOf].replicas = [];
+      acc[curr.replicaOf].replicas = acc[curr.replicaOf].replicas.concat([
+        curr,
+      ]);
+
+      return acc;
     }, {} as any);
+
+    _forms['onboarding'] = Object.values(onboarding);
     setForms(_forms);
   }, [data]);
 
@@ -155,6 +189,67 @@ const JobDetails = () => {
     return form ? {...form[0]} : {formCategory};
   });
 
+  const onboardingCols: TColumn[] = [
+    ...baseCols,
+    {
+      title: 'Replikas',
+      cell: ({replicas}) => (
+        <table>
+          <thead>
+            <tr>
+              <th>Titel</th>
+              <th>Aktion</th>
+            </tr>
+          </thead>
+          <tbody>
+            {replicas?.map(({formTitle, formId: replicaFormId}) => (
+              <tr key={replicaFormId}>
+                <td>{formTitle}</td>
+                <td>
+                  <Box
+                    display="grid"
+                    gridColumnGap={spacing.scale100}
+                    gridAutoFlow="column"
+                    justifyContent="left"
+                    alignItems="center"
+                  >
+                    <Button
+                      kind="minimal"
+                      onClick={() => {
+                        const title = data?.find(
+                          ({formId}) => formId === replicaFormId,
+                        )?.formTitle;
+                        reset({replicaFormTitle: title});
+                        setReplicaToEdit(replicaFormId);
+                      }}
+                    >
+                      bearbeiten
+                    </Button>
+                    <span>/</span>
+                    <Button
+                      kind="minimal"
+                      onClick={() => setShouldDeleteFormId(replicaFormId)}
+                    >
+                      löschen
+                    </Button>
+                  </Box>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ),
+    },
+    {
+      title: 'Replika hinzufügen',
+      cell: ({formId}) => (
+        <Button kind="minimal" onClick={() => setFormToReplicate(formId)}>
+          Replika hinzufügen
+        </Button>
+      ),
+    },
+  ];
+
   return (
     <main style={{display: 'grid', rowGap: spacing.scale300}}>
       {shouldDeleteFormId && (
@@ -189,6 +284,54 @@ const JobDetails = () => {
               </Button>
             </Box>
           </Box>
+        </Dialog>
+      )}
+      {(replicaToEdit || formToReplicate) && (
+        <Dialog onClose={closeReplicaDialog}>
+          <form
+            onSubmit={handleSubmit(async (values) => {
+              if (replicaToEdit) {
+                const form = ((forms['onboarding'] || []) as any).reduce(
+                  (acc, {replicas}) => {
+                    const replica = replicas?.find(
+                      ({formId}) => formId === replicaToEdit,
+                    );
+                    if (!replica) return acc;
+                    return replica;
+                  },
+                  {} as any,
+                );
+                if (!form) return closeReplicaDialog();
+                await API.forms.update({
+                  ...form,
+                  formTitle: values.replicaFormTitle,
+                });
+                revalidate();
+                closeReplicaDialog();
+                return;
+              }
+
+              await API.forms.create({
+                formId: uuidv4(),
+                jobId: job.jobId,
+                formTitle: values.replicaFormTitle,
+                formCategory: 'onboarding',
+                formFields: [],
+                replicaOf: formToReplicate,
+              });
+              revalidate();
+              closeReplicaDialog();
+            })}
+            style={{display: 'grid', rowGap: spacing.scale200}}
+          >
+            <Input
+              label="Formulartitel"
+              placeholder="Formulartitel"
+              name="replicaFormTitle"
+              ref={register}
+            />
+            <Button type="submit">Speichern</Button>
+          </form>
         </Dialog>
       )}
       <H3>{job?.jobTitle}</H3>
@@ -247,7 +390,7 @@ const JobDetails = () => {
                 url: `/dashboard/jobs/${jobId}/ranking?formCategory=onboarding`,
               },
             ].map(({title, url}) => (
-              <tr>
+              <tr key={url}>
                 <td>
                   <Link href={url}>
                     <a>{title}</a>
@@ -307,7 +450,7 @@ const JobDetails = () => {
           </Button>
         </Box>
         <DataTable
-          columns={baseCols}
+          columns={onboardingCols}
           data={forms['onboarding'] || []}
           isLoading={isFetching}
         />
