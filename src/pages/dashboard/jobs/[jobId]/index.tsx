@@ -78,11 +78,12 @@ const JobDetails = () => {
 
     const onboarding = _forms['onboarding'].reduce((acc, curr) => {
       if (!curr.replicaOf) {
-        acc[curr.formId] = curr;
+        acc[curr.formId] = {...acc[curr.formId], ...curr};
         return acc;
       }
 
-      if (!acc[curr.replicaOf].replicas) acc[curr.replicaOf].replicas = [];
+      if (!acc[curr.replicaOf]) acc[curr.replicaOf] = {};
+      if (!acc[curr.replicaOf]?.replicas) acc[curr.replicaOf].replicas = [];
       acc[curr.replicaOf].replicas = acc[curr.replicaOf].replicas.concat([
         curr,
       ]);
