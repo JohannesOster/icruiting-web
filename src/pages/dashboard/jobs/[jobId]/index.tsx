@@ -74,7 +74,7 @@ const JobDetails = () => {
       acc[cat] = acc[cat] ? acc[cat].concat(curr) : [curr];
       return acc;
     }, {} as {[key: string]: TForm[]});
-    if (!_forms['onboarding'].length) return setForms(_forms);
+    if (!_forms['onboarding']?.length) return setForms(_forms);
 
     const onboarding = _forms['onboarding'].reduce((acc, curr) => {
       if (!curr.replicaOf) {
