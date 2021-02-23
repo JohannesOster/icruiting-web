@@ -4,7 +4,6 @@ export type TRanking = Array<{
   applicantId: string;
   score: number;
   rank: number;
-  standardDeviation: number;
   submissions: Array<any>;
   result: {
     [formFieldId: string]: {
@@ -19,7 +18,6 @@ export type TRankingAPI = Array<{
   applicantId: string;
   score: string;
   rank: string;
-  standardDeviation: string;
   submissionsCount: string;
   submissions: Array<any>;
   result: {

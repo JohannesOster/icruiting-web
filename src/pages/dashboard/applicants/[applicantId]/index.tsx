@@ -25,7 +25,7 @@ const ApplicantDetails = () => {
   const {colors, spacing} = useTheme();
   const router = useRouter();
   const {applicantId} = router.query as {applicantId: string};
-  const [showScreeningForm, setShowScreeningForm] = useState(false);
+  const [showScreeningForm, setShowScreeningForm] = useState(true);
 
   const [status, setStatus] = useState('idle');
   const {data: applicant} = useSWR(
@@ -194,7 +194,7 @@ const ApplicantDetails = () => {
           style={{cursor: 'pointer'}}
         >
           <Flexgrid alignItems="center" flexGap={spacing.scale100}>
-            <H6>Screeningformular</H6>
+            <H6>Screening-Formular</H6>
             <Arrow
               height={spacing.scale300}
               style={{
@@ -226,12 +226,30 @@ const ApplicantDetails = () => {
         )}
       </form>
       <section>
-        <H6>Assessment Center</H6>
+        <H6>Assessment-Formulare</H6>
         <DataTable
           data={forms['assessment'] || []}
           columns={[
             {
-              title: 'AC-Formular',
+              title: 'Formular',
+              cell: (row) => (
+                <Link
+                  href={`/dashboard/applicants/${applicant?.applicantId}/assessment?formId=${row.formId}`}
+                >
+                  <a>{row.formTitle}</a>
+                </Link>
+              ),
+            },
+          ]}
+        />
+      </section>
+      <section>
+        <H6>Onboarding-Formulare</H6>
+        <DataTable
+          data={forms['onboarding'] || []}
+          columns={[
+            {
+              title: 'Formular',
               cell: (row) => (
                 <Link
                   href={`/dashboard/applicants/${applicant?.applicantId}/assessment?formId=${row.formId}`}
