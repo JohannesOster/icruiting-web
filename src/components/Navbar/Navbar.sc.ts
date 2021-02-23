@@ -25,6 +25,8 @@ export const Header = styled.header`
 
 export const NavContainer = styled.div`
   margin-left: auto;
+  position: relative;
+  display: flex;
 `;
 
 export const Hamburger = styled.div<{open: boolean}>`
