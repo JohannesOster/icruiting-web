@@ -47,7 +47,6 @@ export const Ranking = () => {
         </Link>
       ),
     },
-    {title: 'Standardabweichung', cell: (row) => row.standardDeviation},
     {title: 'Score', cell: (row) => row.score},
     {title: '#Bewertungen', cell: (row) => row.submissionsCount},
   ];
