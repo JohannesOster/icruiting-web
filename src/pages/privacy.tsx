@@ -105,24 +105,14 @@ const Privacy: FC = () => {
         </Typography>
         <H6>Datenspeicherung</H6>
         <Typography>
-          Für die Dantenspeicherung verwenden wir ebenfalls Dienste von Heroku.
-          Dabei befinden sich die von uns genutzten Server in Dublin.Weitere
-          Informationen zur Datennutzung durch Heroku erhalten Sie in der
-          Datenschutzerklärung von Heroku:{' '}
-          <a
-            href="https://www.salesforce.com/company/privacy/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            https://www.salesforce.com/company/privacy/
-          </a>{' '}
-          . <br />
+          Für die Dantenspeicherung verwenden wir Dienste von Amazon Web
+          Services, Inc., 410 Terry Avenue North, Seattle WA 98109, USA,
+          („AWS“). . <br />
           Zusätzlich greifen wir für die Speicherung von Dokumente, welche
           sowhol direkt auf der Website als auch über ein von icruiting
           bereitgesteltes Bewerbungsformular hochgeladen werden auf das Produkte
-          „S3“ von Amazon Web Services, Inc., 410 Terry Avenue North, Seattle WA
-          98109, USA, („AWS“) zurück, der unsere Daten im Auftrag verarbeitet.
-          Dabei erfolgt die Verabeitung und Speicherung ausschließlich im
+          „S3“ von AWS zurück, der unsere Daten im Auftrag verarbeitet. Dabei
+          erfolgt die Verabeitung und Speicherung ausschließlich im
           AWS-Rechenzentrum in Frankfurt a.M. AWS ist ferner
           Privacy-Shield-zertifiziert und garantiert damit, auch außerhalb des
           europäischen Wirtschaftsraums die personenbezogenen Daten entsprechend
