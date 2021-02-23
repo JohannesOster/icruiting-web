@@ -16,6 +16,7 @@ interface AuthContext {
   isAuthenticating: boolean;
   currentUser?: User;
   refetchUser: () => void;
+  logout: () => void;
 }
 
 const [useCtx, CtxProvider] = createCtx<AuthContext>();
@@ -53,9 +54,19 @@ const AuthProvider: React.FC = (props) => {
     fetchCurrentUser();
   }, [fetchCurrentUser]);
 
+  const logout = async () => {
+    await Auth.signOut();
+    fetchCurrentUser();
+  };
+
   return (
     <CtxProvider
-      value={{isAuthenticating, currentUser, refetchUser: fetchCurrentUser}}
+      value={{
+        isAuthenticating,
+        currentUser,
+        refetchUser: fetchCurrentUser,
+        logout,
+      }}
       {...props}
     />
   );

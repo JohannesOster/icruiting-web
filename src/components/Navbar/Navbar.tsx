@@ -22,7 +22,7 @@ import {useAuth} from 'context';
 const Navbar: React.FC = () => {
   const {spacing} = useTheme();
   const router = useRouter();
-  const {currentUser, refetchUser, isAuthenticating} = useAuth();
+  const {currentUser, logout, isAuthenticating} = useAuth();
 
   const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
@@ -40,11 +40,6 @@ const Navbar: React.FC = () => {
       window.scrollTo(0, parseInt(scrollY || '0') * -1);
     }
   }, [menuOpen]);
-
-  const handleLogout = async () => {
-    await Auth.signOut();
-    refetchUser();
-  };
 
   const closeMenu = () => setMenuOpen(false);
 
@@ -120,7 +115,7 @@ const Navbar: React.FC = () => {
         </Link>
       </MobileNavItem>
       <MobileNavItem onClick={closeMenu}>
-        <Typography onClick={() => handleLogout()}>
+        <Typography onClick={logout}>
           <a>Abmelden</a>
         </Typography>
       </MobileNavItem>
@@ -186,7 +181,7 @@ const Navbar: React.FC = () => {
                 Account
               </DropDownItem>
             </Link>
-            <Typography onClick={handleLogout}>
+            <Typography onClick={logout}>
               <DropDownItem>
                 <Logout style={{width: '1em', marginRight: spacing.scale100}} />
                 Abmelden

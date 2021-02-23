@@ -1,62 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import {API, FormCategory} from 'services';
+import React, {useState} from 'react';
+import {API} from 'services';
 import useSWR from 'swr';
 import {buildRadarChart} from 'lib/report-utils';
 import {H3, H6, Table, Box, Flexgrid, getDashboardLayout} from 'components';
-import {API as AmplifyAPI} from 'aws-amplify';
 import {useTheme} from 'styled-components';
 import {Arrow} from 'icons';
 import {Radar} from 'react-chartjs-2';
 import {withAdmin} from 'components';
 import {useRouter} from 'next/router';
-import {FormFieldIntent} from 'services';
 import {Button} from 'icruiting-ui';
-
-type Report = {
-  rank: number;
-  formCategory: FormCategory;
-  formCategoryScore: number;
-  formResults: {
-    formId: string;
-    formTitle: string;
-    formScore: number;
-    stdDevFormScore: number;
-    replicas?: {
-      formId: string;
-      formTitle: string;
-      formScore: number;
-      stdDevFormScore: number;
-      formFieldScores: {
-        formFieldId: string;
-        jobRequirementId: string;
-        rowIndex: number;
-        intent: FormFieldIntent;
-        label: string;
-        aggregatedValues: string[];
-        countDistinct: {[key: string]: number};
-        formFieldScore: number;
-        stdDevFormFieldScores: number;
-      }[];
-    }[];
-    formFieldScores: {
-      formFieldId: string;
-      jobRequirementId: string;
-      rowIndex: number;
-      intent: FormFieldIntent;
-      label: string;
-      aggregatedValues: string[];
-      countDistinct: {[key: string]: number};
-      formFieldScore: number;
-      stdDevFormFieldScores: number;
-    }[];
-  }[];
-  jobRequirementResults: {
-    jobRequirementId: string;
-    jobRequirementScore: number;
-    requirementLabel: string;
-    minValue?: number;
-  }[];
-};
 
 const ApplicantReport = () => {
   const {spacing} = useTheme();
@@ -73,14 +25,11 @@ const ApplicantReport = () => {
     (_key, applicantId) => API.applicants.find(applicantId),
   );
 
-  const [report, setReport] = useState<Report | null>(null);
-  useEffect(() => {
-    AmplifyAPI.get(
-      'icruiting-api',
-      `/applicants/${applicantId}/report?formCategory=${formCategory}`,
-      {},
-    ).then(setReport);
-  }, [applicantId, formCategory]);
+  const {data: report} = useSWR(
+    ['GET /applicant/:applicantId/report', applicantId, formCategory],
+    (_key, applicantId, formCategory) =>
+      API.applicants.retrieveReport(applicantId, formCategory),
+  );
 
   const _buildRadarChart = () => {
     if (!(report && report.jobRequirementResults))
