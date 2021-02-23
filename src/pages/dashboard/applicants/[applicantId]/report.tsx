@@ -10,6 +10,7 @@ import {Radar} from 'react-chartjs-2';
 import {withAdmin} from 'components';
 import {useRouter} from 'next/router';
 import {FormFieldIntent} from 'services';
+import {Button} from 'icruiting-ui';
 
 type Report = {
   rank: number;
@@ -20,6 +21,23 @@ type Report = {
     formTitle: string;
     formScore: number;
     stdDevFormScore: number;
+    replicas?: {
+      formId: string;
+      formTitle: string;
+      formScore: number;
+      stdDevFormScore: number;
+      formFieldScores: {
+        formFieldId: string;
+        jobRequirementId: string;
+        rowIndex: number;
+        intent: FormFieldIntent;
+        label: string;
+        aggregatedValues: string[];
+        countDistinct: {[key: string]: number};
+        formFieldScore: number;
+        stdDevFormFieldScores: number;
+      }[];
+    }[];
     formFieldScores: {
       formFieldId: string;
       jobRequirementId: string;
@@ -48,6 +66,7 @@ const ApplicantReport = () => {
   const [showApplicant, setShowApplicant] = useState(true);
   const [showDetails, setShowDetails] = useState(true);
   const [showProfile, setShowProfile] = useState(true);
+  const [showReplicas, setShowReplicas] = useState<string | null>(null);
 
   const {data: applicant} = useSWR(
     ['GET /applicants/:applicantId', applicantId],
@@ -153,16 +172,103 @@ const ApplicantReport = () => {
               {report?.formResults?.map((formScore) => (
                 <React.Fragment key={formScore.formId}>
                   <tr>
-                    <th>
-                      {formScore.formTitle ||
-                        (formCategory === 'screening'
-                          ? 'Screeningformular'
-                          : 'Assessment Formular')}
+                    <th
+                      style={{display: 'flex', justifyContent: 'space-between'}}
+                    >
+                      <span>
+                        {formScore.formTitle ||
+                          {
+                            screening: 'Screening',
+                            assessment: 'Assessment',
+                            onboarding: 'Onboarding',
+                          }[formCategory]}
+                      </span>{' '}
+                      {formScore.replicas?.length > 1 && (
+                        <Button
+                          kind="minimal"
+                          onClick={() => {
+                            setShowReplicas((curr) =>
+                              curr ? null : formScore.formId,
+                            );
+                          }}
+                        >
+                          Replikas anzeigen
+                        </Button>
+                      )}
                     </th>
                     <th>
                       {formScore.formScore} | σ = {formScore.stdDevFormScore}
                     </th>
                   </tr>
+                  {showReplicas === formScore.formId && (
+                    <tr>
+                      <td>
+                        <Table>
+                          <tbody>
+                            <tr>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                            {formScore.replicas?.map((replica) => (
+                              <React.Fragment key={replica.formId}>
+                                <tr key={replica.formId}>
+                                  <th>
+                                    {replica.formTitle ||
+                                      {
+                                        screening: 'Screening',
+                                        assessment: 'Assessment',
+                                        onboarding: 'Onboarding',
+                                      }[formCategory]}
+                                  </th>
+                                  <th></th>
+                                </tr>
+                                {replica.formFieldScores.map(
+                                  (formFieldScore) => (
+                                    <tr key={formFieldScore.formFieldId}>
+                                      <td>{formFieldScore.label}</td>
+                                      <td>
+                                        {formFieldScore.intent ===
+                                          'aggregate' && (
+                                          <ul
+                                            style={{
+                                              listStylePosition: 'outside',
+                                              listStyle: 'circle',
+                                              paddingLeft: '1em',
+                                            }}
+                                          >
+                                            {formFieldScore.aggregatedValues?.map(
+                                              (value: any, idx: number) => (
+                                                <li key={idx}>{value}</li>
+                                              ),
+                                            )}
+                                          </ul>
+                                        )}
+                                        {formFieldScore.intent === 'sum_up' &&
+                                          formFieldScore.formFieldScore}
+                                        {formFieldScore.intent ===
+                                          'count_distinct' &&
+                                          Object.entries(
+                                            formFieldScore.countDistinct,
+                                          ).map(([key, value], idx) => (
+                                            <li key={idx}>
+                                              {key}: {value}
+                                            </li>
+                                          ))}
+                                      </td>
+                                    </tr>
+                                  ),
+                                )}
+                              </React.Fragment>
+                            ))}
+                            <tr>
+                              <td></td>
+                              <td></td>
+                            </tr>
+                          </tbody>
+                        </Table>
+                      </td>
+                    </tr>
+                  )}
                   {formScore.formFieldScores.map((formFieldScore) => (
                     <tr key={formFieldScore.formFieldId}>
                       <td>{formFieldScore.label}</td>
@@ -201,7 +307,7 @@ const ApplicantReport = () => {
           </Table>
         )}
       </Box>
-      {report?.formCategory === 'assessment' && (
+      {['assessment', 'onboarding'].includes(formCategory) && (
         <Box display="grid" rowGap={spacing.scale100}>
           <Flexgrid alignItems="center" flexGap={spacing.scale100}>
             <H6>Anforderungsprofil</H6>

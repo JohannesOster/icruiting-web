@@ -62,7 +62,7 @@ export const EditFormFieldForm: React.FC<Props> = ({
         />
       );
     case 'rating_group':
-      return formCategory === 'assessment' ? (
+      return ['assessment', 'onboarding'].includes(formCategory) ? (
         <EditACRatingGroupFormFields
           onSubmit={onSubmit}
           label={props.label}

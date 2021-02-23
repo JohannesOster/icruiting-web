@@ -47,7 +47,6 @@ export const Ranking = () => {
         </Link>
       ),
     },
-    {title: 'Standardabweichung', cell: (row) => row.standardDeviation},
     {title: 'Score', cell: (row) => row.score},
     {title: '#Bewertungen', cell: (row) => row.submissionsCount},
   ];
@@ -63,9 +62,16 @@ export const Ranking = () => {
   return (
     <Box display="grid" rowGap={spacing.scale200}>
       <H3>
-        Ranking - {formCategory === 'screening' ? 'Screening' : 'Assessment'}
+        Ranking-
+        {
+          {
+            screening: 'Screening',
+            assessment: 'Assessnent',
+            onboarding: 'Onboarding',
+          }[formCategory]
+        }
       </H3>
-      <DataTable columns={columns} data={data} isLoading={isLoading} />
+      <DataTable columns={columns} data={data || []} isLoading={isLoading} />
     </Box>
   );
 };

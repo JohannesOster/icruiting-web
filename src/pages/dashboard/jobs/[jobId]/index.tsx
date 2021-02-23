@@ -12,13 +12,21 @@ import {
   getDashboardLayout,
   Flexgrid,
 } from 'components';
-import {Button, Dialog, Spinner, Link as ExternalLink} from 'icruiting-ui';
+import {
+  Button,
+  Dialog,
+  Spinner,
+  Link as ExternalLink,
+  Input,
+} from 'icruiting-ui';
 import {API, TForm} from 'services';
 import useSWR from 'swr';
 import {useRouter} from 'next/router';
 import {withAdmin} from 'components';
 import amplifyConfig from 'amplify.config';
 import {Edit} from 'icons';
+import {useForm} from 'react-hook-form';
+import {v4 as uuidv4} from 'uuid';
 
 const JobDetails = () => {
   const {colors, spacing} = useTheme();
@@ -30,6 +38,26 @@ const JobDetails = () => {
     null,
   );
 
+  const {data: job, error: jobError} = useSWR(
+    [`GET /jobs/${jobId}`, jobId],
+    (_key, jobId) => API.jobs.find(jobId),
+  );
+
+  const [forms, setForms] = useState<{[key: string]: TForm[]}>({});
+  const {data, error: formsError, mutate, revalidate} = useSWR(
+    [`GET /forms`, jobId],
+    (_key, jobId) => API.forms.list(jobId),
+  );
+
+  const closeReplicaDialog = () => {
+    setReplicaToEdit(null);
+    setFormToReplicate(null);
+    reset({});
+  };
+  const [replicaToEdit, setReplicaToEdit] = useState<string | null>(null);
+  const [formToReplicate, setFormToReplicate] = useState<string | null>(null);
+  const {handleSubmit, register, reset} = useForm();
+
   const onDelete = () => {
     if (!shouldDeleteFormId) return;
     setDeletingFormId(shouldDeleteFormId);
@@ -39,24 +67,31 @@ const JobDetails = () => {
     });
   };
 
-  const {data: job, error: jobError} = useSWR(
-    [`GET /jobs/${jobId}`, jobId],
-    (_key, jobId) => API.jobs.find(jobId),
-  );
-
-  const [forms, setForms] = useState<{[key: string]: TForm[]}>({});
-  const {data, error: formsError, mutate} = useSWR(
-    [`GET /forms`, jobId],
-    (_key, jobId) => API.forms.list(jobId),
-  );
-
   useEffect(() => {
     if (!data) return;
     const _forms = data.reduce((acc, curr) => {
       const cat = curr.formCategory;
       acc[cat] = acc[cat] ? acc[cat].concat(curr) : [curr];
       return acc;
+    }, {} as {[key: string]: TForm[]});
+    if (!_forms['onboarding']?.length) return setForms(_forms);
+
+    const onboarding = _forms['onboarding'].reduce((acc, curr) => {
+      if (!curr.replicaOf) {
+        acc[curr.formId] = {...acc[curr.formId], ...curr};
+        return acc;
+      }
+
+      if (!acc[curr.replicaOf]) acc[curr.replicaOf] = {};
+      if (!acc[curr.replicaOf]?.replicas) acc[curr.replicaOf].replicas = [];
+      acc[curr.replicaOf].replicas = acc[curr.replicaOf].replicas.concat([
+        curr,
+      ]);
+
+      return acc;
     }, {} as any);
+
+    _forms['onboarding'] = Object.values(onboarding);
     setForms(_forms);
   }, [data]);
 
@@ -99,25 +134,24 @@ const JobDetails = () => {
     );
   };
 
-  const formsTableColumns: Array<TColumn> = [
+  const baseCols: TColumn[] = [
     {
-      title: 'Kategorie',
+      title: 'Formular',
       cell: (row) => {
-        const cat = row.formCategory as 'application';
-        const displayNames = {
-          application: 'Bewerbung',
-          screening: 'Screening',
-          assessment: 'Assessment',
-        };
+        const cat = row.formCategory;
+        if (row.formTitle) return row.formTitle;
+        const displayNames = {application: 'Bewerbung', screening: 'Screening'};
         return displayNames[cat];
       },
     },
     {title: 'Aktion', cell: actionCell},
+  ];
+  const formsTableColumns: Array<TColumn> = [
+    ...baseCols,
     {
       title: 'Direktlink',
-      cell: ({formCategory, formId}) => {
-        if (formCategory !== 'application' || !formId)
-          return <Typography>-</Typography>;
+      cell: ({formId}) => {
+        if (!formId) return <Typography>-</Typography>;
         const domain = amplifyConfig.API.endpoints[0].endpoint;
         const iframeSrc = `${domain}/forms/${formId}/html`;
         return (
@@ -129,9 +163,8 @@ const JobDetails = () => {
     },
     {
       title: 'JSON Export',
-      cell: ({formCategory, formId}) => {
-        if (formCategory !== 'application' || !formId)
-          return <Typography>-</Typography>;
+      cell: ({formId}) => {
+        if (!formId) return <>-</>;
         return (
           <Button
             kind="minimal"
@@ -148,14 +181,75 @@ const JobDetails = () => {
     },
   ];
 
-  const formsTableData = ['application', 'screening'].map((formCategory) => {
+  const applicationFormsData = ['application'].map((formCategory) => {
     const form = forms[formCategory];
     return form ? {...form[0]} : {formCategory};
   });
 
-  const assessmentTableColumns: Array<TColumn> = [
-    {title: 'Bewertungsformulartitle', cell: (row) => row.formTitle},
-    {title: 'Aktion', cell: actionCell},
+  const screeningFormsData = ['screening'].map((formCategory) => {
+    const form = forms[formCategory];
+    return form ? {...form[0]} : {formCategory};
+  });
+
+  const onboardingCols: TColumn[] = [
+    ...baseCols,
+    {
+      title: 'Replikas',
+      cell: ({replicas}) => (
+        <table>
+          <thead>
+            <tr>
+              <th>Titel</th>
+              <th>Aktion</th>
+            </tr>
+          </thead>
+          <tbody>
+            {replicas?.map(({formTitle, formId: replicaFormId}) => (
+              <tr key={replicaFormId}>
+                <td>{formTitle}</td>
+                <td>
+                  <Box
+                    display="grid"
+                    gridColumnGap={spacing.scale100}
+                    gridAutoFlow="column"
+                    justifyContent="left"
+                    alignItems="center"
+                  >
+                    <Button
+                      kind="minimal"
+                      onClick={() => {
+                        const title = data?.find(
+                          ({formId}) => formId === replicaFormId,
+                        )?.formTitle;
+                        reset({replicaFormTitle: title});
+                        setReplicaToEdit(replicaFormId);
+                      }}
+                    >
+                      bearbeiten
+                    </Button>
+                    <span>/</span>
+                    <Button
+                      kind="minimal"
+                      onClick={() => setShouldDeleteFormId(replicaFormId)}
+                    >
+                      löschen
+                    </Button>
+                  </Box>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ),
+    },
+    {
+      title: 'Replika hinzufügen',
+      cell: ({formId}) => (
+        <Button kind="minimal" onClick={() => setFormToReplicate(formId)}>
+          Replika hinzufügen
+        </Button>
+      ),
+    },
   ];
 
   return (
@@ -192,6 +286,54 @@ const JobDetails = () => {
               </Button>
             </Box>
           </Box>
+        </Dialog>
+      )}
+      {(replicaToEdit || formToReplicate) && (
+        <Dialog onClose={closeReplicaDialog}>
+          <form
+            onSubmit={handleSubmit(async (values) => {
+              if (replicaToEdit) {
+                const form = ((forms['onboarding'] || []) as any).reduce(
+                  (acc, {replicas}) => {
+                    const replica = replicas?.find(
+                      ({formId}) => formId === replicaToEdit,
+                    );
+                    if (!replica) return acc;
+                    return replica;
+                  },
+                  {} as any,
+                );
+                if (!form) return closeReplicaDialog();
+                await API.forms.update({
+                  ...form,
+                  formTitle: values.replicaFormTitle,
+                });
+                revalidate();
+                closeReplicaDialog();
+                return;
+              }
+
+              await API.forms.create({
+                formId: uuidv4(),
+                jobId: job.jobId,
+                formTitle: values.replicaFormTitle,
+                formCategory: 'onboarding',
+                formFields: [],
+                replicaOf: formToReplicate,
+              });
+              revalidate();
+              closeReplicaDialog();
+            })}
+            style={{display: 'grid', rowGap: spacing.scale200}}
+          >
+            <Input
+              label="Formulartitel"
+              placeholder="Formulartitel"
+              name="replicaFormTitle"
+              ref={register}
+            />
+            <Button type="submit">Speichern</Button>
+          </form>
         </Dialog>
       )}
       <H3>{job?.jobTitle}</H3>
@@ -236,38 +378,50 @@ const JobDetails = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>
-                <Link
-                  href={`/dashboard/jobs/${jobId}/ranking?formCategory=screening`}
-                >
-                  <a>Screeningranking</a>
-                </Link>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <Link
-                  href={`/dashboard/jobs/${jobId}/ranking?formCategory=assessment`}
-                >
-                  <a>Assessment Center ranking</a>
-                </Link>
-              </td>
-            </tr>
+            {[
+              {
+                title: 'Screeningranking',
+                url: `/dashboard/jobs/${jobId}/ranking?formCategory=screening`,
+              },
+              {
+                title: 'Assessmentranking',
+                url: `/dashboard/jobs/${jobId}/ranking?formCategory=assessment`,
+              },
+              {
+                title: 'Onboardingranking',
+                url: `/dashboard/jobs/${jobId}/ranking?formCategory=onboarding`,
+              },
+            ].map(({title, url}) => (
+              <tr key={url}>
+                <td>
+                  <Link href={url}>
+                    <a>{title}</a>
+                  </Link>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </Table>
       </Box>
       <Box display="grid" gridRowGap={spacing.scale100}>
-        <H6>Formulare</H6>
+        <H6>Bewerbungs-Formular</H6>
         <DataTable
           columns={formsTableColumns}
-          data={formsTableData}
+          data={applicationFormsData}
+          isLoading={isFetching}
+        />
+      </Box>
+      <Box display="grid" gridRowGap={spacing.scale100}>
+        <H6>Screening-Formular</H6>
+        <DataTable
+          columns={baseCols}
+          data={screeningFormsData}
           isLoading={isFetching}
         />
       </Box>
       <Box display="grid" gridRowGap={spacing.scale100}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <H6>Assessment - Übungen</H6>
+          <H6>Assessment-Formulare</H6>
           <Button
             onClick={() =>
               router.push(
@@ -279,8 +433,27 @@ const JobDetails = () => {
           </Button>
         </Box>
         <DataTable
-          columns={assessmentTableColumns}
+          columns={baseCols}
           data={forms['assessment'] || []}
+          isLoading={isFetching}
+        />
+      </Box>
+      <Box display="grid" gridRowGap={spacing.scale100}>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <H6>Onboarding-Formulare</H6>
+          <Button
+            onClick={() =>
+              router.push(
+                `/dashboard/formbuilder?formCategory=onboarding&jobId=${jobId}`,
+              )
+            }
+          >
+            Hinzufügen
+          </Button>
+        </Box>
+        <DataTable
+          columns={onboardingCols}
+          data={forms['onboarding'] || []}
           isLoading={isFetching}
         />
       </Box>
