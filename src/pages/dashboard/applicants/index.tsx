@@ -30,7 +30,9 @@ const Applicants = () => {
     filter: string;
   };
 
-  const [showAssessmentsSummary, setShowAssessmentsSummary] = useState(false);
+  const [showAssessmentsSummary, setShowAssessmentsSummary] = useState(
+    localStorage.getItem('assessmentOverview') ? true : false,
+  );
 
   const {data: jobs, error: jobsError} = useSWR('GET /jobs', API.jobs.list);
   const [selectedJobId, setSelectedJobId] = useState(jobs && jobs[0]?.jobId);
@@ -189,8 +191,14 @@ const Applicants = () => {
             columnGap={spacing.scale100}
           >
             <Checkbox
+              value={showAssessmentsSummary ? ['true'] : []}
               options={[{label: 'Bewertungsübersicht', value: 'true'}]}
               onChange={() => {
+                if (!showAssessmentsSummary)
+                  localStorage.setItem('assessmentOverview', 'true');
+                if (showAssessmentsSummary)
+                  localStorage.removeItem('assessmentOverview');
+
                 setShowAssessmentsSummary((val) => !val);
               }}
             />

@@ -1,11 +1,14 @@
+import {yupResolver} from '@hookform/resolvers';
 import {Box, H3, getDashboardLayout} from 'components';
 import {Button, Checkbox, Spinner, useToaster} from 'icruiting-ui';
+import {errorsFor} from 'lib/utility';
 import {useRouter} from 'next/router';
 import {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {API, TForm} from 'services';
 import {useTheme} from 'styled-components';
 import useSWR from 'swr';
+import * as yup from 'yup';
 
 type FormValues = {reportFields: string[]};
 
@@ -15,7 +18,19 @@ const ReportBuilder = () => {
   const router = useRouter();
   const {jobId} = router.query as {jobId: string};
 
-  const {register, handleSubmit, formState, reset} = useForm();
+  const {register, handleSubmit, formState, reset, errors} = useForm({
+    mode: 'onChange',
+    criteriaMode: 'all',
+    resolver: yupResolver(
+      yup.object({
+        reportFields: yup
+          .array()
+          .min(1, 'Bitte wählen Sie mindestens ein Feld aus')
+          .of(yup.string()),
+      }),
+    ),
+  });
+
   const onSubmit = async (values: FormValues) => {
     if (!report) {
       await API.jobs.createReport(jobId, values.reportFields);
@@ -59,8 +74,10 @@ const ReportBuilder = () => {
       ) : (
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box display="grid" rowGap={spacing.scale200}>
+            {console.log(errorsFor(errors, 'reportFields'), errors)}
             <Checkbox
               name="reportFields"
+              errors={errorsFor(errors, 'reportFields')}
               ref={register}
               options={
                 form?.formFields.map(({label, formFieldId}) => ({
@@ -70,7 +87,11 @@ const ReportBuilder = () => {
               }
             />
             <div>
-              <Button type="submit" isLoading={formState.isSubmitting}>
+              <Button
+                type="submit"
+                isLoading={formState.isSubmitting}
+                disabled={!formState.isValid || !formState.isDirty}
+              >
                 Speichern
               </Button>
             </div>
