@@ -26,15 +26,22 @@ export const Jobs = () => {
     jobId: string,
     formFields: string[],
   ): Promise<TReport> => {
-    return API.post(`/jobs/${jobId}/reports`, {body: {jobId, formFields}});
+    return API.post(`/jobs/${jobId}/report`, {body: formFields});
   };
 
   const retrieveReport = (jobId: string): Promise<TReport> => {
-    return API.get(`/jobs/${jobId}/reports`);
+    return API.get(`/jobs/${jobId}/report`);
   };
 
-  const delReport = (jobId: string, reportId: string): Promise<null> => {
-    return API.del(`/jobs/${jobId}/reports/${reportId}`);
+  const updateReport = (
+    jobId: string,
+    formFields: string[],
+  ): Promise<TReport> => {
+    return API.put(`/jobs/${jobId}/report`, {body: formFields});
+  };
+
+  const delReport = (jobId: string): Promise<null> => {
+    return API.del(`/jobs/${jobId}/report`);
   };
 
   return {
@@ -45,6 +52,7 @@ export const Jobs = () => {
     del,
     createReport,
     retrieveReport,
+    updateReport,
     delReport,
   };
 };

@@ -7,22 +7,23 @@ import {API, TForm} from 'services';
 import {useTheme} from 'styled-components';
 import useSWR from 'swr';
 
-type FormValues = {
-  reportFields: string[];
-};
+type FormValues = {reportFields: string[]};
 
 const ReportBuilder = () => {
-  const toaster = useToaster();
   const {spacing} = useTheme();
+  const toaster = useToaster();
   const router = useRouter();
   const {jobId} = router.query as {jobId: string};
 
   const {register, handleSubmit, formState, reset} = useForm();
   const onSubmit = async (values: FormValues) => {
-    await API.jobs
-      .createReport(jobId, values.reportFields)
-      .then(console.log)
-      .catch(console.error);
+    if (!report) {
+      await API.jobs.createReport(jobId, values.reportFields);
+    } else {
+      await API.jobs.updateReport(jobId, values.reportFields);
+    }
+    toaster.success('Gutachten erfolgreich bearbeitet');
+    router.back();
   };
 
   const {data: forms, error: formsError} = useSWR(
@@ -39,6 +40,16 @@ const ReportBuilder = () => {
     if (!_form) toaster.danger('Missing application form');
     setForm(_form);
   }, [forms]);
+
+  const {data: report} = useSWR(
+    ['GET /jobs/:jobId/report', jobId],
+    (_key, jobId) => API.jobs.retrieveReport(jobId),
+  );
+
+  useEffect(() => {
+    if (!report) return;
+    reset({reportFields: report.formFields});
+  }, [report]);
 
   return (
     <Box>

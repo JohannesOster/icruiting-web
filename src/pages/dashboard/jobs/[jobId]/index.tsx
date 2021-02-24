@@ -49,6 +49,7 @@ const JobDetails = () => {
     (_key, jobId) => API.forms.list(jobId),
   );
 
+  const [deletingReport, setDeletingReport] = useState(false);
   const {data: report, revalidate: revalidateReport} = useSWR(
     ['GET /jobs/:jobId/report', jobId],
     (_key, jobId) => API.jobs.retrieveReport(jobId),
@@ -423,15 +424,30 @@ const JobDetails = () => {
                     <a>hinzufügen</a>
                   </Link>
                 ) : (
-                  <Button
-                    kind="minimal"
-                    onClick={async () => {
-                      await API.jobs.delReport(jobId, report.reportId);
-                      revalidateReport();
-                    }}
+                  <Box
+                    display="grid"
+                    gridColumnGap={spacing.scale100}
+                    gridAutoFlow="column"
+                    justifyContent="left"
+                    alignItems="center"
                   >
-                    löschen
-                  </Button>
+                    <Link href={`/dashboard/jobs/${jobId}/reportbuilder`}>
+                      <a>bearbeiten</a>
+                    </Link>
+                    <span>/</span>
+                    <Button
+                      kind="minimal"
+                      isLoading={deletingReport}
+                      onClick={async () => {
+                        setDeletingReport(true);
+                        await API.jobs.delReport(jobId);
+                        await revalidateReport();
+                        setDeletingReport(false);
+                      }}
+                    >
+                      löschen
+                    </Button>
+                  </Box>
                 )}
               </td>
             </tr>

@@ -22,6 +22,6 @@ export type TJob = {
 
 export type TReport = {
   jobId: string;
-  reportId: string;
+  tenantId: string;
   formFields: string[];
 };
