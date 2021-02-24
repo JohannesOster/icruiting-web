@@ -174,11 +174,7 @@ const ApplicantDetails = () => {
             {applicant?.files?.map((file, idx) => (
               <tr key={idx}>
                 <td>
-                  <a
-                    href={file.value}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
+                  <a href={file.uri} rel="noopener noreferrer" target="_blank">
                     {file.key}
                   </a>
                 </td>

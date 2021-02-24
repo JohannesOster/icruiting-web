@@ -7,7 +7,7 @@ export type Applicant = {
   name: string;
   screeningExists: boolean;
   attributes: {key: string; value: string}[];
-  files?: {key: string; value: string}[];
+  files?: {key: string; uri: string}[];
   createdAt: string;
 };
 
@@ -16,7 +16,7 @@ export type ApplicantAPI = {
   jobId: string;
   screening_exists: boolean;
   attributes: {key: string; value: string}[];
-  files?: {key: string; value: string}[];
+  files?: {key: string; uri: string}[];
   created_at: string;
 };
 

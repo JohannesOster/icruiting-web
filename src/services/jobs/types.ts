@@ -19,3 +19,9 @@ export type TJob = {
   jobTitle: string;
   jobRequirements: JobRequirement[];
 };
+
+export type TReport = {
+  jobId: string;
+  reportId: string;
+  formFields: string[];
+};

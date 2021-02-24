@@ -49,6 +49,11 @@ const JobDetails = () => {
     (_key, jobId) => API.forms.list(jobId),
   );
 
+  const {data: report, revalidate: revalidateReport} = useSWR(
+    ['GET /jobs/:jobId/report', jobId],
+    (_key, jobId) => API.jobs.retrieveReport(jobId),
+  );
+
   const closeReplicaDialog = () => {
     setReplicaToEdit(null);
     setFormToReplicate(null);
@@ -413,9 +418,21 @@ const JobDetails = () => {
             <tr>
               <td>Gutachten</td>
               <td>
-                <Link href={`/dashboard/jobs/${jobId}/reportbuilder`}>
-                  <a>hinzufügen</a>
-                </Link>
+                {!report ? (
+                  <Link href={`/dashboard/jobs/${jobId}/reportbuilder`}>
+                    <a>hinzufügen</a>
+                  </Link>
+                ) : (
+                  <Button
+                    kind="minimal"
+                    onClick={async () => {
+                      await API.jobs.delReport(jobId, report.reportId);
+                      revalidateReport();
+                    }}
+                  >
+                    löschen
+                  </Button>
+                )}
               </td>
             </tr>
           </tbody>
