@@ -49,6 +49,12 @@ const JobDetails = () => {
     (_key, jobId) => API.forms.list(jobId),
   );
 
+  const [deletingReport, setDeletingReport] = useState(false);
+  const {data: report, revalidate: revalidateReport} = useSWR(
+    ['GET /jobs/:jobId/report', jobId],
+    (_key, jobId) => API.jobs.retrieveReport(jobId),
+  );
+
   const closeReplicaDialog = () => {
     setReplicaToEdit(null);
     setFormToReplicate(null);
@@ -397,6 +403,54 @@ const JobDetails = () => {
                 </td>
               </tr>
             ))}
+          </tbody>
+        </Table>
+      </Box>
+      <Box display="grid" gridRowGap={spacing.scale100}>
+        <H6>Gutachen gestalten</H6>
+        <Table>
+          <thead>
+            <tr>
+              <th>Gutachten</th>
+              <th>Aktion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Gutachten</td>
+              <td>
+                {!report ? (
+                  <Link href={`/dashboard/jobs/${jobId}/reportbuilder`}>
+                    <a>hinzufügen</a>
+                  </Link>
+                ) : (
+                  <Box
+                    display="grid"
+                    gridColumnGap={spacing.scale100}
+                    gridAutoFlow="column"
+                    justifyContent="left"
+                    alignItems="center"
+                  >
+                    <Link href={`/dashboard/jobs/${jobId}/reportbuilder`}>
+                      <a>bearbeiten</a>
+                    </Link>
+                    <span>/</span>
+                    <Button
+                      kind="minimal"
+                      isLoading={deletingReport}
+                      onClick={async () => {
+                        setDeletingReport(true);
+                        await API.jobs.delReport(jobId);
+                        await revalidateReport();
+                        setDeletingReport(false);
+                      }}
+                    >
+                      löschen
+                    </Button>
+                  </Box>
+                )}
+              </td>
+            </tr>
           </tbody>
         </Table>
       </Box>

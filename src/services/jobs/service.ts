@@ -1,4 +1,4 @@
-import {TJob, TJobRequest} from './types';
+import {TJob, TJobRequest, TReport} from './types';
 import API from '../request';
 
 export const Jobs = () => {
@@ -22,5 +22,37 @@ export const Jobs = () => {
     return API.del(`/jobs/${jobId}`);
   };
 
-  return {list, find, create, update, del};
+  const createReport = (
+    jobId: string,
+    formFields: string[],
+  ): Promise<TReport> => {
+    return API.post(`/jobs/${jobId}/report`, {body: formFields});
+  };
+
+  const retrieveReport = (jobId: string): Promise<TReport> => {
+    return API.get(`/jobs/${jobId}/report`);
+  };
+
+  const updateReport = (
+    jobId: string,
+    formFields: string[],
+  ): Promise<TReport> => {
+    return API.put(`/jobs/${jobId}/report`, {body: formFields});
+  };
+
+  const delReport = (jobId: string): Promise<null> => {
+    return API.del(`/jobs/${jobId}/report`);
+  };
+
+  return {
+    list,
+    find,
+    create,
+    update,
+    del,
+    createReport,
+    retrieveReport,
+    updateReport,
+    delReport,
+  };
 };
