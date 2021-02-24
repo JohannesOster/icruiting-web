@@ -4,7 +4,7 @@ import {ItemTypes} from '../../components/FormBuilder/DnD';
 import {FormCategory, FormFieldIntent} from 'services';
 import {DnDItem} from 'lib/formbuilder/types';
 
-const applicationInitialformFields: Array<DnDItem> = [
+const applicationInitialformFields: DnDItem[] = [
   {
     id: '1',
     type: ItemTypes.FORM_FIELD,
@@ -49,7 +49,7 @@ const applicationInitialformFields: Array<DnDItem> = [
   },
 ];
 
-const screeningInitialformFields: Array<DnDItem> = [
+const screeningInitialformFields: DnDItem[] = [
   {
     id: '1',
     type: ItemTypes.FORM_FIELD,
@@ -73,7 +73,7 @@ const screeningInitialformFields: Array<DnDItem> = [
   },
 ];
 
-const assessmentInitialformFields: Array<DnDItem> = [
+const assessmentInitialformFields: DnDItem[] = [
   {
     id: '1',
     type: ItemTypes.FORM_FIELD,
@@ -97,9 +97,7 @@ const assessmentInitialformFields: Array<DnDItem> = [
   },
 ];
 
-export const getInitialFormFields = (
-  category: FormCategory,
-): Array<DnDItem> => {
+export const getInitialFormFields = (category: FormCategory): DnDItem[] => {
   const map = {
     screening: screeningInitialformFields,
     application: applicationInitialformFields,

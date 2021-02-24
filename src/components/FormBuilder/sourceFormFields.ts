@@ -20,7 +20,7 @@ const DNDBase = {
   rowIndex: -1,
 };
 
-const applicationFormSourceFields: Array<DnDItem> = [
+const applicationFormSourceFields: DnDItem[] = [
   {
     ...DNDBase,
     label: 'Section Header',
@@ -104,7 +104,7 @@ const applicationFormSourceFields: Array<DnDItem> = [
   },
 ];
 
-const screeningSourceFields: Array<DnDItem> = [
+const screeningSourceFields: DnDItem[] = [
   {
     ...DNDBase,
     icon: Rating,
@@ -138,7 +138,7 @@ const screeningSourceFields: Array<DnDItem> = [
   },
 ];
 
-const assessmentSourceFields: Array<DnDItem> = [
+const assessmentSourceFields: DnDItem[] = [
   {
     ...DNDBase,
     icon: Rating,
@@ -172,7 +172,7 @@ const assessmentSourceFields: Array<DnDItem> = [
   },
 ];
 
-export const getSourceFormFields = (category: FormCategory): Array<DnDItem> => {
+export const getSourceFormFields = (category: FormCategory): DnDItem[] => {
   const map = {
     screening: screeningSourceFields,
     application: applicationFormSourceFields,

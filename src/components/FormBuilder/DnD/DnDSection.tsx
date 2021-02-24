@@ -35,10 +35,12 @@ export const DnDSection: React.FC<Props> = ({
     accept: ItemTypes.FORM_FIELD,
     canDrop: () => !!onDrop,
     hover(item: DnDItem) {
-      onHover && onHover(item);
+      if (!onHover) return;
+      onHover(item);
     },
     drop: (item: DnDItem) => {
-      onDrop && onDrop(id, item);
+      if (!onDrop) return;
+      onDrop(id, item);
     },
   });
 

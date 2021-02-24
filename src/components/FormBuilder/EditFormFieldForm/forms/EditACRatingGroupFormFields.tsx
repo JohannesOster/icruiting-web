@@ -14,10 +14,10 @@ type FormValues = {
   label: string;
   description: string;
   /** The id of the jobRequirement the rating group should refer to */
-  jobRequirementOptions: Array<{label: string; value: string}>;
+  jobRequirementOptions: {label: string; value: string}[];
   /** The currently selected JobRequirementId */
   jobRequirementId: string;
-  options: Array<{label: string; value: string}>;
+  options: {label: string; value: string}[];
   intent: FormFieldIntent;
   required: boolean;
   defaultValue?: string;

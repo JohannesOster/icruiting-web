@@ -1,4 +1,4 @@
-/** Normalize path to only use dot notation
+/* Normalize path to only use dot notation
  * (change path[1].path to path.1.path) */
 const normalizePath = (path: string) => {
   if (!path) return '';

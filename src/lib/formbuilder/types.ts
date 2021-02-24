@@ -14,7 +14,7 @@ export type DnDItem = {
   id: string;
   formFieldId?: string;
   type: string; // React-dnd type identifier
-  /** The index of the current item in its list.
+  /* The index of the current item in its list.
    * -1 if it isn't part of a list */
   rowIndex: number;
   component: FormFieldComponent;

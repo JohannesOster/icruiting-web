@@ -43,14 +43,16 @@ export const EditFormFieldForm: React.FC<Props> = ({
         />
       );
     case 'input':
-      <EditInputFormFieldsForm
-        onSubmit={onSubmit}
-        label={props.label}
-        placeholder={props.placeholder}
-        description={props.description}
-        required={props.required}
-        type={props.type}
-      />;
+      return (
+        <EditInputFormFieldsForm
+          onSubmit={onSubmit}
+          label={props.label}
+          placeholder={props.placeholder}
+          description={props.description}
+          required={props.required}
+          type={props.type}
+        />
+      );
     case 'textarea':
       return (
         <EditTextareaFormFieldsForm

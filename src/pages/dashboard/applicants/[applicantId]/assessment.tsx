@@ -52,7 +52,7 @@ const ApplicantAssessment = () => {
     const body = {
       ...(submission ? {formSubmissionId: submission.formSubmissionId} : {}),
       formId,
-      applicantId: applicantId,
+      applicantId,
       submission: values,
     };
 

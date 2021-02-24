@@ -12,7 +12,7 @@ import {DnDOptionContainer} from './DnDOptionContainer';
 type FormValues = {
   label: string;
   description: string;
-  options: Array<{label: string; value: string}>;
+  options: {label: string; value: string}[];
   required?: boolean;
 };
 
@@ -27,9 +27,13 @@ export const EditOptionsFormFields: FC<Props> = ({
   acceptEmptyOption = false,
   ...formValues
 }) => {
-  const {register, errors, control, handleSubmit, formState} = useForm<
-    FormValues
-  >({
+  const {
+    register,
+    errors,
+    control,
+    handleSubmit,
+    formState,
+  } = useForm<FormValues>({
     mode: 'onChange',
     criteriaMode: 'all',
     defaultValues: formValues,

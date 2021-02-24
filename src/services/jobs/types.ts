@@ -1,11 +1,11 @@
 export type TJobRequest = {
   jobId?: string;
   jobTitle: string;
-  jobRequirements: Array<{
+  jobRequirements: {
     jobRequirementId?: string;
     requirementLabel: string;
     minValue?: string;
-  }>;
+  }[];
 };
 
 export type JobRequirement = {

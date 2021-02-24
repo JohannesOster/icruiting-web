@@ -1,5 +1,4 @@
 import React, {useState, useCallback, useEffect} from 'react';
-import {API} from 'aws-amplify';
 import {DataTable, H3, H6, TColumn, Flexgrid} from 'components';
 import {Button, Select, ChipInput, Dialog} from 'icruiting-ui';
 import {useForm, Controller} from 'react-hook-form';
@@ -13,6 +12,7 @@ import {useToaster} from 'icruiting-ui';
 import {withAdmin} from 'components';
 import {getDashboardLayout} from 'components';
 import styled from 'styled-components';
+import {API} from 'services';
 
 export const Header = styled.header`
   display: flex;
@@ -38,12 +38,8 @@ export const Members = () => {
   const {spacing} = useTheme();
   const toaster = useToaster();
 
-  const fetcher = () => {
-    return API.get('icruiting-api', '/members', {});
-  };
-
-  const {data, error} = useSWR('/members', fetcher);
-  const [members, setMembers] = useState<Array<TMembere> | undefined>();
+  const {data, error} = useSWR('/members', API.members.list);
+  const [members, setMembers] = useState<TMembere[] | undefined>();
   const [memberToEdit, setMembereToEdit] = useState<{
     email: string;
     userRole: string;
@@ -68,14 +64,15 @@ export const Members = () => {
 
   const addMembere = useCallback(
     async ({emails}: {emails: string[]}) => {
-      await API.post('icruiting-api', '/members', {body: {emails}})
+      await API.members
+        .create(emails)
         .then(() => {
           setShowNewMembereForm(false);
           toaster.success('Mitarbeiter erfolgreich eingeladen.');
           reset();
         })
         .catch((err) => {
-          alert(err.message);
+          toaster.danger(err.message);
         });
     },
     [reset, toaster],
@@ -89,9 +86,8 @@ export const Members = () => {
     if (!memberToEdit) return;
 
     setIsUpdating(true);
-    API.put('icruiting-api', `/members/${memberToEdit?.email}`, {
-      body: {user_role: memberToEdit.userRole},
-    })
+    API.members
+      .updateUserRole(memberToEdit.email, memberToEdit.userRole)
       .then(() => {
         setMembers((members) =>
           (members || []).map((member) => {
@@ -111,11 +107,11 @@ export const Members = () => {
       .catch((err) => {
         setMembereToEdit(null);
         setIsUpdating(false);
-        alert(err.message);
+        toaster.danger(err.message);
       });
   };
 
-  const columns: Array<TColumn> = [
+  const columns: TColumn[] = [
     {title: 'E-Mail-Adresse', cell: (row) => row.email},
     {
       title: 'Benutzerrolle',

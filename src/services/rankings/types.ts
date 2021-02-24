@@ -1,10 +1,10 @@
 import {FormFieldIntent} from 'services';
 
-export type TRanking = Array<{
+export type TRanking = {
   applicantId: string;
   score: number;
   rank: number;
-  submissions: Array<any>;
+  submissions: any[];
   result: {
     [formFieldId: string]: {
       label: string;
@@ -12,14 +12,14 @@ export type TRanking = Array<{
       value: string | string[] | number;
     };
   };
-}>;
+}[];
 
-export type TRankingAPI = Array<{
+export type TRankingAPI = {
   applicantId: string;
   score: string;
   rank: string;
   submissionsCount: string;
-  submissions: Array<any>;
+  submissions: any[];
   result: {
     [formFieldId: string]: {
       label: string;
@@ -27,4 +27,4 @@ export type TRankingAPI = Array<{
       value: string;
     };
   };
-}>;
+}[];

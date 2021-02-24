@@ -19,7 +19,7 @@ import {
   Link as ExternalLink,
   Input,
 } from 'icruiting-ui';
-import {API, TForm} from 'services';
+import {API, FormCategory, TForm} from 'services';
 import useSWR from 'swr';
 import {useRouter} from 'next/router';
 import {withAdmin} from 'components';
@@ -74,9 +74,9 @@ const JobDetails = () => {
       acc[cat] = acc[cat] ? acc[cat].concat(curr) : [curr];
       return acc;
     }, {} as {[key: string]: TForm[]});
-    if (!_forms['onboarding']?.length) return setForms(_forms);
+    if (!_forms.onboarding?.length) return setForms(_forms);
 
-    const onboarding = _forms['onboarding'].reduce((acc, curr) => {
+    const onboarding = _forms.onboarding.reduce((acc, curr) => {
       if (!curr.replicaOf) {
         acc[curr.formId] = {...acc[curr.formId], ...curr};
         return acc;
@@ -91,7 +91,7 @@ const JobDetails = () => {
       return acc;
     }, {} as any);
 
-    _forms['onboarding'] = Object.values(onboarding);
+    _forms.onboarding = Object.values(onboarding);
     setForms(_forms);
   }, [data]);
 
@@ -146,7 +146,7 @@ const JobDetails = () => {
     },
     {title: 'Aktion', cell: actionCell},
   ];
-  const formsTableColumns: Array<TColumn> = [
+  const formsTableColumns: TColumn[] = [
     ...baseCols,
     {
       title: 'Direktlink',
@@ -181,15 +181,12 @@ const JobDetails = () => {
     },
   ];
 
-  const applicationFormsData = ['application'].map((formCategory) => {
+  const formsData = (formCategory: FormCategory) => {
     const form = forms[formCategory];
     return form ? {...form[0]} : {formCategory};
-  });
-
-  const screeningFormsData = ['screening'].map((formCategory) => {
-    const form = forms[formCategory];
-    return form ? {...form[0]} : {formCategory};
-  });
+  };
+  const applicationFormsData = [formsData('application')];
+  const screeningFormsData = [formsData('screening')];
 
   const onboardingCols: TColumn[] = [
     ...baseCols,
@@ -293,7 +290,7 @@ const JobDetails = () => {
           <form
             onSubmit={handleSubmit(async (values) => {
               if (replicaToEdit) {
-                const form = ((forms['onboarding'] || []) as any).reduce(
+                const form = ((forms.onboarding || []) as any).reduce(
                   (acc, {replicas}) => {
                     const replica = replicas?.find(
                       ({formId}) => formId === replicaToEdit,
@@ -434,7 +431,7 @@ const JobDetails = () => {
         </Box>
         <DataTable
           columns={baseCols}
-          data={forms['assessment'] || []}
+          data={forms.assessment || []}
           isLoading={isFetching}
         />
       </Box>
@@ -453,7 +450,7 @@ const JobDetails = () => {
         </Box>
         <DataTable
           columns={onboardingCols}
-          data={forms['onboarding'] || []}
+          data={forms.onboarding || []}
           isLoading={isFetching}
         />
       </Box>

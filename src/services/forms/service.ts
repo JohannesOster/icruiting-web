@@ -12,22 +12,20 @@ export const Forms = () => {
   };
 
   const exportJSON = (formId?: string): Promise<TForm[]> => {
-    return API.get(`/forms/${formId}/export`)
-      .then((response) => {
-        const blob = new Blob([JSON.stringify(response)], {
-          type: 'application/json;charset=utf-8',
-        });
+    return API.get(`/forms/${formId}/export`).then((response) => {
+      const blob = new Blob([JSON.stringify(response)], {
+        type: 'application/json;charset=utf-8',
+      });
 
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'form.json';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'form.json';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
 
-        return response;
-      })
-      .catch(console.error);
+      return response;
+    });
   };
 
   const del = (formId: string): Promise<undefined> => {

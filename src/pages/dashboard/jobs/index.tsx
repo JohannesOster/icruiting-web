@@ -30,7 +30,7 @@ export const Jobs = () => {
     });
   };
 
-  const columns: Array<TColumn> = [
+  const columns: TColumn[] = [
     {
       title: 'Bezeichnung',
       cell: (row) => (

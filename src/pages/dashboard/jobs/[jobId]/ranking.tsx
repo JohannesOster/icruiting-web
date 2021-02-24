@@ -35,7 +35,7 @@ export const Ranking = () => {
   const isLoading =
     !(ranking || rankingError) || !(applicants || applicantsError);
 
-  const columns: Array<TColumn> = [
+  const columns: TColumn[] = [
     {title: 'Rang', cell: (row) => row.rank},
     {
       title: 'Name',

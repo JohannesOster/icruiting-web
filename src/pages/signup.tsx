@@ -48,7 +48,7 @@ const SignUp: React.FC = () => {
 
       router.push('/login');
     } catch (err) {
-      alert(err.message);
+      toaster.danger(err.message);
       setStatus('idle');
     }
   };

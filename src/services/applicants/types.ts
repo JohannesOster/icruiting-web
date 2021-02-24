@@ -6,8 +6,8 @@ export type Applicant = {
   email: string;
   name: string;
   screeningExists: boolean;
-  attributes: Array<{key: string; value: string}>;
-  files?: Array<{key: string; value: string}>;
+  attributes: {key: string; value: string}[];
+  files?: {key: string; value: string}[];
   createdAt: string;
 };
 
@@ -15,8 +15,8 @@ export type ApplicantAPI = {
   applicant_id: string;
   jobId: string;
   screening_exists: boolean;
-  attributes: Array<{key: string; value: string}>;
-  files?: Array<{key: string; value: string}>;
+  attributes: {key: string; value: string}[];
+  files?: {key: string; value: string}[];
   created_at: string;
 };
 

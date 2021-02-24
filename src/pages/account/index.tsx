@@ -1,5 +1,4 @@
 import React, {useCallback, useState} from 'react';
-import {Auth} from 'aws-amplify';
 import Link from 'next/link';
 import {useTheme} from 'styled-components';
 import {H3, Box, H6, Typography} from 'components';
@@ -20,7 +19,7 @@ const Account: React.FC = () => {
     setStatus('isDeleting');
     API.tenants
       .del(currentUser.tenantId)
-      .then(async () => await Auth.signOut())
+      .then(async () => await API.auth.logout())
       .then(() => refetchUser())
       .then(() => success('Tenant erfolgreich gelöscht.'))
       .catch((error) => {

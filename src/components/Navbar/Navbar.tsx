@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import {Auth} from 'aws-amplify';
 import {
   Header,
   DesktopNav,
@@ -37,7 +36,7 @@ const Navbar: React.FC = () => {
       // reset back to default
       const scrollY = document.body.style.top;
       document.body.style.position = 'relative';
-      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
     }
   }, [menuOpen]);
 

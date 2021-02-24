@@ -30,7 +30,7 @@ export const Applicants = () => {
         applicants: resp.applicants.map((applicant) =>
           convertAPIApplicant<Applicant & AssessmentsAttribute>(applicant),
         ),
-        totalCount: parseInt(resp.totalCount),
+        totalCount: parseInt(resp.totalCount, 10),
       };
     });
   };

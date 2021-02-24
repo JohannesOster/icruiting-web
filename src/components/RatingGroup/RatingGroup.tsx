@@ -7,7 +7,7 @@ type Props = {
   name: string;
   label: string;
   description?: string;
-  options: Array<{label: string; value: string}>;
+  options: {label: string; value: string}[];
   value?: string;
   defaultValue?: string;
   required: boolean;
