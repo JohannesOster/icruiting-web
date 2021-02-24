@@ -401,6 +401,27 @@ const JobDetails = () => {
         </Table>
       </Box>
       <Box display="grid" gridRowGap={spacing.scale100}>
+        <H6>Gutachen gestalten</H6>
+        <Table>
+          <thead>
+            <tr>
+              <th>Gutachten</th>
+              <th>Aktion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Gutachten</td>
+              <td>
+                <Link href={`/dashboard/jobs/${jobId}/reportbuilder`}>
+                  <a>hinzufügen</a>
+                </Link>
+              </td>
+            </tr>
+          </tbody>
+        </Table>
+      </Box>
+      <Box display="grid" gridRowGap={spacing.scale100}>
         <H6>Bewerbungs-Formular</H6>
         <DataTable
           columns={formsTableColumns}
