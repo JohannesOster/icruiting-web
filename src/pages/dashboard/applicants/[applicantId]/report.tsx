@@ -167,7 +167,7 @@ const ApplicantReport = () => {
                             );
                           }}
                         >
-                          Replikas anzeigen
+                          Replikate anzeigen
                         </Button>
                       )}
                     </th>
