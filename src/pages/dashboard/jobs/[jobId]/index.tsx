@@ -197,7 +197,7 @@ const JobDetails = () => {
   const onboardingCols: TColumn[] = [
     ...baseCols,
     {
-      title: 'Replikas',
+      title: 'Replikate',
       cell: ({replicas}) => (
         <table>
           <thead>
@@ -246,10 +246,10 @@ const JobDetails = () => {
       ),
     },
     {
-      title: 'Replika hinzufügen',
+      title: 'Replikat hinzufügen',
       cell: ({formId}) => (
         <Button kind="minimal" onClick={() => setFormToReplicate(formId)}>
-          Replika hinzufügen
+          Replikat hinzufügen
         </Button>
       ),
     },
