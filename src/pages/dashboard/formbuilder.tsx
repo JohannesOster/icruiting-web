@@ -49,7 +49,6 @@ const FormBuilder: React.FC = () => {
 
   const [status, setStatus] = useState('idle');
   const formId = useRef(formIdEdit || uuidv4());
-  const [sourceSectionMargin, setSourceSectionMargin] = useState(0);
 
   const formKey = formIdEdit ? [`GET /forms/${formId}`, formIdEdit] : null;
   const {data: formToEdit} = useSWR(formKey, (_key, formId) =>
@@ -71,18 +70,6 @@ const FormBuilder: React.FC = () => {
     if (!formToEdit) return;
     reset({formTitle: formToEdit?.formTitle});
   }, [formToEdit, reset]);
-
-  useEffect(() => {
-    window.onscroll = () => {
-      const shouldScroll = window.pageYOffset < 100;
-      const offset = window.pageYOffset + 100;
-      setSourceSectionMargin(shouldScroll ? 0 : offset);
-    };
-
-    return () => {
-      window.onscroll = null;
-    };
-  });
 
   const [
     componentToEdit,
@@ -252,7 +239,7 @@ const FormBuilder: React.FC = () => {
           onHover={formBuilder.onOutsideHover}
           render={(targetID, drop) => (
             <DnDSourceSection id={targetID} ref={drop}>
-              <Box marginTop={sourceSectionMargin} transition="all 0.5s">
+              <Box transition="all 0.5s">
                 {(['assessment', 'onboarding'].includes(formCategory) ||
                   ['assessment', 'onboarding'].includes(
                     formToEdit?.formCategory,
