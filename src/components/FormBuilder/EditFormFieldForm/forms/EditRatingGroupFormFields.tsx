@@ -13,7 +13,7 @@ import {FormFieldIntent} from 'services';
 type FormValues = {
   label: string;
   description: string;
-  options: Array<{label: string; value: string}>;
+  options: {label: string; value: string}[];
   intent: FormFieldIntent;
   required: boolean;
   defaultValue?: string;

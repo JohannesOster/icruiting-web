@@ -11,8 +11,8 @@ export type TColumn = {
 type Props = {
   isLoading?: boolean;
   onEmptyMessage?: string;
-  columns: Array<TColumn>;
-  data: Array<{[key: string]: any}>;
+  columns: TColumn[];
+  data: {[key: string]: any}[];
   getRowStyle?: (row: {[key: string]: any}) => React.CSSProperties;
   totalPages?: number;
   currentPage?: number;

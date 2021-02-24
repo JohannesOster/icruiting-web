@@ -3,7 +3,6 @@ import {Button} from 'icruiting-ui';
 import {useTheme} from 'styled-components';
 import {useForm} from 'react-hook-form';
 import config from 'amplify.config';
-import {Auth} from 'aws-amplify';
 import useSWR from 'swr';
 import {API, TForm} from 'services';
 import {H3, Box, Flexgrid, getDashboardLayout} from 'components';
@@ -98,8 +97,7 @@ export const EditApplicant = () => {
       }
     });
 
-    const session = await Auth.currentSession();
-    const token = session.getIdToken().getJwtToken();
+    const token = await API.auth.token();
 
     const request = new XMLHttpRequest();
     request.open(
@@ -111,7 +109,7 @@ export const EditApplicant = () => {
       if (request.readyState === 4) {
         setIsSubmitting(false);
         if (request.status !== 200) {
-          alert(request.responseText);
+          toaster.danger(request.responseText);
           return;
         }
         toaster.success('Bewerber*in erfolgreich bearbeitet');

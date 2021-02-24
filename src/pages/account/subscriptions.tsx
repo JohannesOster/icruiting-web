@@ -29,7 +29,7 @@ const Subscriptions: React.FC = () => {
 
   const displayValForInterval = {month: 'Monat'} as {[key: string]: string};
 
-  const columns: Array<TColumn> = [
+  const columns: TColumn[] = [
     {title: 'Name', cell: ({product}) => product.name},
     {
       title: 'Preis',

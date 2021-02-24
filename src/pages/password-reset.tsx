@@ -1,9 +1,9 @@
 import React, {useState, useRef} from 'react';
-import {Auth} from 'aws-amplify';
 import {useRouter} from 'next/router';
 import {EmailForm, PasswordForm, PasswordFormValues} from 'containers';
 import {useTheme} from 'styled-components';
 import {useToaster} from 'icruiting-ui';
+import {API} from 'services';
 
 const PasswordReset: React.FC = () => {
   const router = useRouter();
@@ -13,28 +13,29 @@ const PasswordReset: React.FC = () => {
   const {spacing} = useTheme();
 
   const submitMailForm = async (values: {email: string}) => {
-    await Auth.forgotPassword(values.email)
+    await API.auth
+      .forgotPassword(values.email)
       .then(() => {
         email.current = values.email;
         setSentCode(true);
       })
       .catch((err) => {
-        alert(err.message);
+        toaster.danger(err.message);
       });
   };
 
-  const submitCodeForm = async (values: PasswordFormValues) => {
-    await Auth.forgotPasswordSubmit(
-      email.current,
-      values.confirmationCode.toString(),
-      values.password,
-    )
+  const submitCodeForm = async ({
+    confirmationCode,
+    password,
+  }: PasswordFormValues) => {
+    await API.auth
+      .forgotPasswordSubmit(email.current, confirmationCode, password)
       .then(() => {
         toaster.success('Password erfolgreich geändert!');
         router.back();
       })
       .catch((error) => {
-        alert(error.message);
+        toaster.danger(error.message);
       });
   };
 

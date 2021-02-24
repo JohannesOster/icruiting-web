@@ -25,7 +25,7 @@ export const DnDSourceItem: React.FC<Props> = ({
 }) => {
   const {icon, label, ...item} = sourceItem; // ignore icon and title parameters of DnDSourceItem
   const [{isDragging}, drag] = useDrag({
-    item: item,
+    item,
     options: {dropEffect: 'copy'},
     collect: (monitor) => ({isDragging: monitor.isDragging()}),
   });

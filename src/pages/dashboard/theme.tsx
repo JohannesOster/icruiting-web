@@ -2,7 +2,6 @@ import React, {FC, useEffect, useRef, useState} from 'react';
 import {H3, Flexgrid, Table, Box} from 'components';
 import {useTheme} from 'styled-components';
 import {Button, Input, useToaster} from 'icruiting-ui';
-import {Auth} from 'aws-amplify';
 import {useAuth} from 'context';
 import config from 'amplify.config';
 import {API} from 'services';
@@ -39,9 +38,7 @@ export const Theme = () => {
       const file = files[0];
       formData.append('theme', file);
 
-      const session = await Auth.currentSession();
-      const token = session.getIdToken().getJwtToken();
-
+      const token = await API.auth.token();
       const request = new XMLHttpRequest();
       request.open(
         'POST',

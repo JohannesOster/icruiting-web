@@ -49,7 +49,7 @@ const ApplicantDetails = () => {
     setForms(_forms);
   }, [data]);
 
-  const screeningForms = forms['screening'] as TForm[];
+  const screeningForms = forms.screening as TForm[];
   const screeningForm = screeningForms && screeningForms[0];
 
   const key =
@@ -72,7 +72,7 @@ const ApplicantDetails = () => {
     if (!screeningForm) return;
     const body = {
       ...(submission ? {formSubmissionId: submission.formSubmissionId} : {}),
-      applicantId: applicantId,
+      applicantId,
       formId: screeningForm.formId,
       submission: values,
     };
@@ -174,11 +174,7 @@ const ApplicantDetails = () => {
             {applicant?.files?.map((file, idx) => (
               <tr key={idx}>
                 <td>
-                  <a
-                    href={file.value}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
+                  <a href={file.uri} rel="noopener noreferrer" target="_blank">
                     {file.key}
                   </a>
                 </td>
@@ -228,7 +224,7 @@ const ApplicantDetails = () => {
       <section>
         <H6>Assessment-Formulare</H6>
         <DataTable
-          data={forms['assessment'] || []}
+          data={forms.assessment || []}
           columns={[
             {
               title: 'Formular',
@@ -246,7 +242,7 @@ const ApplicantDetails = () => {
       <section>
         <H6>Onboarding-Formulare</H6>
         <DataTable
-          data={forms['onboarding'] || []}
+          data={forms.onboarding || []}
           columns={[
             {
               title: 'Formular',

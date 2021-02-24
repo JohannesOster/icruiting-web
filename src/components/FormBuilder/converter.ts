@@ -5,7 +5,7 @@ import {stringToComponent} from '../../lib/formbuilder/utils';
 
 export const converter = {
   toDnDItem: (formField: FormField): DnDItem => {
-    const _form_field: DnDItem = {
+    const _formField: DnDItem = {
       type: ItemTypes.FORM_FIELD,
       id: formField.formFieldId,
       formFieldId: formField.formFieldId,
@@ -26,13 +26,13 @@ export const converter = {
       deletable: formField.deletable,
     };
 
-    if (formField.required) _form_field.props.required = !!formField.required;
-    if (formField.options) _form_field.props.options = formField.options;
+    if (formField.required) _formField.props.required = !!formField.required;
+    if (formField.options) _formField.props.options = formField.options;
     if (formField.jobRequirementId)
-      _form_field.props.jobRequirementId = formField.jobRequirementId;
-    if (formField.intent) _form_field.props.intent = formField.intent;
+      _formField.props.jobRequirementId = formField.jobRequirementId;
+    if (formField.intent) _formField.props.intent = formField.intent;
 
-    return _form_field;
+    return _formField;
   },
   toAPIFormField: (formField: DnDItem) => {
     const {

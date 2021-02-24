@@ -85,7 +85,7 @@ const Applicants = () => {
       </Button>
     ),
   };
-  const columns: Array<TColumn> = [
+  const columns: TColumn[] = [
     {
       title: 'Name',
       cell: ({name, applicantId}) => (

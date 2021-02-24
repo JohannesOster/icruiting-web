@@ -113,7 +113,7 @@ const FormBuilder: React.FC = () => {
       const {component, props} = formFields.fields.filter(
         (item) => item.id === id,
       )[0];
-      setComponentToEdit({id: id, component, props});
+      setComponentToEdit({id, component, props});
     },
     [formFields],
   );

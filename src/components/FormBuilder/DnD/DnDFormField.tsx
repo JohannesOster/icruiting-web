@@ -31,25 +31,31 @@ type Props = {
   id: string;
   /** The current index in the form */
   rowIndex: number;
-  /** A function wich will be called if an existing item moves down or upwords.
+  /**
+   * A function wich will be called if an existing item moves down or upwords.
    * @params dragIndex  The initial index of the dragged item
    * @params hoverIndex The index of the hovered item
    */
   onMove: (dragIndex: number, hoverIndex: number) => void;
-  /** A function wich will be called if a new item moves over an existing one.
+  /**
+   * A function wich will be called if a new item moves over an existing one.
    * @params item   The dragged item
    * @params index  The index of the hovered item
    */
   addItem: (item: DnDItem, index: number) => void;
   onDuplicate: (id: string) => void;
   children: React.ReactNode;
-  /** A function wich will be called if the delete button is pressed.
+  /**
+   * A function wich will be called if the delete button is pressed.
    * The delete button will only be displayed if this function is provided.
-   * @params id The id of the item to delete */
+   * @params id The id of the item to delete
+   */
   onDelete?: (id: string) => void;
-  /** A function wich will be called if the edit button is pressed.
+  /**
+   * A function wich will be called if the edit button is pressed.
    * The edit button will only be displayed if this function is provided.
-   * @params id The id of the item to edit */
+   * @params id The id of the item to edit
+   */
   onEdit?: (id: string) => void;
 };
 

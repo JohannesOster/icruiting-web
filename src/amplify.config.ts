@@ -1,17 +1,10 @@
-import {Auth} from 'aws-amplify';
+import {API} from 'services';
 
 const getAuthHeader = async (): Promise<{Authorization?: string}> => {
-  /* If user is authenticated add Authorization token */
-  try {
-    const session = await Auth.currentSession();
-    const token = session.getIdToken().getJwtToken();
-    const header = {Authorization: `Bearer ${token}`};
-
-    return header;
-  } catch (error) {
-    console.log('Catched error: ', error);
-    return {};
-  }
+  return API.auth
+    .token()
+    .then((token) => ({Authorization: `Bearer ${token}`}))
+    .catch(() => ({}));
 };
 
 const devConfig = {

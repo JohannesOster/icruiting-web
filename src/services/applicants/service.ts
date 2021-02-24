@@ -4,6 +4,7 @@ import {
   ApplicantAPI,
   AssessmentsAttribute,
   ListResponse,
+  Report,
 } from './types';
 import {convertAPIApplicant} from './convert';
 
@@ -29,7 +30,7 @@ export const Applicants = () => {
         applicants: resp.applicants.map((applicant) =>
           convertAPIApplicant<Applicant & AssessmentsAttribute>(applicant),
         ),
-        totalCount: parseInt(resp.totalCount),
+        totalCount: parseInt(resp.totalCount, 10),
       };
     });
   };
@@ -42,5 +43,14 @@ export const Applicants = () => {
     return API.del(`/applicants/${applicantId}`);
   };
 
-  return {list, find, del};
+  const retrieveReport = (
+    applicantId: string,
+    formCategory: string,
+  ): Promise<Report> => {
+    return API.get(
+      `/applicants/${applicantId}/report?formCategory=${formCategory}`,
+    );
+  };
+
+  return {list, find, del, retrieveReport};
 };

@@ -1,62 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {API, FormCategory} from 'services';
+import {API, TForm} from 'services';
 import useSWR from 'swr';
 import {buildRadarChart} from 'lib/report-utils';
 import {H3, H6, Table, Box, Flexgrid, getDashboardLayout} from 'components';
-import {API as AmplifyAPI} from 'aws-amplify';
 import {useTheme} from 'styled-components';
 import {Arrow} from 'icons';
 import {Radar} from 'react-chartjs-2';
 import {withAdmin} from 'components';
 import {useRouter} from 'next/router';
-import {FormFieldIntent} from 'services';
 import {Button} from 'icruiting-ui';
-
-type Report = {
-  rank: number;
-  formCategory: FormCategory;
-  formCategoryScore: number;
-  formResults: {
-    formId: string;
-    formTitle: string;
-    formScore: number;
-    stdDevFormScore: number;
-    replicas?: {
-      formId: string;
-      formTitle: string;
-      formScore: number;
-      stdDevFormScore: number;
-      formFieldScores: {
-        formFieldId: string;
-        jobRequirementId: string;
-        rowIndex: number;
-        intent: FormFieldIntent;
-        label: string;
-        aggregatedValues: string[];
-        countDistinct: {[key: string]: number};
-        formFieldScore: number;
-        stdDevFormFieldScores: number;
-      }[];
-    }[];
-    formFieldScores: {
-      formFieldId: string;
-      jobRequirementId: string;
-      rowIndex: number;
-      intent: FormFieldIntent;
-      label: string;
-      aggregatedValues: string[];
-      countDistinct: {[key: string]: number};
-      formFieldScore: number;
-      stdDevFormFieldScores: number;
-    }[];
-  }[];
-  jobRequirementResults: {
-    jobRequirementId: string;
-    jobRequirementScore: number;
-    requirementLabel: string;
-    minValue?: number;
-  }[];
-};
 
 const ApplicantReport = () => {
   const {spacing} = useTheme();
@@ -73,14 +25,31 @@ const ApplicantReport = () => {
     (_key, applicantId) => API.applicants.find(applicantId),
   );
 
-  const [report, setReport] = useState<Report | null>(null);
+  const {data: report} = useSWR(
+    ['GET /applicant/:applicantId/report', applicantId, formCategory],
+    (_key, applicantId, formCategory) =>
+      API.applicants.retrieveReport(applicantId, formCategory),
+  );
+
+  const [form, setForm] = useState<TForm | undefined>();
+  const {data: forms, error: formsError} = useSWR(
+    applicant ? [`GET /forms`, applicant.jobId] : null,
+    (_key, jobId) => API.forms.list(jobId),
+  );
+
+  const {data: reportStructure} = useSWR(
+    applicant ? ['GET /jobs/:jobId/report', applicant.jobId] : null,
+    (_key, jobId) => API.jobs.retrieveReport(jobId),
+  );
+
   useEffect(() => {
-    AmplifyAPI.get(
-      'icruiting-api',
-      `/applicants/${applicantId}/report?formCategory=${formCategory}`,
-      {},
-    ).then(setReport);
-  }, [applicantId, formCategory]);
+    if (!forms) return;
+    const _form = forms.find(
+      ({formCategory}) => formCategory === 'application',
+    );
+    if (!_form) return;
+    setForm(_form);
+  }, [forms]);
 
   const _buildRadarChart = () => {
     if (!(report && report.jobRequirementResults))
@@ -109,31 +78,37 @@ const ApplicantReport = () => {
         {showApplicant && (
           <Table>
             <tbody>
-              {applicant?.attributes.map(({key: attrKey}, idx) => {
+              {reportStructure?.formFields.map((fieldId, idx) => {
+                const label = form?.formFields.find(
+                  ({formFieldId}) => formFieldId === fieldId,
+                )?.label;
                 const attribute = applicant?.attributes.find(
-                  ({key}) => key === attrKey,
+                  ({key}) => key === label,
                 );
+                if (attribute) {
+                  return (
+                    <tr key={idx}>
+                      <td>{attribute?.key}</td>
+                      <td>{attribute?.value}</td>
+                    </tr>
+                  );
+                }
+                const file = applicant?.files.find(({key}) => key === label);
+                if (!file)
+                  return (
+                    <tr key={idx}>
+                      <td>{label} nicht vorhanden</td>
+                    </tr>
+                  );
                 return (
                   <tr key={idx}>
-                    <td>{attribute?.key}</td>
-                    <td>{attribute?.value}</td>
+                    <td>{file.key}</td>
+                    <td>
+                      <img style={{maxWidth: '200px'}} src={file.uri} />
+                    </td>
                   </tr>
                 );
               })}
-              {applicant?.files?.map((file, idx) => (
-                <tr key={idx}>
-                  <td>
-                    <a
-                      href={file.value}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      {file.key}
-                    </a>
-                  </td>
-                  <td></td>
-                </tr>
-              ))}
             </tbody>
           </Table>
         )}
