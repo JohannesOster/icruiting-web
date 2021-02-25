@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {API, TForm} from 'services';
 import useSWR from 'swr';
-import {buildRadarChart} from 'lib/report-utils';
+import {buildRadarChart} from 'utils/report-utils';
 import {H3, H6, Table, Box, Flexgrid, getDashboardLayout} from 'components';
 import {useTheme} from 'styled-components';
 import {Arrow} from 'icons';

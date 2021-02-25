@@ -2,7 +2,7 @@ import React from 'react';
 import {Box, H6} from 'components';
 import {Button, Input, Textarea, Select, Checkbox} from 'icruiting-ui';
 import {useForm, useFieldArray} from 'react-hook-form';
-import {errorsFor} from 'lib/react-hook-form-errors-for';
+import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
 import {array, mixed, number, object, string} from 'yup';
 import {Form} from './StyledForm.sc';

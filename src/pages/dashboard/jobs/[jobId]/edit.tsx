@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useForm, useFieldArray} from 'react-hook-form';
-import {errorsFor} from 'lib/react-hook-form-errors-for';
+import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
 import {object, array, string, number} from 'yup';
 import {API, TJobRequest, TJob} from 'services';

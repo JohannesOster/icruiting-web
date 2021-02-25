@@ -2,9 +2,9 @@ import React from 'react';
 import {Button, Input} from 'icruiting-ui';
 import {AuthForm} from 'components';
 import {useForm} from 'react-hook-form';
-import {errorsFor} from 'lib/react-hook-form-errors-for';
+import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
-import {password, passwordConfirm} from 'lib/form-validation';
+import {password, passwordConfirm} from 'utils/form-validation';
 import {object} from 'yup';
 
 export type AccountCompletionValues = {
@@ -16,9 +16,12 @@ type Props = {
 };
 
 export const AccountCompletionForm: React.FC<Props> = ({onSubmit}) => {
-  const {register, errors, formState, handleSubmit} = useForm<
-    AccountCompletionValues
-  >({
+  const {
+    register,
+    errors,
+    formState,
+    handleSubmit,
+  } = useForm<AccountCompletionValues>({
     mode: 'onChange',
     criteriaMode: 'all',
     resolver: yupResolver(object({password, passwordConfirm})),

@@ -6,7 +6,7 @@ import {useTheme} from 'styled-components';
 import {useForm} from 'react-hook-form';
 import useSWR from 'swr';
 import {Button, Input, Dialog, useToaster} from 'icruiting-ui';
-import {errorsFor} from 'lib/react-hook-form-errors-for';
+import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {H3, H6, Box, Typography, getDashboardLayout} from 'components';
 import {Clipboard} from 'icons';
 import {
