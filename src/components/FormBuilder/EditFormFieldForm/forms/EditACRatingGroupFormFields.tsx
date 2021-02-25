@@ -93,7 +93,7 @@ export const EditACRatingGroupFormFields: React.FC<Props> = ({
       />
       <Select
         name="intent"
-        label="Intent"
+        label="Absicht"
         ref={register}
         options={[
           {label: 'count_distinct', value: FormFieldIntent.countDistinct},
