@@ -23,14 +23,11 @@ const DNDBase = {
 const applicationFormSourceFields: DnDItem[] = [
   {
     ...DNDBase,
-    label: 'Section Header',
+    label: 'Überschrift',
     icon: Heading,
     as: FormSectionHeader,
     component: 'section_header',
-    props: {
-      label: 'Abschnittsüberschrift',
-      description: 'Abschnittsberschreibungstext',
-    },
+    props: {label: 'Überschrift'},
   },
   {
     ...DNDBase,
