@@ -61,6 +61,20 @@ export const Jobs = () => {
         </Button>
       ),
     },
+    {
+      title: 'JSON Export',
+      cell: ({jobId}) => (
+        <Button
+          kind="minimal"
+          isLoading={deletingJobId === jobId}
+          onClick={async () => {
+            await API.jobs.exportJSON(jobId);
+          }}
+        >
+          JSON Export
+        </Button>
+      ),
+    },
   ];
 
   return (

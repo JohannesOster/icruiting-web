@@ -44,6 +44,23 @@ export const Jobs = () => {
     return API.del(`/jobs/${jobId}/report`);
   };
 
+  const exportJSON = (jobId: string): Promise<any> => {
+    return API.get(`/jobs/${jobId}/export`).then((response) => {
+      const blob = new Blob([JSON.stringify(response)], {
+        type: 'application/json;charset=utf-8',
+      });
+
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'job.json';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      return response;
+    });
+  };
+
   return {
     list,
     find,
@@ -54,5 +71,6 @@ export const Jobs = () => {
     retrieveReport,
     updateReport,
     delReport,
+    exportJSON,
   };
 };
