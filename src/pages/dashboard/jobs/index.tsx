@@ -1,33 +1,44 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import Link from 'next/link';
-import {H3, H6, Typography, TColumn, DataTable, Box} from 'components';
-import {Button, Dialog} from 'icruiting-ui';
+import {
+  H3,
+  H6,
+  Typography,
+  TColumn,
+  DataTable,
+  Box,
+  Flexgrid,
+} from 'components';
+import {Button, Dialog, Input, useToaster} from 'icruiting-ui';
 import {useTheme} from 'styled-components';
 import useSWR from 'swr';
 import {API} from 'services';
 import {withAdmin} from 'components';
 import {getDashboardLayout} from 'components';
 import {useRouter} from 'next/router';
+import config from 'amplify.config';
 
 export const Jobs = () => {
   const {spacing} = useTheme();
   const router = useRouter();
+  const toaster = useToaster();
   const [deletingJobId, setDeletingJobId] = useState<string | null>(null);
   const [shouldDeleteJobId, setShouldDeleteJobId] = useState<string | null>(
     null,
   );
   const [exportingJobId, setExportingJobId] = useState<string | null>(null);
 
-  const {data: jobs, error, mutate} = useSWR('GET /jobs', API.jobs.list);
+  const [isUploading, setIsUploading] = useState(false);
+  const [files, setFiles] = useState<FileList | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const {data: jobs, error, revalidate} = useSWR('GET /jobs', API.jobs.list);
 
   const onDelete = () => {
     if (!shouldDeleteJobId) return;
     setDeletingJobId(shouldDeleteJobId);
     API.jobs.del(shouldDeleteJobId).finally(() => {
-      mutate((data) => {
-        return data.filter(({jobId}) => jobId !== deletingJobId);
-      });
-      setDeletingJobId(null);
+      revalidate().then(() => setDeletingJobId(null));
     });
   };
 
@@ -80,8 +91,46 @@ export const Jobs = () => {
     },
   ];
 
+  const uploadJob = async () => {
+    setIsUploading(true);
+    await new Promise(async (resolve, reject) => {
+      try {
+        const formData = new FormData();
+        if (!files) throw new Error('Datei fehlt.');
+        if (!files.length || !files[0]) return;
+        const file = files[0];
+        formData.append('job', file);
+
+        const token = await API.auth.token();
+        const request = new XMLHttpRequest();
+        request.open('POST', `${config.API.endpoints[0].endpoint}/jobs/import`);
+        request.setRequestHeader('Authorization', `Bearer ${token}`);
+        request.onreadystatechange = () => {
+          try {
+            if (request.readyState === 4) {
+              if (request.status !== 201) throw new Error(request.responseText);
+              resolve({});
+            }
+          } catch (error) {
+            reject(error);
+          }
+        };
+
+        request.send(formData);
+      } catch (error) {
+        toaster.danger(error.message);
+      }
+    })
+      .then(async () => {
+        await revalidate();
+        toaster.success('Stelle erfolgreich importiert');
+      })
+      .catch((error) => toaster.danger(error.message))
+      .finally(() => setIsUploading(false));
+  };
+
   return (
-    <main>
+    <Box display="grid" rowGap={spacing.scale200}>
       {shouldDeleteJobId && (
         <Dialog
           onClose={() => {
@@ -117,12 +166,7 @@ export const Jobs = () => {
           </Box>
         </Dialog>
       )}
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        marginBottom={spacing.scale200}
-      >
+      <Box display="flex" justifyContent="space-between" alignItems="center">
         <H3>Stellen</H3>
         <Button onClick={() => router.push(`${router.pathname}/create`)}>
           Hinzufügen
@@ -133,7 +177,36 @@ export const Jobs = () => {
         data={jobs || []}
         isLoading={!(jobs || error)}
       />
-    </main>
+      <form
+        ref={formRef}
+        onSubmit={async (event) => {
+          event.preventDefault();
+          await uploadJob();
+          formRef?.current?.reset();
+        }}
+      >
+        <Flexgrid flexGap={spacing.scale200}>
+          <Box maxWidth="200px" overflow="hidden">
+            <Input
+              type="file"
+              accept=".json"
+              onChange={(event) => {
+                const {files} = event.target;
+                setFiles(files);
+              }}
+            />
+          </Box>
+          <Button
+            kind="minimal"
+            type="submit"
+            isLoading={isUploading}
+            disabled={!files?.length}
+          >
+            hochladen
+          </Button>
+        </Flexgrid>
+      </form>
+    </Box>
   );
 };
 
