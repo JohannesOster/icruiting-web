@@ -8,7 +8,7 @@ import {API, TForm} from 'services';
 import {useRouter} from 'next/router';
 import {withAuth} from 'components';
 import {errorsFor} from 'lib/utility';
-import {stringToComponent} from 'lib/formbuilder/utils';
+import {stringToComponent} from 'components/FormBuilder/utils';
 
 const Form = styled.form`
   display: grid;

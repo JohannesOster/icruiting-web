@@ -9,7 +9,7 @@ import {H3, Box, Flexgrid, getDashboardLayout} from 'components';
 import {useToaster} from 'icruiting-ui';
 import {withAdmin} from 'components';
 import {useRouter} from 'next/router';
-import {stringToComponent} from 'lib/formbuilder/utils';
+import {stringToComponent} from 'components/FormBuilder/utils';
 
 export const EditApplicant = () => {
   const {spacing} = useTheme();

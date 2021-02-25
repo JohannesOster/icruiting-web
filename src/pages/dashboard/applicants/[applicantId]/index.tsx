@@ -18,7 +18,7 @@ import {Arrow, Edit} from 'icons';
 import {useAuth} from 'context';
 import {withAuth} from 'components';
 import {errorsFor} from 'lib/utility';
-import {stringToComponent} from 'lib/formbuilder/utils';
+import {stringToComponent} from 'components/FormBuilder/utils';
 
 const ApplicantDetails = () => {
   const toaster = useToaster();
