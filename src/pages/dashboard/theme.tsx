@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {H3, Flexgrid, Table, Box} from 'components';
 import {useTheme} from 'styled-components';
 import {Button, Input, useToaster} from 'icruiting-ui';
