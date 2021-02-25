@@ -7,8 +7,8 @@ import {H3, Box, getDashboardLayout} from 'components';
 import {API, TForm} from 'services';
 import {useRouter} from 'next/router';
 import {withAuth} from 'components';
-import {stringToComponent} from 'lib/form-builder-utils';
-import {errorsFor} from 'lib/utility';
+import {stringToComponent} from 'components/FormBuilder/utils';
+import {errorsFor} from 'utils/react-hook-form-errors-for';
 
 const Form = styled.form`
   display: grid;

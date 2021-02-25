@@ -7,10 +7,10 @@ import {
   email,
   password,
   passwordConfirm,
-} from 'lib/form-validation';
+} from 'utils/form-validation';
 import {object} from 'yup';
 import {useForm} from 'react-hook-form';
-import {errorsFor} from 'lib/react-hook-form-errors-for';
+import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
 import {useTheme} from 'styled-components';
 

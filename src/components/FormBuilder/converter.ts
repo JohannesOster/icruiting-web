@@ -1,7 +1,7 @@
 import {FormField} from 'services';
 import {ItemTypes} from './DnD';
-import {DnDItem, FormFieldComponent} from '../../lib/formbuilder/types';
-import {stringToComponent} from '../../lib/formbuilder/utils';
+import {DnDItem, FormFieldComponent} from './types';
+import {stringToComponent} from './utils';
 
 export const converter = {
   toDnDItem: (formField: FormField): DnDItem => {

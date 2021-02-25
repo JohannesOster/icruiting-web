@@ -1,7 +1,7 @@
 import React from 'react';
 import {useDrop, DragElementWrapper} from 'react-dnd';
 import {ItemTypes} from './ItemTypes';
-import {DnDItem} from '../../../lib/formbuilder/types';
+import {DnDItem} from '../types';
 
 type Props = {
   /** The id of the outermost component of the render prop */

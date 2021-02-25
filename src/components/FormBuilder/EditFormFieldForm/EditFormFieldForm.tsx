@@ -1,5 +1,5 @@
 import React from 'react';
-import {ComponentToEdit} from '../../../lib/formbuilder/types';
+import {ComponentToEdit} from '../types';
 import {Typography} from 'components';
 import {
   EditInputFormFieldsForm,

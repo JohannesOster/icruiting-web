@@ -1,4 +1,4 @@
-import {get} from './utility/objGet';
+import {get} from './objGet';
 
 export const errorsFor = (errors: any, path: string) => {
   path = path + '.types';

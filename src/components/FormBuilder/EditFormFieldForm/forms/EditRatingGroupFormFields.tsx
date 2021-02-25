@@ -2,7 +2,7 @@ import React from 'react';
 import {Box, H6} from 'components';
 import {Button, Checkbox, Input, Select, Textarea} from 'icruiting-ui';
 import {useForm, useFieldArray} from 'react-hook-form';
-import {errorsFor} from 'lib/react-hook-form-errors-for';
+import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
 import {object, array, string, mixed, number} from 'yup';
 import {Form} from './StyledForm.sc';
@@ -82,7 +82,7 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
       />
       <Select
         name="intent"
-        label="Intent"
+        label="Absicht"
         ref={register}
         options={[
           {label: 'count_distinct', value: FormFieldIntent.countDistinct},

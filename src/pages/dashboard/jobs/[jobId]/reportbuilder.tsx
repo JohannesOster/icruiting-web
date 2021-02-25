@@ -1,7 +1,7 @@
 import {yupResolver} from '@hookform/resolvers';
 import {Box, H3, getDashboardLayout} from 'components';
 import {Button, Checkbox, Spinner, useToaster} from 'icruiting-ui';
-import {errorsFor} from 'lib/utility';
+import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {useRouter} from 'next/router';
 import {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';

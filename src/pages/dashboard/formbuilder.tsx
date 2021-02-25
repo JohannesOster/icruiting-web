@@ -6,7 +6,7 @@ import {useTheme} from 'styled-components';
 import {useForm} from 'react-hook-form';
 import useSWR from 'swr';
 import {Button, Input, Dialog, useToaster} from 'icruiting-ui';
-import {errorsFor} from 'lib/react-hook-form-errors-for';
+import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {H3, H6, Box, Typography, getDashboardLayout} from 'components';
 import {Clipboard} from 'icons';
 import {
@@ -14,7 +14,7 @@ import {
   DnDSection,
   DnDSourceItem,
 } from 'components/FormBuilder/DnD';
-import {DnDItem, ComponentToEdit} from 'lib/formbuilder/types';
+import {DnDItem, ComponentToEdit} from 'components/FormBuilder/types';
 import {EditFormFieldForm} from 'components/FormBuilder/EditFormFieldForm';
 import {getSourceFormFields} from 'components/FormBuilder/sourceFormFields';
 import {getInitialFormFields} from 'components/FormBuilder/initialFormFields';
@@ -33,7 +33,7 @@ import amplifyConfig from 'amplify.config';
 import {converter} from 'components/FormBuilder/converter';
 import {useRouter} from 'next/router';
 import {withAdmin} from 'components';
-import {useFormBuilder} from 'lib/formbuilder/useFormBuilder';
+import {useFormBuilder} from 'components/FormBuilder/useFormBuilder';
 
 type Query = {
   formId?: string;

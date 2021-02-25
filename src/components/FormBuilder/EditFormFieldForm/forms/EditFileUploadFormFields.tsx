@@ -1,7 +1,7 @@
 import React from 'react';
 import {Input, Button, Textarea, Select, Checkbox} from 'icruiting-ui';
 import {useForm} from 'react-hook-form';
-import {errorsFor} from 'lib/react-hook-form-errors-for';
+import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {object, string} from 'yup';
 import {Form} from './StyledForm.sc';
 import {yupResolver} from '@hookform/resolvers';
@@ -59,7 +59,7 @@ export const EditFileUploadFormFields: React.FC<Props> = ({
       />
       <Select
         name="accept"
-        label="Accept"
+        label="Dateiformat"
         options={acceptOptions}
         ref={register}
         errors={errorsFor(errors, 'description')}

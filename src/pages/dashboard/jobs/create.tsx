@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useForm, useFieldArray} from 'react-hook-form';
-import {errorsFor} from 'lib/react-hook-form-errors-for';
+import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
 import {object, array, string, mixed} from 'yup';
 import {API, TJobRequest} from 'services';
@@ -43,9 +43,13 @@ const CreateJob = () => {
       });
   };
 
-  const {register, errors, control, handleSubmit, formState} = useForm<
-    TJobRequest
-  >({
+  const {
+    register,
+    errors,
+    control,
+    handleSubmit,
+    formState,
+  } = useForm<TJobRequest>({
     mode: 'onChange',
     criteriaMode: 'all',
     defaultValues: {jobRequirements: [{requirementLabel: ''}]},

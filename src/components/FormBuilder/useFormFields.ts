@@ -1,6 +1,6 @@
 import {useReducer} from 'react';
 import {DnDItem} from './types';
-import {arrInsert, arrMove} from 'lib/utility/arrUtils';
+import {arrInsert, arrMove} from 'utils/arrUtils';
 import {randString} from './utils';
 
 interface RType {

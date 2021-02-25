@@ -1,10 +1,10 @@
 import React from 'react';
-import {email} from 'lib/form-validation';
+import {email} from 'utils/form-validation';
 import {object} from 'yup';
 import {useForm} from 'react-hook-form';
 import {Button, Input} from 'icruiting-ui';
 import {AuthForm} from 'components';
-import {errorsFor} from 'lib/react-hook-form-errors-for';
+import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
 
 type EmailFormValues = {

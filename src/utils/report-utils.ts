@@ -1,5 +1,3 @@
-import {FormFieldIntent} from 'services';
-
 type KeyValuePair<T> = {[key: string]: T};
 
 export const buildRadarChart = (requirementResults: {

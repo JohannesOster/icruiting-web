@@ -12,7 +12,7 @@ import {
   Heading,
 } from 'icons';
 import {FormFieldIntent, FormCategory} from 'services';
-import {DnDItem} from 'lib/formbuilder/types';
+import {DnDItem} from 'components/FormBuilder/types';
 
 const DNDBase = {
   type: ItemTypes.FORM_FIELD,
@@ -23,14 +23,11 @@ const DNDBase = {
 const applicationFormSourceFields: DnDItem[] = [
   {
     ...DNDBase,
-    label: 'Section Header',
+    label: 'Überschrift',
     icon: Heading,
     as: FormSectionHeader,
     component: 'section_header',
-    props: {
-      label: 'Abschnittsüberschrift',
-      description: 'Abschnittsberschreibungstext',
-    },
+    props: {label: 'Überschrift'},
   },
   {
     ...DNDBase,

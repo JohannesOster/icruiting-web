@@ -17,8 +17,8 @@ import useSWR from 'swr';
 import {Arrow, Edit} from 'icons';
 import {useAuth} from 'context';
 import {withAuth} from 'components';
-import {stringToComponent} from 'lib/form-builder-utils';
-import {errorsFor} from 'lib/utility';
+import {errorsFor} from 'utils/react-hook-form-errors-for';
+import {stringToComponent} from 'components/FormBuilder/utils';
 
 const ApplicantDetails = () => {
   const toaster = useToaster();

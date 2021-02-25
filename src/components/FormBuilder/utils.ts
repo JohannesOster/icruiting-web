@@ -3,7 +3,9 @@ import {FormSectionHeader, RatingGroup} from 'components';
 import {Input, Select, Textarea, Radio, Checkbox} from 'icruiting-ui';
 
 /** Return the actual component to the passed components name */
-export const stringToComponent = (componentName: string): any => {
+export const stringToComponent = (
+  componentName: string,
+): ComponentType<any> => {
   const map: {[key: string]: ComponentType<any>} = {
     section_header: FormSectionHeader,
     input: Input,

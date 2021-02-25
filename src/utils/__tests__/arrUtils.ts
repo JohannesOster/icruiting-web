@@ -1,4 +1,4 @@
-import {arrInsert, arrMove} from '../arrUtils';
+import {arrInsert, arrMove} from '../../arrUtils';
 
 describe('arrMove', () => {
   it('returns mutatedArray', () => {
