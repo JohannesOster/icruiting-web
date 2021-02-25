@@ -59,7 +59,7 @@ export const EditFileUploadFormFields: React.FC<Props> = ({
       />
       <Select
         name="accept"
-        label="Accept"
+        label="Dateiformat"
         options={acceptOptions}
         ref={register}
         errors={errorsFor(errors, 'description')}
