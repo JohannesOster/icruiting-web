@@ -16,6 +16,7 @@ export const Jobs = () => {
   const [shouldDeleteJobId, setShouldDeleteJobId] = useState<string | null>(
     null,
   );
+  const [exportingJobId, setExportingJobId] = useState<string | null>(null);
 
   const {data: jobs, error, mutate} = useSWR('GET /jobs', API.jobs.list);
 
@@ -66,9 +67,11 @@ export const Jobs = () => {
       cell: ({jobId}) => (
         <Button
           kind="minimal"
-          isLoading={deletingJobId === jobId}
+          isLoading={exportingJobId === jobId}
           onClick={async () => {
+            setExportingJobId(jobId);
             await API.jobs.exportJSON(jobId);
+            setExportingJobId(null);
           }}
         >
           JSON Export
