@@ -74,7 +74,6 @@ const ReportBuilder = () => {
       ) : (
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box display="grid" rowGap={spacing.scale200}>
-            {console.log(errorsFor(errors, 'reportFields'), errors)}
             <Checkbox
               name="reportFields"
               errors={errorsFor(errors, 'reportFields')}
