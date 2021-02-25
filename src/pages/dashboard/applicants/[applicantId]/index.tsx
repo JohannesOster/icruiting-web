@@ -17,8 +17,8 @@ import useSWR from 'swr';
 import {Arrow, Edit} from 'icons';
 import {useAuth} from 'context';
 import {withAuth} from 'components';
-import {stringToComponent} from 'lib/form-builder-utils';
 import {errorsFor} from 'lib/utility';
+import {stringToComponent} from 'lib/formbuilder/utils';
 
 const ApplicantDetails = () => {
   const toaster = useToaster();

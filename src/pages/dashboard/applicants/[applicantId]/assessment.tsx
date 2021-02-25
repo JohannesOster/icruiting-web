@@ -7,8 +7,8 @@ import {H3, Box, getDashboardLayout} from 'components';
 import {API, TForm} from 'services';
 import {useRouter} from 'next/router';
 import {withAuth} from 'components';
-import {stringToComponent} from 'lib/form-builder-utils';
 import {errorsFor} from 'lib/utility';
+import {stringToComponent} from 'lib/formbuilder/utils';
 
 const Form = styled.form`
   display: grid;

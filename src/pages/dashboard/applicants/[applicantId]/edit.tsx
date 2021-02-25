@@ -6,10 +6,10 @@ import config from 'amplify.config';
 import useSWR from 'swr';
 import {API, TForm} from 'services';
 import {H3, Box, Flexgrid, getDashboardLayout} from 'components';
-import {stringToComponent} from 'lib/form-builder-utils';
 import {useToaster} from 'icruiting-ui';
 import {withAdmin} from 'components';
 import {useRouter} from 'next/router';
+import {stringToComponent} from 'lib/formbuilder/utils';
 
 export const EditApplicant = () => {
   const {spacing} = useTheme();
