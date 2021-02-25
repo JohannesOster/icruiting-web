@@ -99,7 +99,7 @@ export const EditOptionsFormFields: FC<Props> = ({
               key={option.id}
               index={idx}
               move={move}
-              onDelete={idx > 1 ? remove : undefined}
+              onDelete={idx > 0 ? remove : undefined}
             >
               <Box flex={1}>
                 <Input
