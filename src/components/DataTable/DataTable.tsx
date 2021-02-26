@@ -70,7 +70,7 @@ export const DataTable: React.FC<Props> = ({
         showPagination && (
           <Flexgrid
             justifyContent="space-between"
-            flexGap="20px"
+            flexGap={spacing.scale200}
             padding={spacing.scale100}
           >
             <Button
