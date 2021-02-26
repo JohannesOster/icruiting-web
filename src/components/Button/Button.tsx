@@ -16,7 +16,8 @@ export const Button: React.FC<ButtonProps> = ({
 
   const _onClick = (event: MouseEvent<HTMLButtonElement>) => {
     if (isLoading) return;
-    onClick && onClick(event);
+    if (!onClick) return;
+    onClick(event);
   };
 
   return (

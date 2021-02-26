@@ -2,7 +2,6 @@ import styled, {css, DefaultTheme} from 'styled-components';
 import {ButtonKind, BaseButtonProps} from './types';
 
 export const BaseButton = styled.button<BaseButtonProps>`
-  margin: 0;
   display: inline-flex;
   flex-direction: ${({isLoading}) => (isLoading ? 'column' : 'row')};
   align-items: center;
@@ -61,7 +60,7 @@ const getButtonStylesForKind = (
 
         &:disabled {
           cursor: not-allowed;
-          color: ${({theme}) => theme.colors.buttonMinimalDisabledText};
+          color: ${theme.colors.buttonMinimalDisabledText};
         }
       `;
     case 'primary':
@@ -81,9 +80,8 @@ const getButtonStylesForKind = (
 
         &:disabled {
           cursor: not-allowed;
-          background-color: ${({theme}) =>
-            theme.colors.buttonPrimaryDisabledFill};
-          color: ${({theme}) => theme.colors.buttonPrimaryDisabledText};
+          background-color: ${theme.colors.buttonPrimaryDisabledFill};
+          color: ${theme.colors.buttonPrimaryDisabledText};
         }
       `;
   }

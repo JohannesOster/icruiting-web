@@ -45,7 +45,7 @@ const LandingPage: React.FC = () => {
           alignItems="center"
         >
           <Box display="flex" flexDirection="column">
-            <IcruitingLogo style={{margin: 0, width: '90vw'}} />
+            <IcruitingLogo style={{width: '90vw'}} />
             <Typography style={{textTransform: 'uppercase', marginTop: -15}}>
               Recruit For Fit
             </Typography>
