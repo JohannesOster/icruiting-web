@@ -22,7 +22,8 @@ const ApplicantAssessment = () => {
     applicantId: string;
     formId: string;
   };
-  const [status, setStatus] = useState('idle');
+  type Status = 'idle' | 'deleting' | 'submitting';
+  const [status, setStatus] = useState<Status>('idle');
   const {data: applicant} = useSWR(
     ['GET /applicants/:applicantId', applicantId],
     (_key, applicantId) => API.applicants.find(applicantId),
@@ -30,7 +31,7 @@ const ApplicantAssessment = () => {
   const key = applicant
     ? ['GET /form-submissions/:formId/:applicantId', formId, applicantId]
     : null;
-  const {data: submission} = useSWR(key, (_key, formId, applicantId) =>
+  const {data: submission, mutate} = useSWR(key, (_key, formId, applicantId) =>
     API.formSubmissions.find(formId, applicantId),
   );
 
@@ -44,9 +45,14 @@ const ApplicantAssessment = () => {
     setForm(_form);
   }, [data, formId]);
 
-  const {register, handleSubmit, errors, formState} = useForm({
+  const {register, handleSubmit, errors, formState, reset} = useForm({
     mode: 'onChange',
   });
+
+  useEffect(() => {
+    if (!submission) return;
+    reset(submission.submission);
+  }, [submission]);
 
   const onSubmit = (values: any) => {
     const body = {
@@ -83,8 +89,7 @@ const ApplicantAssessment = () => {
       ...props
     } = item;
 
-    const _defaultValue =
-      submission?.submission[item.formFieldId] || defaultValue || '';
+    const _defaultValue = defaultValue || '';
 
     return (
       <Component
@@ -102,9 +107,29 @@ const ApplicantAssessment = () => {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <H3>
-        {applicant?.name}: {form?.formTitle}
-      </H3>
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <H3>
+          {applicant?.name}: {form?.formTitle}
+        </H3>
+        <Button
+          disabled={!submission}
+          isLoading={status === 'deleting'}
+          onClick={async () => {
+            setStatus('deleting');
+            await API.formSubmissions
+              .del(submission?.formSubmissionId)
+              .then(async () => {
+                toaster.success('Bewertung erfolgreich entfernt.');
+                mutate(null); // clear cache otherwise 404 will not override current cache
+                router.back();
+              })
+              .catch(toaster.danger);
+            setStatus('idle');
+          }}
+        >
+          Entfernen
+        </Button>
+      </Box>
       {formFields}
       <Box marginTop={20}>
         <Button
