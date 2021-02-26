@@ -32,6 +32,6 @@ export const tenantName = string()
   .min(3, 'Tenantname muss  mindestens 3 Zeichen lang sein.')
   .required('Tenantname ist verpflichtend.');
 
-export const confirmationCode = number().typeError(
+export const confirmationCode = string().required(
   'Bestätigenscode ist verpflichtend und darf nur Ziffern beinhalten.',
 );
