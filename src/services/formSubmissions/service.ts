@@ -24,5 +24,9 @@ export const FormSubmissions = () => {
     });
   };
 
-  return {find, create, update};
+  const del = (formSubmissionId: string) => {
+    return API.del(`/form-submissions/${formSubmissionId}`);
+  };
+
+  return {find, create, update, del};
 };
