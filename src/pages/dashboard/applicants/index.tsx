@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
-import {Select, Button, Dialog, Input, Checkbox} from 'icruiting-ui';
+import {Select, Button, Dialog, Input, Checkbox} from 'components';
 import {useTheme} from 'styled-components';
 import useSWR from 'swr';
 import {API} from 'services';

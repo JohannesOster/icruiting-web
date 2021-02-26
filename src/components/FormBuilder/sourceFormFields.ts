@@ -1,6 +1,13 @@
 import {ItemTypes} from '../../components/FormBuilder/DnD';
-import {RatingGroup, FormSectionHeader} from 'components';
-import {Input, Select, Textarea, Radio, Checkbox} from 'icruiting-ui';
+import {
+  RatingGroup,
+  FormSectionHeader,
+  Input,
+  Select,
+  Textarea,
+  Radio,
+  Checkbox,
+} from 'components';
 import {
   Area,
   Select as SelectIcon,

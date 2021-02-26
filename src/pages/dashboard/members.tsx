@@ -1,18 +1,26 @@
 import React, {useState, useCallback, useEffect} from 'react';
-import {DataTable, H3, H6, TColumn, Flexgrid} from 'components';
-import {Button, Select, ChipInput, Dialog} from 'icruiting-ui';
+import {
+  DataTable,
+  H3,
+  H6,
+  TColumn,
+  Flexgrid,
+  getDashboardLayout,
+  withAdmin,
+  Button,
+  Select,
+  ChipInput,
+  Dialog,
+} from 'components';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {email} from 'utils/form-validation';
 import {object, array} from 'yup';
-import {useTheme} from 'styled-components';
+import styled, {useTheme} from 'styled-components';
 import useSWR from 'swr';
-import {useToaster} from 'icruiting-ui';
-import {withAdmin} from 'components';
-import {getDashboardLayout} from 'components';
-import styled from 'styled-components';
 import {API} from 'services';
+import {useToaster} from 'context';
 
 export const Header = styled.header`
   display: flex;

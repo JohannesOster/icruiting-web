@@ -1,18 +1,27 @@
 import colors from './colors';
 import typography from './typography';
 import spacing from './spacing';
-import {theme as baseTheme} from 'icruiting-ui';
+import animation from './animation';
 
 export const theme = {
-  ...baseTheme,
   colors: {
-    ...baseTheme.colors,
     primary: colors.black,
 
     // - button
     buttonPrimaryFill: colors.black,
     buttonPrimaryText: colors.white,
     buttonPrimaryFillHover: colors.gray700,
+    buttonPrimaryDisabledFill: colors.gray50,
+    buttonPrimaryDisabledText: colors.gray400,
+
+    buttonPrimaryDestructiveFill: colors.red400,
+    buttonPrimaryDestructiveText: colors.white,
+    buttonPrimaryDestructiveFillHover: colors.red300,
+
+    buttonMinimalDisabledText: colors.gray400,
+
+    buttonLoadingSpinnerForeground: colors.white,
+    buttonLoadingSpinnerBackground: colors.gray500,
 
     buttonMinimalFill: 'transparent',
     buttonMinimalText: colors.gray700,
@@ -24,27 +33,40 @@ export const theme = {
     // - inputs
     inputBorder: colors.gray100,
     inputFill: colors.white,
+    inputBorderFocus: colors.gray500,
+
+    inputBorderError: colors.red400,
+    inputFillErrorFocus: colors.red50,
+
     inputBorderActive: colors.gray500,
-    inputBorderError: colors.red300,
     inputFillActiveError: colors.red50,
+
+    // - chip input
+    chipBackground: colors.black,
+
+    // - rating group
+    ratingGroupBackgroundActive: colors.black,
+
+    // - typography
+    typographyPrimary: colors.gray800,
+    typographySecondary: colors.gray600,
+    typographyPrimaryError: colors.red400,
+    typographySecondaryError: colors.red300,
+
+    typographyError: colors.red300,
+
+    // - loadingspinner
+    loadingSpinnerBackground: colors.gray300,
+    loadingSpinnerForeground: colors.gray700,
 
     // - tables
     tableBorder: colors.gray200,
     tableHeaderFill: colors.gray100,
     tableRowFill: colors.gray50,
-
-    // - typography
-    typographyPrimary: colors.gray800,
-    typographySecondary: colors.gray600,
-    typographyError: colors.red300,
   },
   borders: {radius: '2px'},
   spacing,
   typography,
-  breakpoints: {
-    sm: '568px',
-    md: '768px',
-    lg: '1024px',
-    xl: '1280px',
-  },
+  breakpoints: {sm: '568px', md: '768px', lg: '1024px', xl: '1280px'},
+  animation,
 };

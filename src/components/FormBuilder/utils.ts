@@ -1,6 +1,13 @@
 import {ComponentType} from 'react';
-import {FormSectionHeader, RatingGroup} from 'components';
-import {Input, Select, Textarea, Radio, Checkbox} from 'icruiting-ui';
+import {
+  FormSectionHeader,
+  RatingGroup,
+  Input,
+  Select,
+  Textarea,
+  Radio,
+  Checkbox,
+} from 'components';
 
 /** Return the actual component to the passed components name */
 export const stringToComponent = (

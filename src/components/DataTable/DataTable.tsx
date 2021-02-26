@@ -1,6 +1,5 @@
 import React from 'react';
-import {Table, Box, Typography, Flexgrid} from 'components';
-import {Spinner, Button} from 'icruiting-ui';
+import {Table, Box, Typography, Flexgrid, Spinner, Button} from 'components';
 import {useTheme} from 'styled-components';
 
 export type TColumn = {
@@ -71,7 +70,7 @@ export const DataTable: React.FC<Props> = ({
         showPagination && (
           <Flexgrid
             justifyContent="space-between"
-            flexGap="20px"
+            flexGap={spacing.scale200}
             padding={spacing.scale100}
           >
             <Button

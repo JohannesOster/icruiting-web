@@ -1,5 +1,4 @@
-import {RatingGroup} from 'components';
-import {Input} from 'icruiting-ui';
+import {RatingGroup, Input} from 'components';
 import {ItemTypes} from '../../components/FormBuilder/DnD';
 import {FormCategory, FormFieldIntent} from 'services';
 import {DnDItem} from 'components/FormBuilder/types';

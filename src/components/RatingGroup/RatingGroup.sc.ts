@@ -29,7 +29,7 @@ export const Radio = styled.input`
   width: 0;
 
   &:checked + ${RadioLabel} {
-    background: ${({theme}) => theme.colors.primary};
+    background: ${({theme}) => theme.colors.ratingGroupBackgroundActive};
     color: white;
   }
 `;

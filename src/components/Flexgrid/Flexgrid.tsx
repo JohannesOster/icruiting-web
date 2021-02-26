@@ -20,8 +20,6 @@ const FlexgridBase = styled.div<{flexGap?: string}>`
   -ms-flex-wrap: wrap;
   -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
-  padding: 0;
-  margin: 0;
   position: relative;
 
   ${({flexGap}) => `

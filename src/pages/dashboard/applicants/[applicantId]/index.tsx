@@ -11,11 +11,11 @@ import {
   Flexgrid,
   getDashboardLayout,
 } from 'components';
-import {Button, useToaster} from 'icruiting-ui';
+import {Button} from 'components';
 import {API, TForm} from 'services';
 import useSWR from 'swr';
 import {Arrow, Edit} from 'icons';
-import {useAuth} from 'context';
+import {useAuth, useToaster} from 'context';
 import {withAuth} from 'components';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {stringToComponent} from 'components/FormBuilder/utils';

@@ -1,10 +1,9 @@
 import React from 'react';
-import {Box, H6} from 'components';
-import {Button, Input, Textarea, Select, Checkbox} from 'icruiting-ui';
+import {Box, H6, Button, Input, Textarea, Select, Checkbox} from 'components';
 import {useForm, useFieldArray} from 'react-hook-form';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
-import {array, mixed, number, object, string} from 'yup';
+import {array, mixed, object, string} from 'yup';
 import {Form} from './StyledForm.sc';
 import {Trash} from 'icons';
 import {useTheme} from 'styled-components';

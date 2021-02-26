@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box, H6} from 'components';
-import {Button, Checkbox, Input, Select, Textarea} from 'icruiting-ui';
+import {Button, Checkbox, Input, Select, Textarea} from 'components';
 import {useForm, useFieldArray} from 'react-hook-form';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';

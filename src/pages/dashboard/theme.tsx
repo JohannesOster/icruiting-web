@@ -1,13 +1,19 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {H3, Flexgrid, Table, Box} from 'components';
+import {
+  H3,
+  Flexgrid,
+  Table,
+  Box,
+  withAuth,
+  Button,
+  Input,
+  getDashboardLayout,
+} from 'components';
 import {useTheme} from 'styled-components';
-import {Button, Input, useToaster} from 'icruiting-ui';
-import {useAuth} from 'context';
+import {useAuth, useToaster} from 'context';
 import config from 'amplify.config';
 import {API} from 'services';
 import useSWR, {mutate} from 'swr';
-import {withAuth} from 'components';
-import {getDashboardLayout} from 'components';
 
 export const Theme = () => {
   const {spacing} = useTheme();

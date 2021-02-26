@@ -12,13 +12,7 @@ import {
   getDashboardLayout,
   Flexgrid,
 } from 'components';
-import {
-  Button,
-  Dialog,
-  Spinner,
-  Link as ExternalLink,
-  Input,
-} from 'icruiting-ui';
+import {Button, Dialog, Spinner, Input} from 'components';
 import {API, FormCategory, TForm} from 'services';
 import useSWR from 'swr';
 import {useRouter} from 'next/router';
@@ -161,9 +155,9 @@ const JobDetails = () => {
         const domain = amplifyConfig.API.endpoints[0].endpoint;
         const iframeSrc = `${domain}/forms/${formId}/html`;
         return (
-          <ExternalLink href={iframeSrc} newTab>
+          <a href={iframeSrc} rel="noopener noreferrer" target="_blank">
             Direktlink
-          </ExternalLink>
+          </a>
         );
       },
     },

@@ -2,10 +2,9 @@ import React, {useCallback, useState} from 'react';
 import Link from 'next/link';
 import {useTheme} from 'styled-components';
 import {H3, Box, H6, Typography} from 'components';
-import {useAuth} from 'context';
+import {useAuth, useToaster} from 'context';
 import {API} from 'services';
-import {Dialog, Button, useToaster} from 'icruiting-ui';
-import {withAuth} from 'components';
+import {Dialog, Button, withAuth} from 'components';
 
 const Account: React.FC = () => {
   const {currentUser, refetchUser} = useAuth();

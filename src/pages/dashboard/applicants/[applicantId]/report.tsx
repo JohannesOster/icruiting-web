@@ -8,7 +8,7 @@ import {Arrow} from 'icons';
 import {Radar} from 'react-chartjs-2';
 import {withAdmin} from 'components';
 import {useRouter} from 'next/router';
-import {Button} from 'icruiting-ui';
+import {Button} from 'components';
 
 const ApplicantReport = () => {
   const {spacing} = useTheme();

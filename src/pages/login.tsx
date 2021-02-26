@@ -5,8 +5,7 @@ import {
   AccountCompletionForm,
   AccountCompletionValues,
 } from 'containers';
-import {useAuth} from 'context';
-import {useToaster} from 'icruiting-ui';
+import {useAuth, useToaster} from 'context';
 import {useRouter} from 'next/router';
 import {API} from 'services';
 

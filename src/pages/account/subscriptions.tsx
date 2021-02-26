@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
 import {Box, H3, DataTable, TColumn} from 'components';
 import {useTheme} from 'styled-components';
-import {useAuth} from 'context';
+import {useAuth, useToaster} from 'context';
 import useSWR, {mutate} from 'swr';
 import {API} from 'services';
-import {Button, useToaster} from 'icruiting-ui';
-import {withAdmin} from 'components';
+import {Button, withAdmin} from 'components';
 
 const Subscriptions: React.FC = () => {
   const {spacing} = useTheme();

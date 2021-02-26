@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Input, Select, Textarea, Checkbox} from 'icruiting-ui';
+import {Button, Input, Select, Textarea, Checkbox} from 'components';
 import {useForm, Controller} from 'react-hook-form';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {object, string} from 'yup';

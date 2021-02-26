@@ -102,7 +102,6 @@ export const MobileNavItem = styled.div`
 export const DesktopNav = styled.ul`
   list-style: none;
   align-items: center;
-  margin: 0;
   display: none;
 
   ${({theme}) => css`
@@ -137,5 +136,4 @@ export const Separator = styled.hr`
   border: none;
   width: 100%;
   height: 1px;
-  margin: 0;
 `;

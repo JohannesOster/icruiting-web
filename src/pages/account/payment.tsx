@@ -10,8 +10,8 @@ import {
 } from 'components';
 import {PaymentMethodForm} from 'containers';
 import {useTheme} from 'styled-components';
-import {useAuth} from 'context';
-import {Button, Dialog, useToaster} from 'icruiting-ui';
+import {useAuth, useToaster} from 'context';
+import {Button, Dialog} from 'components';
 import useSWR, {mutate} from 'swr';
 import {API} from 'services';
 import {loadStripe} from '@stripe/stripe-js';

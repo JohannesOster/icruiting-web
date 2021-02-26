@@ -2,7 +2,7 @@ import React from 'react';
 import {useTheme} from 'styled-components';
 import {useRouter} from 'next/router';
 import Link from 'next/link';
-import {Button} from 'icruiting-ui';
+import {Button} from 'components';
 import {IcruitingLogo, Bunny} from 'icons';
 import {Box, Typography} from 'components';
 
@@ -45,7 +45,7 @@ const LandingPage: React.FC = () => {
           alignItems="center"
         >
           <Box display="flex" flexDirection="column">
-            <IcruitingLogo style={{margin: 0, width: '90vw'}} />
+            <IcruitingLogo style={{width: '90vw'}} />
             <Typography style={{textTransform: 'uppercase', marginTop: -15}}>
               Recruit For Fit
             </Typography>
