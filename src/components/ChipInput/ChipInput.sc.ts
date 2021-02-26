@@ -61,7 +61,7 @@ export const BaseChipInput = styled.input<BaseChipInpusProps>`
 
 export const Chip = styled.span`
   padding: ${({theme}) => `${theme.spacing.scale50} ${theme.spacing.scale100}`};
-  background: ${({theme}) => theme.colors.primary};
+  background: ${({theme}) => theme.colors.chipBackground};
   color: white;
   margin: ${({theme}) => `${theme.spacing.scale100} ${theme.spacing.scale100}`};
   display: inline-grid;
