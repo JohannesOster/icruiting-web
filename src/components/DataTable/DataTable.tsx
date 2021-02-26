@@ -1,6 +1,5 @@
 import React from 'react';
-import {Table, Box, Typography, Flexgrid} from 'components';
-import {Spinner, Button} from 'icruiting-ui';
+import {Table, Box, Typography, Flexgrid, Spinner, Button} from 'components';
 import {useTheme} from 'styled-components';
 
 export type TColumn = {

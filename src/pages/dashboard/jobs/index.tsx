@@ -8,13 +8,16 @@ import {
   DataTable,
   Box,
   Flexgrid,
+  getDashboardLayout,
+  Button,
+  Dialog,
+  Input,
+  withAdmin,
 } from 'components';
-import {Button, Dialog, Input, useToaster} from 'icruiting-ui';
+import {useToaster} from 'context';
 import {useTheme} from 'styled-components';
 import useSWR from 'swr';
 import {API} from 'services';
-import {withAdmin} from 'components';
-import {getDashboardLayout} from 'components';
 import {useRouter} from 'next/router';
 import config from 'amplify.config';
 

@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Box, H6, Typography} from 'components';
+import {Box, H6, Typography, Spinner} from 'components';
 import {SignUpForm, SignUpFormValues} from 'containers';
 import {useRouter} from 'next/router';
-import {useToaster} from 'icruiting-ui';
+import {useToaster} from 'context';
 import spacing from 'theme/spacing';
-import {Spinner} from 'icruiting-ui';
 import {API} from 'services';
 import useSWR from 'swr';
 

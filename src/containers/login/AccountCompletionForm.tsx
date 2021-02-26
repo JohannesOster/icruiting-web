@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Input} from 'icruiting-ui';
+import {Button, Input} from 'components';
 import {AuthForm} from 'components';
 import {useForm} from 'react-hook-form';
 import {errorsFor} from 'utils/react-hook-form-errors-for';

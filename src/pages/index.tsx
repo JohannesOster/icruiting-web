@@ -2,7 +2,7 @@ import React from 'react';
 import {useTheme} from 'styled-components';
 import {useRouter} from 'next/router';
 import Link from 'next/link';
-import {Button} from 'icruiting-ui';
+import {Button} from 'components';
 import {IcruitingLogo, Bunny} from 'icons';
 import {Box, Typography} from 'components';
 

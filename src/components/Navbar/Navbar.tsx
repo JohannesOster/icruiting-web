@@ -11,7 +11,7 @@ import {
   Separator,
 } from './Navbar.sc';
 import {DropDown, Typography, Box} from 'components';
-import {Button} from 'icruiting-ui';
+import {Button} from 'components';
 import {IcruitingLogo, UserCircle, Logout} from 'icons';
 import {useTheme} from 'styled-components';
 import Link from 'next/link';

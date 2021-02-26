@@ -3,7 +3,7 @@ import {IbanElement} from '@stripe/react-stripe-js';
 import {useAuth} from 'context';
 import {Box, Typography} from 'components';
 import styled, {useTheme} from 'styled-components';
-import {Input, Button} from 'icruiting-ui';
+import {Input, Button} from 'components';
 import {useForm} from 'react-hook-form';
 
 const CardContainer = styled.div`

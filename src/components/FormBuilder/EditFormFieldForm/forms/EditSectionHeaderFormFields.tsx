@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Input, Textarea} from 'icruiting-ui';
+import {Button, Input, Textarea} from 'components';
 import {useForm} from 'react-hook-form';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {object, string} from 'yup';

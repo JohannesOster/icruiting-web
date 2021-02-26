@@ -4,15 +4,23 @@ import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
 import {object, array, string, number} from 'yup';
 import {API, TJobRequest, TJob} from 'services';
-import {Box, H3, H6, Flexgrid, getDashboardLayout} from 'components';
-import {Button, Input, Spinner} from 'icruiting-ui';
+import {
+  Box,
+  H3,
+  H6,
+  Flexgrid,
+  getDashboardLayout,
+  withAdmin,
+  Button,
+  Input,
+  Spinner,
+} from 'components';
 import {Trash} from 'icons';
 import useSWR from 'swr';
 import {useTheme} from 'styled-components';
-import {useToaster} from 'icruiting-ui';
+import {useToaster} from 'context';
 import {useRouter} from 'next/router';
 import styled from 'styled-components';
-import {withAdmin} from 'components';
 
 const OptionContainer = styled.div`
   display: grid;

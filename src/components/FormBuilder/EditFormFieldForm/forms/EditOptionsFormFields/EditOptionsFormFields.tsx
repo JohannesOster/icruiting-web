@@ -4,7 +4,7 @@ import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {useTheme} from 'styled-components';
 import {object, array, string} from 'yup';
 import {H6, Box} from 'components';
-import {Button, Input, Textarea, Checkbox} from 'icruiting-ui';
+import {Button, Input, Textarea, Checkbox} from 'components';
 import {Form} from '../StyledForm.sc';
 import {yupResolver} from '@hookform/resolvers';
 import {DnDOptionContainer} from './DnDOptionContainer';

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Input} from 'icruiting-ui';
+import {Button, Input} from 'components';
 import {AuthForm, Typography} from 'components';
 import Link from 'next/link';
 import {
