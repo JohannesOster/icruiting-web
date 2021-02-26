@@ -5,8 +5,6 @@ import animation from './animation';
 
 export const theme = {
   colors: {
-    primary: colors.black,
-
     // - button
     buttonPrimaryFill: colors.black,
     buttonPrimaryText: colors.white,

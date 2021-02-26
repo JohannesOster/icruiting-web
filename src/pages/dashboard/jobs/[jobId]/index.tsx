@@ -344,7 +344,7 @@ const JobDetails = () => {
             <Edit />
           </Flexgrid>
         </div>
-        {isFetching && <Spinner color={colors.primary} />}
+        {isFetching && <Spinner />}
         {!isFetching && (
           <Table>
             <thead>
