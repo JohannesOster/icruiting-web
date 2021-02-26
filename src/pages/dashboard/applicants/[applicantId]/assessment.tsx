@@ -45,9 +45,14 @@ const ApplicantAssessment = () => {
     setForm(_form);
   }, [data, formId]);
 
-  const {register, handleSubmit, errors, formState} = useForm({
+  const {register, handleSubmit, errors, formState, reset} = useForm({
     mode: 'onChange',
   });
+
+  useEffect(() => {
+    if (!submission) return;
+    reset(submission.submission);
+  }, [submission]);
 
   const onSubmit = (values: any) => {
     const body = {
@@ -84,8 +89,7 @@ const ApplicantAssessment = () => {
       ...props
     } = item;
 
-    const _defaultValue =
-      submission?.submission[item.formFieldId] || defaultValue || '';
+    const _defaultValue = defaultValue || '';
 
     return (
       <Component
