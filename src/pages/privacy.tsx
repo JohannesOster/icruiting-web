@@ -107,16 +107,16 @@ const Privacy: FC = () => {
         <Typography>
           Für die Dantenspeicherung verwenden wir Dienste von Amazon Web
           Services, Inc., 410 Terry Avenue North, Seattle WA 98109, USA,
-          („AWS“). . <br />
+          („AWS“).
+          <br />
           Zusätzlich greifen wir für die Speicherung von Dokumente, welche
           sowhol direkt auf der Website als auch über ein von icruiting
-          bereitgesteltes Bewerbungsformular hochgeladen werden auf das Produkte
-          „S3“ von AWS zurück, der unsere Daten im Auftrag verarbeitet. Dabei
-          erfolgt die Verabeitung und Speicherung ausschließlich im
-          AWS-Rechenzentrum in Frankfurt a.M. AWS ist ferner
-          Privacy-Shield-zertifiziert und garantiert damit, auch außerhalb des
-          europäischen Wirtschaftsraums die personenbezogenen Daten entsprechend
-          europäischer Datenschutzgesetze zu verarbeiten.
+          bereitgesteltes Bewerbungs-Formular hochgeladen werden auf das
+          Produkte „S3“ von AWS zurück. Dabei erfolgt die Verabeitung und
+          Speicherung ausschließlich im AWS-Rechenzentrum in Frankfurt a.M. AWS
+          ist ferner Privacy-Shield-zertifiziert und garantiert damit, auch
+          außerhalb des europäischen Wirtschaftsraums die personenbezogenen
+          Daten entsprechend europäischer Datenschutzgesetze zu verarbeiten.
           <br />
           Die Einbeziehung von AWS und Heroku erfolgt auf Grundlage unserer
           berechtigten Interesse des Betriebes und des Erhalts der
