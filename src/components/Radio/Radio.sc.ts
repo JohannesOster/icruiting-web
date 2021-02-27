@@ -3,7 +3,7 @@ import {LabelProps, DescriptionProps} from './types';
 
 export const Container = styled.div`
   display: grid;
-  grid-row-gap: ${({theme}) => theme.spacing.scale100};
+  grid-row-gap: ${({theme}) => theme.spacing.scale200};
 `;
 
 export const OptionContainer = styled.div`
@@ -11,7 +11,7 @@ export const OptionContainer = styled.div`
   grid-auto-flow: column;
   justify-content: start;
   align-items: center;
-  grid-column-gap: ${({theme}) => theme.spacing.scale100};
+  grid-column-gap: ${({theme}) => theme.spacing.scale200};
 `;
 
 export const OptionLabel = styled.label`
@@ -36,7 +36,7 @@ export const Description = styled.span<DescriptionProps>`
 
 export const Errors = styled.div`
   display: grid;
-  grid-row-gap: ${({theme}) => theme.spacing.scale100};
+  grid-row-gap: ${({theme}) => theme.spacing.scale200};
   color: ${({theme}) => theme.colors.typographyPrimaryError};
   ${({theme}) => theme.typography.font100};
 `;

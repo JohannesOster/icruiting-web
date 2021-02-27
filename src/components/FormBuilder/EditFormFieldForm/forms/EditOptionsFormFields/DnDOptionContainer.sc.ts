@@ -8,8 +8,8 @@ export const ActionBar = styled.div`
   grid-auto-flow: column;
 
   div {
-    height: ${({theme}) => theme.spacing.scale500};
-    width: ${({theme}) => theme.spacing.scale500};
+    height: ${({theme}) => theme.spacing.scale600};
+    width: ${({theme}) => theme.spacing.scale600};
     display: flex;
     justify-content: center;
     align-items: center;

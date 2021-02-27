@@ -60,7 +60,7 @@ export const Ranking = () => {
   });
 
   return (
-    <Box display="grid" rowGap={spacing.scale200}>
+    <Box display="grid" rowGap={spacing.scale300}>
       <H3>
         Ranking-
         {

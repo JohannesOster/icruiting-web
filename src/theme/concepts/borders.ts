@@ -32,7 +32,7 @@ export const borders = {
     borderWidth: '1px',
   },
   radius100: sizes.scale50,
-  radius200: sizes.scale200,
-  radius300: sizes.scale200,
-  radius400: sizes.scale300,
+  radius200: sizes.scale300,
+  radius300: sizes.scale300,
+  radius400: sizes.scale400,
 };

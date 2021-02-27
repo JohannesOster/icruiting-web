@@ -40,7 +40,7 @@ const PasswordReset: React.FC = () => {
   };
 
   return (
-    <main style={{margin: spacing.scale500}}>
+    <main style={{margin: spacing.scale600}}>
       {!sentCode ? (
         <EmailForm onSubmit={submitMailForm} />
       ) : (

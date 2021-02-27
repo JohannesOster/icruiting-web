@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import {SpinnerProps} from './types';
 
 export const Spinner = styled.span<SpinnerProps>`
-  height: ${({size, theme}) => size || theme.spacing.scale400};
-  width: ${({size, theme}) => size || theme.spacing.scale400};
+  height: ${({size, theme}) => size || theme.spacing.scale500};
+  width: ${({size, theme}) => size || theme.spacing.scale500};
   border-radius: 50%;
   border: 3px solid;
   box-sizing: border-box;

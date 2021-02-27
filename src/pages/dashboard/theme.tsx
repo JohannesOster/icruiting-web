@@ -89,9 +89,9 @@ export const Theme = () => {
   };
 
   return (
-    <Box display="grid" rowGap={spacing.scale200}>
+    <Box display="grid" rowGap={spacing.scale300}>
       <Flexgrid
-        flexGap={spacing.scale200}
+        flexGap={spacing.scale300}
         justifyContent="space-between"
         alignItems="center"
       >
@@ -125,7 +125,7 @@ export const Theme = () => {
                   formRef.current?.reset();
                 }}
               >
-                <Flexgrid flexGap={spacing.scale200}>
+                <Flexgrid flexGap={spacing.scale300}>
                   <Box maxWidth="200px" overflow="hidden">
                     <Input
                       type="file"

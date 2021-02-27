@@ -3,7 +3,7 @@ import {BaseTextareaProps, LabelProps, DescriptionProps} from './types';
 
 export const Container = styled.div`
   display: grid;
-  grid-row-gap: ${({theme}) => theme.spacing.scale100};
+  grid-row-gap: ${({theme}) => theme.spacing.scale200};
 `;
 
 export const BaseTextarea = styled.textarea<BaseTextareaProps>`
@@ -11,7 +11,7 @@ export const BaseTextarea = styled.textarea<BaseTextareaProps>`
   border-color: ${({theme}) => theme.colors.inputBorder};
   border-radius: ${({theme}) => theme.borders.radius100};
   background: ${({theme}) => theme.colors.inputFill};
-  padding: ${({theme}) => theme.spacing.scale200};
+  padding: ${({theme}) => theme.spacing.scale300};
   ${({theme}) => theme.typography.font100};
 
   &:focus {
@@ -50,7 +50,7 @@ export const Description = styled.span<DescriptionProps>`
 
 export const Errors = styled.div`
   display: grid;
-  grid-row-gap: ${({theme}) => theme.spacing.scale100};
+  grid-row-gap: ${({theme}) => theme.spacing.scale200};
   color: ${({theme}) => theme.colors.typographyPrimaryError};
   ${({theme}) => theme.typography.font100};
 `;

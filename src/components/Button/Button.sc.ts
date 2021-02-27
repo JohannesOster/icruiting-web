@@ -9,10 +9,10 @@ export const BaseButton = styled.button<BaseButtonProps>`
   position: relative;
   cursor: pointer;
 
-  padding-top: ${({theme}) => theme.spacing.scale100};
-  padding-bottom: ${({theme}) => theme.spacing.scale100};
-  padding-left: ${({theme}) => theme.spacing.scale300};
-  padding-right: ${({theme}) => theme.spacing.scale300};
+  padding-top: ${({theme}) => theme.spacing.scale200};
+  padding-bottom: ${({theme}) => theme.spacing.scale200};
+  padding-left: ${({theme}) => theme.spacing.scale400};
+  padding-right: ${({theme}) => theme.spacing.scale400};
 
   border: none;
   border-radius: ${({theme}) => theme.borders.radius100};

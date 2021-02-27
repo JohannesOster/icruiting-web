@@ -11,7 +11,7 @@ export const Table = styled.table`
 
     th,
     td {
-      padding: ${({theme}) => theme.spacing.scale100};
+      padding: ${({theme}) => theme.spacing.scale200};
       ${({theme}) => theme.typography.font150};
       text-transform: uppercase;
     }
@@ -26,7 +26,7 @@ export const Table = styled.table`
       td,
       th {
         padding: ${({theme}) =>
-          `${theme.spacing.scale200} ${theme.spacing.scale100}`};
+          `${theme.spacing.scale300} ${theme.spacing.scale200}`};
         max-width: 30vw;
       }
 
@@ -82,7 +82,7 @@ export const Table = styled.table`
         td::before {
           content: attr(data-label);
           font-weight: bold;
-          margin-right: ${({theme}) => theme.spacing.scale50};
+          margin-right: ${({theme}) => theme.spacing.scale100};
         }
         td:last-child {
           border-bottom: 0;

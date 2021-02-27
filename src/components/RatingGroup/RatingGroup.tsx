@@ -21,7 +21,7 @@ const RatingGroup = forwardRef<HTMLInputElement, Props>(
   ) => {
     const {spacing} = useTheme();
     return (
-      <Box display="grid" gridRowGap={spacing.scale100}>
+      <Box display="grid" gridRowGap={spacing.scale200}>
         <Typography as="label" htmlFor={name}>
           {label}
           {props.required && '*'}
