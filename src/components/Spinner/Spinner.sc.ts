@@ -23,7 +23,7 @@ export const Spinner = styled.span<SpinnerProps>`
   }
 
   display: inline-block;
-  animation-duration: ${({theme}) => theme.animation.timing800};
+  animation-duration: ${({theme}) => theme.animations.timing800};
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   animation-name: spinnerAnimation;
