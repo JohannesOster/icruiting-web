@@ -4,7 +4,7 @@ import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {useTheme} from 'styled-components';
 import {object, array, string} from 'yup';
 import {H6, Box} from 'components';
-import {Button, Input, Textarea, Checkbox} from 'icruiting-ui';
+import {Button, Input, Textarea, Checkbox} from 'components';
 import {Form} from '../StyledForm.sc';
 import {yupResolver} from '@hookform/resolvers';
 import {DnDOptionContainer} from './DnDOptionContainer';
@@ -91,8 +91,8 @@ export const EditOptionsFormFields: FC<Props> = ({
         ref={register}
         options={[{label: 'Verpflichtend', value: 'required'}]}
       />
-      <H6 style={{marginBottom: `-${spacing.scale200}`}}>Optionen</H6>
-      <Box display="grid" rowGap={spacing.scale400}>
+      <H6 style={{marginBottom: `-${spacing.scale300}`}}>Optionen</H6>
+      <Box display="grid" rowGap={spacing.scale500}>
         {fields.map((option, idx) => {
           return (
             <DnDOptionContainer

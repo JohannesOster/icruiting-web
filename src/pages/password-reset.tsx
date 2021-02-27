@@ -2,7 +2,7 @@ import React, {useState, useRef} from 'react';
 import {useRouter} from 'next/router';
 import {EmailForm, PasswordForm, PasswordFormValues} from 'containers';
 import {useTheme} from 'styled-components';
-import {useToaster} from 'icruiting-ui';
+import {useToaster} from 'context';
 import {API} from 'services';
 
 const PasswordReset: React.FC = () => {
@@ -40,7 +40,7 @@ const PasswordReset: React.FC = () => {
   };
 
   return (
-    <main style={{margin: spacing.scale500}}>
+    <main style={{margin: spacing.scale600}}>
       {!sentCode ? (
         <EmailForm onSubmit={submitMailForm} />
       ) : (

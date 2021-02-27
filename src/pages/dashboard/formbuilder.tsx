@@ -5,9 +5,16 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import {useTheme} from 'styled-components';
 import {useForm} from 'react-hook-form';
 import useSWR from 'swr';
-import {Button, Input, Dialog, useToaster} from 'icruiting-ui';
+import {Button, Input, Dialog} from 'components';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
-import {H3, H6, Box, Typography, getDashboardLayout} from 'components';
+import {
+  H3,
+  H6,
+  Box,
+  Typography,
+  getDashboardLayout,
+  withAdmin,
+} from 'components';
 import {Clipboard} from 'icons';
 import {
   DnDFormField,
@@ -32,8 +39,8 @@ import {API, FormCategory} from 'services';
 import amplifyConfig from 'amplify.config';
 import {converter} from 'components/FormBuilder/converter';
 import {useRouter} from 'next/router';
-import {withAdmin} from 'components';
 import {useFormBuilder} from 'components/FormBuilder/useFormBuilder';
+import {useToaster} from 'context';
 
 type Query = {
   formId?: string;
@@ -204,7 +211,7 @@ const FormBuilder: React.FC = () => {
           />
         </Dialog>
       )}
-      <Box display="flex" alignItems="center" marginBottom={spacing.scale200}>
+      <Box display="flex" alignItems="center" marginBottom={spacing.scale300}>
         <H3>{formToEdit ? 'Formular bearbeiten' : 'Neues Formular'}</H3>
         <ButtonGroup>
           <Button
@@ -217,7 +224,7 @@ const FormBuilder: React.FC = () => {
           <Button onClick={() => router.back()}>Abbrechen</Button>
         </ButtonGroup>
       </Box>
-      <Box display="flex" position="relative" marginBottom={spacing.scale600}>
+      <Box display="flex" position="relative" marginBottom={spacing.scale700}>
         <DnDSection
           onHover={formBuilder.onOutsideHover}
           render={(targetID, drop) => <Overlay id={targetID} ref={drop} />}
@@ -259,7 +266,7 @@ const FormBuilder: React.FC = () => {
                 {(formCategory === 'application' ||
                   formToEdit?.formCategory === 'application') && (
                   <>
-                    <Box display="grid" rowGap={spacing.scale200}>
+                    <Box display="grid" rowGap={spacing.scale300}>
                       <Box marginTop={20}>
                         <Typography
                           style={{
@@ -272,8 +279,8 @@ const FormBuilder: React.FC = () => {
                           Formular einbinden
                           <Clipboard
                             style={{
-                              marginLeft: spacing.scale100,
-                              height: spacing.scale300,
+                              marginLeft: spacing.scale200,
+                              height: spacing.scale400,
                               width: 'auto',
                             }}
                           />

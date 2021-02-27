@@ -2,7 +2,7 @@ import React from 'react';
 import {useTheme} from 'styled-components';
 import {useRouter} from 'next/router';
 import Link from 'next/link';
-import {Button} from 'icruiting-ui';
+import {Button} from 'components';
 import {IcruitingLogo, Bunny} from 'icons';
 import {Box, Typography} from 'components';
 
@@ -17,7 +17,7 @@ export const Container = styled.div`
 export const Footer = styled.footer`
   display: flex;
   justify-content: space-between;
-  padding: ${({theme}) => theme.spacing.scale400};
+  padding: ${({theme}) => theme.spacing.scale500};
   color: ${({theme}) => theme.colors.typographySecondary};
   border-top: 1px solid;
   border-color: ${({theme}) => theme.colors.inputBorder};
@@ -41,16 +41,16 @@ const LandingPage: React.FC = () => {
           flexDirection="column"
           textAlign="center"
           justifyContent="center"
-          gridRowGap={spacing.scale600}
+          gridRowGap={spacing.scale700}
           alignItems="center"
         >
           <Box display="flex" flexDirection="column">
-            <IcruitingLogo style={{margin: 0, width: '90vw'}} />
+            <IcruitingLogo style={{width: '90vw'}} />
             <Typography style={{textTransform: 'uppercase', marginTop: -15}}>
               Recruit For Fit
             </Typography>
           </Box>
-          <Box marginTop={spacing.scale300}>
+          <Box marginTop={spacing.scale400}>
             <Button onClick={() => router.push('/signup')}>
               Jetzt Registrieren
             </Button>
@@ -61,7 +61,7 @@ const LandingPage: React.FC = () => {
             style={{
               position: 'absolute',
               top: '-25px',
-              right: spacing.scale400,
+              right: spacing.scale500,
               transform: 'scaleX(-1)',
               height: '25px',
               width: 'auto',
@@ -73,7 +73,7 @@ const LandingPage: React.FC = () => {
           <Box
             display="grid"
             gridAutoFlow="column"
-            columnGap={spacing.scale200}
+            columnGap={spacing.scale300}
           >
             <Link href="/impressum">
               <a>Impressum</a>

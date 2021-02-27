@@ -1,4 +1,4 @@
-const colors = {
+export const colors = {
   white: '#FFFFFF',
   gray50: '#F6F6F6',
   gray100: '#EEEEEE',
@@ -20,6 +20,22 @@ const colors = {
   red500: '#AB1300',
   red600: '#870F00',
   red700: '#5A0A00',
-};
 
-export default colors;
+  green50: '#E6F2ED',
+  green100: '#ADDEC9',
+  green200: '#66D19E',
+  green300: '#06C167',
+  green400: '#05944F',
+  green500: '#03703C',
+  green600: '#03582F',
+  green700: '#10462D',
+
+  blue50: '#EFF3FE',
+  blue100: '#D4E2FC',
+  blue200: '#A0BFF8',
+  blue300: '#5B91F5',
+  blue400: '#276EF1',
+  blue500: '#1E54B7',
+  blue600: '#174291',
+  blue700: '#102C60',
+};

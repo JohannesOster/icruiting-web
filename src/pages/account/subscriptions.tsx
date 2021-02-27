@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
 import {Box, H3, DataTable, TColumn} from 'components';
 import {useTheme} from 'styled-components';
-import {useAuth} from 'context';
+import {useAuth, useToaster} from 'context';
 import useSWR, {mutate} from 'swr';
 import {API} from 'services';
-import {Button, useToaster} from 'icruiting-ui';
-import {withAdmin} from 'components';
+import {Button, withAdmin} from 'components';
 
 const Subscriptions: React.FC = () => {
   const {spacing} = useTheme();
@@ -99,9 +98,9 @@ const Subscriptions: React.FC = () => {
 
   return (
     <Box
-      margin={`${spacing.scale200} ${spacing.scale400}`}
+      margin={`${spacing.scale300} ${spacing.scale500}`}
       display="grid"
-      rowGap={spacing.scale400}
+      rowGap={spacing.scale500}
     >
       <H3>Subscriptions</H3>
       <DataTable

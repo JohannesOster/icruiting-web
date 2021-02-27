@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Input} from 'icruiting-ui';
+import {Button, Input} from 'components';
 import {AuthForm, Typography} from 'components';
 import Link from 'next/link';
 import {
@@ -80,13 +80,13 @@ export const SignUpForm: React.FC<Props> = ({onSubmit, submitting}) => {
         style={{
           display: 'flex',
           alignItems: 'center',
-          marginTop: spacing.scale400,
+          marginTop: spacing.scale500,
           justifyContent: 'space-between',
-          columnGap: spacing.scale100,
+          columnGap: spacing.scale200,
         }}
       >
         <Typography kind="secondary">
-          <span style={{marginRight: spacing.scale100}}>
+          <span style={{marginRight: spacing.scale200}}>
             Bereits einen Account?
           </span>
           <Link href="/login">

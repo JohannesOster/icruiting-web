@@ -1,6 +1,13 @@
 import {yupResolver} from '@hookform/resolvers';
-import {Box, H3, getDashboardLayout} from 'components';
-import {Button, Checkbox, Spinner, useToaster} from 'icruiting-ui';
+import {
+  Box,
+  H3,
+  getDashboardLayout,
+  Button,
+  Checkbox,
+  Spinner,
+} from 'components';
+import {useToaster} from 'context';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {useRouter} from 'next/router';
 import {useEffect, useState} from 'react';
@@ -73,7 +80,7 @@ const ReportBuilder = () => {
         <Spinner />
       ) : (
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Box display="grid" rowGap={spacing.scale200}>
+          <Box display="grid" rowGap={spacing.scale300}>
             <Checkbox
               name="reportFields"
               errors={errorsFor(errors, 'reportFields')}

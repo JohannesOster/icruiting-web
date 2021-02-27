@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box, H6} from 'components';
-import {Button, Checkbox, Input, Select, Textarea} from 'icruiting-ui';
+import {Button, Checkbox, Input, Select, Textarea} from 'components';
 import {useForm, useFieldArray} from 'react-hook-form';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
@@ -102,7 +102,7 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
           })),
         ]}
       />
-      <H6 style={{marginBottom: `-${spacing.scale200}`}}>
+      <H6 style={{marginBottom: `-${spacing.scale300}`}}>
         Optionen (Label, Wert)
       </H6>
       {fields.map((option, idx) => {
@@ -112,7 +112,7 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
             gridAutoFlow="column"
             gridTemplateColumns="1fr 1fr 30px"
             alignItems="center"
-            columnGap={spacing.scale200}
+            columnGap={spacing.scale300}
             key={option.id}
           >
             <Input

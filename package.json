@@ -19,7 +19,6 @@
     "chart.js": "^2.9.4",
     "faker": "^4.1.0",
     "hoist-non-react-statics": "^3.3.2",
-    "icruiting-ui": "^0.2.6",
     "next": "^10.0.5",
     "normalize.css": "^8.0.1",
     "react": "17.0.1",

@@ -30,12 +30,12 @@ export const NavList = styled.div`
 `;
 
 export const Container = styled.main`
-  margin: ${({theme}) => `${theme.spacing.scale200} ${theme.spacing.scale400}`};
+  margin: ${({theme}) => `${theme.spacing.scale300} ${theme.spacing.scale500}`};
   margin-left: 220px;
 
   ${({theme}) => css`
     @media (max-width: ${theme.breakpoints.md}) {
-      margin-left: ${theme.spacing.scale400};
+      margin-left: ${theme.spacing.scale500};
     }
   `}
 `;

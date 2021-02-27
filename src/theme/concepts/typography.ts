@@ -1,7 +1,7 @@
 const defaultFontFamily =
   'system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif';
 
-const typography = {
+export const typography = {
   font100: {
     fontFamily: defaultFontFamily,
     fontSize: '14px',
@@ -57,5 +57,3 @@ const typography = {
     lineHeight: '52px',
   },
 };
-
-export default typography;

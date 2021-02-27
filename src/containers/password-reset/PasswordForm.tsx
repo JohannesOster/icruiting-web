@@ -1,6 +1,6 @@
 import React from 'react';
 import {useForm} from 'react-hook-form';
-import {Button, Input} from 'icruiting-ui';
+import {Button, Input} from 'components';
 import {AuthForm, Typography} from 'components';
 import {
   confirmationCode,

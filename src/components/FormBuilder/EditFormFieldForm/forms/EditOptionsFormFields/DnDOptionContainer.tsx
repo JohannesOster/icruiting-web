@@ -72,9 +72,9 @@ export const DnDOptionContainer: FC<DnDOptionContainerProps> = ({
   return (
     <OptionContainer ref={ref} style={{opacity}}>
       {children}
-      <ActionBar style={{marginLeft: spacing.scale200}}>
+      <ActionBar style={{marginLeft: spacing.scale300}}>
         <div ref={drag} style={{cursor: 'move'}}>
-          <Move style={{width: 'auto', height: spacing.scale200}} />
+          <Move style={{width: 'auto', height: spacing.scale300}} />
         </div>
         {onDelete && (
           <div
@@ -83,7 +83,7 @@ export const DnDOptionContainer: FC<DnDOptionContainerProps> = ({
               onDelete(index);
             }}
           >
-            <Trash style={{width: 'auto', height: spacing.scale200}} />
+            <Trash style={{width: 'auto', height: spacing.scale300}} />
           </div>
         )}
       </ActionBar>

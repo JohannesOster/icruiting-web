@@ -11,7 +11,7 @@ import {
   Separator,
 } from './Navbar.sc';
 import {DropDown, Typography, Box} from 'components';
-import {Button} from 'icruiting-ui';
+import {Button} from 'components';
 import {IcruitingLogo, UserCircle, Logout} from 'icons';
 import {useTheme} from 'styled-components';
 import Link from 'next/link';
@@ -100,7 +100,7 @@ const Navbar: React.FC = () => {
           </MobileNavItem>
         </>
       )}
-      <Box padding={`${spacing.scale100} ${spacing.scale400}`}>
+      <Box padding={`${spacing.scale200} ${spacing.scale500}`}>
         <Separator />
       </Box>
       <MobileNavItem onClick={closeMenu}>
@@ -175,14 +175,14 @@ const Navbar: React.FC = () => {
             <Link href="/account">
               <DropDownItem>
                 <UserCircle
-                  style={{width: '1em', marginRight: spacing.scale100}}
+                  style={{width: '1em', marginRight: spacing.scale200}}
                 />
                 Account
               </DropDownItem>
             </Link>
             <Typography onClick={logout}>
               <DropDownItem>
-                <Logout style={{width: '1em', marginRight: spacing.scale100}} />
+                <Logout style={{width: '1em', marginRight: spacing.scale200}} />
                 Abmelden
               </DropDownItem>
             </Typography>

@@ -1,13 +1,19 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {H3, Flexgrid, Table, Box} from 'components';
+import {
+  H3,
+  Flexgrid,
+  Table,
+  Box,
+  withAuth,
+  Button,
+  Input,
+  getDashboardLayout,
+} from 'components';
 import {useTheme} from 'styled-components';
-import {Button, Input, useToaster} from 'icruiting-ui';
-import {useAuth} from 'context';
+import {useAuth, useToaster} from 'context';
 import config from 'amplify.config';
 import {API} from 'services';
 import useSWR, {mutate} from 'swr';
-import {withAuth} from 'components';
-import {getDashboardLayout} from 'components';
 
 export const Theme = () => {
   const {spacing} = useTheme();
@@ -83,9 +89,9 @@ export const Theme = () => {
   };
 
   return (
-    <Box display="grid" rowGap={spacing.scale200}>
+    <Box display="grid" rowGap={spacing.scale300}>
       <Flexgrid
-        flexGap={spacing.scale200}
+        flexGap={spacing.scale300}
         justifyContent="space-between"
         alignItems="center"
       >
@@ -119,7 +125,7 @@ export const Theme = () => {
                   formRef.current?.reset();
                 }}
               >
-                <Flexgrid flexGap={spacing.scale200}>
+                <Flexgrid flexGap={spacing.scale300}>
                   <Box maxWidth="200px" overflow="hidden">
                     <Input
                       type="file"

@@ -8,13 +8,16 @@ import {
   DataTable,
   Box,
   Flexgrid,
+  getDashboardLayout,
+  Button,
+  Dialog,
+  Input,
+  withAdmin,
 } from 'components';
-import {Button, Dialog, Input, useToaster} from 'icruiting-ui';
+import {useToaster} from 'context';
 import {useTheme} from 'styled-components';
 import useSWR from 'swr';
 import {API} from 'services';
-import {withAdmin} from 'components';
-import {getDashboardLayout} from 'components';
 import {useRouter} from 'next/router';
 import config from 'amplify.config';
 
@@ -130,14 +133,14 @@ export const Jobs = () => {
   };
 
   return (
-    <Box display="grid" rowGap={spacing.scale200}>
+    <Box display="grid" rowGap={spacing.scale300}>
       {shouldDeleteJobId && (
         <Dialog
           onClose={() => {
             setShouldDeleteJobId(null);
           }}
         >
-          <Box display="grid" rowGap={spacing.scale200}>
+          <Box display="grid" rowGap={spacing.scale300}>
             <H6>Stelle wirklich unwiederruflich löschen?</H6>
             <Typography>
               Sind Sie sicher, dass Sie die alle mit dieser Stelle in Verbingung
@@ -185,7 +188,7 @@ export const Jobs = () => {
           formRef?.current?.reset();
         }}
       >
-        <Flexgrid flexGap={spacing.scale200}>
+        <Flexgrid flexGap={spacing.scale300}>
           <Box maxWidth="200px" overflow="hidden">
             <Input
               type="file"

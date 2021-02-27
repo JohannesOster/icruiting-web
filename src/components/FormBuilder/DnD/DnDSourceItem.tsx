@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const Item = styled.div`
   padding: ${({theme}) =>
-    `${theme.spacing.scale100} ${theme.spacing.scale200}`};
+    `${theme.spacing.scale200} ${theme.spacing.scale300}`};
   background: ${({theme}) => theme.colors.inputBorder};
   display: flex;
   align-items: center;

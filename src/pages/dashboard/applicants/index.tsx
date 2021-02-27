@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
-import {Select, Button, Dialog, Input, Checkbox} from 'icruiting-ui';
+import {Select, Button, Dialog, Input, Checkbox} from 'components';
 import {useTheme} from 'styled-components';
 import useSWR from 'swr';
 import {API} from 'services';
@@ -144,7 +144,7 @@ const Applicants = () => {
             setShouldDeleteApplicantId(null);
           }}
         >
-          <Box display="grid" rowGap={spacing.scale200}>
+          <Box display="grid" rowGap={spacing.scale300}>
             <H6>Bewerber*in wirklich unwiederruflich löschen?</H6>
             <Typography>
               Sind Sie sicher, dass Sie alle Daten des*der Bewerbers*in löschen
@@ -173,8 +173,8 @@ const Applicants = () => {
       <Flexgrid
         justifyContent="space-between"
         alignItems="center"
-        flexGap={spacing.scale200}
-        marginBottom={spacing.scale200}
+        flexGap={spacing.scale300}
+        marginBottom={spacing.scale300}
       >
         <H3>Bewerbungen</H3>
         <Box
@@ -182,13 +182,13 @@ const Applicants = () => {
           gridAutoFlow="column"
           alignItems="center"
           justifyContent="start"
-          columnGap={spacing.scale200}
+          columnGap={spacing.scale300}
         >
           <Box
             display="grid"
             alignItems="center"
             gridAutoFlow="column"
-            columnGap={spacing.scale100}
+            columnGap={spacing.scale200}
           >
             <Checkbox
               value={showAssessmentsSummary ? ['true'] : []}
@@ -223,9 +223,9 @@ const Applicants = () => {
         })}
       >
         <Flexgrid
-          flexGap={spacing.scale200}
+          flexGap={spacing.scale300}
           alignItems="center"
-          marginBottom={spacing.scale200}
+          marginBottom={spacing.scale300}
         >
           <Box flex={1}>
             <Input placeholder="Suchen" name="filter" ref={register} />

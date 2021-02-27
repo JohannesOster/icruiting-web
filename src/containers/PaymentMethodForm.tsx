@@ -3,13 +3,13 @@ import {IbanElement} from '@stripe/react-stripe-js';
 import {useAuth} from 'context';
 import {Box, Typography} from 'components';
 import styled, {useTheme} from 'styled-components';
-import {Input, Button} from 'icruiting-ui';
+import {Input, Button} from 'components';
 import {useForm} from 'react-hook-form';
 
 const CardContainer = styled.div`
   border: 1px solid;
   border-color: ${({theme}) => theme.colors.inputBorder};
-  padding: ${({theme}) => theme.spacing.scale200};
+  padding: ${({theme}) => theme.spacing.scale300};
   min-width: 400px;
 `;
 
@@ -27,7 +27,7 @@ export const PaymentMethodForm: FC<Props> = ({onSubmit}) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Box display="grid" rowGap={spacing.scale200}>
+      <Box display="grid" rowGap={spacing.scale300}>
         <Input
           label="E-Mail-Adresse"
           placeholder="E-Mail-Adresse"
@@ -42,7 +42,7 @@ export const PaymentMethodForm: FC<Props> = ({onSubmit}) => {
           ref={register}
           required
         />
-        <Box display="grid" rowGap={spacing.scale100}>
+        <Box display="grid" rowGap={spacing.scale200}>
           <label>
             <Typography>IBAN*</Typography>
           </label>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Input} from 'icruiting-ui';
+import {Button, Input} from 'components';
 import {AuthForm, Typography} from 'components';
 import Link from 'next/link';
 import {useForm} from 'react-hook-form';
@@ -53,7 +53,7 @@ export const LoginForm: React.FC<Props> = ({onSubmit}) => {
         required
       />
       <Typography kind="secondary">
-        <span style={{marginRight: spacing.scale100}}>Passwort vergessen?</span>
+        <span style={{marginRight: spacing.scale200}}>Passwort vergessen?</span>
         <Link href="/password-reset">
           <a>Passwort zurücksetzen?</a>
         </Link>
@@ -62,13 +62,13 @@ export const LoginForm: React.FC<Props> = ({onSubmit}) => {
         style={{
           display: 'flex',
           alignItems: 'center',
-          marginTop: spacing.scale400,
+          marginTop: spacing.scale500,
           justifyContent: 'space-between',
-          columnGap: spacing.scale100,
+          columnGap: spacing.scale200,
         }}
       >
         <Typography kind="secondary">
-          <span style={{marginRight: spacing.scale100}}>
+          <span style={{marginRight: spacing.scale200}}>
             Noch keinen Account?
           </span>
           <Link href="/signup">

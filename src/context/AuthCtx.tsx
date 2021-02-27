@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {createCtx} from 'icruiting-ui';
+import {createCtx} from './createCtx';
 import {API, User} from 'services';
 
 interface AuthContext {

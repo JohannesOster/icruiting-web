@@ -3,8 +3,8 @@ import {ThemeProvider} from 'styled-components';
 import Amplify from 'aws-amplify';
 import config from 'amplify.config';
 import {AuthProvider, useAuth} from 'context';
-import {Box, Navbar} from 'components';
-import {Spinner, ToasterProvider} from 'icruiting-ui';
+import {Box, Navbar, Spinner} from 'components';
+import {ToasterProvider} from 'context';
 
 import 'styles/normalize.css';
 import 'styles/reset.locals.css';

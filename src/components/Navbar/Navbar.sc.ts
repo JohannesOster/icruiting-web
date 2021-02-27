@@ -3,7 +3,7 @@ import styled, {css} from 'styled-components';
 export const Header = styled.header`
   height: 80px;
   width: 100%;
-  padding: ${({theme}) => `0 ${theme.spacing.scale400}`};
+  padding: ${({theme}) => `0 ${theme.spacing.scale500}`};
   border: 1px solid;
   border-color: ${({theme}) => theme.colors.inputBorder};
   border-top: none;
@@ -30,8 +30,8 @@ export const NavContainer = styled.div`
 `;
 
 export const Hamburger = styled.div<{open: boolean}>`
-  height: ${({theme}) => theme.spacing.scale400};
-  width: ${({theme}) => theme.spacing.scale500};
+  height: ${({theme}) => theme.spacing.scale500};
+  width: ${({theme}) => theme.spacing.scale600};
   z-index: 20;
   position: relative;
 
@@ -72,7 +72,7 @@ export const MobileNav = styled.nav<{open: boolean}>`
   z-index: 10;
   background: white;
   display: grid;
-  grid-row-gap: ${({theme}) => theme.spacing.scale100};
+  grid-row-gap: ${({theme}) => theme.spacing.scale200};
   position: fixed;
   justify-content: stretch;
   align-content: start;
@@ -95,14 +95,13 @@ export const MobileNav = styled.nav<{open: boolean}>`
 export const MobileNavItem = styled.div`
   > * {
     padding: ${({theme}) =>
-      `${theme.spacing.scale100} ${theme.spacing.scale400}`};
+      `${theme.spacing.scale200} ${theme.spacing.scale500}`};
   }
 `;
 
 export const DesktopNav = styled.ul`
   list-style: none;
   align-items: center;
-  margin: 0;
   display: none;
 
   ${({theme}) => css`
@@ -125,7 +124,7 @@ export const DropDownItem = styled.div`
   align-items: center;
   justify-content: flex-start;
   line-height: 0;
-  padding: ${({theme}) => theme.spacing.scale400};
+  padding: ${({theme}) => theme.spacing.scale500};
 
   &:hover {
     background: rgba(235, 235, 235, 0.25);
@@ -137,5 +136,4 @@ export const Separator = styled.hr`
   border: none;
   width: 100%;
   height: 1px;
-  margin: 0;
 `;

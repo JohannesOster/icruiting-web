@@ -6,7 +6,7 @@ const Contact: FC = () => {
   const {spacing} = useTheme();
 
   return (
-    <Box padding={spacing.scale400} display="grid" rowGap={spacing.scale100}>
+    <Box padding={spacing.scale500} display="grid" rowGap={spacing.scale200}>
       <H3>Kontakt</H3>
       Bitte kontaktieren Sie den Betreiber dieser Website unter der folgenden
       E-Mail-Adresse:

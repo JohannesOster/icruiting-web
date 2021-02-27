@@ -2,10 +2,9 @@ import React, {useCallback, useState} from 'react';
 import Link from 'next/link';
 import {useTheme} from 'styled-components';
 import {H3, Box, H6, Typography} from 'components';
-import {useAuth} from 'context';
+import {useAuth, useToaster} from 'context';
 import {API} from 'services';
-import {Dialog, Button, useToaster} from 'icruiting-ui';
-import {withAuth} from 'components';
+import {Dialog, Button, withAuth} from 'components';
 
 const Account: React.FC = () => {
   const {currentUser, refetchUser} = useAuth();
@@ -30,13 +29,13 @@ const Account: React.FC = () => {
 
   return (
     <Box
-      margin={`${spacing.scale200} ${spacing.scale400}`}
+      margin={`${spacing.scale300} ${spacing.scale500}`}
       display="grid"
-      gridRowGap={spacing.scale200}
+      gridRowGap={spacing.scale300}
     >
       {status === 'shouldDelete' && (
         <Dialog onClose={() => setStatus('shouldDelete')}>
-          <Box display="grid" rowGap={spacing.scale200}>
+          <Box display="grid" rowGap={spacing.scale300}>
             <H6>Tenant unwiederruflich löschen?</H6>
             <Typography>
               Sind Sie sicher dass Sie <b>alle Daten löschen</b> wollen? Dieser
