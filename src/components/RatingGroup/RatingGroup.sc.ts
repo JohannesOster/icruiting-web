@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const StyledRatingGroup = styled.div`
-  --gap: ${({theme}) => theme.spacing.scale200};
+  --gap: ${({theme}) => theme.spacing.scale300};
   display: inline-flex;
   flex-wrap: wrap;
   margin: calc(-1 * var(--gap)) 0 0 calc(-1 * var(--gap));
@@ -19,8 +19,8 @@ export const RadioLabel = styled.label`
   background-color: ${({theme}) => theme.colors.inputBorder};
   ${({theme}) => theme.typography.font200};
   padding: ${({theme}) =>
-    `${theme.spacing.scale200} ${theme.spacing.scale300}`};
-  border-radius: ${({theme}) => theme.borders.radius};
+    `${theme.spacing.scale300} ${theme.spacing.scale400}`};
+  border-radius: ${({theme}) => theme.borders.radius100};
 `;
 
 export const Radio = styled.input`

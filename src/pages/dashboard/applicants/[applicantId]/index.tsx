@@ -144,12 +144,12 @@ const ApplicantDetails = () => {
   });
 
   return (
-    <Box display="grid" gridRowGap={spacing.scale600}>
+    <Box display="grid" gridRowGap={spacing.scale700}>
       <section>
         <Flexgrid
-          flexGap={spacing.scale200}
+          flexGap={spacing.scale300}
           alignItems="center"
-          marginBottom={spacing.scale200}
+          marginBottom={spacing.scale300}
         >
           <H6>Bewerber*innendaten</H6>
           {currentUser?.userRole === 'admin' && (
@@ -193,10 +193,10 @@ const ApplicantDetails = () => {
           onClick={() => setShowScreeningForm((curr) => !curr)}
           style={{cursor: 'pointer'}}
         >
-          <Flexgrid alignItems="center" flexGap={spacing.scale100}>
+          <Flexgrid alignItems="center" flexGap={spacing.scale200}>
             <H6>Screening-Formular</H6>
             <Arrow
-              height={spacing.scale300}
+              height={spacing.scale400}
               style={{
                 transform: `rotate(${showScreeningForm ? '90deg' : '-90deg'})`,
               }}
@@ -206,12 +206,12 @@ const ApplicantDetails = () => {
         {showScreeningForm && (
           <Box
             display="grid"
-            gridRowGap={spacing.scale400}
-            paddingTop={spacing.scale100}
+            gridRowGap={spacing.scale500}
+            paddingTop={spacing.scale200}
           >
             {formFields}
             {formFields?.length && (
-              <Box marginTop={spacing.scale200}>
+              <Box marginTop={spacing.scale300}>
                 <Button
                   type="submit"
                   isLoading={status === 'submitting'}

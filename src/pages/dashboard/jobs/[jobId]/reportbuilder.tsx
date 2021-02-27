@@ -80,7 +80,7 @@ const ReportBuilder = () => {
         <Spinner />
       ) : (
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Box display="grid" rowGap={spacing.scale200}>
+          <Box display="grid" rowGap={spacing.scale300}>
             <Checkbox
               name="reportFields"
               errors={errorsFor(errors, 'reportFields')}

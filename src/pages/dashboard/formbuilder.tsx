@@ -211,7 +211,7 @@ const FormBuilder: React.FC = () => {
           />
         </Dialog>
       )}
-      <Box display="flex" alignItems="center" marginBottom={spacing.scale200}>
+      <Box display="flex" alignItems="center" marginBottom={spacing.scale300}>
         <H3>{formToEdit ? 'Formular bearbeiten' : 'Neues Formular'}</H3>
         <ButtonGroup>
           <Button
@@ -224,7 +224,7 @@ const FormBuilder: React.FC = () => {
           <Button onClick={() => router.back()}>Abbrechen</Button>
         </ButtonGroup>
       </Box>
-      <Box display="flex" position="relative" marginBottom={spacing.scale600}>
+      <Box display="flex" position="relative" marginBottom={spacing.scale700}>
         <DnDSection
           onHover={formBuilder.onOutsideHover}
           render={(targetID, drop) => <Overlay id={targetID} ref={drop} />}
@@ -266,7 +266,7 @@ const FormBuilder: React.FC = () => {
                 {(formCategory === 'application' ||
                   formToEdit?.formCategory === 'application') && (
                   <>
-                    <Box display="grid" rowGap={spacing.scale200}>
+                    <Box display="grid" rowGap={spacing.scale300}>
                       <Box marginTop={20}>
                         <Typography
                           style={{
@@ -279,8 +279,8 @@ const FormBuilder: React.FC = () => {
                           Formular einbinden
                           <Clipboard
                             style={{
-                              marginLeft: spacing.scale100,
-                              height: spacing.scale300,
+                              marginLeft: spacing.scale200,
+                              height: spacing.scale400,
                               width: 'auto',
                             }}
                           />

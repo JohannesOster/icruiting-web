@@ -3,19 +3,19 @@ import {LabelProps, DescriptionProps} from './types';
 
 export const Container = styled.div`
   display: grid;
-  grid-row-gap: ${({theme}) => theme.spacing.scale100};
+  grid-row-gap: ${({theme}) => theme.spacing.scale200};
 `;
 
 export const BaseSelect = styled.select`
   border: 1px solid ${({theme}) => theme.colors.inputBorder};
-  border-radius: ${({theme}) => theme.borders.radius};
+  border-radius: ${({theme}) => theme.borders.radius100};
   background: white;
   cursor: pointer;
   outline: none;
   width: 100%;
   min-width: 50px;
-  padding: ${({theme}) => theme.spacing.scale200};
-  padding-right: ${({theme}) => theme.spacing.scale600};
+  padding: ${({theme}) => theme.spacing.scale300};
+  padding-right: ${({theme}) => theme.spacing.scale700};
 
   ${({theme}) => theme.typography.font100};
 
@@ -30,7 +30,7 @@ export const BaseSelect = styled.select`
   background: transparent;
   background: url("data:image/svg+xml;utf8,<svg height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z' fill='%23545454' /></svg>");
   background-repeat: no-repeat;
-  background-position: right ${({theme}) => theme.spacing.scale100} top 50%;
+  background-position: right ${({theme}) => theme.spacing.scale200} top 50%;
 `;
 
 export const Label = styled.label<LabelProps>`
@@ -51,7 +51,7 @@ export const Description = styled.span<DescriptionProps>`
 
 export const Errors = styled.div`
   display: grid;
-  grid-row-gap: ${({theme}) => theme.spacing.scale100};
+  grid-row-gap: ${({theme}) => theme.spacing.scale200};
   color: ${({theme}) => theme.colors.typographyPrimaryError};
   ${({theme}) => theme.typography.font100};
 `;

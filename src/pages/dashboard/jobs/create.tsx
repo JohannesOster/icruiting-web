@@ -24,7 +24,7 @@ const OptionContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr auto;
   grid-auto-flow: column;
-  column-gap: ${({theme}) => theme.spacing.scale200};
+  column-gap: ${({theme}) => theme.spacing.scale300};
   width: 100%;
   align-items: center;
 `;
@@ -93,12 +93,12 @@ const CreateJob = () => {
   return (
     <main>
       <Flexgrid
-        flexGap={spacing.scale200}
+        flexGap={spacing.scale300}
         justifyContent="space-between"
-        marginBottom={spacing.scale200}
+        marginBottom={spacing.scale300}
       >
         <H3>Neue Stelle</H3>
-        <Box display="grid" gridAutoFlow="column" columnGap={spacing.scale400}>
+        <Box display="grid" gridAutoFlow="column" columnGap={spacing.scale500}>
           <Button
             onClick={handleSubmit(onSave)}
             disabled={!formState.isValid}
@@ -110,7 +110,7 @@ const CreateJob = () => {
         </Box>
       </Flexgrid>
       <form>
-        <Box display="grid" rowGap={spacing.scale200}>
+        <Box display="grid" rowGap={spacing.scale300}>
           <Input
             name="jobTitle"
             label="Stellentitel"
@@ -120,7 +120,7 @@ const CreateJob = () => {
             required
           />
           <H6 style={{marginBottom: 0}}>Anforderungsprofil*</H6>
-          <Box display="grid" gridRowGap={spacing.scale100} alignItems="center">
+          <Box display="grid" gridRowGap={spacing.scale200} alignItems="center">
             {fields.map((item, idx) => {
               return (
                 <OptionContainer key={item.id}>
@@ -148,9 +148,9 @@ const CreateJob = () => {
                     <Trash
                       onClick={() => remove(idx)}
                       style={{
-                        height: spacing.scale300,
+                        height: spacing.scale400,
                         width: 'auto',
-                        marginLeft: spacing.scale100,
+                        marginLeft: spacing.scale200,
                         cursor: 'pointer',
                       }}
                     />

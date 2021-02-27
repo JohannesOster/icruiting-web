@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import {SpinnerProps} from './types';
 
 export const Spinner = styled.span<SpinnerProps>`
-  height: ${({size, theme}) => size || theme.spacing.scale400};
-  width: ${({size, theme}) => size || theme.spacing.scale400};
+  height: ${({size, theme}) => size || theme.spacing.scale500};
+  width: ${({size, theme}) => size || theme.spacing.scale500};
   border-radius: 50%;
   border: 3px solid;
   box-sizing: border-box;
@@ -23,7 +23,7 @@ export const Spinner = styled.span<SpinnerProps>`
   }
 
   display: inline-block;
-  animation-duration: ${({theme}) => theme.animation.timing800};
+  animation-duration: ${({theme}) => theme.animations.timing800};
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   animation-name: spinnerAnimation;

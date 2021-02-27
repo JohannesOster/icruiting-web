@@ -12,7 +12,7 @@ const DropDown: React.FC<Props> = ({label, children}) => {
   const {spacing} = useTheme();
   return (
     <Container>
-      <Typography style={{marginRight: spacing.scale200}}>{label}</Typography>
+      <Typography style={{marginRight: spacing.scale300}}>{label}</Typography>
       <Icon />
       <Overlay>
         <Content>{children}</Content>

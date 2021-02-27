@@ -119,14 +119,14 @@ export const EditApplicant = () => {
   };
 
   return (
-    <Box display="grid" rowGap={spacing.scale300}>
+    <Box display="grid" rowGap={spacing.scale400}>
       <Flexgrid
-        flexGap={spacing.scale200}
+        flexGap={spacing.scale300}
         justifyContent="space-between"
-        marginBottom={spacing.scale200}
+        marginBottom={spacing.scale300}
       >
         <H3>Bewerber*in bearbeiten</H3>
-        <Box display="grid" gridAutoFlow="column" columnGap={spacing.scale400}>
+        <Box display="grid" gridAutoFlow="column" columnGap={spacing.scale500}>
           <Button isLoading={isSubmitting} onClick={onSave}>
             Speichern
           </Button>

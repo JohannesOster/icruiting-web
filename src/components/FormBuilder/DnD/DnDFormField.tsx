@@ -10,16 +10,16 @@ import styled, {useTheme} from 'styled-components';
 const OptionBar = styled.div`
   position: absolute;
   right: 0;
-  top: -${({theme}) => theme.spacing.scale400};
+  top: -${({theme}) => theme.spacing.scale500};
   background: white;
   box-shadow: 1px 1px 5px 0px rgba(64, 64, 64, 0.3);
-  border-radius: ${({theme}) => theme.borders.radius};
+  border-radius: ${({theme}) => theme.borders.radius100};
   display: grid;
   grid-auto-flow: column;
 
   div {
-    height: ${({theme}) => theme.spacing.scale500};
-    width: ${({theme}) => theme.spacing.scale500};
+    height: ${({theme}) => theme.spacing.scale600};
+    width: ${({theme}) => theme.spacing.scale600};
     display: flex;
     justify-content: center;
     align-items: center;
@@ -143,12 +143,12 @@ export const DnDFormField: React.FC<Props> = ({
     >
       <OptionBar>
         <div ref={drag} style={{cursor: 'move'}}>
-          <Move style={{width: 'auto', height: spacing.scale200}} />
+          <Move style={{width: 'auto', height: spacing.scale300}} />
         </div>
         {onEdit && (
           <>
             <div style={{cursor: 'pointer'}} onClick={() => onDuplicate(id)}>
-              <Duplicate style={{width: 'auto', height: spacing.scale200}} />
+              <Duplicate style={{width: 'auto', height: spacing.scale300}} />
             </div>
             <div
               style={{cursor: 'pointer'}}
@@ -156,7 +156,7 @@ export const DnDFormField: React.FC<Props> = ({
                 onEdit(id);
               }}
             >
-              <Edit style={{width: 'auto', height: spacing.scale200}} />
+              <Edit style={{width: 'auto', height: spacing.scale300}} />
             </div>
           </>
         )}
@@ -167,7 +167,7 @@ export const DnDFormField: React.FC<Props> = ({
               onDelete(id);
             }}
           >
-            <Trash style={{width: 'auto', height: spacing.scale200}} />
+            <Trash style={{width: 'auto', height: spacing.scale300}} />
           </div>
         )}
       </OptionBar>

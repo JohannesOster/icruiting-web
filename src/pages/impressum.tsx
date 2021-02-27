@@ -6,10 +6,10 @@ const Impressum: FC = () => {
   const {spacing} = useTheme();
 
   return (
-    <Box padding={spacing.scale400} display="grid" rowGap={spacing.scale200}>
+    <Box padding={spacing.scale500} display="grid" rowGap={spacing.scale300}>
       <H3 style={{margin: 0}}>Impressum</H3>
       <H6>Kontakt</H6>
-      <Box display="grid" gridRowGap={spacing.scale200}>
+      <Box display="grid" gridRowGap={spacing.scale300}>
         <Typography>
           Name: Johannes Oster
           <br />

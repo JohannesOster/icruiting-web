@@ -9,19 +9,19 @@ export const BaseButton = styled.button<BaseButtonProps>`
   position: relative;
   cursor: pointer;
 
-  padding-top: ${({theme}) => theme.spacing.scale100};
-  padding-bottom: ${({theme}) => theme.spacing.scale100};
-  padding-left: ${({theme}) => theme.spacing.scale300};
-  padding-right: ${({theme}) => theme.spacing.scale300};
+  padding-top: ${({theme}) => theme.spacing.scale200};
+  padding-bottom: ${({theme}) => theme.spacing.scale200};
+  padding-left: ${({theme}) => theme.spacing.scale400};
+  padding-right: ${({theme}) => theme.spacing.scale400};
 
   border: none;
-  border-radius: ${({theme}) => theme.borders.radius};
+  border-radius: ${({theme}) => theme.borders.radius100};
 
   ${({theme}) => theme.typography.font200}
 
   transition-property: background-color;
-  transition-duration: ${({theme}) => theme.animation.timing100};
-  transition-timing-function: ${({theme}) => theme.animation.linearCurve};
+  transition-duration: ${({theme}) => theme.animations.timing100};
+  transition-timing-function: ${({theme}) => theme.animations.linearCurve};
 
   ${({isLoading}) =>
     isLoading &&

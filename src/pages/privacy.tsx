@@ -9,9 +9,9 @@ const Privacy: FC = () => {
   return (
     <Box display="flex" justifyContent="center">
       <Box
-        padding={spacing.scale400}
+        padding={spacing.scale500}
         display="grid"
-        rowGap={spacing.scale200}
+        rowGap={spacing.scale300}
         maxWidth="800px"
       >
         <H3 style={{marginTop: 0}}>Datenschutzerklärung </H3>

@@ -3,12 +3,13 @@ import {Box, H6, Typography, Spinner} from 'components';
 import {SignUpForm, SignUpFormValues} from 'containers';
 import {useRouter} from 'next/router';
 import {useToaster} from 'context';
-import spacing from 'theme/spacing';
 import {API} from 'services';
 import useSWR from 'swr';
+import {useTheme} from 'styled-components';
 
 type Status = 'idle' | 'fetching' | 'submitting';
 const SignUp: React.FC = () => {
+  const {spacing} = useTheme();
   const router = useRouter();
   const toaster = useToaster();
   const [status, setStatus] = useState<Status>('fetching');
@@ -55,7 +56,7 @@ const SignUp: React.FC = () => {
   const displayValForInterval = {month: 'Monat'} as {[key: string]: string};
 
   return (
-    <Box margin={spacing.scale400} marginTop={spacing.scale600}>
+    <Box margin={spacing.scale500} marginTop={spacing.scale700}>
       {status === 'fetching' && !prices?.length && (
         <Box
           position="absolute"
@@ -70,7 +71,7 @@ const SignUp: React.FC = () => {
         display="grid"
         gridAutoFlow="column"
         justifyContent="center"
-        columnGap={spacing.scale400}
+        columnGap={spacing.scale500}
       >
         {prices?.map((price) => (
           <div key={price.id} onClick={() => setSelectedPriceId(price.id)}>
@@ -91,29 +92,29 @@ const SignUp: React.FC = () => {
             >
               <div style={{borderTop: '5px solid black'}} />
               <Box
-                padding={spacing.scale400}
+                padding={spacing.scale500}
                 textAlign="center"
                 display="grid"
-                rowGap={spacing.scale600}
+                rowGap={spacing.scale700}
               >
                 <H6>{price.product.name}</H6>
                 <Typography
                   kind="secondary"
-                  style={{fontSize: spacing.scale400}}
+                  style={{fontSize: spacing.scale500}}
                 >
                   € {price.unit_amount / 100} /{' '}
                   {displayValForInterval[price.recurring.interval]}
                 </Typography>
-                <Box display="grid" rowGap={spacing.scale200}>
+                <Box display="grid" rowGap={spacing.scale300}>
                   <Typography
                     kind="secondary"
-                    style={{fontSize: spacing.scale400}}
+                    style={{fontSize: spacing.scale500}}
                   >
                     14 Tage Trial
                   </Typography>
                   <Typography
                     kind="secondary"
-                    style={{fontSize: spacing.scale200}}
+                    style={{fontSize: spacing.scale300}}
                   >
                     <strong>Keine Zahlungsmethode</strong>
                     <br />

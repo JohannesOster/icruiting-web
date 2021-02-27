@@ -29,13 +29,13 @@ const Account: React.FC = () => {
 
   return (
     <Box
-      margin={`${spacing.scale200} ${spacing.scale400}`}
+      margin={`${spacing.scale300} ${spacing.scale500}`}
       display="grid"
-      gridRowGap={spacing.scale200}
+      gridRowGap={spacing.scale300}
     >
       {status === 'shouldDelete' && (
         <Dialog onClose={() => setStatus('shouldDelete')}>
-          <Box display="grid" rowGap={spacing.scale200}>
+          <Box display="grid" rowGap={spacing.scale300}>
             <H6>Tenant unwiederruflich löschen?</H6>
             <Typography>
               Sind Sie sicher dass Sie <b>alle Daten löschen</b> wollen? Dieser

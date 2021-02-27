@@ -1,5 +1,5 @@
 import {theme} from 'theme';
-import {ThemeProvider} from 'styled-components';
+import {createGlobalStyle, ThemeProvider} from 'styled-components';
 import Amplify from 'aws-amplify';
 import config from 'amplify.config';
 import {AuthProvider, useAuth} from 'context';
@@ -12,6 +12,10 @@ import 'styles/typography.css';
 
 Amplify.configure({...config, ssr: true});
 
+const GlobalStyles = createGlobalStyle`
+  body {color: ${({theme}) => theme.colors.typographyPrimary}};
+`;
+
 const App = ({Component, pageProps}) => {
   const {isAuthenticating} = useAuth();
 
@@ -20,6 +24,7 @@ const App = ({Component, pageProps}) => {
   return (
     <ThemeProvider theme={theme}>
       <ToasterProvider>
+        <GlobalStyles />
         <Navbar />
         {isAuthenticating ? (
           <Box

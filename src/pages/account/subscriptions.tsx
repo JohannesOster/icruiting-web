@@ -98,9 +98,9 @@ const Subscriptions: React.FC = () => {
 
   return (
     <Box
-      margin={`${spacing.scale200} ${spacing.scale400}`}
+      margin={`${spacing.scale300} ${spacing.scale500}`}
       display="grid"
-      rowGap={spacing.scale400}
+      rowGap={spacing.scale500}
     >
       <H3>Subscriptions</H3>
       <DataTable

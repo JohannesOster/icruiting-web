@@ -100,7 +100,7 @@ const PaymentMethods: React.FC = () => {
     {
       title: 'Aktion',
       cell: ({is_default, id}) => (
-        <Flexgrid gap={spacing.scale100}>
+        <Flexgrid gap={spacing.scale200}>
           {!is_default && (
             <Button
               kind="minimal"
@@ -150,11 +150,11 @@ const PaymentMethods: React.FC = () => {
 
   return (
     <Box
-      margin={`${spacing.scale200} ${spacing.scale400}`}
+      margin={`${spacing.scale300} ${spacing.scale500}`}
       display="grid"
-      rowGap={spacing.scale400}
+      rowGap={spacing.scale500}
     >
-      <Flexgrid justifyContent="space-between" flexGap={spacing.scale100}>
+      <Flexgrid justifyContent="space-between" flexGap={spacing.scale200}>
         <H3>Paymentmethods</H3>
         <Button
           onClick={() => {
@@ -177,7 +177,7 @@ const PaymentMethods: React.FC = () => {
       />
       {clientSecret && (
         <Dialog onClose={() => setClientSecret(null)}>
-          <Box display="grid" rowGap={spacing.scale100}>
+          <Box display="grid" rowGap={spacing.scale200}>
             <H6>Bankkonto hinzufügen</H6>
             <PaymentMethodForm onSubmit={onSubmit} />
           </Box>

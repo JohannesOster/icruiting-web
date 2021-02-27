@@ -112,7 +112,7 @@ export const EditACRatingGroupFormFields: React.FC<Props> = ({
           })),
         ]}
       />
-      <H6 style={{marginBottom: `-${spacing.scale200}`}}>
+      <H6 style={{marginBottom: `-${spacing.scale300}`}}>
         Optionen (Label, Wert)
       </H6>
       {fields.map((option, idx) => {
@@ -122,7 +122,7 @@ export const EditACRatingGroupFormFields: React.FC<Props> = ({
             gridAutoFlow="column"
             gridTemplateColumns="1fr 1fr 30px"
             alignItems="center"
-            columnGap={spacing.scale200}
+            columnGap={spacing.scale300}
             key={option.id}
           >
             <Input

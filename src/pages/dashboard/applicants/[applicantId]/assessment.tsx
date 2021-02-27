@@ -11,7 +11,7 @@ import {errorsFor} from 'utils/react-hook-form-errors-for';
 
 const Form = styled.form`
   display: grid;
-  row-gap: ${({theme}) => theme.spacing.scale400};
+  row-gap: ${({theme}) => theme.spacing.scale500};
 `;
 
 const ApplicantAssessment = () => {

@@ -19,7 +19,7 @@ export const ContentBackground = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: ${({theme}) => theme.spacing.scale500};
+  padding: ${({theme}) => theme.spacing.scale600};
   min-width: 200px;
 
   @media (max-width: 568px) {
@@ -36,7 +36,7 @@ export const Close = styled.span`
   cursor: pointer;
   top: 0;
   right: 0;
-  padding: ${({theme}) => theme.spacing.scale100};
+  padding: ${({theme}) => theme.spacing.scale200};
 
   svg {
     stroke: black;

@@ -61,13 +61,13 @@ const ApplicantReport = () => {
   const {data = {}, options = {}} = _buildRadarChart();
 
   return (
-    <Box display="grid" rowGap={spacing.scale200}>
+    <Box display="grid" rowGap={spacing.scale300}>
       <H3>Gutachten</H3>
-      <Box display="grid" rowGap={spacing.scale100}>
-        <Flexgrid alignItems="center" flexGap={spacing.scale100}>
+      <Box display="grid" rowGap={spacing.scale200}>
+        <Flexgrid alignItems="center" flexGap={spacing.scale200}>
           <H6>Bewerber*in - {applicant?.name}</H6>
           <Arrow
-            height={spacing.scale300}
+            height={spacing.scale400}
             onClick={() => setShowApplicant((curr) => !curr)}
             style={{
               transform: `rotate(${showApplicant ? '90deg' : '-90deg'})`,
@@ -114,7 +114,7 @@ const ApplicantReport = () => {
         )}
       </Box>
 
-      <Box display="grid" rowGap={spacing.scale100}>
+      <Box display="grid" rowGap={spacing.scale200}>
         <H6>Übersicht</H6>
         <Table>
           <tbody>
@@ -129,11 +129,11 @@ const ApplicantReport = () => {
           </tbody>
         </Table>
       </Box>
-      <Box display="grid" rowGap={spacing.scale100}>
-        <Flexgrid alignItems="center" flexGap={spacing.scale100}>
+      <Box display="grid" rowGap={spacing.scale200}>
+        <Flexgrid alignItems="center" flexGap={spacing.scale200}>
           <H6>Details</H6>
           <Arrow
-            height={spacing.scale300}
+            height={spacing.scale400}
             onClick={() => setShowDetails((curr) => !curr)}
             style={{
               transform: `rotate(${showDetails ? '90deg' : '-90deg'})`,
@@ -158,18 +158,19 @@ const ApplicantReport = () => {
                             onboarding: 'Onboarding',
                           }[formCategory]}
                       </span>{' '}
-                      {formScore.replicas?.length > 1 && (
-                        <Button
-                          kind="minimal"
-                          onClick={() => {
-                            setShowReplicas((curr) =>
-                              curr ? null : formScore.formId,
-                            );
-                          }}
-                        >
-                          Replikate anzeigen
-                        </Button>
-                      )}
+                      {formScore.replicas?.length &&
+                        formScore.replicas[0].formId !== formScore.formId && (
+                          <Button
+                            kind="minimal"
+                            onClick={() => {
+                              setShowReplicas((curr) =>
+                                curr ? null : formScore.formId,
+                              );
+                            }}
+                          >
+                            Replikate anzeigen
+                          </Button>
+                        )}
                     </th>
                     <th>
                       {formScore.formScore} | σ = {formScore.stdDevFormScore}
@@ -283,11 +284,11 @@ const ApplicantReport = () => {
         )}
       </Box>
       {['assessment', 'onboarding'].includes(formCategory) && (
-        <Box display="grid" rowGap={spacing.scale100}>
-          <Flexgrid alignItems="center" flexGap={spacing.scale100}>
+        <Box display="grid" rowGap={spacing.scale200}>
+          <Flexgrid alignItems="center" flexGap={spacing.scale200}>
             <H6>Anforderungsprofil</H6>
             <Arrow
-              height={spacing.scale300}
+              height={spacing.scale400}
               onClick={() => setShowProfile((curr) => !curr)}
               style={{
                 transform: `rotate(${showDetails ? '90deg' : '-90deg'})`,

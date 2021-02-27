@@ -10,9 +10,9 @@ const DashboardLayout: React.FC = ({children}) => {
   const {currentUser} = useAuth();
 
   const iconsStyles = {
-    marginRight: spacing.scale200,
-    height: spacing.scale400,
-    width: spacing.scale400,
+    marginRight: spacing.scale300,
+    height: spacing.scale500,
+    width: spacing.scale500,
     color: colors.typographyPrimary,
   };
 

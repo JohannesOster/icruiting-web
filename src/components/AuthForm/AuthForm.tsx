@@ -10,7 +10,7 @@ type Props = {
 
 const Form = styled.form`
   display: grid;
-  grid-row-gap: ${({theme}) => theme.spacing.scale400};
+  grid-row-gap: ${({theme}) => theme.spacing.scale500};
 `;
 
 const Container = styled.div`
@@ -19,7 +19,7 @@ const Container = styled.div`
   max-width: 600px;
   margin: 50px auto;
   display: grid;
-  row-gap: ${({theme}) => theme.spacing.scale100};
+  row-gap: ${({theme}) => theme.spacing.scale200};
 `;
 
 const AuthForm: React.FC<Props> = ({title, children, onSubmit}) => (

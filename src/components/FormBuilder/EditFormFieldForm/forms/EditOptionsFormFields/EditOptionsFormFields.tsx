@@ -91,8 +91,8 @@ export const EditOptionsFormFields: FC<Props> = ({
         ref={register}
         options={[{label: 'Verpflichtend', value: 'required'}]}
       />
-      <H6 style={{marginBottom: `-${spacing.scale200}`}}>Optionen</H6>
-      <Box display="grid" rowGap={spacing.scale400}>
+      <H6 style={{marginBottom: `-${spacing.scale300}`}}>Optionen</H6>
+      <Box display="grid" rowGap={spacing.scale500}>
         {fields.map((option, idx) => {
           return (
             <DnDOptionContainer

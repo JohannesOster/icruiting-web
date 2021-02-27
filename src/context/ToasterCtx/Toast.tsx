@@ -30,11 +30,11 @@ export const Toast: React.FC<ToastProps> = ({
   const colorForIntent = (() => {
     switch (intent) {
       case 'success':
-        return 'green'; // Toaster is outside of App therfore theme has to be imported manually
+        return colors.toasterSuccess;
       case 'danger':
-        return colors.typographyPrimaryError;
+        return colors.toasterError;
       default:
-        return colors.typographyPrimary;
+        return colors.toasterInfo;
     }
   })();
 

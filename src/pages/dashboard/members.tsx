@@ -30,7 +30,7 @@ export const Header = styled.header`
 
 export const TableFooter = styled.footer`
   display: flex;
-  margin-top: ${({theme}) => theme.spacing.scale400};
+  margin-top: ${({theme}) => theme.spacing.scale500};
   justify-content: center;
 `;
 
@@ -166,7 +166,7 @@ export const Members = () => {
           <H6>Neuen Mitarbeiter Einladen</H6>
           <form
             onSubmit={handleSubmit(addMembere)}
-            style={{display: 'grid', gridRowGap: spacing.scale400}}
+            style={{display: 'grid', gridRowGap: spacing.scale500}}
           >
             <Controller
               name="emails"
@@ -201,8 +201,8 @@ export const Members = () => {
         <Flexgrid
           justifyContent="space-between"
           alignItems="center"
-          flexGap={spacing.scale100}
-          marginBottom={spacing.scale200}
+          flexGap={spacing.scale200}
+          marginBottom={spacing.scale300}
         >
           <H3>Tenant</H3>
           <Button onClick={() => setShowNewMembereForm(true)}>

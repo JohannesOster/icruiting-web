@@ -23,7 +23,7 @@ import {useForm} from 'react-hook-form';
 import {v4 as uuidv4} from 'uuid';
 
 const JobDetails = () => {
-  const {colors, spacing} = useTheme();
+  const {spacing} = useTheme();
   const router = useRouter();
   const {jobId} = router.query as {jobId: string};
   const [exporing, setExporting] = useState(false);
@@ -112,7 +112,7 @@ const JobDetails = () => {
     return (
       <Box
         display="grid"
-        gridColumnGap={spacing.scale100}
+        gridColumnGap={spacing.scale200}
         gridAutoFlow="column"
         justifyContent="left"
         alignItems="center"
@@ -207,7 +207,7 @@ const JobDetails = () => {
                 <td>
                   <Box
                     display="grid"
-                    gridColumnGap={spacing.scale100}
+                    gridColumnGap={spacing.scale200}
                     gridAutoFlow="column"
                     justifyContent="left"
                     alignItems="center"
@@ -250,14 +250,14 @@ const JobDetails = () => {
   ];
 
   return (
-    <main style={{display: 'grid', rowGap: spacing.scale300}}>
+    <main style={{display: 'grid', rowGap: spacing.scale400}}>
       {shouldDeleteFormId && (
         <Dialog
           onClose={() => {
             setShouldDeleteFormId(null);
           }}
         >
-          <Box display="grid" rowGap={spacing.scale200}>
+          <Box display="grid" rowGap={spacing.scale300}>
             <H6>Formular unwiederruflich löschen?</H6>
             <Typography>
               Sind Sie sicher, dass Sie diese Formular unwiederruflich löschen
@@ -321,7 +321,7 @@ const JobDetails = () => {
               revalidate();
               closeReplicaDialog();
             })}
-            style={{display: 'grid', rowGap: spacing.scale200}}
+            style={{display: 'grid', rowGap: spacing.scale300}}
           >
             <Input
               label="Formulartitel"
@@ -334,12 +334,12 @@ const JobDetails = () => {
         </Dialog>
       )}
       <H3>{job?.jobTitle}</H3>
-      <Box display="grid" gridRowGap={spacing.scale100}>
+      <Box display="grid" gridRowGap={spacing.scale200}>
         <div
           style={{cursor: 'pointer'}}
           onClick={() => router.push(`/dashboard/jobs/${jobId}/edit`)}
         >
-          <Flexgrid gap={spacing.scale200} alignItems="center">
+          <Flexgrid gap={spacing.scale300} alignItems="center">
             <H6>Anforderungsprofil</H6>
             <Edit />
           </Flexgrid>
@@ -366,7 +366,7 @@ const JobDetails = () => {
           </Table>
         )}
       </Box>
-      <Box display="grid" gridRowGap={spacing.scale100}>
+      <Box display="grid" gridRowGap={spacing.scale200}>
         <H6>Rankings</H6>
         <Table>
           <thead>
@@ -400,7 +400,7 @@ const JobDetails = () => {
           </tbody>
         </Table>
       </Box>
-      <Box display="grid" gridRowGap={spacing.scale100}>
+      <Box display="grid" gridRowGap={spacing.scale200}>
         <H6>Gutachen gestalten</H6>
         <Table>
           <thead>
@@ -420,7 +420,7 @@ const JobDetails = () => {
                 ) : (
                   <Box
                     display="grid"
-                    gridColumnGap={spacing.scale100}
+                    gridColumnGap={spacing.scale200}
                     gridAutoFlow="column"
                     justifyContent="left"
                     alignItems="center"
@@ -448,7 +448,7 @@ const JobDetails = () => {
           </tbody>
         </Table>
       </Box>
-      <Box display="grid" gridRowGap={spacing.scale100}>
+      <Box display="grid" gridRowGap={spacing.scale200}>
         <H6>Bewerbungs-Formular</H6>
         <DataTable
           columns={formsTableColumns}
@@ -456,7 +456,7 @@ const JobDetails = () => {
           isLoading={isFetching}
         />
       </Box>
-      <Box display="grid" gridRowGap={spacing.scale100}>
+      <Box display="grid" gridRowGap={spacing.scale200}>
         <H6>Screening-Formular</H6>
         <DataTable
           columns={baseCols}
@@ -464,7 +464,7 @@ const JobDetails = () => {
           isLoading={isFetching}
         />
       </Box>
-      <Box display="grid" gridRowGap={spacing.scale100}>
+      <Box display="grid" gridRowGap={spacing.scale200}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <H6>Assessment-Formulare</H6>
           <Button
@@ -483,7 +483,7 @@ const JobDetails = () => {
           isLoading={isFetching}
         />
       </Box>
-      <Box display="grid" gridRowGap={spacing.scale100}>
+      <Box display="grid" gridRowGap={spacing.scale200}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <H6>Onboarding-Formulare</H6>
           <Button

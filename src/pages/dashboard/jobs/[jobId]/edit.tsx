@@ -26,7 +26,7 @@ const OptionContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr auto;
   grid-auto-flow: column;
-  column-gap: ${({theme}) => theme.spacing.scale200};
+  column-gap: ${({theme}) => theme.spacing.scale300};
   width: 100%;
   align-items: center;
 `;
@@ -103,12 +103,12 @@ const EditJob = () => {
   return (
     <main>
       <Flexgrid
-        flexGap={spacing.scale200}
+        flexGap={spacing.scale300}
         justifyContent="space-between"
-        marginBottom={spacing.scale200}
+        marginBottom={spacing.scale300}
       >
         <H3>Stelle bearbeiten</H3>
-        <Box display="grid" gridAutoFlow="column" columnGap={spacing.scale400}>
+        <Box display="grid" gridAutoFlow="column" columnGap={spacing.scale500}>
           <Button
             onClick={handleSubmit(onSave)}
             disabled={!formState.isValid}
@@ -123,7 +123,7 @@ const EditJob = () => {
         <Spinner />
       ) : (
         <form>
-          <Box display="grid" rowGap={spacing.scale200}>
+          <Box display="grid" rowGap={spacing.scale300}>
             <Input
               name="jobTitle"
               label="Stellentitel"
@@ -135,9 +135,9 @@ const EditJob = () => {
             <H6 style={{marginBottom: 0}}>Anforderungsprofil*</H6>
             <Box
               display="grid"
-              gridRowGap={spacing.scale100}
+              gridRowGap={spacing.scale200}
               alignItems="center"
-              marginBottom={spacing.scale300}
+              marginBottom={spacing.scale400}
             >
               {fields.map((item, idx) => {
                 return (
@@ -176,9 +176,9 @@ const EditJob = () => {
                       <Trash
                         onClick={() => remove(idx)}
                         style={{
-                          height: spacing.scale300,
+                          height: spacing.scale400,
                           width: 'auto',
-                          marginLeft: spacing.scale100,
+                          marginLeft: spacing.scale200,
                           cursor: 'pointer',
                         }}
                       />
