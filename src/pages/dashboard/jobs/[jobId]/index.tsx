@@ -23,7 +23,7 @@ import {useForm} from 'react-hook-form';
 import {v4 as uuidv4} from 'uuid';
 
 const JobDetails = () => {
-  const {colors, spacing} = useTheme();
+  const {spacing} = useTheme();
   const router = useRouter();
   const {jobId} = router.query as {jobId: string};
   const [exporing, setExporting] = useState(false);
@@ -344,7 +344,7 @@ const JobDetails = () => {
             <Edit />
           </Flexgrid>
         </div>
-        {isFetching && <Spinner color={colors.primary} />}
+        {isFetching && <Spinner />}
         {!isFetching && (
           <Table>
             <thead>
