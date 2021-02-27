@@ -126,11 +126,6 @@ const Applicants = () => {
       : []),
   ];
 
-  const getRowStyle = ({screeningExists}: {[key: string]: any}) => {
-    if (!screeningExists) return {};
-    return {background: '#CBCBCB'};
-  };
-
   const {register, getValues, reset, formState, handleSubmit} = useForm();
   useEffect(() => {
     reset({filter});
@@ -251,7 +246,6 @@ const Applicants = () => {
         columns={columns}
         data={applicantsResponse?.applicants || []}
         isLoading={isLoading}
-        getRowStyle={getRowStyle}
         totalCount={applicantsResponse?.totalCount || 0}
         totalPages={Math.ceil((applicantsResponse?.totalCount || 0) / limit)}
         currentPage={Math.round(offset / limit) + 1}
