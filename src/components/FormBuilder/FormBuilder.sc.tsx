@@ -29,7 +29,7 @@ export const Overlay = styled.div`
 
 export const DnDSourceSection = styled.section`
   border: 1px solid ${({theme}) => theme.colors.inputBorder};
-  border-radius: ${({theme}) => theme.borders.radius};
+  border-radius: ${({theme}) => theme.borders.radius100};
   padding: ${({theme}) => theme.spacing.scale100};
   margin-left: ${({theme}) => theme.spacing.scale100};
   width: 250px;
@@ -38,7 +38,7 @@ export const DnDSourceSection = styled.section`
 
 export const DnDTargetSection = styled.section`
   border: 1px solid ${({theme}) => theme.colors.inputBorder};
-  border-radius: ${({theme}) => theme.borders.radius};
+  border-radius: ${({theme}) => theme.borders.radius100};
   padding: ${({theme}) => theme.spacing.scale100};
   padding-top: ${({theme}) => theme.spacing.scale400};
   width: 100%;

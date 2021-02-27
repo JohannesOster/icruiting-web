@@ -13,7 +13,7 @@ const OptionBar = styled.div`
   top: -${({theme}) => theme.spacing.scale400};
   background: white;
   box-shadow: 1px 1px 5px 0px rgba(64, 64, 64, 0.3);
-  border-radius: ${({theme}) => theme.borders.radius};
+  border-radius: ${({theme}) => theme.borders.radius100};
   display: grid;
   grid-auto-flow: column;
 

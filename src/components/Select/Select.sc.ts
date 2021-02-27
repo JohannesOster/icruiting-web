@@ -8,7 +8,7 @@ export const Container = styled.div`
 
 export const BaseSelect = styled.select`
   border: 1px solid ${({theme}) => theme.colors.inputBorder};
-  border-radius: ${({theme}) => theme.borders.radius};
+  border-radius: ${({theme}) => theme.borders.radius100};
   background: white;
   cursor: pointer;
   outline: none;

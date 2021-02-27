@@ -15,7 +15,7 @@ export const BaseButton = styled.button<BaseButtonProps>`
   padding-right: ${({theme}) => theme.spacing.scale300};
 
   border: none;
-  border-radius: ${({theme}) => theme.borders.radius};
+  border-radius: ${({theme}) => theme.borders.radius100};
 
   ${({theme}) => theme.typography.font200}
 

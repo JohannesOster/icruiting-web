@@ -17,7 +17,7 @@ export const ChipContainer = styled.div<ChipContainerProps>`
   align-items: center;
   border: 1px solid;
   border-color: ${({theme}) => theme.colors.inputBorder};
-  border-radius: ${({theme}) => theme.borders.radius};
+  border-radius: ${({theme}) => theme.borders.radius100};
   background: ${({theme}) => theme.colors.inputFill};
 
   &:focus-within {
@@ -68,7 +68,7 @@ export const Chip = styled.span`
   grid-auto-flow: column;
   grid-column-gap: ${({theme}) => theme.spacing.scale100};
   ${({theme}) => theme.typography.font200};
-  border-radius: ${({theme}) => theme.borders.radius};
+  border-radius: ${({theme}) => theme.borders.radius100};
 `;
 
 export const ChipCloseBtn = styled.span`
