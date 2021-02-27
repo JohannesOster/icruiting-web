@@ -57,6 +57,11 @@ export const theme = {
     tableBorder: colors.primary200,
     tableHeaderFill: colors.primary100,
     tableRowFill: colors.primary50,
+
+    // - toasters
+    toasterSuccess: colors.positive,
+    toasterError: colors.negative,
+    toasterInfo: colors.accent,
   },
   spacing,
   typography,

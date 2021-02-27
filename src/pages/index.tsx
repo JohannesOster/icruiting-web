@@ -23,7 +23,7 @@ export const Footer = styled.footer`
   border-color: ${({theme}) => theme.colors.inputBorder};
   ${({theme}) => theme.typography.font200};
 
-  @media (max-width: 440px) {
+  @media (max-width: ${({theme}) => theme.breakpoints.xs}) {
     display: block;
   }
 `;
