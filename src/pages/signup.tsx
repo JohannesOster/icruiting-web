@@ -3,12 +3,13 @@ import {Box, H6, Typography, Spinner} from 'components';
 import {SignUpForm, SignUpFormValues} from 'containers';
 import {useRouter} from 'next/router';
 import {useToaster} from 'context';
-import spacing from 'theme/spacing';
 import {API} from 'services';
 import useSWR from 'swr';
+import {useTheme} from 'styled-components';
 
 type Status = 'idle' | 'fetching' | 'submitting';
 const SignUp: React.FC = () => {
+  const {spacing} = useTheme();
   const router = useRouter();
   const toaster = useToaster();
   const [status, setStatus] = useState<Status>('fetching');
