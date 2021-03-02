@@ -27,6 +27,7 @@ const ApplicantDetails = () => {
   const {applicantId} = router.query as {applicantId: string};
   const [showScreeningForm, setShowScreeningForm] = useState(true);
 
+  type Status = 'idle' | 'confirming' | 'submitting';
   const [status, setStatus] = useState('idle');
   const {data: applicant} = useSWR(
     ['GET /applicants/:applicantId', applicantId],
@@ -146,21 +147,36 @@ const ApplicantDetails = () => {
   return (
     <Box display="grid" gridRowGap={spacing.scale700}>
       <section>
-        <Flexgrid
-          flexGap={spacing.scale300}
-          alignItems="center"
-          marginBottom={spacing.scale300}
-        >
-          <H6>Bewerber*innendaten</H6>
-          {currentUser?.userRole === 'admin' && (
-            <Edit
-              style={{cursor: 'pointer'}}
-              onClick={() =>
-                router.push(`/dashboard/applicants/${applicantId}/edit`)
-              }
-            />
+        <Box display="flex" justifyContent="space-between">
+          <Flexgrid
+            flexGap={spacing.scale300}
+            alignItems="center"
+            marginBottom={spacing.scale300}
+          >
+            <H6>Bewerber*innendaten</H6>
+            {currentUser?.userRole === 'admin' && (
+              <Edit
+                style={{cursor: 'pointer'}}
+                onClick={() =>
+                  router.push(`/dashboard/applicants/${applicantId}/edit`)
+                }
+              />
+            )}
+          </Flexgrid>
+          {currentUser.userRole === 'admin' && (
+            <Button
+              onClick={async () => {
+                setStatus('confirming');
+                await API.applicants.confirm(applicantId);
+                toaster.success('Erfolgreich bestätigt!');
+                setStatus('idle');
+              }}
+              isLoading={status === 'confirming'}
+            >
+              Bestätigen
+            </Button>
           )}
-        </Flexgrid>
+        </Box>
         <Table style={{width: 'auto'}}>
           <tbody>
             <tr>
