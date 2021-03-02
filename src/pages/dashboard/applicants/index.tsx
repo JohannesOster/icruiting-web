@@ -124,6 +124,10 @@ const Applicants = () => {
           },
         ] as TColumn[])
       : []),
+    {
+      title: 'Bestätigt',
+      cell: ({confirmed}) => <span>{confirmed ? 'Ja' : '-'} </span>,
+    },
   ];
 
   const {register, getValues, reset, formState, handleSubmit} = useForm();
