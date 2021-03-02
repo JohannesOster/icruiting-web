@@ -28,7 +28,7 @@ export const getColor = (theme: DefaultTheme, color?: TColor) => {
     case 'secondary':
       return {color: theme.colors.typographySecondary};
     case 'error':
-      return {color: theme.colors.typographyError};
+      return {color: theme.colors.typographyPrimaryError};
   }
 };
 
