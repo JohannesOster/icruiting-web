@@ -45,7 +45,7 @@ type FormFieldScore = {
   aggregatedValues: string[];
   countDistinct: {[key: string]: number};
   formFieldScore: number;
-  stdDevFormFieldScores: number;
+  stdDevFormFieldScore: number;
 };
 
 export type Report = {

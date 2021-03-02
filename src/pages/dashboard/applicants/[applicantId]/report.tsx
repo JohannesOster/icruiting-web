@@ -158,19 +158,18 @@ const ApplicantReport = () => {
                             onboarding: 'Onboarding',
                           }[formCategory]}
                       </span>{' '}
-                      {formScore.replicas?.length &&
-                        formScore.replicas[0].formId !== formScore.formId && (
-                          <Button
-                            kind="minimal"
-                            onClick={() => {
-                              setShowReplicas((curr) =>
-                                curr ? null : formScore.formId,
-                              );
-                            }}
-                          >
-                            Replikate anzeigen
-                          </Button>
-                        )}
+                      {formScore.replicas && (
+                        <Button
+                          kind="minimal"
+                          onClick={() => {
+                            setShowReplicas((curr) =>
+                              curr ? null : formScore.formId,
+                            );
+                          }}
+                        >
+                          Replikate anzeigen
+                        </Button>
+                      )}
                     </th>
                     <th>
                       {formScore.formScore} | σ = {formScore.stdDevFormScore}
