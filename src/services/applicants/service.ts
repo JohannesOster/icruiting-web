@@ -52,5 +52,9 @@ export const Applicants = () => {
     );
   };
 
-  return {list, find, del, retrieveReport};
+  const confirm = (applicantId: string) => {
+    return API.put(`/applicants/${applicantId}/confirm`);
+  };
+
+  return {list, find, del, retrieveReport, confirm};
 };
