@@ -49,8 +49,8 @@ type FormFieldScore = {
 };
 
 export type Report = {
-  rank: number;
-  formCategory: FormCategory;
+  rank?: number;
+  formCategory?: FormCategory;
   formCategoryScore: number;
   formResults: {
     formId: string;
