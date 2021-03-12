@@ -32,6 +32,7 @@ export const NavList = styled.div`
 export const Container = styled.main`
   margin: ${({theme}) => `${theme.spacing.scale300} ${theme.spacing.scale500}`};
   margin-left: 220px;
+  padding-bottom: ${({theme}) => theme.spacing.scale300};
 
   ${({theme}) => css`
     @media (max-width: ${theme.breakpoints.md}) {
