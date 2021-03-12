@@ -114,21 +114,23 @@ const ApplicantReport = () => {
         )}
       </Box>
 
-      <Box display="grid" rowGap={spacing.scale200}>
-        <H6>Übersicht</H6>
-        <Table>
-          <tbody>
-            <tr>
-              <td>Rang</td>
-              <td>{report?.rank}</td>
-            </tr>
-            <tr>
-              <td>Gesamtscore</td>
-              <td>{report?.formCategoryScore}</td>
-            </tr>
-          </tbody>
-        </Table>
-      </Box>
+      {report?.rank && report?.formCategoryScore && (
+        <Box display="grid" rowGap={spacing.scale200}>
+          <H6>Übersicht</H6>
+          <Table>
+            <tbody>
+              <tr>
+                <td>Rang</td>
+                <td>{report?.rank}</td>
+              </tr>
+              <tr>
+                <td>Gesamtscore</td>
+                <td>{report?.formCategoryScore}</td>
+              </tr>
+            </tbody>
+          </Table>
+        </Box>
+      )}
       <Box display="grid" rowGap={spacing.scale200}>
         <Flexgrid alignItems="center" flexGap={spacing.scale200}>
           <H6>Details</H6>
