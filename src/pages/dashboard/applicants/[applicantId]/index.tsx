@@ -28,7 +28,7 @@ const ApplicantDetails = () => {
   const [showScreeningForm, setShowScreeningForm] = useState(true);
 
   type Status = 'idle' | 'confirming' | 'submitting';
-  const [status, setStatus] = useState('idle');
+  const [status, setStatus] = useState<Status>('idle');
   const {data: applicant} = useSWR(
     ['GET /applicants/:applicantId', applicantId],
     (_key: string, applicantId: string) => API.applicants.find(applicantId),
@@ -276,6 +276,27 @@ const ApplicantDetails = () => {
             },
           ]}
         />
+      </section>
+      <section>
+        <H6>Gutachten</H6>
+        <Table>
+          <thead>
+            <tr>
+              <th>Gutachten</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <Link
+                  href={`/dashboard/applicants/${applicantId}/report?formCategory=onboarding`}
+                >
+                  <a>Onboarding</a>
+                </Link>
+              </td>
+            </tr>
+          </tbody>
+        </Table>
       </section>
     </Box>
   );
