@@ -233,7 +233,7 @@ export const Members = () => {
             <H6>Mitarbeiter*in unwiderruflich entfernen?</H6>
             <Typography>
               Sind Sie sicher dass Sie diesen Mitarbeiter*in entfernen möchten?
-              Es werden alle zusammenhängende <b>alle Daten löschen</b>{' '}
+              Es werden alle zusammenhängende <b>Daten gelöscht</b>{' '}
               (Bewertungen)? Dieser Vorgang kann nicht rückgängig gemacht
               werden!
             </Typography>
