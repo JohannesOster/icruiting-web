@@ -144,7 +144,7 @@ const Applicants = () => {
           }}
         >
           <Box display="grid" rowGap={spacing.scale300}>
-            <H6>Bewerber*in wirklich unwiederruflich löschen?</H6>
+            <H6>Bewerber*in wirklich unwiderruflich löschen?</H6>
             <Typography>
               Sind Sie sicher, dass Sie alle Daten des*der Bewerbers*in löschen
               wollen? Dieser Vorgang kann nicht rückgängig gemacht werden.
