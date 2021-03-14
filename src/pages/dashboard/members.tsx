@@ -107,7 +107,7 @@ export const Members = () => {
     setDeletingMember(email);
     setMemberToDelete(null); // close dialog
     API.members
-      .del(deletingMember)
+      .del(email)
       .then(async () => {
         await revalidate();
         toaster.success('Mitarbeiterrolle erfolgreich entfernt.');
