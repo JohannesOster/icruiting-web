@@ -13,5 +13,9 @@ export const Members = () => {
     return API.put(`/members/${email}`, {body: {user_role: userRole}});
   };
 
-  return {create, list, updateUserRole};
+  const del = (email: string) => {
+    return API.del(`/members/${email}`);
+  };
+
+  return {create, list, updateUserRole, del};
 };

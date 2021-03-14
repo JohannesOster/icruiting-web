@@ -141,7 +141,7 @@ export const Jobs = () => {
           }}
         >
           <Box display="grid" rowGap={spacing.scale300}>
-            <H6>Stelle wirklich unwiederruflich löschen?</H6>
+            <H6>Stelle wirklich unwiderruflich löschen?</H6>
             <Typography>
               Sind Sie sicher, dass Sie die alle mit dieser Stelle in Verbingung
               stehenden Daten löschen wollen? Das inkludiert auch{' '}

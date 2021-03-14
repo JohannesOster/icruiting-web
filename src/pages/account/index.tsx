@@ -36,7 +36,7 @@ const Account: React.FC = () => {
       {status === 'shouldDelete' && (
         <Dialog onClose={() => setStatus('shouldDelete')}>
           <Box display="grid" rowGap={spacing.scale300}>
-            <H6>Tenant unwiederruflich löschen?</H6>
+            <H6>Tenant unwiderruflich löschen?</H6>
             <Typography>
               Sind Sie sicher dass Sie <b>alle Daten löschen</b> wollen? Dieser
               Vorgang kann nicht rückgängig gemacht werden!

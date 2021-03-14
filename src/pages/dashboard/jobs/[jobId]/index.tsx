@@ -258,9 +258,9 @@ const JobDetails = () => {
           }}
         >
           <Box display="grid" rowGap={spacing.scale300}>
-            <H6>Formular unwiederruflich löschen?</H6>
+            <H6>Formular unwiderruflich löschen?</H6>
             <Typography>
-              Sind Sie sicher, dass Sie diese Formular unwiederruflich löschen
+              Sind Sie sicher, dass Sie diese Formular unwiderruflich löschen
               wollen? Sollte es sich um eine Bewerbungsformular handeln gehen
               sämtlich <b>Attribute aller Bewerber*innen</b> dieser Stelle
               verloren!

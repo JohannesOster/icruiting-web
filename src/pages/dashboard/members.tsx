@@ -11,6 +11,8 @@ import {
   Select,
   ChipInput,
   Dialog,
+  Typography,
+  Box,
 } from 'components';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers';
@@ -34,25 +36,23 @@ export const TableFooter = styled.footer`
   justify-content: center;
 `;
 
-type TMembere = {
-  email: string;
-  name: string;
-  user_role: string;
-};
-
 type FormValues = {emails: string[]};
 
 export const Members = () => {
   const {spacing} = useTheme();
   const toaster = useToaster();
 
-  const {data, error} = useSWR('/members', API.members.list);
-  const [members, setMembers] = useState<TMembere[] | undefined>();
+  const {data: members, error, revalidate} = useSWR(
+    '/members',
+    API.members.list,
+  );
   const [memberToEdit, setMembereToEdit] = useState<{
     email: string;
     userRole: string;
   } | null>(null);
-  const [isUpdating, setIsUpdating] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [memberToDelete, setMemberToDelete] = useState<string | null>(null);
+  const [deletingMember, setDeletingMember] = useState<string | null>(null);
   const [showNewMembereForm, setShowNewMembereForm] = useState(false);
 
   const {errors, formState, handleSubmit, reset, control} = useForm<FormValues>(
@@ -86,37 +86,34 @@ export const Members = () => {
     [reset, toaster],
   );
 
-  useEffect(() => {
-    setMembers(data);
-  }, [data]);
-
-  const updateMembere = () => {
+  const updateMember = () => {
     if (!memberToEdit) return;
-
-    setIsUpdating(true);
+    setIsEditing(true);
     API.members
       .updateUserRole(memberToEdit.email, memberToEdit.userRole)
-      .then(() => {
-        setMembers((members) =>
-          (members || []).map((member) => {
-            if (member.email !== memberToEdit.email) {
-              return member;
-            }
-            return {
-              ...member,
-              user_role: memberToEdit.userRole,
-            };
-          }),
-        );
+      .then(async () => {
+        await revalidate();
         toaster.success('Mitarbeiterrolle erfolgreich gespeichert.');
         setMembereToEdit(null);
-        setIsUpdating(false);
       })
       .catch((err) => {
         setMembereToEdit(null);
-        setIsUpdating(false);
         toaster.danger(err.message);
-      });
+      })
+      .finally(() => setIsEditing(false));
+  };
+
+  const delMember = (email: string) => {
+    setDeletingMember(email);
+    setMemberToDelete(null); // close dialog
+    API.members
+      .del(deletingMember)
+      .then(async () => {
+        await revalidate();
+        toaster.success('Mitarbeiterrolle erfolgreich entfernt.');
+      })
+      .catch(({message}) => toaster.danger(message))
+      .finally(() => setDeletingMember(null));
   };
 
   const columns: TColumn[] = [
@@ -126,30 +123,63 @@ export const Members = () => {
       // eslint-disable-next-line react/display-name
       cell: (row) => {
         return (
-          <Select
-            options={[
-              {label: 'Mitarbeiter', value: 'member'},
-              {label: 'Administrator', value: 'admin'},
-            ]}
-            defaultValue={row.user_role}
-            onChange={(event) => {
-              const {value} = event.target;
-              setMembereToEdit({email: row.email, userRole: value});
-            }}
-          />
+          <>
+            <Flexgrid flexGap={spacing.scale300}>
+              <Select
+                options={[
+                  {label: 'Mitarbeiter', value: 'member'},
+                  {label: 'Administrator', value: 'admin'},
+                ]}
+                defaultValue={row.user_role}
+                onChange={(event) => {
+                  const {value} = event.target;
+                  setMembereToEdit({email: row.email, userRole: value});
+                }}
+              />
+              <Button
+                onClick={updateMember}
+                disabled={
+                  !memberToEdit ||
+                  memberToEdit.email !== row.email ||
+                  row.user_role === memberToEdit.userRole
+                }
+                isLoading={isEditing && memberToEdit?.email === row.email}
+              >
+                Speichern
+              </Button>
+            </Flexgrid>
+          </>
         );
       },
     },
     {
-      title: 'Speichern',
+      title: 'Status',
+      // eslint-disable-next-line react/display-name
+      cell: (row) => {
+        return (
+          <>
+            {
+              {
+                CONFIRMED: 'bestätigt',
+                FORCE_CHANGE_PASSWORD: 'ausstehend',
+                DISABLED: 'unbekannt',
+              }[row.status]
+            }
+          </>
+        );
+      },
+    },
+    {
+      title: 'Entfernen',
       // eslint-disable-next-line react/display-name
       cell: (row) => (
         <Button
-          onClick={updateMembere}
-          disabled={!memberToEdit || memberToEdit.email !== row.email}
-          isLoading={isUpdating && memberToEdit?.email === row.email}
+          onClick={() => setMemberToDelete(row.email)}
+          disabled={!!deletingMember && deletingMember !== row.email}
+          isLoading={deletingMember === row.email}
+          kind="minimal"
         >
-          Speichern
+          entfernen
         </Button>
       ),
     },
@@ -197,6 +227,23 @@ export const Members = () => {
           </form>
         </Dialog>
       )}
+      {memberToDelete && (
+        <Dialog onClose={() => setMemberToDelete(null)}>
+          <Box display="grid" rowGap={spacing.scale300}>
+            <H6>Mitarbeiter*in unwiderruflich entfernen?</H6>
+            <Typography>
+              Sind Sie sicher dass Sie diesen Mitarbeiter*in entfernen möchten?
+              Es werden alle zusammenhängende <b>alle Daten löschen</b>{' '}
+              (Bewertungen)? Dieser Vorgang kann nicht rückgängig gemacht
+              werden!
+            </Typography>
+            <Box display="flex" justifyContent="space-between">
+              <Button onClick={() => delMember(memberToDelete)}>Löschen</Button>
+              <Button onClick={() => setMemberToDelete(null)}>Abbrechen</Button>
+            </Box>
+          </Box>
+        </Dialog>
+      )}
       <main>
         <Flexgrid
           justifyContent="space-between"
@@ -212,7 +259,7 @@ export const Members = () => {
         <DataTable
           columns={columns}
           data={members || []}
-          isLoading={!(data || error)}
+          isLoading={!(members || error)}
         />
       </main>
     </>
