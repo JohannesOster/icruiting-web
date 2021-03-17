@@ -277,27 +277,6 @@ const ApplicantDetails = () => {
           ]}
         />
       </section>
-      <section>
-        <H6>Gutachten</H6>
-        <Table>
-          <thead>
-            <tr>
-              <th>Gutachten</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <Link
-                  href={`/dashboard/applicants/${applicantId}/report?formCategory=onboarding`}
-                >
-                  <a>Onboarding</a>
-                </Link>
-              </td>
-            </tr>
-          </tbody>
-        </Table>
-      </section>
     </Box>
   );
 };
