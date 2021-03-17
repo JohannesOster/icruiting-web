@@ -9,7 +9,7 @@ import {
   Box,
   Flexgrid,
   getDashboardLayout,
-  withAuth,
+  withAdmin,
 } from 'components';
 import {useTheme} from 'styled-components';
 import {Arrow} from 'icons';
@@ -334,4 +334,4 @@ const ApplicantReport = () => {
 };
 
 ApplicantReport.getLayout = getDashboardLayout;
-export default withAuth(ApplicantReport);
+export default withAdmin(ApplicantReport);
