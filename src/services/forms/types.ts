@@ -10,6 +10,7 @@ export enum FormFieldIntent {
   countDistinct = 'count_distinct',
   sumUp = 'sum_up',
 }
+export type FormFieldVisibility = 'all' | 'authenticated' | 'admin';
 
 type FormFieldBase = {
   rowIndex: number;
@@ -25,6 +26,7 @@ type FormFieldBase = {
   jobRequirementId?: string;
   intent?: FormFieldIntent;
   props?: {[key: string]: any};
+  visibility: FormFieldVisibility;
 };
 
 export type FormField = {formId: string; formFieldId: string} & FormFieldBase;
