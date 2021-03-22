@@ -117,15 +117,18 @@ const ApplicantReport = () => {
                         </td>
                       </>
                     ) : (
-                      <td>
-                        <a
-                          href={file.uri}
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          {file.key}
-                        </a>
-                      </td>
+                      <>
+                        <td>
+                          <a
+                            href={file.uri}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                          >
+                            {file.key}
+                          </a>
+                        </td>
+                        <td></td>
+                      </>
                     )}
                   </tr>
                 );
