@@ -109,11 +109,15 @@ const ApplicantReport = () => {
                   );
                 return (
                   <tr key={idx}>
-                    <td>{file.key}</td>
-                    <td>
-                      {file.uri.match(/\.(jpeg|jpg|gif|png)$/) != null ? (
-                        <img style={{maxWidth: '200px'}} src={file.uri} />
-                      ) : (
+                    {file.uri.match(/\b(?:jpeg|jpg|gif|png)\b/gi) != null ? (
+                      <>
+                        <td>{file.key}</td>
+                        <td>
+                          <img style={{maxWidth: '200px'}} src={file.uri} />
+                        </td>
+                      </>
+                    ) : (
+                      <td>
                         <a
                           href={file.uri}
                           rel="noopener noreferrer"
@@ -121,8 +125,8 @@ const ApplicantReport = () => {
                         >
                           {file.key}
                         </a>
-                      )}
-                    </td>
+                      </td>
+                    )}
                   </tr>
                 );
               })}
