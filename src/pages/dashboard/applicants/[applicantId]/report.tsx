@@ -111,7 +111,17 @@ const ApplicantReport = () => {
                   <tr key={idx}>
                     <td>{file.key}</td>
                     <td>
-                      <img style={{maxWidth: '200px'}} src={file.uri} />
+                      {file.uri.match(/\.(jpeg|jpg|gif|png)$/) != null ? (
+                        <img style={{maxWidth: '200px'}} src={file.uri} />
+                      ) : (
+                        <a
+                          href={file.uri}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          {file.key}
+                        </a>
+                      )}
                     </td>
                   </tr>
                 );
