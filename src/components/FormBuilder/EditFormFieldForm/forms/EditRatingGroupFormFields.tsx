@@ -14,6 +14,7 @@ type FormValues = {
   label: string;
   description: string;
   options: {label: string; value: string}[];
+  visibility: string;
   intent: FormFieldIntent;
   required: boolean;
   defaultValue?: string;
@@ -87,6 +88,16 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
         options={[
           {label: 'count_distinct', value: FormFieldIntent.countDistinct},
           {label: 'sum_up', value: FormFieldIntent.sumUp},
+        ]}
+      />
+      <Select
+        name="visibility"
+        label="Sichtbarkeit"
+        ref={register}
+        defaultValue={'all'}
+        options={[
+          {label: 'Alle', value: 'all'},
+          {label: 'Nur Administratoren', value: 'admin'},
         ]}
       />
       <Select

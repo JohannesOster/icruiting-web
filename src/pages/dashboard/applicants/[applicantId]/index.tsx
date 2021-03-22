@@ -97,23 +97,43 @@ const ApplicantDetails = () => {
     });
   };
 
-  const formFields = screeningForm?.formFields.map((item) => {
-    const Component = stringToComponent(item.component);
-    // destructure to avoid passing unnecessary props to component
-    const {
-      defaultValue,
-      formFieldId,
-      jobRequirementId,
-      deletable,
-      editable,
-      rowIndex,
-      formId,
-      ...props
-    } = item;
+  const formFields = screeningForm?.formFields
+    .filter(
+      (field) => field.visibility === 'all' || currentUser.userRole === 'admin',
+    )
+    .map((item) => {
+      const Component = stringToComponent(item.component);
+      // destructure to avoid passing unnecessary props to component
+      const {
+        defaultValue,
+        formFieldId,
+        jobRequirementId,
+        deletable,
+        editable,
+        rowIndex,
+        formId,
+        ...props
+      } = item;
 
-    const _defaultValue = defaultValue || '';
+      const _defaultValue = defaultValue || '';
 
-    if (item.component === 'checkbox') {
+      if (item.component === 'checkbox') {
+        return (
+          <Component
+            ref={register({
+              ...(item.required
+                ? {required: 'Dieses Feld ist verpflichtend'}
+                : {}),
+            })}
+            errors={errorsFor(errors, item.formFieldId)}
+            key={item.formFieldId}
+            name={item.formFieldId}
+            defaultValue={(_defaultValue as string)?.split(',')}
+            {...props}
+          />
+        );
+      }
+
       return (
         <Component
           ref={register({
@@ -124,25 +144,11 @@ const ApplicantDetails = () => {
           errors={errorsFor(errors, item.formFieldId)}
           key={item.formFieldId}
           name={item.formFieldId}
-          defaultValue={(_defaultValue as string)?.split(',')}
+          defaultValue={_defaultValue}
           {...props}
         />
       );
-    }
-
-    return (
-      <Component
-        ref={register({
-          ...(item.required ? {required: 'Dieses Feld ist verpflichtend'} : {}),
-        })}
-        errors={errorsFor(errors, item.formFieldId)}
-        key={item.formFieldId}
-        name={item.formFieldId}
-        defaultValue={_defaultValue}
-        {...props}
-      />
-    );
-  });
+    });
 
   return (
     <Box display="grid" gridRowGap={spacing.scale700}>

@@ -88,6 +88,7 @@ export const EditFormFieldForm: React.FC<Props> = ({
           required={props.required}
           intent={props.intent}
           defaultValue={props.defaultValue}
+          visibility={props.visibility}
         />
       );
     case 'file_upload':

@@ -21,6 +21,7 @@ export const converter = {
         defaultValue: formField.defaultValue,
         options: formField.options,
         required: !!formField.required,
+        visibility: formField.visibility,
       },
       editable: formField.editable,
       deletable: formField.deletable,
@@ -44,6 +45,7 @@ export const converter = {
       required,
       jobRequirementId,
       intent,
+      visibility,
       ...props
     } = formField.props;
 
@@ -61,6 +63,7 @@ export const converter = {
       deletable: formField.deletable,
       jobRequirementId,
       intent,
+      visibility,
       props,
     };
   },
