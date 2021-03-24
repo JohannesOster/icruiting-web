@@ -241,7 +241,7 @@ const Applicants = () => {
               }
             }}
           >
-            Clear
+            löschen
           </Button>
           <Button type="submit">Suchen</Button>
         </Flexgrid>
