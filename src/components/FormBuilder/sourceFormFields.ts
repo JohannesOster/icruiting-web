@@ -174,6 +174,14 @@ const assessmentSourceFields: DnDItem[] = [
       intent: FormFieldIntent.aggregate,
     },
   },
+  {
+    ...DNDBase,
+    label: 'Überschrift',
+    icon: Heading,
+    as: FormSectionHeader,
+    component: 'section_header',
+    props: {label: 'Überschrift'},
+  },
 ];
 
 export const getSourceFormFields = (category: FormCategory): DnDItem[] => {
