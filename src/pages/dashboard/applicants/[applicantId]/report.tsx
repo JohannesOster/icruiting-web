@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useReducer, useState} from 'react';
 import {API, TForm} from 'services';
 import useSWR from 'swr';
 import {buildRadarChart} from 'utils/report-utils';
@@ -17,15 +17,38 @@ import {Radar} from 'react-chartjs-2';
 import {useRouter} from 'next/router';
 import {Button} from 'components';
 
+const ToggleSections = (<T extends string[]>(...o: T) => o)(
+  'applicant',
+  'details',
+  'requirements',
+  'replicasFor',
+);
+type ToggleSectionUnion = typeof ToggleSections[number];
+type ToggleState = Record<ToggleSectionUnion, boolean | string | undefined>;
+type ToggleAction = {type: ToggleSectionUnion; args?: any};
+
 const ApplicantReport = () => {
   const {spacing} = useTheme();
   const router = useRouter();
   const {applicantId, formCategory} = router.query as any;
 
-  const [showApplicant, setShowApplicant] = useState(true);
-  const [showDetails, setShowDetails] = useState(true);
-  const [showProfile, setShowProfile] = useState(true);
-  const [showReplicas, setShowReplicas] = useState<string | null>(null);
+  const toggleReducer = (
+    state: ToggleState,
+    action: ToggleAction,
+  ): ToggleState => ({
+    ...state,
+    [action.type]: action.args || !state[action.type],
+  });
+  const [toggleState, toggleDispatch] = useReducer(toggleReducer, {
+    applicant: true,
+    details: true,
+    requirements: true,
+    replicasFor: undefined,
+  });
+
+  const toggle = (section: ToggleSectionUnion, args?: any) => {
+    toggleDispatch({type: section, args});
+  };
 
   const {data: applicant} = useSWR(
     ['GET /applicants/:applicantId', applicantId],
@@ -75,14 +98,16 @@ const ApplicantReport = () => {
           <H6>Bewerber*in - {applicant?.name}</H6>
           <Arrow
             height={spacing.scale400}
-            onClick={() => setShowApplicant((curr) => !curr)}
+            onClick={() => toggle('applicant')}
             style={{
-              transform: `rotate(${showApplicant ? '90deg' : '-90deg'})`,
+              transform: `rotate(${
+                toggleState.applicant ? '90deg' : '-90deg'
+              })`,
               cursor: 'pointer',
             }}
           />
         </Flexgrid>
-        {showApplicant && (
+        {toggleState.applicant && (
           <Table>
             <tbody>
               {reportStructure?.formFields.map((fieldId, idx) => {
@@ -160,14 +185,14 @@ const ApplicantReport = () => {
           <H6>Details</H6>
           <Arrow
             height={spacing.scale400}
-            onClick={() => setShowDetails((curr) => !curr)}
+            onClick={() => toggle('details')}
             style={{
-              transform: `rotate(${showDetails ? '90deg' : '-90deg'})`,
+              transform: `rotate(${toggleState.details ? '90deg' : '-90deg'})`,
               cursor: 'pointer',
             }}
           />
         </Flexgrid>
-        {showDetails && (
+        {toggleState.details && (
           <Table>
             <tbody>
               {report?.formResults?.map((formScore) => (
@@ -188,8 +213,11 @@ const ApplicantReport = () => {
                         <Button
                           kind="minimal"
                           onClick={() => {
-                            setShowReplicas((curr) =>
-                              curr ? null : formScore.formId,
+                            toggle(
+                              'replicasFor',
+                              toggleState.replicasFor
+                                ? undefined
+                                : formScore.formId,
                             );
                           }}
                         >
@@ -201,7 +229,7 @@ const ApplicantReport = () => {
                       {formScore.formScore} | σ = {formScore.stdDevFormScore}
                     </th>
                   </tr>
-                  {showReplicas === formScore.formId && (
+                  {toggleState.replicasFor === formScore.formId && (
                     <tr>
                       <td>
                         <Table>
@@ -314,14 +342,16 @@ const ApplicantReport = () => {
             <H6>Anforderungsprofil</H6>
             <Arrow
               height={spacing.scale400}
-              onClick={() => setShowProfile((curr) => !curr)}
+              onClick={() => toggle('requirements')}
               style={{
-                transform: `rotate(${showDetails ? '90deg' : '-90deg'})`,
+                transform: `rotate(${
+                  toggleState.requirements ? '90deg' : '-90deg'
+                })`,
                 cursor: 'pointer',
               }}
             />
           </Flexgrid>
-          {showProfile && (
+          {toggleState.requirements && (
             <>
               <Table>
                 <tbody>
