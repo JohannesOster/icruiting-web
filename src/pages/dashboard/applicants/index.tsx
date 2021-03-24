@@ -91,7 +91,10 @@ const Applicants = () => {
     {
       title: 'Name',
       cell: ({name, applicantId}) => (
-        <Link href={`${router.pathname}/${applicantId}`}>
+        <Link
+          href={`${router.pathname}/[applicantId]`}
+          as={`${router.pathname}/${applicantId}`}
+        >
           <a>{name}</a>
         </Link>
       ),
