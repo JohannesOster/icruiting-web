@@ -121,7 +121,7 @@ const ApplicantReport = () => {
         )}
       </Box>
 
-      {report?.rank && report?.formCategoryScore && (
+      {report?.rank !== undefined && report?.formCategoryScore !== undefined && (
         <Box display="grid" rowGap={spacing.scale200}>
           <H6>Übersicht</H6>
           <Table>
