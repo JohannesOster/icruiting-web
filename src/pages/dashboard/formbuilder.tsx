@@ -246,7 +246,7 @@ const FormBuilder: React.FC = () => {
           onHover={formBuilder.onOutsideHover}
           render={(targetID, drop) => (
             <DnDSourceSection id={targetID} ref={drop}>
-              <Box transition="all 0.5s">
+              <Box display="grid" rowGap={spacing.scale300}>
                 {(['assessment', 'onboarding'].includes(formCategory) ||
                   ['assessment', 'onboarding'].includes(
                     formToEdit?.formCategory,
