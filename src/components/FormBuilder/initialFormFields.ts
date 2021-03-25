@@ -69,6 +69,7 @@ const screeningInitialformFields: DnDItem[] = [
       ],
     },
     editable: true,
+    deletable: true,
   },
 ];
 
@@ -79,7 +80,6 @@ const assessmentInitialformFields: DnDItem[] = [
     rowIndex: 0,
     as: RatingGroup,
     component: 'rating_group',
-    editable: true,
     props: {
       intent: FormFieldIntent.sumUp,
       label: 'Der Bewerber trägt ästhetischen Haarschmuck',
@@ -93,6 +93,8 @@ const assessmentInitialformFields: DnDItem[] = [
         {label: '4', value: '4'},
       ],
     },
+    editable: true,
+    deletable: true,
   },
 ];
 
