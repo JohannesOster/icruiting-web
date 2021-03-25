@@ -292,28 +292,28 @@ const FormBuilder: React.FC = () => {
                           defaultValue={formCode}
                         />
                       </Box>
-                      <Input
-                        type="file"
-                        label=".json Datei importieren"
-                        onChange={(event) => {
-                          const {files} = event.target;
-                          const file = files[0];
-                          if (!file) return;
-                          const fileReader = new FileReader();
-                          fileReader.onload = () => {
-                            const json = fileReader.result as string;
-                            const result = JSON.parse(json);
-                            const _formFields = result.formFields
-                              .map(converter.toDnDItem)
-                              .sort((one, two) => one.rowIndex - two.rowIndex);
-                            formFields.reset(_formFields);
-                          };
-                          fileReader.readAsText(file);
-                        }}
-                      />
                     </Box>
                   </>
                 )}
+                <Input
+                  type="file"
+                  label=".json Datei importieren"
+                  onChange={(event) => {
+                    const {files} = event.target;
+                    const file = files[0];
+                    if (!file) return;
+                    const fileReader = new FileReader();
+                    fileReader.onload = () => {
+                      const json = fileReader.result as string;
+                      const result = JSON.parse(json);
+                      const _formFields = result.formFields
+                        .map(converter.toDnDItem)
+                        .sort((one, two) => one.rowIndex - two.rowIndex);
+                      formFields.reset(_formFields);
+                    };
+                    fileReader.readAsText(file);
+                  }}
+                />
               </Box>
             </DnDSourceSection>
           )}
