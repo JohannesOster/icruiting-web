@@ -26,7 +26,7 @@ const JobDetails = () => {
   const {spacing} = useTheme();
   const router = useRouter();
   const {jobId} = router.query as {jobId: string};
-  const [exporing, setExporting] = useState(false);
+  const [exporing, setExporting] = useState<string | undefined>();
   const [deletingFormId, setDeletingFormId] = useState<string | null>(null);
   const [shouldDeleteFormId, setShouldDeleteFormId] = useState<string | null>(
     null,
@@ -152,10 +152,12 @@ const JobDetails = () => {
         return (
           <Button
             kind="minimal"
-            isLoading={exporing}
+            isLoading={exporing === formId}
             onClick={() => {
-              setExporting(true);
-              API.forms.exportJSON(formId).finally(() => setExporting(false));
+              setExporting(formId);
+              API.forms
+                .exportJSON(formId)
+                .finally(() => setExporting(undefined));
             }}
           >
             JSON Export
