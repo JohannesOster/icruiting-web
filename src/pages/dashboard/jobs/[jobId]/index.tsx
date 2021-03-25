@@ -145,22 +145,6 @@ const JobDetails = () => {
       },
     },
     {title: 'Aktion', cell: actionCell},
-  ];
-  const formsTableColumns: TColumn[] = [
-    ...baseCols,
-    {
-      title: 'Direktlink',
-      cell: ({formId}) => {
-        if (!formId) return <Typography>-</Typography>;
-        const domain = amplifyConfig.API.endpoints[0].endpoint;
-        const iframeSrc = `${domain}/forms/${formId}/html`;
-        return (
-          <a href={iframeSrc} rel="noopener noreferrer" target="_blank">
-            Direktlink
-          </a>
-        );
-      },
-    },
     {
       title: 'JSON Export',
       cell: ({formId}) => {
@@ -176,6 +160,22 @@ const JobDetails = () => {
           >
             JSON Export
           </Button>
+        );
+      },
+    },
+  ];
+  const formsTableColumns: TColumn[] = [
+    ...baseCols,
+    {
+      title: 'Direktlink',
+      cell: ({formId}) => {
+        if (!formId) return <Typography>-</Typography>;
+        const domain = amplifyConfig.API.endpoints[0].endpoint;
+        const iframeSrc = `${domain}/forms/${formId}/html`;
+        return (
+          <a href={iframeSrc} rel="noopener noreferrer" target="_blank">
+            Direktlink
+          </a>
         );
       },
     },
