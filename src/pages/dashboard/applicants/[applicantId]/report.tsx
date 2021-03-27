@@ -255,7 +255,10 @@ const ApplicantReport = () => {
                       )}
                     </th>
                     <th>
-                      {formScore.formScore} | σ = {formScore.stdDevFormScore}
+                      {formScore.formScore} &isin; [
+                      {formScore.possibleMinFormScore},{' '}
+                      {formScore.possibleMaxFormScore}] | &sigma; ={' '}
+                      {formScore.stdDevFormScore}
                     </th>
                   </tr>
                   {!(toggleState.closedForms as string[]).includes(
