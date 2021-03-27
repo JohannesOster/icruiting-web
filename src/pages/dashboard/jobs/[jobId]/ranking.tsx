@@ -66,7 +66,7 @@ export const Ranking = () => {
         {
           {
             screening: 'Screening',
-            assessment: 'Assessnent',
+            assessment: 'Assessment',
             onboarding: 'Onboarding',
           }[formCategory]
         }
