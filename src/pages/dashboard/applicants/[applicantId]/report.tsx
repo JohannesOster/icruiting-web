@@ -22,7 +22,7 @@ const ToggleSections = (<T extends string[]>(...o: T) => o)(
   'details',
   'requirements',
   'replicasFor',
-  'closedForms',
+  'openForms',
 );
 type ToggleSectionUnion = typeof ToggleSections[number];
 type ToggleState = Record<
@@ -40,12 +40,12 @@ const ApplicantReport = () => {
     state: ToggleState,
     action: ToggleAction,
   ): ToggleState => {
-    if (action.type === 'closedForms') {
-      const curr = state.closedForms as string[];
+    if (action.type === 'openForms') {
+      const curr = state.openForms as string[];
       const idx = curr.findIndex((formId) => formId === action.args);
       if (idx !== -1) curr.splice(idx, 1);
       else curr.push(action.args);
-      return {...state, closedForms: curr};
+      return {...state, openForms: curr};
     }
     return {...state, [action.type]: action.args || !state[action.type]};
   };
@@ -54,7 +54,7 @@ const ApplicantReport = () => {
     details: true,
     requirements: true,
     replicasFor: undefined,
-    closedForms: [],
+    openForms: [],
   });
 
   const toggle = (section: ToggleSectionUnion, args?: any) => {
@@ -223,12 +223,10 @@ const ApplicantReport = () => {
                         </span>
                         <Arrow
                           height={spacing.scale400}
-                          onClick={() =>
-                            toggle('closedForms', formScore.formId)
-                          }
+                          onClick={() => toggle('openForms', formScore.formId)}
                           style={{
                             transform: `rotate(${
-                              (toggleState.closedForms as string[]).includes(
+                              !(toggleState.openForms as string[]).includes(
                                 formScore.formId,
                               )
                                 ? '90deg'
@@ -261,7 +259,7 @@ const ApplicantReport = () => {
                       {formScore.stdDevFormScore}
                     </th>
                   </tr>
-                  {!(toggleState.closedForms as string[]).includes(
+                  {(toggleState.openForms as string[]).includes(
                     formScore.formId,
                   ) && (
                     <>
