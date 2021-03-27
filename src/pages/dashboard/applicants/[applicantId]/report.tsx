@@ -308,7 +308,7 @@ const ApplicantReport = () => {
                                             )}
                                             {formFieldScore.intent ===
                                               'sum_up' &&
-                                              formFieldScore.formFieldScore}
+                                              `${formFieldScore.formFieldScore} | σ = ${formFieldScore.stdDevFormFieldScore}`}
                                             {formFieldScore.intent ===
                                               'count_distinct' &&
                                               Object.entries(
@@ -353,7 +353,7 @@ const ApplicantReport = () => {
                               </ul>
                             )}
                             {formFieldScore.intent === 'sum_up' &&
-                              formFieldScore.formFieldScore}
+                              `${formFieldScore.formFieldScore} | σ = ${formFieldScore.stdDevFormFieldScore}`}
                             {formFieldScore.intent === 'count_distinct' &&
                               Object.entries(formFieldScore.countDistinct).map(
                                 ([key, value], idx) => (
