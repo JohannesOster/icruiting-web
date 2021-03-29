@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build && next export -o build/",
-    "start": "next start",
-    "test": "jest"
+    "test": "jest",
+    "start": "next start -p $PORT",
+    "heroku-postbuild": "npm run build"
   },
   "dependencies": {
     "@hookform/resolvers": "^0.1.1",
