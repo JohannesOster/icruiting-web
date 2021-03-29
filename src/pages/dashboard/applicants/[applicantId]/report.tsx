@@ -145,7 +145,7 @@ const ApplicantReport = () => {
                   );
                 return (
                   <tr key={idx}>
-                    {file.uri.match(/\b(?:jpeg|jpg|gif|png)\b/gi) != null ? (
+                    {file.uri?.match(/\b(?:jpeg|jpg|gif|png)\b/gi) != null ? (
                       <>
                         <td>{file.key}</td>
                         <td>
@@ -300,8 +300,15 @@ const ApplicantReport = () => {
                                                 }}
                                               >
                                                 {formFieldScore.aggregatedValues?.map(
-                                                  (value: any, idx: number) => (
-                                                    <li key={idx}>{value}</li>
+                                                  (value: string, idx) => (
+                                                    <li
+                                                      key={idx}
+                                                      style={{
+                                                        whiteSpace: 'pre-line',
+                                                      }}
+                                                    >
+                                                      {value}
+                                                    </li>
                                                   ),
                                                 )}
                                               </ul>
@@ -347,7 +354,12 @@ const ApplicantReport = () => {
                               >
                                 {formFieldScore.aggregatedValues?.map(
                                   (value: any, idx: number) => (
-                                    <li key={idx}>{value}</li>
+                                    <li
+                                      key={idx}
+                                      style={{whiteSpace: 'pre-line'}}
+                                    >
+                                      {value}
+                                    </li>
                                   ),
                                 )}
                               </ul>
