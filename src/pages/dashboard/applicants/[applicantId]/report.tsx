@@ -301,7 +301,14 @@ const ApplicantReport = () => {
                                               >
                                                 {formFieldScore.aggregatedValues?.map(
                                                   (value: string, idx) => (
-                                                    <li key={idx}>{value}</li>
+                                                    <li
+                                                      key={idx}
+                                                      style={{
+                                                        whiteSpace: 'pre-line',
+                                                      }}
+                                                    >
+                                                      {value}
+                                                    </li>
                                                   ),
                                                 )}
                                               </ul>
@@ -347,7 +354,12 @@ const ApplicantReport = () => {
                               >
                                 {formFieldScore.aggregatedValues?.map(
                                   (value: any, idx: number) => (
-                                    <li key={idx}>{value}</li>
+                                    <li
+                                      key={idx}
+                                      style={{whiteSpace: 'pre-line'}}
+                                    >
+                                      {value}
+                                    </li>
                                   ),
                                 )}
                               </ul>
