@@ -145,7 +145,7 @@ const ApplicantReport = () => {
                   );
                 return (
                   <tr key={idx}>
-                    {file.uri.match(/\b(?:jpeg|jpg|gif|png)\b/gi) != null ? (
+                    {file.uri?.match(/\b(?:jpeg|jpg|gif|png)\b/gi) != null ? (
                       <>
                         <td>{file.key}</td>
                         <td>
@@ -300,7 +300,7 @@ const ApplicantReport = () => {
                                                 }}
                                               >
                                                 {formFieldScore.aggregatedValues?.map(
-                                                  (value: any, idx: number) => (
+                                                  (value: string, idx) => (
                                                     <li key={idx}>{value}</li>
                                                   ),
                                                 )}
