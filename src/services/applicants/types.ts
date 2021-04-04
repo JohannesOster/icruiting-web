@@ -56,7 +56,6 @@ export type Report = {
     formId: string;
     formTitle: string;
     formScore: number;
-    stdDevFormScore: number;
     possibleMinFormScore: number;
     possibleMaxFormScore: number;
     replicas?: {

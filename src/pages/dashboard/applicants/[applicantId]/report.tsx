@@ -255,8 +255,7 @@ const ApplicantReport = () => {
                     <th>
                       {formScore.formScore} &isin; [
                       {formScore.possibleMinFormScore},{' '}
-                      {formScore.possibleMaxFormScore}] | &sigma; ={' '}
-                      {formScore.stdDevFormScore}
+                      {formScore.possibleMaxFormScore}]
                     </th>
                   </tr>
                   {(toggleState.openForms as string[]).includes(
