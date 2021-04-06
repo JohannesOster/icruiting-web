@@ -57,7 +57,7 @@ const Applicants = () => {
   }, [jobs]);
 
   const isLoading =
-    !(jobs || jobsError) && !(applicantsResponse || applicantsError);
+    !(jobs || jobsError) || !(applicantsResponse || applicantsError);
 
   const onDelete = () => {
     if (!shouldDeleteApplicantId) return;
@@ -267,6 +267,14 @@ const Applicants = () => {
             }`,
           );
         }}
+        onRowsPerPageChange={(rows) => {
+          router.push(
+            `${router.pathname}?offset=${+offset}&limit=${rows}${
+              filter ? '&filter=' + filter : ''
+            }`,
+          );
+        }}
+        rowsPerPage={limit}
       />
     </main>
   );
