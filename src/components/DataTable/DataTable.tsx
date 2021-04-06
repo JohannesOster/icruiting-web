@@ -78,16 +78,21 @@ export const DataTable: React.FC<Props> = ({
               disabled={currentPage! <= 1}
               onClick={onPrev}
             >
-              Prev
+              Vorherige
             </Button>
-            <Typography>Seite: {`${currentPage} / ${totalPages}`}</Typography>
-            <Typography>Gesamt: {totalCount}</Typography>
+            <Typography>
+              Seite: {currentPage} aus {totalPages}
+            </Typography>
+            <Typography>
+              Zeilen: {(currentPage - 1) * data.length + 1}-
+              {currentPage * data.length} aus {totalCount}
+            </Typography>
             <Button
               kind="minimal"
               disabled={currentPage! >= totalPages!}
               onClick={onNext}
             >
-              Next
+              Nächste
             </Button>
           </Flexgrid>
         )
