@@ -20,11 +20,15 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 
     return (
       <Container>
-        <Label htmlFor={props.name} error={!!errors.length}>
-          {label}
-          {props.required && '*'}
-        </Label>
-        <Description error={!!errors.length}>{description}</Description>
+        {label && (
+          <Label htmlFor={props.name} error={!!errors.length}>
+            {label}
+            {props.required && '*'}
+          </Label>
+        )}
+        {description && (
+          <Description error={!!errors.length}>{description}</Description>
+        )}
         {options.map(({label, value: optionVal}, index) => {
           const checked = {} as any;
           if (defaultValue?.includes(optionVal)) checked.defaultChecked = true;
@@ -39,11 +43,11 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
                 style={{marginTop: '3.5px'}} // to align with text
                 ref={ref}
               />
-              <OptionLabel>{label}</OptionLabel>
+              {label && <OptionLabel>{label}</OptionLabel>}
             </OptionContainer>
           );
         })}
-        <Errors>{_errors}</Errors>
+        {_errors && <Errors>{_errors}</Errors>}
       </Container>
     );
   },
