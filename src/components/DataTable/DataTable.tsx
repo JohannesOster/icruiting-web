@@ -1,7 +1,16 @@
-import React, {ChangeEvent} from 'react';
-import {Table, Box, Typography, Flexgrid, Spinner, Button} from 'components';
+import React, {ChangeEvent, useReducer, useRef, useState} from 'react';
+import {
+  Table,
+  Box,
+  Typography,
+  Flexgrid,
+  Spinner,
+  Button,
+  Select,
+  Checkbox,
+} from 'components';
 import styled, {useTheme} from 'styled-components';
-import {Input} from 'components/Input';
+import {Input} from 'components/Input'; // for some reason sc crashes if Input is imported from components folder and not directly from Input folder
 
 export type TColumn = {
   title: string;
@@ -25,6 +34,8 @@ type Props = {
   onNext?: () => void;
   onRowsPerPageChange?: (rows: number) => void;
   rowsPerPage?: number;
+  actions?: {label: string; value: string}[];
+  onAction?: (action: string, selectedIndices: number[]) => void;
 };
 
 export const DataTable: React.FC<Props> = ({
@@ -40,6 +51,8 @@ export const DataTable: React.FC<Props> = ({
   getRowStyle = (_row) => ({}),
   onRowsPerPageChange,
   rowsPerPage = 10,
+  actions,
+  onAction,
 }) => {
   const {spacing, colors} = useTheme();
 
@@ -56,11 +69,100 @@ export const DataTable: React.FC<Props> = ({
     onRowsPerPageChange(asInt);
   };
 
+  const [state, dispatch] = useReducer((state, action) => {
+    if (action.value === 'masterCheckbox') {
+      if (!action.checked) return {}; // uncheck all
+
+      return {
+        masterCheckbox: action.value,
+        ...Array(data?.length)
+          .fill(0)
+          .reduce(
+            (acc, _curr, idx) => ({...acc, [idx.toString()]: idx.toString()}),
+            {},
+          ),
+      };
+    }
+
+    if (action.checked) {
+      const _state = {...state, [action.value]: action.value};
+      if (!_state.masterCheckbox) {
+        if (Object.keys(_state).length === data.length) {
+          _state.masterCheckbox = 'masterCheckbox';
+        }
+      }
+
+      return _state;
+    }
+
+    delete state[action.value];
+
+    if (state.masterCheckbox) {
+      delete state.masterCheckbox;
+    }
+
+    return {...state};
+  }, {});
+
+  const onCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const {value, checked} = event.target;
+    dispatch({value, checked});
+  };
+
+  const [action, setAction] = useState('');
+  const _onAction = () => {
+    const {masterCheckbox, ...indices} = state;
+    const mapper = (idx: string) => parseInt(idx, 10);
+    const selectedIndices = Object.keys(indices).map(mapper);
+    onAction && onAction(action, selectedIndices);
+  };
+
   return (
     <>
+      {actions?.length && (
+        <Flexgrid
+          justifyContent="space-between"
+          alignItems="center"
+          marginBottom={spacing.scale200}
+        >
+          <Box
+            display="grid"
+            gridAutoFlow="column"
+            alignItems="center"
+            columnGap={spacing.scale200}
+          >
+            <Select
+              options={[{label: '-- Aktion --', value: ''}, ...actions]}
+              onChange={({target}) => {
+                setAction(target.value);
+              }}
+            />
+            <Button
+              kind="minimal"
+              onClick={_onAction}
+              disabled={!(action && Object.keys(state).length)}
+            >
+              durchführen
+            </Button>
+          </Box>
+        </Flexgrid>
+      )}
       <Table>
         <thead>
           <tr>
+            {actions && (
+              <th>
+                <Checkbox
+                  options={[{label: '', value: 'masterCheckbox'}]}
+                  onChange={onCheckboxChange}
+                  value={state.masterCheckbox}
+                  indeterminate={
+                    Object.keys(state).length > 0 && !state.masterCheckbox
+                  }
+                  disabled={data.length === 0}
+                />
+              </th>
+            )}
             {columns.map(({title}, idx) => (
               <th key={idx}>{title}</th>
             ))}
@@ -70,6 +172,16 @@ export const DataTable: React.FC<Props> = ({
           {!isLoading &&
             data.map((row, idx) => (
               <tr key={idx} style={getRowStyle(row)}>
+                {actions && (
+                  <td>
+                    <Checkbox
+                      name={idx.toString()}
+                      options={[{label: '', value: idx.toString()}]}
+                      onChange={onCheckboxChange}
+                      value={state[idx.toString()] || []}
+                    />
+                  </td>
+                )}
                 {columns.map((column, idx) => (
                   <td data-label={column.title} key={idx}>
                     {column.cell(row)}

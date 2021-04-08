@@ -275,6 +275,12 @@ const Applicants = () => {
           );
         }}
         rowsPerPage={limit}
+        actions={
+          currentUser.userRole === 'admin'
+            ? [{label: 'löschen', value: 'bulkDelete'}]
+            : undefined
+        }
+        onAction={console.log}
       />
     </main>
   );
