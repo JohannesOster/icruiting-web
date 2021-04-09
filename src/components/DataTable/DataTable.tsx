@@ -57,20 +57,29 @@ export const DataTable: React.FC<Props> = ({
   rowsPerPage = 10,
   actions,
   onAction,
+  id,
 }) => {
   const {spacing, colors} = useTheme();
+  const localStorageKey = useRef(`data-table-${id}`);
 
   const [showColsPopUp, setShowColsPopup] = useState(false);
   const _columns = columns.map(({title}, index) => ({
     title,
     index: index.toString(),
   }));
-  const [cols, setCols] = useState(_columns.map(({index}) => index));
+  const [cols, setCols] = useState([]);
   const _visibleCols = columns.filter((_val, index) =>
     cols.includes(index.toString()),
   );
 
   useEffect(() => {
+    const data = localStorage.getItem(localStorageKey.current);
+    if (data) {
+      const cols = JSON.parse(data);
+      setCols(cols);
+      return;
+    }
+
     setCols(_columns.map(({index}) => index));
   }, [columns]);
 
@@ -78,6 +87,8 @@ export const DataTable: React.FC<Props> = ({
   useOutsideClick(ref, () => {
     if (!showColsPopUp) return;
     setShowColsPopup(false);
+    if (!id) return;
+    localStorage.setItem(localStorageKey.current, JSON.stringify(cols));
   });
 
   const showPagination =

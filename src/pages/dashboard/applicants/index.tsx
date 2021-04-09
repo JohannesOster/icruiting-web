@@ -301,6 +301,7 @@ const Applicants = () => {
         </Flexgrid>
       </form>
       <DataTable
+        id="applicants-dt"
         columns={columns}
         data={applicantsResponse?.applicants || []}
         isLoading={isLoading}
