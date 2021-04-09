@@ -19,16 +19,15 @@ import {useForm} from 'react-hook-form';
 import {Table} from 'components/Table/Table.sc';
 import {withAuth} from 'components';
 import {getDashboardLayout} from 'components';
+import {resolve} from 'node:path';
 
 const Applicants = () => {
   const router = useRouter();
   const {spacing} = useTheme();
   const {currentUser} = useAuth();
-  const {offset = 0, limit = 10, filter = ''} = (router.query as unknown) as {
-    offset: number;
-    limit: number;
-    filter: string;
-  };
+  type Query = {offset: number; limit: number; filter: string};
+  const query = (router.query as unknown) as Query;
+  const {offset = 0, limit = 10, filter = ''} = query;
 
   const [showAssessmentsSummary, setShowAssessmentsSummary] = useState(
     localStorage.getItem('assessmentOverview') ? true : false,
@@ -42,6 +41,10 @@ const Applicants = () => {
   const [shouldDeleteApplicantId, setShouldDeleteApplicantId] = useState<
     string | null
   >(null);
+  const [shouldBulkDelete, setShouldBalkDelete] = useState<number[] | null>(
+    null,
+  );
+  const [multiactionActive, setMultiActionActive] = useState(false);
 
   const key = selectedJobId
     ? ['GET /applicants', selectedJobId, offset, limit, filter]
@@ -135,6 +138,32 @@ const Applicants = () => {
     reset({filter});
   }, [reset, filter]);
 
+  enum MultiAction {
+    bulkDelete = 'bulkDelete',
+  }
+  const onMultiAction = (action: MultiAction, indices: number[]) => {
+    switch (action) {
+      case MultiAction.bulkDelete: {
+        setShouldBalkDelete(indices);
+      }
+    }
+  };
+
+  const bulkDelete = async (indices: number[]) => {
+    const promises = indices.map((index) => {
+      const applicant = applicantsResponse.applicants[index];
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({});
+        }, 1000);
+      });
+    });
+
+    await Promise.all(promises);
+    setMultiActionActive(false);
+    setShouldBalkDelete(null);
+  };
+
   return (
     <main>
       {shouldDeleteApplicantId && (
@@ -161,6 +190,36 @@ const Applicants = () => {
               <Button
                 onClick={() => {
                   setShouldDeleteApplicantId(null);
+                }}
+              >
+                Abbrechen
+              </Button>
+            </Box>
+          </Box>
+        </Dialog>
+      )}
+      {shouldBulkDelete && (
+        <Dialog onClose={() => setShouldBalkDelete(null)}>
+          <Box display="grid" rowGap={spacing.scale300}>
+            <H6>Bewerber*innen wirklich unwiderruflich löschen?</H6>
+            <Typography>
+              Sind Sie sicher, dass Sie alle Daten der ausgewählten
+              Bewerbers*innen löschen wollen? Dieser Vorgang kann nicht
+              rückgängig gemacht werden.
+            </Typography>
+            <Box display="flex" justifyContent="space-between">
+              <Button
+                onClick={() => {
+                  setMultiActionActive(true);
+                  bulkDelete(shouldBulkDelete);
+                }}
+                isLoading={multiactionActive}
+              >
+                Löschen
+              </Button>
+              <Button
+                onClick={() => {
+                  setShouldBalkDelete(null);
                 }}
               >
                 Abbrechen
@@ -277,10 +336,10 @@ const Applicants = () => {
         rowsPerPage={limit}
         actions={
           currentUser.userRole === 'admin'
-            ? [{label: 'löschen', value: 'bulkDelete'}]
+            ? [{label: 'löschen', value: MultiAction.bulkDelete}]
             : undefined
         }
-        onAction={console.log}
+        onAction={onMultiAction}
       />
     </main>
   );
