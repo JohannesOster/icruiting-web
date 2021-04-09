@@ -116,10 +116,6 @@ const Applicants = () => {
     {status: 'idle'},
   );
 
-  const [showAssessmentsSummary, setShowAssessmentsSummary] = useState(
-    localStorage.getItem('assessmentOverview') ? true : false,
-  );
-
   const columns: TColumn[] = [
     ...(applicantsResponse?.applicants[0]?.attributes.map(({key}) => ({
       title: key,
@@ -133,32 +129,28 @@ const Applicants = () => {
         );
       },
     })) || []),
-    ...(showAssessmentsSummary
-      ? ([
-          {
-            title: 'Bewertungen',
-            cell: ({assessments}) => (
-              <Table>
-                <tbody>
-                  {assessments?.map(({formTitle, formCategory, score}, idx) => (
-                    <tr key={idx}>
-                      <td>
-                        {formTitle ||
-                          {
-                            screening: 'Screening',
-                            assessment: 'Assessment',
-                            onboarding: 'Onboarding',
-                          }[formCategory]}
-                      </td>
-                      <td>{score}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            ),
-          },
-        ] as TColumn[])
-      : []),
+    {
+      title: 'Bewertungsübersicht',
+      cell: ({assessments}) => (
+        <Table>
+          <tbody>
+            {assessments?.map(({formTitle, formCategory, score}, idx) => (
+              <tr key={idx}>
+                <td>
+                  {formTitle ||
+                    {
+                      screening: 'Screening',
+                      assessment: 'Assessment',
+                      onboarding: 'Onboarding',
+                    }[formCategory]}
+                </td>
+                <td>{score}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      ),
+    },
     {
       title: 'Bestätigt',
       cell: ({confirmed}) => <span>{confirmed ? 'Ja' : '-'} </span>,
@@ -230,45 +222,18 @@ const Applicants = () => {
         marginBottom={spacing.scale300}
       >
         <H3>Bewerbungen</H3>
-        <Box
-          display="grid"
-          gridAutoFlow="column"
-          alignItems="center"
-          justifyContent="start"
-          columnGap={spacing.scale300}
-        >
-          <Box
-            display="grid"
-            alignItems="center"
-            gridAutoFlow="column"
-            columnGap={spacing.scale200}
-          >
-            <Checkbox
-              value={showAssessmentsSummary ? ['true'] : []}
-              options={[{label: 'Bewertungsübersicht', value: 'true'}]}
-              onChange={() => {
-                if (!showAssessmentsSummary)
-                  localStorage.setItem('assessmentOverview', 'true');
-                if (showAssessmentsSummary)
-                  localStorage.removeItem('assessmentOverview');
-
-                setShowAssessmentsSummary((val) => !val);
-              }}
-            />
-          </Box>
-          {jobs && (
-            <Select
-              options={jobs.map((job) => ({
-                label: job.jobTitle,
-                value: job.jobId,
-              }))}
-              onChange={(event) => {
-                const {value} = event.target;
-                setSelectedJobId(value);
-              }}
-            />
-          )}
-        </Box>
+        {jobs && (
+          <Select
+            options={jobs.map((job) => ({
+              label: job.jobTitle,
+              value: job.jobId,
+            }))}
+            onChange={(event) => {
+              const {value} = event.target;
+              setSelectedJobId(value);
+            }}
+          />
+        )}
       </Flexgrid>
       <form
         onSubmit={handleSubmit(({filter}) => {
