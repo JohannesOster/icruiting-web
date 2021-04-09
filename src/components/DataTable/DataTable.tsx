@@ -1,4 +1,10 @@
-import React, {ChangeEvent, useReducer, useRef, useState} from 'react';
+import React, {
+  ChangeEvent,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from 'react';
 import {
   Table,
   Box,
@@ -11,6 +17,8 @@ import {
 } from 'components';
 import styled, {useTheme} from 'styled-components';
 import {Input} from 'components/Input'; // for some reason sc crashes if Input is imported from components folder and not directly from Input folder
+import {Columns} from 'icons';
+import {useOutsideClick} from 'components/useOutsideClick';
 
 export type TColumn = {
   title: string;
@@ -55,6 +63,22 @@ export const DataTable: React.FC<Props> = ({
   onAction,
 }) => {
   const {spacing, colors} = useTheme();
+
+  const [showColsPopUp, setShowColsPopup] = useState(false);
+  const _columns = columns.map(({title}, index) => ({
+    title,
+    index: index.toString(),
+  }));
+  const [cols, setCols] = useState(_columns.map(({index}) => index));
+  const _visibleCols = columns.filter((_val, index) =>
+    cols.includes(index.toString()),
+  );
+
+  const ref = useRef<HTMLDivElement>();
+  useOutsideClick(ref, () => {
+    if (!showColsPopUp) return;
+    setShowColsPopup(false);
+  });
 
   const showPagination =
     totalCount !== undefined &&
@@ -145,6 +169,43 @@ export const DataTable: React.FC<Props> = ({
               durchführen
             </Button>
           </Box>
+          <Box position="relative">
+            <Button
+              kind="minimal"
+              onClick={() => setShowColsPopup((curr) => !curr)}
+            >
+              <Columns />
+            </Button>
+            {showColsPopUp && (
+              <div ref={ref}>
+                <Box
+                  position="absolute"
+                  right={0}
+                  background="white"
+                  padding={spacing.scale400}
+                  boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
+                  display="flex"
+                  minWidth={200}
+                >
+                  <Checkbox
+                    options={_columns.map(({title, index}) => ({
+                      label: title,
+                      value: index,
+                    }))}
+                    value={cols}
+                    onChange={(event) => {
+                      const {value} = event.target;
+                      if (cols.includes(value)) {
+                        setCols((cols) => cols.filter((val) => val !== value));
+                      } else {
+                        setCols((cols) => [...cols, value]);
+                      }
+                    }}
+                  />
+                </Box>
+              </div>
+            )}
+          </Box>
         </Flexgrid>
       )}
       <Table>
@@ -163,7 +224,7 @@ export const DataTable: React.FC<Props> = ({
                 />
               </th>
             )}
-            {columns.map(({title}, idx) => (
+            {_visibleCols.map(({title}, idx) => (
               <th key={idx}>{title}</th>
             ))}
           </tr>
@@ -182,7 +243,7 @@ export const DataTable: React.FC<Props> = ({
                     />
                   </td>
                 )}
-                {columns.map((column, idx) => (
+                {_visibleCols.map((column, idx) => (
                   <td data-label={column.title} key={idx}>
                     {column.cell(row)}
                   </td>

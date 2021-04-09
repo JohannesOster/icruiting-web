@@ -8,6 +8,8 @@ export const Table = styled.table`
   tfoot {
     text-align: left;
     background: ${({theme}) => theme.colors.tableHeaderFill};
+    border: 1px solid;
+    border-color: ${({theme}) => theme.colors.tableBorder};
 
     th,
     td {
