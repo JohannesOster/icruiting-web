@@ -20,7 +20,6 @@ import {
   Button,
   Dialog,
   Input,
-  Checkbox,
   withAuth,
 } from 'components';
 
