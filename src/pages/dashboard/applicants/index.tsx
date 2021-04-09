@@ -38,12 +38,15 @@ const Applicants = () => {
   const key = selectedJobId
     ? ['GET /applicants', selectedJobId, offset, limit, filter]
     : null;
-  const {
-    data: applicantsResponse,
-    error: applicantsError,
-    revalidate,
-  } = useSWR(key, (_key, jobId) =>
-    API.applicants.list(jobId, {offset, limit, filter}),
+  const {data: applicantsResponse, error: applicantsError, revalidate} = useSWR(
+    key,
+    (_key, jobId) =>
+      API.applicants.list(jobId, {
+        offset,
+        limit,
+        filter,
+        orderBy: 'Universität',
+      }),
   );
 
   useEffect(() => {
