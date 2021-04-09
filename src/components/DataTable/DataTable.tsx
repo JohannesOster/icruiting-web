@@ -25,6 +25,7 @@ export type TColumn = {
 };
 
 type Props = {
+  id?: string; // required to store visible columns in localstorage
   isLoading?: boolean;
   onEmptyMessage?: string;
   columns: TColumn[];

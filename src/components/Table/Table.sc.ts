@@ -11,7 +11,7 @@ export const Table = styled.table`
     border: 1px solid;
     border-color: ${({theme}) => theme.colors.tableBorder};
 
-    tr {
+    tr 
       th,
       td {
         padding: ${({theme}) => theme.spacing.scale200};
@@ -36,7 +36,7 @@ export const Table = styled.table`
       td,
       th {
         padding: ${({theme}) =>
-          `${theme.spacing.scale300} ${theme.spacing.scale100}`};
+          `${theme.spacing.scale300} ${theme.spacing.scale200}`};
         max-width: 30vw;
         border-right: 10px solid transparent;
 
