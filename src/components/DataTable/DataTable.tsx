@@ -15,8 +15,7 @@ import {
   Select,
   Checkbox,
 } from 'components';
-import styled, {useTheme} from 'styled-components';
-import {Input} from 'components/Input'; // for some reason sc crashes if Input is imported from components folder and not directly from Input folder
+import {useTheme} from 'styled-components';
 import {Columns} from 'icons';
 import {useOutsideClick} from 'components/useOutsideClick';
 
@@ -24,10 +23,6 @@ export type TColumn = {
   title: string;
   cell: (row: {[key: string]: any}) => React.ReactNode;
 };
-
-const StyledInput = styled(Input)`
-  width: 80px;
-`;
 
 type Props = {
   isLoading?: boolean;
@@ -74,6 +69,10 @@ export const DataTable: React.FC<Props> = ({
     cols.includes(index.toString()),
   );
 
+  useEffect(() => {
+    setCols(_columns.map(({index}) => index));
+  }, [columns]);
+
   const ref = useRef<HTMLDivElement>();
   useOutsideClick(ref, () => {
     if (!showColsPopUp) return;
@@ -85,7 +84,9 @@ export const DataTable: React.FC<Props> = ({
     totalPages !== undefined &&
     currentPage !== undefined;
 
-  const _onRowsPerPageChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const _onRowsPerPageChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const {value} = event.target;
     let asInt = parseInt(value, 10);
     if (isNaN(asInt)) asInt = 1;
@@ -185,6 +186,7 @@ export const DataTable: React.FC<Props> = ({
                   padding={spacing.scale400}
                   boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
                   display="flex"
+                  zIndex={30}
                   minWidth={200}
                 >
                   <Checkbox
@@ -208,50 +210,61 @@ export const DataTable: React.FC<Props> = ({
           </Box>
         </Flexgrid>
       )}
-      <Table>
-        <thead>
-          <tr>
-            {actions && (
-              <th>
-                <Checkbox
-                  options={[{label: '', value: 'masterCheckbox'}]}
-                  onChange={onCheckboxChange}
-                  value={state.masterCheckbox}
-                  indeterminate={
-                    Object.keys(state).length > 0 && !state.masterCheckbox
-                  }
-                  disabled={data.length === 0}
-                />
-              </th>
-            )}
-            {_visibleCols.map(({title}, idx) => (
-              <th key={idx}>{title}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {!isLoading &&
-            data.map((row, idx) => (
-              <tr key={idx} style={getRowStyle(row)}>
-                {actions && (
-                  <td>
-                    <Checkbox
-                      name={idx.toString()}
-                      options={[{label: '', value: idx.toString()}]}
-                      onChange={onCheckboxChange}
-                      value={state[idx.toString()] || []}
-                    />
-                  </td>
-                )}
-                {_visibleCols.map((column, idx) => (
-                  <td data-label={column.title} key={idx}>
-                    {column.cell(row)}
-                  </td>
-                ))}
-              </tr>
-            ))}
-        </tbody>
-      </Table>
+      <Box overflow="scroll" width="100%">
+        <Table>
+          <thead>
+            <tr>
+              {actions && (
+                <th>
+                  <Checkbox
+                    options={[{label: '', value: 'masterCheckbox'}]}
+                    onChange={onCheckboxChange}
+                    value={state.masterCheckbox}
+                    indeterminate={
+                      Object.keys(state).length > 0 && !state.masterCheckbox
+                    }
+                    disabled={data.length === 0}
+                  />
+                </th>
+              )}
+              {_visibleCols.map(({title}, idx) => (
+                <th
+                  key={idx}
+                  style={{whiteSpace: 'nowrap', overflowX: 'scroll'}}
+                >
+                  {title}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {!isLoading &&
+              data.map((row, idx) => (
+                <tr key={idx} style={getRowStyle(row)}>
+                  {actions && (
+                    <td>
+                      <Checkbox
+                        name={idx.toString()}
+                        options={[{label: '', value: idx.toString()}]}
+                        onChange={onCheckboxChange}
+                        value={state[idx.toString()] || []}
+                      />
+                    </td>
+                  )}
+                  {_visibleCols.map((column, idx) => (
+                    <td
+                      data-label={column.title}
+                      key={idx}
+                      style={{whiteSpace: 'nowrap', overflow: 'scroll'}}
+                    >
+                      {column.cell(row)}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+          </tbody>
+        </Table>
+      </Box>
       {(isLoading || !data.length) && (
         <Box display="flex" marginTop={20} justifyContent="center">
           {isLoading ? <Spinner /> : <Typography>{onEmptyMessage}</Typography>}
@@ -266,10 +279,13 @@ export const DataTable: React.FC<Props> = ({
           <section>
             <Flexgrid alignItems="center" flexGap={spacing.scale200}>
               <Typography>Zeilen pro Seite: </Typography>
-              <StyledInput
-                defaultValue={rowsPerPage.toString()}
-                type="number"
+              <Select
                 onChange={_onRowsPerPageChange}
+                defaultValue={rowsPerPage.toString()}
+                options={[10, 50, 100, 500, 1000].map((val) => ({
+                  label: `${val}`,
+                  value: `${val}`,
+                }))}
               />
             </Flexgrid>
           </section>

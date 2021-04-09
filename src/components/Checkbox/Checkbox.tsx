@@ -57,7 +57,6 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
                 type="checkbox"
                 value={optionVal}
                 {...checked}
-                style={{marginTop: '3.5px'}} // to align with text
                 ref={ref}
                 id={id.current}
               />
@@ -65,7 +64,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             </OptionContainer>
           );
         })}
-        {_errors && <Errors>{_errors}</Errors>}
+        {!!_errors.length && <Errors>{_errors}</Errors>}
       </Container>
     );
   },

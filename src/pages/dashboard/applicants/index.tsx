@@ -121,15 +121,18 @@ const Applicants = () => {
   );
 
   const columns: TColumn[] = [
-    {
-      title: 'Name',
-      cell: ({name, applicantId}) => (
-        <Link href={`${router.pathname}/${applicantId}`}>
-          <a>{name}</a>
-        </Link>
-      ),
-    },
-    {title: 'E-Mail-Adresse', cell: ({email}) => email},
+    ...(applicantsResponse?.applicants[0]?.attributes.map(({key}) => ({
+      title: key,
+      cell: (row) => {
+        const attr = row.attributes.find(({key: _key}) => key === _key);
+        if (attr?.value !== row.name) return attr?.value || '';
+        return (
+          <Link href={`${router.pathname}/${row.applicantId}`}>
+            <a>{row.name}</a>
+          </Link>
+        );
+      },
+    })) || []),
     ...(showAssessmentsSummary
       ? ([
           {
@@ -307,7 +310,7 @@ const Applicants = () => {
         onPrev={() => router.push(routeFor(+offset - +limit, limit, filter))}
         onNext={() => router.push(routeFor(+offset + +limit, limit, filter))}
         onRowsPerPageChange={(rows) => {
-          router.push(routeFor(offset, rows, filter));
+          router.push(routeFor(0, rows, filter));
         }}
         rowsPerPage={limit}
         actions={currentUser.userRole === 'admin' ? bulkActions : undefined}
