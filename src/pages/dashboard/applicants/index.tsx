@@ -1,57 +1,49 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useReducer, useState} from 'react';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
-import {Select, Button, Dialog, Input, Checkbox} from 'components';
 import {useTheme} from 'styled-components';
 import useSWR from 'swr';
+import {useForm} from 'react-hook-form';
 import {API} from 'services';
 import {useAuth} from 'context';
 import {
   DataTable,
+  Table,
+  TColumn,
   H3,
   H6,
   Box,
   Typography,
-  TColumn,
   Flexgrid,
+  getDashboardLayout,
+  Select,
+  Button,
+  Dialog,
+  Input,
+  Checkbox,
+  withAuth,
 } from 'components';
-import {useForm} from 'react-hook-form';
-import {Table} from 'components/Table/Table.sc';
-import {withAuth} from 'components';
-import {getDashboardLayout} from 'components';
-import {resolve} from 'node:path';
 
 const Applicants = () => {
   const router = useRouter();
-  const {spacing} = useTheme();
-  const {currentUser} = useAuth();
   type Query = {offset: number; limit: number; filter: string};
   const query = (router.query as unknown) as Query;
   const {offset = 0, limit = 10, filter = ''} = query;
-
-  const [showAssessmentsSummary, setShowAssessmentsSummary] = useState(
-    localStorage.getItem('assessmentOverview') ? true : false,
-  );
+  const {spacing} = useTheme();
+  const {currentUser} = useAuth();
 
   const {data: jobs, error: jobsError} = useSWR('GET /jobs', API.jobs.list);
   const [selectedJobId, setSelectedJobId] = useState(jobs && jobs[0]?.jobId);
-  const [deletingApplicantId, setDeletingApplicantId] = useState<string | null>(
-    null,
-  );
-  const [shouldDeleteApplicantId, setShouldDeleteApplicantId] = useState<
-    string | null
-  >(null);
-  const [shouldBulkDelete, setShouldBalkDelete] = useState<number[] | null>(
-    null,
-  );
-  const [multiactionActive, setMultiActionActive] = useState(false);
 
   const key = selectedJobId
     ? ['GET /applicants', selectedJobId, offset, limit, filter]
     : null;
-  const {data: applicantsResponse, error: applicantsError, mutate} = useSWR(
-    key,
-    (_key, jobId) => API.applicants.list(jobId, {offset, limit, filter}),
+  const {
+    data: applicantsResponse,
+    error: applicantsError,
+    revalidate,
+  } = useSWR(key, (_key, jobId) =>
+    API.applicants.list(jobId, {offset, limit, filter}),
   );
 
   useEffect(() => {
@@ -59,37 +51,75 @@ const Applicants = () => {
     setSelectedJobId(jobs[0].jobId);
   }, [jobs]);
 
-  const isLoading =
-    !(jobs || jobsError) || !(applicantsResponse || applicantsError);
+  const loadingJob = !(jobs || jobsError);
+  const loadingApplicants = !(applicantsResponse || applicantsError);
+  const isLoading = loadingJob || loadingApplicants;
 
-  const onDelete = () => {
-    if (!shouldDeleteApplicantId) return;
-    setDeletingApplicantId(shouldDeleteApplicantId);
-    API.applicants.del(shouldDeleteApplicantId).finally(() => {
-      mutate(({applicants, totalCount}) => ({
-        totalCount,
-        applicants: applicants.filter(
-          ({applicantId}) => applicantId !== deletingApplicantId,
-        ),
-      }));
-      setDeletingApplicantId(null);
+  enum BulkAction {
+    delete = 'delete',
+  }
+  type State = {
+    bulkAction?: BulkAction;
+    bulkActionIndices?: number[];
+    bulkActionStatus?: 'pending' | 'requestConfirmation';
+    currentJobId?: string;
+    status: 'idle' | 'loading';
+  };
+  type ActionType =
+    | 'requestBulkActionConfirmation'
+    | 'cancelBulkAction'
+    | 'confirmBulkAction'
+    | 'resetBulkAction';
+  type Action = {type: ActionType; payload?: any};
+
+  const bulkDelete = async (indices: number[]) => {
+    const promises = indices.map((index) => {
+      const applicant = applicantsResponse.applicants[index];
+      return API.applicants.del(applicant.applicantId);
     });
+
+    await Promise.all(promises);
+    await revalidate();
+    dispatch({type: 'resetBulkAction'});
   };
 
-  const deleteColumn: TColumn = {
-    title: 'Aktion',
-    cell: ({applicantId, ...rest}) => (
-      <Button
-        kind="minimal"
-        isLoading={deletingApplicantId === applicantId}
-        onClick={() => {
-          setShouldDeleteApplicantId(applicantId);
-        }}
-      >
-        löschen
-      </Button>
-    ),
-  };
+  const [state, dispatch] = useReducer(
+    (state: State, action: Action): State => {
+      switch (action.type) {
+        case 'requestBulkActionConfirmation': {
+          const {bulkAction, bulkActionIndices} = action.payload;
+          return {
+            ...state,
+            bulkAction,
+            bulkActionIndices,
+            bulkActionStatus: 'requestConfirmation',
+          };
+        }
+        case 'resetBulkAction':
+        case 'cancelBulkAction': {
+          const _state = {...state};
+          delete _state.bulkAction;
+          delete _state.bulkActionIndices;
+          delete _state.bulkActionStatus;
+          return _state;
+        }
+        case 'confirmBulkAction': {
+          switch (state.bulkAction) {
+            case BulkAction.delete: {
+              bulkDelete(state.bulkActionIndices);
+            }
+          }
+          return {...state, bulkActionStatus: 'pending'};
+        }
+      }
+    },
+    {status: 'idle'},
+  );
+
+  const [showAssessmentsSummary, setShowAssessmentsSummary] = useState(
+    localStorage.getItem('assessmentOverview') ? true : false,
+  );
+
   const columns: TColumn[] = [
     {
       title: 'Name',
@@ -100,7 +130,6 @@ const Applicants = () => {
       ),
     },
     {title: 'E-Mail-Adresse', cell: ({email}) => email},
-    ...(currentUser?.userRole === 'admin' ? [deleteColumn] : []),
     ...(showAssessmentsSummary
       ? ([
           {
@@ -108,19 +137,19 @@ const Applicants = () => {
             cell: ({assessments}) => (
               <Table>
                 <tbody>
-                  {assessments?.map(
-                    ({formTitle, formCategory, score}: any, idx: number) => (
-                      <tr key={idx}>
-                        <td>
-                          {formTitle ||
-                            (formCategory === 'screening'
-                              ? 'Screening'
-                              : 'Assessment')}
-                        </td>
-                        <td>{score}</td>
-                      </tr>
-                    ),
-                  )}
+                  {assessments?.map(({formTitle, formCategory, score}, idx) => (
+                    <tr key={idx}>
+                      <td>
+                        {formTitle ||
+                          {
+                            screening: 'Screening',
+                            assessment: 'Assessment',
+                            onboarding: 'Onboarding',
+                          }[formCategory]}
+                      </td>
+                      <td>{score}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </Table>
             ),
@@ -138,68 +167,35 @@ const Applicants = () => {
     reset({filter});
   }, [reset, filter]);
 
-  enum MultiAction {
-    bulkDelete = 'bulkDelete',
-  }
-  const onMultiAction = (action: MultiAction, indices: number[]) => {
-    switch (action) {
-      case MultiAction.bulkDelete: {
-        setShouldBalkDelete(indices);
+  const bulkActions = [{label: 'löschen', value: BulkAction.delete}];
+  const onBulkAction = (
+    bulkAction: BulkAction,
+    bulkActionIndices: number[],
+  ) => {
+    switch (bulkAction) {
+      case BulkAction.delete: {
+        dispatch({
+          type: 'requestBulkActionConfirmation',
+          payload: {bulkAction, bulkActionIndices},
+        });
       }
     }
   };
 
-  const bulkDelete = async (indices: number[]) => {
-    const promises = indices.map((index) => {
-      const applicant = applicantsResponse.applicants[index];
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({});
-        }, 1000);
-      });
-    });
-
-    await Promise.all(promises);
-    setMultiActionActive(false);
-    setShouldBalkDelete(null);
+  const routeFor = (offset: number, limit: number, filter: string) => {
+    const _filter = filter ? '&filter=' + filter : '';
+    return `${router.pathname}?offset=${offset}&limit=${limit}${_filter}`;
   };
 
   return (
     <main>
-      {shouldDeleteApplicantId && (
+      {state.bulkActionStatus && (
         <Dialog
           onClose={() => {
-            setShouldDeleteApplicantId(null);
+            if (state.bulkActionStatus === 'pending') return;
+            dispatch({type: 'cancelBulkAction'});
           }}
         >
-          <Box display="grid" rowGap={spacing.scale300}>
-            <H6>Bewerber*in wirklich unwiderruflich löschen?</H6>
-            <Typography>
-              Sind Sie sicher, dass Sie alle Daten des*der Bewerbers*in löschen
-              wollen? Dieser Vorgang kann nicht rückgängig gemacht werden.
-            </Typography>
-            <Box display="flex" justifyContent="space-between">
-              <Button
-                onClick={() => {
-                  onDelete();
-                  setShouldDeleteApplicantId(null);
-                }}
-              >
-                Löschen
-              </Button>
-              <Button
-                onClick={() => {
-                  setShouldDeleteApplicantId(null);
-                }}
-              >
-                Abbrechen
-              </Button>
-            </Box>
-          </Box>
-        </Dialog>
-      )}
-      {shouldBulkDelete && (
-        <Dialog onClose={() => setShouldBalkDelete(null)}>
           <Box display="grid" rowGap={spacing.scale300}>
             <H6>Bewerber*innen wirklich unwiderruflich löschen?</H6>
             <Typography>
@@ -209,18 +205,14 @@ const Applicants = () => {
             </Typography>
             <Box display="flex" justifyContent="space-between">
               <Button
-                onClick={() => {
-                  setMultiActionActive(true);
-                  bulkDelete(shouldBulkDelete);
-                }}
-                isLoading={multiactionActive}
+                onClick={() => dispatch({type: 'confirmBulkAction'})}
+                isLoading={state.bulkActionStatus === 'pending'}
               >
                 Löschen
               </Button>
               <Button
-                onClick={() => {
-                  setShouldBalkDelete(null);
-                }}
+                onClick={() => dispatch({type: 'cancelBulkAction'})}
+                disabled={state.bulkActionStatus === 'pending'}
               >
                 Abbrechen
               </Button>
@@ -277,7 +269,7 @@ const Applicants = () => {
       </Flexgrid>
       <form
         onSubmit={handleSubmit(({filter}) => {
-          router.push(`${router.pathname}?filter=${filter}`);
+          router.push(routeFor(0, limit, filter));
         })}
       >
         <Flexgrid
@@ -312,34 +304,14 @@ const Applicants = () => {
         totalCount={applicantsResponse?.totalCount || 0}
         totalPages={Math.ceil((applicantsResponse?.totalCount || 0) / limit)}
         currentPage={Math.round(offset / limit) + 1}
-        onPrev={() => {
-          router.push(
-            `${router.pathname}?offset=${+offset - +limit}&limit=${limit}${
-              filter ? '&filter=' + filter : ''
-            }`,
-          );
-        }}
-        onNext={() => {
-          router.push(
-            `${router.pathname}?offset=${+offset + +limit}&limit=${limit}${
-              filter ? '&filter=' + filter : ''
-            }`,
-          );
-        }}
+        onPrev={() => router.push(routeFor(+offset - +limit, limit, filter))}
+        onNext={() => router.push(routeFor(+offset + +limit, limit, filter))}
         onRowsPerPageChange={(rows) => {
-          router.push(
-            `${router.pathname}?offset=${+offset}&limit=${rows}${
-              filter ? '&filter=' + filter : ''
-            }`,
-          );
+          router.push(routeFor(offset, rows, filter));
         }}
         rowsPerPage={limit}
-        actions={
-          currentUser.userRole === 'admin'
-            ? [{label: 'löschen', value: MultiAction.bulkDelete}]
-            : undefined
-        }
-        onAction={onMultiAction}
+        actions={currentUser.userRole === 'admin' ? bulkActions : undefined}
+        onAction={onBulkAction}
       />
     </main>
   );
