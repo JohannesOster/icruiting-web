@@ -18,7 +18,7 @@ export const password = string()
   )
   .test(
     'hasSpecialCharacter',
-    'Passwort muss mindestens einen Spezialzeichen (@,!,#, etc) beinhalten.',
+    'Passwort muss mindestens eine Spezialzeichen (@,!,#, etc) beinhalten.',
     (value) => /[^A-Za-z0-9]/.test(value),
   )
   .required('Passwort ist verpflichtend.');
