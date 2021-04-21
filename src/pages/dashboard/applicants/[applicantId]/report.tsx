@@ -220,6 +220,8 @@ const ApplicantReport = () => {
                               assessment: 'Assessment',
                               onboarding: 'Onboarding',
                             }[formCategory]}
+                          {formScore.replicas &&
+                            ` und ${formScore.replicas.length} weiter Formulare`}
                         </span>
                         <Arrow
                           height={spacing.scale400}
@@ -253,7 +255,7 @@ const ApplicantReport = () => {
                       )}
                     </th>
                     <th>
-                      {formScore.formScore} &isin; [
+                      {formScore.formScore || '-'} &isin; [
                       {formScore.possibleMinFormScore},{' '}
                       {formScore.possibleMaxFormScore}]
                     </th>
