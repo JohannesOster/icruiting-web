@@ -221,7 +221,9 @@ const ApplicantReport = () => {
                               onboarding: 'Onboarding',
                             }[formCategory]}
                           {formScore.replicas &&
-                            ` und ${formScore.replicas.length} weiter Formulare`}
+                            ` und ${
+                              formScore.replicas.length - 1
+                            } weitere(s) Formulare`}
                         </span>
                         <Arrow
                           height={spacing.scale400}
