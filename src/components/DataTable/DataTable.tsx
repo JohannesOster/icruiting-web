@@ -29,6 +29,7 @@ type Props = {
   isLoading?: boolean;
   onEmptyMessage?: string;
   columns: TColumn[];
+  selectColumns?: boolean;
   data: {[key: string]: any}[];
   getRowStyle?: (row: {[key: string]: any}) => React.CSSProperties;
   totalPages?: number;
@@ -58,6 +59,7 @@ export const DataTable: React.FC<Props> = ({
   actions,
   onAction,
   id,
+  selectColumns = false,
 }) => {
   const {spacing, colors} = useTheme();
   const localStorageKey = useRef(`data-table-${id}`);
@@ -156,70 +158,72 @@ export const DataTable: React.FC<Props> = ({
 
   return (
     <>
-      {actions?.length && (
-        <Flexgrid
-          justifyContent="space-between"
-          alignItems="center"
-          marginBottom={spacing.scale200}
-        >
-          <Box
-            display="grid"
-            gridAutoFlow="column"
-            alignItems="center"
-            columnGap={spacing.scale200}
-          >
-            <Select
-              options={[{label: '-- Aktion --', value: ''}, ...actions]}
-              onChange={({target}) => {
-                setAction(target.value);
-              }}
-            />
-            <Button
-              kind="minimal"
-              onClick={_onAction}
-              disabled={!(action && Object.keys(state).length)}
+      {(actions?.length || selectColumns) && (
+        <Flexgrid alignItems="center" marginBottom={spacing.scale200}>
+          {actions?.length && (
+            <Box
+              display="grid"
+              gridAutoFlow="column"
+              alignItems="center"
+              columnGap={spacing.scale200}
             >
-              durchführen
-            </Button>
-          </Box>
-          <Box position="relative">
-            <Button
-              kind="minimal"
-              onClick={() => setShowColsPopup((curr) => !curr)}
-            >
-              <Columns />
-            </Button>
-            {showColsPopUp && (
-              <div ref={ref}>
-                <Box
-                  position="absolute"
-                  right={0}
-                  background="white"
-                  padding={spacing.scale400}
-                  boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
-                  display="flex"
-                  zIndex={30}
-                  minWidth={200}
-                >
-                  <Checkbox
-                    options={_columns.map(({title, index}) => ({
-                      label: title,
-                      value: index,
-                    }))}
-                    value={cols}
-                    onChange={(event) => {
-                      const {value} = event.target;
-                      if (cols.includes(value)) {
-                        setCols((cols) => cols.filter((val) => val !== value));
-                      } else {
-                        setCols((cols) => [...cols, value]);
-                      }
-                    }}
-                  />
-                </Box>
-              </div>
-            )}
-          </Box>
+              <Select
+                options={[{label: '-- Aktion --', value: ''}, ...actions]}
+                onChange={({target}) => {
+                  setAction(target.value);
+                }}
+              />
+              <Button
+                kind="minimal"
+                onClick={_onAction}
+                disabled={!(action && Object.keys(state).length)}
+              >
+                durchführen
+              </Button>
+            </Box>
+          )}
+          {selectColumns && (
+            <Box position="relative" margin="0 0 0 auto">
+              <Button
+                kind="minimal"
+                onClick={() => setShowColsPopup((curr) => !curr)}
+              >
+                <Columns />
+              </Button>
+              {showColsPopUp && (
+                <div ref={ref}>
+                  <Box
+                    position="absolute"
+                    right={0}
+                    background="white"
+                    padding={spacing.scale400}
+                    boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
+                    display="flex"
+                    zIndex={30}
+                    minWidth={200}
+                  >
+                    <Checkbox
+                      options={_columns.map(({title, index}) => ({
+                        label: title,
+                        value: index,
+                      }))}
+                      value={cols}
+                      onChange={(event) => {
+                        const {value} = event.target;
+                        if (cols.includes(value)) {
+                          setCols((cols) =>
+                            cols.filter((val) => val !== value),
+                          );
+                        } else {
+                          setCols((cols) => [...cols, value]);
+                        }
+                      }}
+                    />
+                  </Box>
+                </div>
+              )}
+            </Box>
+          )}
         </Flexgrid>
       )}
       <Box overflow="scroll" width="100%">
