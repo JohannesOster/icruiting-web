@@ -40,7 +40,6 @@ type Props = {
   rowsPerPage?: number;
   actions?: {label: string; value: string}[];
   onAction?: (action: string, selectedIndices: number[]) => void;
-  exportRow?: (row: any) => any;
 };
 
 export const DataTable: React.FC<Props> = ({
@@ -59,7 +58,6 @@ export const DataTable: React.FC<Props> = ({
   actions,
   onAction,
   id,
-  exportRow,
 }) => {
   const {spacing, colors} = useTheme();
   const localStorageKey = useRef(`data-table-${id}`);
@@ -156,38 +154,6 @@ export const DataTable: React.FC<Props> = ({
     onAction && onAction(action, selectedIndices);
   };
 
-  const downloadToCSV = () => {
-    if (!data.length) return;
-    const _data = data.map(exportRow);
-
-    const colDelimiter = ';';
-    const rowDelimiter = '\n';
-
-    // NOTE: only works if every row has the same attributes.
-    // Otherwise a reduce method to get alls headers has to be implemented
-    const headers = Object.keys(_data[0]);
-
-    const escape = (str: string) => {
-      return JSON.stringify(str);
-    };
-
-    let csv = headers.map(escape).join(colDelimiter) + rowDelimiter;
-
-    csv += _data
-      .map((row) => {
-        return headers.map((header) => escape(row[header])).join(colDelimiter);
-      })
-      .join(rowDelimiter);
-
-    const filename = 'icruiting-export.csv';
-    const encoded = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
-
-    const link = document.createElement('a');
-    link.setAttribute('href', encoded);
-    link.setAttribute('download', filename);
-    link.click();
-  };
-
   return (
     <>
       {actions?.length && (
@@ -216,56 +182,43 @@ export const DataTable: React.FC<Props> = ({
               durchführen
             </Button>
           </Box>
-          <Box
-            display="grid"
-            gridAutoFlow="column"
-            columnGap={spacing.scale500}
-          >
-            <Box>
-              <Button kind="minimal" onClick={downloadToCSV}>
-                <Download />
-              </Button>
-            </Box>
-            <Box position="relative">
-              <Button
-                kind="minimal"
-                onClick={() => setShowColsPopup((curr) => !curr)}
-              >
-                <Columns />
-              </Button>
-              {showColsPopUp && (
-                <div ref={ref}>
-                  <Box
-                    position="absolute"
-                    right={0}
-                    background="white"
-                    padding={spacing.scale400}
-                    boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
-                    display="flex"
-                    zIndex={30}
-                    minWidth={200}
-                  >
-                    <Checkbox
-                      options={_columns.map(({title, index}) => ({
-                        label: title,
-                        value: index,
-                      }))}
-                      value={cols}
-                      onChange={(event) => {
-                        const {value} = event.target;
-                        if (cols.includes(value)) {
-                          setCols((cols) =>
-                            cols.filter((val) => val !== value),
-                          );
-                        } else {
-                          setCols((cols) => [...cols, value]);
-                        }
-                      }}
-                    />
-                  </Box>
-                </div>
-              )}
-            </Box>
+          <Box position="relative">
+            <Button
+              kind="minimal"
+              onClick={() => setShowColsPopup((curr) => !curr)}
+            >
+              <Columns />
+            </Button>
+            {showColsPopUp && (
+              <div ref={ref}>
+                <Box
+                  position="absolute"
+                  right={0}
+                  background="white"
+                  padding={spacing.scale400}
+                  boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
+                  display="flex"
+                  zIndex={30}
+                  minWidth={200}
+                >
+                  <Checkbox
+                    options={_columns.map(({title, index}) => ({
+                      label: title,
+                      value: index,
+                    }))}
+                    value={cols}
+                    onChange={(event) => {
+                      const {value} = event.target;
+                      if (cols.includes(value)) {
+                        setCols((cols) => cols.filter((val) => val !== value));
+                      } else {
+                        setCols((cols) => [...cols, value]);
+                      }
+                    }}
+                  />
+                </Box>
+              </div>
+            )}
           </Box>
         </Flexgrid>
       )}

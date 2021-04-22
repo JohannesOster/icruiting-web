@@ -60,6 +60,7 @@ const Applicants = () => {
 
   enum BulkAction {
     delete = 'delete',
+    download = 'download',
   }
   type State = {
     bulkAction?: BulkAction;
@@ -165,7 +166,10 @@ const Applicants = () => {
     reset({filter});
   }, [reset, filter]);
 
-  const bulkActions = [{label: 'löschen', value: BulkAction.delete}];
+  const bulkActions = [
+    {label: 'löschen', value: BulkAction.delete},
+    {label: '.csv download', value: BulkAction.download},
+  ];
   const onBulkAction = (
     bulkAction: BulkAction,
     bulkActionIndices: number[],
@@ -176,6 +180,46 @@ const Applicants = () => {
           type: 'requestBulkActionConfirmation',
           payload: {bulkAction, bulkActionIndices},
         });
+      }
+      case BulkAction.download: {
+        const _data = applicantsResponse.applicants
+          .filter((_applicants, index) => bulkActionIndices.includes(index))
+          .map(({applicantId, attributes}) => ({
+            applicantId,
+            ...attributes.reduce((acc, curr) => {
+              acc[curr.key] = curr.value;
+              return acc;
+            }, {}),
+          }));
+
+        const colDelimiter = ';';
+        const rowDelimiter = '\n';
+
+        // NOTE: only works if every row has the same attributes.
+        // Otherwise a reduce method to get alls headers has to be implemented
+        const headers = Object.keys(_data[0]);
+
+        const escape = (str: string) => {
+          return JSON.stringify(str);
+        };
+
+        let csv = headers.map(escape).join(colDelimiter) + rowDelimiter;
+
+        csv += _data
+          .map((row) => {
+            return headers
+              .map((header) => escape(row[header]))
+              .join(colDelimiter);
+          })
+          .join(rowDelimiter);
+
+        const filename = 'icruiting-export.csv';
+        const encoded = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+
+        const link = document.createElement('a');
+        link.setAttribute('href', encoded);
+        link.setAttribute('download', filename);
+        link.click();
       }
     }
   };
@@ -284,15 +328,6 @@ const Applicants = () => {
         rowsPerPage={limit}
         actions={currentUser.userRole === 'admin' ? bulkActions : undefined}
         onAction={onBulkAction}
-        exportRow={(row: Applicant) => {
-          return {
-            applicantId: row.applicantId,
-            ...row.attributes.reduce((acc, curr) => {
-              acc[curr.key] = curr.value;
-              return account;
-            }, {}),
-          };
-        }}
       />
     </main>
   );
