@@ -4,7 +4,7 @@ import {useRouter} from 'next/router';
 import {useTheme} from 'styled-components';
 import useSWR from 'swr';
 import {useForm} from 'react-hook-form';
-import {API} from 'services';
+import {API, Applicant} from 'services';
 import {useAuth} from 'context';
 import {
   DataTable,
@@ -22,6 +22,7 @@ import {
   Input,
   withAuth,
 } from 'components';
+import account from 'pages/account';
 
 const Applicants = () => {
   const router = useRouter();
@@ -283,6 +284,15 @@ const Applicants = () => {
         rowsPerPage={limit}
         actions={currentUser.userRole === 'admin' ? bulkActions : undefined}
         onAction={onBulkAction}
+        exportRow={(row: Applicant) => {
+          return {
+            applicantId: row.applicantId,
+            ...row.attributes.reduce((acc, curr) => {
+              acc[curr.key] = curr.value;
+              return account;
+            }, {}),
+          };
+        }}
       />
     </main>
   );
