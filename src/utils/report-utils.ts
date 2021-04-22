@@ -29,7 +29,10 @@ export const buildRadarChart = (requirementResults: {
   const options = {
     pointLabelFontSize: 20,
     legend: {display: true, labels: {fontSize: 16}},
-    scale: {ticks: {beginAtZero: true}, pointLabels: {fontSize: 16}},
+    scale: {
+      ticks: {beginAtZero: true, suggestedMax: 4},
+      pointLabels: {fontSize: 16},
+    },
   };
 
   return {data, options};
