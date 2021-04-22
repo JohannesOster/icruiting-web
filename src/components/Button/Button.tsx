@@ -28,7 +28,9 @@ export const Button: React.FC<ButtonProps> = ({
       type={type}
       {...props}
     >
-      <span style={isLoading ? {opacity: 0, height: 0} : {}}>{children}</span>
+      <span style={isLoading ? {opacity: 0, height: 0} : {display: 'flex'}}>
+        {children}
+      </span>
       {isLoading && (
         <LoadingSpinnerContainer>
           <Spinner

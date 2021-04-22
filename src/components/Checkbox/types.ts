@@ -12,6 +12,7 @@ export interface CheckboxProps {
   defaultValue?: string[];
   disabled?: boolean;
   readOnly?: boolean;
+  indeterminate?: boolean;
   onBlur?(event: FocusEvent<HTMLInputElement>): void;
   onFocus?(event: FocusEvent<HTMLInputElement>): void;
   onChange?(event: ChangeEvent<HTMLInputElement>): void;
