@@ -78,7 +78,11 @@ export const DataTable: React.FC<Props> = ({
     let data = localStorage.getItem(localStorageKey.current);
 
     // HACK TO SET DEFAULT FOR ICONS
-    if (!data) data = JSON.stringify(['1', '2', '15', '16']);
+    if (!data) {
+      if (localStorageKey.current === 'data-table-applicants-dt') {
+        data = JSON.stringify(['1', '2', '15', '16']);
+      }
+    }
 
     if (data) {
       const cols = JSON.parse(data);
