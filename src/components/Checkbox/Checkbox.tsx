@@ -31,6 +31,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 
     useEffect(() => {
       const checkbox = document.getElementById(id.current) as HTMLInputElement;
+      if (!checkbox) return;
       checkbox.indeterminate = indeterminate;
     }, [indeterminate]);
 
