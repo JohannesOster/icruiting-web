@@ -11,11 +11,16 @@ import {convertAPIApplicant} from './convert';
 export const Applicants = () => {
   const list = (
     jobId: string,
-    options?: {offset?: number; limit?: number; filter?: string},
+    options?: {
+      offset?: number;
+      limit?: number;
+      filter?: string;
+      orderBy?: string;
+    },
   ): Promise<ListResponse> => {
-    const {offset, limit, filter} = options || {};
+    const {offset, limit, filter, orderBy} = options || {};
     let query = `?jobId=${jobId}`;
-    query += '&orderBy=Vollständiger Name';
+    query += `&orderBy=${orderBy || 'Vollständiger Name'}`;
     if (offset !== undefined && limit !== undefined) {
       query += `&offset=${offset}&limit=${limit}`;
     }

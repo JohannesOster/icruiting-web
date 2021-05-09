@@ -36,7 +36,7 @@ const prodConfig = {
     endpoints: [
       {
         name: 'icruiting-api',
-        endpoint: 'https://icruiting.herokuapp.com',
+        endpoint: 'https://icruiting-api.herokuapp.com',
         custom_header: getAuthHeader,
       },
     ],

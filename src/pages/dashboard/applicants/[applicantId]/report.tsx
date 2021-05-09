@@ -145,7 +145,7 @@ const ApplicantReport = () => {
                   );
                 return (
                   <tr key={idx}>
-                    {file.uri.match(/\b(?:jpeg|jpg|gif|png)\b/gi) != null ? (
+                    {file.uri?.match(/\b(?:jpeg|jpg|gif|png)\b/gi) != null ? (
                       <>
                         <td>{file.key}</td>
                         <td>
@@ -220,6 +220,10 @@ const ApplicantReport = () => {
                               assessment: 'Assessment',
                               onboarding: 'Onboarding',
                             }[formCategory]}
+                          {formScore.replicas &&
+                            ` und ${
+                              formScore.replicas.length - 1
+                            } weitere(s) Formulare`}
                         </span>
                         <Arrow
                           height={spacing.scale400}
@@ -253,10 +257,9 @@ const ApplicantReport = () => {
                       )}
                     </th>
                     <th>
-                      {formScore.formScore} &isin; [
+                      {formScore.formScore || '-'} &isin; [
                       {formScore.possibleMinFormScore},{' '}
-                      {formScore.possibleMaxFormScore}] | &sigma; ={' '}
-                      {formScore.stdDevFormScore}
+                      {formScore.possibleMaxFormScore}]
                     </th>
                   </tr>
                   {(toggleState.openForms as string[]).includes(
@@ -300,8 +303,15 @@ const ApplicantReport = () => {
                                                 }}
                                               >
                                                 {formFieldScore.aggregatedValues?.map(
-                                                  (value: any, idx: number) => (
-                                                    <li key={idx}>{value}</li>
+                                                  (value: string, idx) => (
+                                                    <li
+                                                      key={idx}
+                                                      style={{
+                                                        whiteSpace: 'pre-line',
+                                                      }}
+                                                    >
+                                                      {value}
+                                                    </li>
                                                   ),
                                                 )}
                                               </ul>
@@ -347,7 +357,12 @@ const ApplicantReport = () => {
                               >
                                 {formFieldScore.aggregatedValues?.map(
                                   (value: any, idx: number) => (
-                                    <li key={idx}>{value}</li>
+                                    <li
+                                      key={idx}
+                                      style={{whiteSpace: 'pre-line'}}
+                                    >
+                                      {value}
+                                    </li>
                                   ),
                                 )}
                               </ul>

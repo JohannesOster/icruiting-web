@@ -1,54 +1,52 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useReducer, useState} from 'react';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
-import {Select, Button, Dialog, Input, Checkbox} from 'components';
 import {useTheme} from 'styled-components';
 import useSWR from 'swr';
-import {API} from 'services';
+import {useForm} from 'react-hook-form';
+import {API, Applicant} from 'services';
 import {useAuth} from 'context';
 import {
   DataTable,
+  Table,
+  TColumn,
   H3,
   H6,
   Box,
   Typography,
-  TColumn,
   Flexgrid,
+  getDashboardLayout,
+  Select,
+  Button,
+  Dialog,
+  Input,
+  withAuth,
 } from 'components';
-import {useForm} from 'react-hook-form';
-import {Table} from 'components/Table/Table.sc';
-import {withAuth} from 'components';
-import {getDashboardLayout} from 'components';
+import account from 'pages/account';
 
 const Applicants = () => {
   const router = useRouter();
+  type Query = {offset: number; limit: number; filter: string};
+  const query = (router.query as unknown) as Query;
+  const {offset = 0, limit = 10, filter = ''} = query;
   const {spacing} = useTheme();
   const {currentUser} = useAuth();
-  const {offset = 0, limit = 10, filter = ''} = (router.query as unknown) as {
-    offset: number;
-    limit: number;
-    filter: string;
-  };
-
-  const [showAssessmentsSummary, setShowAssessmentsSummary] = useState(
-    localStorage.getItem('assessmentOverview') ? true : false,
-  );
 
   const {data: jobs, error: jobsError} = useSWR('GET /jobs', API.jobs.list);
   const [selectedJobId, setSelectedJobId] = useState(jobs && jobs[0]?.jobId);
-  const [deletingApplicantId, setDeletingApplicantId] = useState<string | null>(
-    null,
-  );
-  const [shouldDeleteApplicantId, setShouldDeleteApplicantId] = useState<
-    string | null
-  >(null);
 
   const key = selectedJobId
     ? ['GET /applicants', selectedJobId, offset, limit, filter]
     : null;
-  const {data: applicantsResponse, error: applicantsError, mutate} = useSWR(
+  const {data: applicantsResponse, error: applicantsError, revalidate} = useSWR(
     key,
-    (_key, jobId) => API.applicants.list(jobId, {offset, limit, filter}),
+    (_key, jobId) =>
+      API.applicants.list(jobId, {
+        offset,
+        limit,
+        filter,
+        orderBy: 'Universität',
+      }),
   );
 
   useEffect(() => {
@@ -56,74 +54,107 @@ const Applicants = () => {
     setSelectedJobId(jobs[0].jobId);
   }, [jobs]);
 
-  const isLoading =
-    !(jobs || jobsError) && !(applicantsResponse || applicantsError);
+  const loadingJob = !(jobs || jobsError);
+  const loadingApplicants = !(applicantsResponse || applicantsError);
+  const isLoading = loadingJob || loadingApplicants;
 
-  const onDelete = () => {
-    if (!shouldDeleteApplicantId) return;
-    setDeletingApplicantId(shouldDeleteApplicantId);
-    API.applicants.del(shouldDeleteApplicantId).finally(() => {
-      mutate(({applicants, totalCount}) => ({
-        totalCount,
-        applicants: applicants.filter(
-          ({applicantId}) => applicantId !== deletingApplicantId,
-        ),
-      }));
-      setDeletingApplicantId(null);
+  enum BulkAction {
+    delete = 'delete',
+    download = 'download',
+  }
+  type State = {
+    bulkAction?: BulkAction;
+    bulkActionIndices?: number[];
+    bulkActionStatus?: 'pending' | 'requestConfirmation';
+    currentJobId?: string;
+    status: 'idle' | 'loading';
+  };
+  type ActionType =
+    | 'requestBulkActionConfirmation'
+    | 'cancelBulkAction'
+    | 'confirmBulkAction'
+    | 'resetBulkAction';
+  type Action = {type: ActionType; payload?: any};
+
+  const bulkDelete = async (indices: number[]) => {
+    const promises = indices.map((index) => {
+      const applicant = applicantsResponse.applicants[index];
+      return API.applicants.del(applicant.applicantId);
     });
+
+    await Promise.all(promises);
+    await revalidate();
+    dispatch({type: 'resetBulkAction'});
   };
 
-  const deleteColumn: TColumn = {
-    title: 'Aktion',
-    cell: ({applicantId, ...rest}) => (
-      <Button
-        kind="minimal"
-        isLoading={deletingApplicantId === applicantId}
-        onClick={() => {
-          setShouldDeleteApplicantId(applicantId);
-        }}
-      >
-        löschen
-      </Button>
-    ),
-  };
+  const [state, dispatch] = useReducer(
+    (state: State, action: Action): State => {
+      switch (action.type) {
+        case 'requestBulkActionConfirmation': {
+          const {bulkAction, bulkActionIndices} = action.payload;
+          return {
+            ...state,
+            bulkAction,
+            bulkActionIndices,
+            bulkActionStatus: 'requestConfirmation',
+          };
+        }
+        case 'resetBulkAction':
+        case 'cancelBulkAction': {
+          const _state = {...state};
+          delete _state.bulkAction;
+          delete _state.bulkActionIndices;
+          delete _state.bulkActionStatus;
+          return _state;
+        }
+        case 'confirmBulkAction': {
+          switch (state.bulkAction) {
+            case BulkAction.delete: {
+              bulkDelete(state.bulkActionIndices);
+            }
+          }
+          return {...state, bulkActionStatus: 'pending'};
+        }
+      }
+    },
+    {status: 'idle'},
+  );
+
   const columns: TColumn[] = [
+    ...(applicantsResponse?.applicants[0]?.attributes.map(({key}) => ({
+      title: key,
+      cell: (row) => {
+        const attr = row.attributes.find(({key: _key}) => key === _key);
+        if (attr?.value !== row.name) return attr?.value || '';
+        return (
+          <Link href={`${router.pathname}/${row.applicantId}`}>
+            <a>{row.name}</a>
+          </Link>
+        );
+      },
+    })) || []),
     {
-      title: 'Name',
-      cell: ({name, applicantId}) => (
-        <Link href={`${router.pathname}/${applicantId}`}>
-          <a>{name}</a>
-        </Link>
+      title: 'Bewertungsübersicht',
+      cell: ({assessments}) => (
+        <Table>
+          <tbody>
+            {assessments?.map(({formTitle, formCategory, score}, idx) => (
+              <tr key={idx}>
+                <td>
+                  {formTitle ||
+                    {
+                      screening: 'Screening',
+                      assessment: 'Assessment',
+                      onboarding: 'Onboarding',
+                    }[formCategory]}
+                </td>
+                <td>{score}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       ),
     },
-    {title: 'E-Mail-Adresse', cell: ({email}) => email},
-    ...(currentUser?.userRole === 'admin' ? [deleteColumn] : []),
-    ...(showAssessmentsSummary
-      ? ([
-          {
-            title: 'Bewertungen',
-            cell: ({assessments}) => (
-              <Table>
-                <tbody>
-                  {assessments?.map(
-                    ({formTitle, formCategory, score}: any, idx: number) => (
-                      <tr key={idx}>
-                        <td>
-                          {formTitle ||
-                            (formCategory === 'screening'
-                              ? 'Screening'
-                              : 'Assessment')}
-                        </td>
-                        <td>{score}</td>
-                      </tr>
-                    ),
-                  )}
-                </tbody>
-              </Table>
-            ),
-          },
-        ] as TColumn[])
-      : []),
     {
       title: 'Bestätigt',
       cell: ({confirmed}) => <span>{confirmed ? 'Ja' : '-'} </span>,
@@ -135,33 +166,95 @@ const Applicants = () => {
     reset({filter});
   }, [reset, filter]);
 
+  const bulkActions = [
+    {label: 'löschen', value: BulkAction.delete},
+    {label: '.csv download', value: BulkAction.download},
+  ];
+  const onBulkAction = (
+    bulkAction: BulkAction,
+    bulkActionIndices: number[],
+  ) => {
+    switch (bulkAction) {
+      case BulkAction.delete: {
+        dispatch({
+          type: 'requestBulkActionConfirmation',
+          payload: {bulkAction, bulkActionIndices},
+        });
+      }
+      case BulkAction.download: {
+        const _data = applicantsResponse.applicants
+          .filter((_applicants, index) => bulkActionIndices.includes(index))
+          .map(({applicantId, attributes}) => ({
+            applicantId,
+            ...attributes.reduce((acc, curr) => {
+              acc[curr.key] = curr.value;
+              return acc;
+            }, {}),
+          }));
+
+        const colDelimiter = ';';
+        const rowDelimiter = '\n';
+
+        // NOTE: only works if every row has the same attributes.
+        // Otherwise a reduce method to get alls headers has to be implemented
+        const headers = Object.keys(_data[0]);
+
+        const escape = (str: string) => {
+          return JSON.stringify(str);
+        };
+
+        let csv = headers.map(escape).join(colDelimiter) + rowDelimiter;
+
+        csv += _data
+          .map((row) => {
+            return headers
+              .map((header) => escape(row[header]))
+              .join(colDelimiter);
+          })
+          .join(rowDelimiter);
+
+        const filename = 'icruiting-export.csv';
+        const encoded = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+
+        const link = document.createElement('a');
+        link.setAttribute('href', encoded);
+        link.setAttribute('download', filename);
+        link.click();
+      }
+    }
+  };
+
+  const routeFor = (offset: number, limit: number, filter: string) => {
+    const _filter = filter ? '&filter=' + filter : '';
+    return `${router.pathname}?offset=${offset}&limit=${limit}${_filter}`;
+  };
+
   return (
     <main>
-      {shouldDeleteApplicantId && (
+      {state.bulkActionStatus && (
         <Dialog
           onClose={() => {
-            setShouldDeleteApplicantId(null);
+            if (state.bulkActionStatus === 'pending') return;
+            dispatch({type: 'cancelBulkAction'});
           }}
         >
           <Box display="grid" rowGap={spacing.scale300}>
-            <H6>Bewerber*in wirklich unwiderruflich löschen?</H6>
+            <H6>Bewerber*innen wirklich unwiderruflich löschen?</H6>
             <Typography>
-              Sind Sie sicher, dass Sie alle Daten des*der Bewerbers*in löschen
-              wollen? Dieser Vorgang kann nicht rückgängig gemacht werden.
+              Sind Sie sicher, dass Sie alle Daten der ausgewählten
+              Bewerbers*innen löschen wollen? Dieser Vorgang kann nicht
+              rückgängig gemacht werden.
             </Typography>
             <Box display="flex" justifyContent="space-between">
               <Button
-                onClick={() => {
-                  onDelete();
-                  setShouldDeleteApplicantId(null);
-                }}
+                onClick={() => dispatch({type: 'confirmBulkAction'})}
+                isLoading={state.bulkActionStatus === 'pending'}
               >
                 Löschen
               </Button>
               <Button
-                onClick={() => {
-                  setShouldDeleteApplicantId(null);
-                }}
+                onClick={() => dispatch({type: 'cancelBulkAction'})}
+                disabled={state.bulkActionStatus === 'pending'}
               >
                 Abbrechen
               </Button>
@@ -176,49 +269,22 @@ const Applicants = () => {
         marginBottom={spacing.scale300}
       >
         <H3>Bewerbungen</H3>
-        <Box
-          display="grid"
-          gridAutoFlow="column"
-          alignItems="center"
-          justifyContent="start"
-          columnGap={spacing.scale300}
-        >
-          <Box
-            display="grid"
-            alignItems="center"
-            gridAutoFlow="column"
-            columnGap={spacing.scale200}
-          >
-            <Checkbox
-              value={showAssessmentsSummary ? ['true'] : []}
-              options={[{label: 'Bewertungsübersicht', value: 'true'}]}
-              onChange={() => {
-                if (!showAssessmentsSummary)
-                  localStorage.setItem('assessmentOverview', 'true');
-                if (showAssessmentsSummary)
-                  localStorage.removeItem('assessmentOverview');
-
-                setShowAssessmentsSummary((val) => !val);
-              }}
-            />
-          </Box>
-          {jobs && (
-            <Select
-              options={jobs.map((job) => ({
-                label: job.jobTitle,
-                value: job.jobId,
-              }))}
-              onChange={(event) => {
-                const {value} = event.target;
-                setSelectedJobId(value);
-              }}
-            />
-          )}
-        </Box>
+        {jobs && (
+          <Select
+            options={jobs.map((job) => ({
+              label: job.jobTitle,
+              value: job.jobId,
+            }))}
+            onChange={(event) => {
+              const {value} = event.target;
+              setSelectedJobId(value);
+            }}
+          />
+        )}
       </Flexgrid>
       <form
         onSubmit={handleSubmit(({filter}) => {
-          router.push(`${router.pathname}?filter=${filter}`);
+          router.push(routeFor(0, limit, filter));
         })}
       >
         <Flexgrid
@@ -247,26 +313,22 @@ const Applicants = () => {
         </Flexgrid>
       </form>
       <DataTable
+        id="applicants-dt"
         columns={columns}
+        selectColumns={true}
         data={applicantsResponse?.applicants || []}
         isLoading={isLoading}
         totalCount={applicantsResponse?.totalCount || 0}
         totalPages={Math.ceil((applicantsResponse?.totalCount || 0) / limit)}
         currentPage={Math.round(offset / limit) + 1}
-        onPrev={() => {
-          router.push(
-            `${router.pathname}?offset=${+offset - +limit}&limit=${limit}${
-              filter ? '&filter=' + filter : ''
-            }`,
-          );
+        onPrev={() => router.push(routeFor(+offset - +limit, limit, filter))}
+        onNext={() => router.push(routeFor(+offset + +limit, limit, filter))}
+        onRowsPerPageChange={(rows) => {
+          router.push(routeFor(0, rows, filter));
         }}
-        onNext={() => {
-          router.push(
-            `${router.pathname}?offset=${+offset + +limit}&limit=${limit}${
-              filter ? '&filter=' + filter : ''
-            }`,
-          );
-        }}
+        rowsPerPage={limit}
+        actions={currentUser.userRole === 'admin' ? bulkActions : undefined}
+        onAction={onBulkAction}
       />
     </main>
   );

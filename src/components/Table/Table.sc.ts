@@ -8,12 +8,22 @@ export const Table = styled.table`
   tfoot {
     text-align: left;
     background: ${({theme}) => theme.colors.tableHeaderFill};
+    border: 1px solid;
+    border-color: ${({theme}) => theme.colors.tableBorder};
 
-    th,
-    td {
-      padding: ${({theme}) => theme.spacing.scale200};
-      ${({theme}) => theme.typography.font150};
-      text-transform: uppercase;
+    tr 
+      th,
+      td {
+        padding: ${({theme}) => theme.spacing.scale200};
+        ${({theme}) => theme.typography.font150};
+        text-transform: uppercase;
+        max-width: 250px;
+        border-right: 10px solid transparent;
+
+        &:last-child {
+          border: none;
+        }
+      }
     }
   }
 
@@ -28,6 +38,11 @@ export const Table = styled.table`
         padding: ${({theme}) =>
           `${theme.spacing.scale300} ${theme.spacing.scale200}`};
         max-width: 30vw;
+        border-right: 10px solid transparent;
+
+        &:last-child {
+          border: none;
+        }
       }
 
       &:nth-child(even) {
