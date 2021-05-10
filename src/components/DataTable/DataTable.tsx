@@ -18,6 +18,7 @@ import {
 import {useTheme} from 'styled-components';
 import {Columns, Download} from 'icons';
 import {useOutsideClick} from 'components/useOutsideClick';
+import {useAuth} from 'context';
 
 export type TColumn = {
   title: string;
@@ -74,13 +75,18 @@ export const DataTable: React.FC<Props> = ({
     cols.includes(index.toString()),
   );
 
+  // HACK TO SET DEFAULT FOR ICONS
+  const {currentUser} = useAuth();
+
   useEffect(() => {
     let data = localStorage.getItem(localStorageKey.current);
 
     // HACK TO SET DEFAULT FOR ICONS
     if (!data) {
       if (localStorageKey.current === 'data-table-applicants-dt') {
-        data = JSON.stringify(['1', '2', '15', '16']);
+        if (currentUser.tenantId === '8ecc98cf-a15f-4b84-8d2b-d79630569eb5') {
+          data = JSON.stringify(['1', '2', '15', '16']);
+        }
       }
     }
 
