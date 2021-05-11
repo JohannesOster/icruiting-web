@@ -241,7 +241,7 @@ export const DataTable: React.FC<Props> = ({
         </Flexgrid>
       )}
       <Box overflow="scroll" width="100%" display="flex">
-        <Table style={{zIndex: 10}}>
+        <Table style={{zIndex: 1}}>
           <thead>
             <tr>
               {actions && (
