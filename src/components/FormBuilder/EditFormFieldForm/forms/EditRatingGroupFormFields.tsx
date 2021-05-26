@@ -137,6 +137,7 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
               defaultValue={option.value}
               ref={register()}
               type="number"
+              step="0.001"
               errors={errorsFor(errors, `options[${idx}].value`)}
             />
 

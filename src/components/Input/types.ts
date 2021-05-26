@@ -29,6 +29,7 @@ export interface InputProps {
   disabled?: boolean;
   readOnly?: boolean;
   accept?: string;
+  step?: string | number;
   onBlur?(event: FocusEvent<HTMLInputElement>): void;
   onFocus?(event: FocusEvent<HTMLInputElement>): void;
   onChange?(event: ChangeEvent<HTMLInputElement>): void;
