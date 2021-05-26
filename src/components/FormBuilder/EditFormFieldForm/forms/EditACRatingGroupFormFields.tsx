@@ -3,7 +3,7 @@ import {Box, H6, Button, Input, Textarea, Select, Checkbox} from 'components';
 import {useForm, useFieldArray} from 'react-hook-form';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
-import {array, mixed, object, string} from 'yup';
+import {array, mixed, number, object, string} from 'yup';
 import {Form} from './StyledForm.sc';
 import {Trash} from 'icons';
 import {useTheme} from 'styled-components';
@@ -50,10 +50,8 @@ export const EditACRatingGroupFormFields: React.FC<Props> = ({
             label: string().required(
               'Option ist verpflichtend auszufüllen oder zu löschen',
             ),
-            value: mixed().test(
-              'testOptionValue',
+            value: number().typeError(
               'Geben sie einen eindeutigen Zahlenwert an!',
-              (val) => /^\d+$/.test(val) && !!val.length,
             ),
           }),
         ),
@@ -138,6 +136,7 @@ export const EditACRatingGroupFormFields: React.FC<Props> = ({
               defaultValue={option.value}
               type="number"
               ref={register()}
+              step="0.001"
               errors={errorsFor(errors, `options[${idx}].value`)}
             />
             {/* There must be at least 2 options */}
