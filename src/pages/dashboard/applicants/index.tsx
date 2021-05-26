@@ -45,7 +45,6 @@ const Applicants = () => {
         offset,
         limit,
         filter,
-        orderBy: 'Universität',
       }),
   );
 
