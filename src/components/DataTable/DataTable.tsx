@@ -18,32 +18,7 @@ import {
 import {useTheme} from 'styled-components';
 import {Columns, Sort} from 'icons';
 import {useOutsideClick} from 'components/useOutsideClick';
-
-export type TColumn = {
-  title: string;
-  cell: (row: {[key: string]: any}) => React.ReactNode;
-};
-
-type Props = {
-  id?: string; // required to store visible columns in local-storage
-  isLoading?: boolean;
-  onEmptyMessage?: string;
-  columns: TColumn[];
-  selectColumns?: boolean;
-  data: {[key: string]: any}[];
-  getRowStyle?: (row: {[key: string]: any}) => React.CSSProperties;
-  totalPages?: number;
-  currentPage?: number;
-  totalCount?: number;
-  onPrev?: () => void;
-  onNext?: () => void;
-  onRowsPerPageChange?: (rows: number) => void;
-  onOrderByChange?: (orderBy: string) => void;
-  orderBy?: string;
-  rowsPerPage?: number;
-  actions?: {label: string; value: string}[];
-  onAction?: (action: string, selectedIndices: number[]) => void;
-};
+import {Props} from './types';
 
 export const DataTable: React.FC<Props> = ({
   isLoading,
@@ -55,7 +30,6 @@ export const DataTable: React.FC<Props> = ({
   currentPage,
   onPrev,
   onNext,
-  getRowStyle = (_row) => ({}),
   onRowsPerPageChange,
   rowsPerPage = 10,
   actions,
@@ -68,20 +42,21 @@ export const DataTable: React.FC<Props> = ({
   const {spacing, colors} = useTheme();
   const localStorageKey = useRef(`data-table-${id}`);
 
-  const [showColsPopUp, setShowColsPopup] = useState(false);
-  const _columns = columns.map(({title}, index) => ({
-    title,
-    index: index.toString(),
-  }));
   const [cols, setCols] = useState([]);
   const _visibleCols = columns.filter((_val, index) =>
-    cols.includes(index.toString()),
+    cols.includes(`${index}`),
   );
+  const _columns = columns.map(({title}, index) => ({
+    title,
+    index: `${index}`,
+  }));
 
   const [showSortPopup, setShowSortPopup] = useState(false);
+  const [showColsPopUp, setShowColsPopup] = useState(false);
 
   useEffect(() => {
-    let data = localStorage.getItem(localStorageKey.current);
+    const key = localStorageKey.current + 'columns';
+    let data = localStorage.getItem(key);
 
     if (data) {
       const cols = JSON.parse(data);
@@ -97,7 +72,8 @@ export const DataTable: React.FC<Props> = ({
     if (!showColsPopUp) return;
     setShowColsPopup(false);
     if (!id) return;
-    localStorage.setItem(localStorageKey.current, JSON.stringify(cols));
+    const key = localStorageKey.current + 'columns';
+    localStorage.setItem(key, JSON.stringify(cols));
   });
 
   const sortPopupRef = useRef<HTMLDivElement>();
@@ -321,7 +297,7 @@ export const DataTable: React.FC<Props> = ({
           <tbody>
             {!isLoading &&
               data.map((row, idx) => (
-                <tr key={idx} style={getRowStyle(row)}>
+                <tr key={idx}>
                   {actions && (
                     <td>
                       <Checkbox
