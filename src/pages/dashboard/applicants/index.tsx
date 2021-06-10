@@ -1,4 +1,4 @@
-import React, {useEffect, useReducer, useState} from 'react';
+import React, {useEffect, useReducer, useRef, useState} from 'react';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {useTheme} from 'styled-components';
@@ -26,10 +26,18 @@ import {useQueryReducer} from 'components/useQueryReducer';
 
 const Applicants = () => {
   const router = useRouter();
+
   const {query, setLimit, order, next, prev} = useQueryReducer();
   const {offset = 0, limit = 10, filter = '', order: orderBy = ''} = query;
   const {spacing} = useTheme();
   const {currentUser} = useAuth();
+
+  const localStorageKey = useRef(`applicants-sort`);
+  useEffect(() => {
+    let sort = localStorage.getItem(localStorageKey.current);
+    if (!sort) return;
+    order(sort);
+  }, []);
 
   const {data: jobs, error: jobsError} = useSWR('GET /jobs', API.jobs.list);
   const [selectedJobId, setSelectedJobId] = useState(jobs && jobs[0]?.jobId);
@@ -332,7 +340,10 @@ const Applicants = () => {
         onPrev={prev}
         onNext={next}
         onRowsPerPageChange={setLimit}
-        onOrderByChange={order}
+        onOrderByChange={(by) => {
+          order(by);
+          localStorage.setItem(localStorageKey.current, by);
+        }}
         orderBy={orderBy}
         rowsPerPage={limit}
         actions={currentUser.userRole === 'admin' ? bulkActions : undefined}
