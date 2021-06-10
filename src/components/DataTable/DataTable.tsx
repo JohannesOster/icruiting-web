@@ -16,9 +16,8 @@ import {
   Checkbox,
 } from 'components';
 import {useTheme} from 'styled-components';
-import {Columns, Download} from 'icons';
+import {Columns, Sort} from 'icons';
 import {useOutsideClick} from 'components/useOutsideClick';
-import {useAuth} from 'context';
 
 export type TColumn = {
   title: string;
@@ -26,7 +25,7 @@ export type TColumn = {
 };
 
 type Props = {
-  id?: string; // required to store visible columns in localstorage
+  id?: string; // required to store visible columns in local-storage
   isLoading?: boolean;
   onEmptyMessage?: string;
   columns: TColumn[];
@@ -39,6 +38,8 @@ type Props = {
   onPrev?: () => void;
   onNext?: () => void;
   onRowsPerPageChange?: (rows: number) => void;
+  onOrderByChange?: (orderBy: string) => void;
+  orderBy?: string;
   rowsPerPage?: number;
   actions?: {label: string; value: string}[];
   onAction?: (action: string, selectedIndices: number[]) => void;
@@ -61,6 +62,8 @@ export const DataTable: React.FC<Props> = ({
   onAction,
   id,
   selectColumns = false,
+  onOrderByChange,
+  orderBy,
 }) => {
   const {spacing, colors} = useTheme();
   const localStorageKey = useRef(`data-table-${id}`);
@@ -75,20 +78,10 @@ export const DataTable: React.FC<Props> = ({
     cols.includes(index.toString()),
   );
 
-  // HACK TO SET DEFAULT FOR ICONS
-  const {currentUser} = useAuth();
+  const [showSortPopup, setShowSortPopup] = useState(false);
 
   useEffect(() => {
     let data = localStorage.getItem(localStorageKey.current);
-
-    // HACK TO SET DEFAULT FOR ICONS
-    if (!data) {
-      if (localStorageKey.current === 'data-table-applicants-dt') {
-        if (currentUser.tenantId === '8ecc98cf-a15f-4b84-8d2b-d79630569eb5') {
-          data = JSON.stringify(['1', '2', '15', '16']);
-        }
-      }
-    }
 
     if (data) {
       const cols = JSON.parse(data);
@@ -99,12 +92,18 @@ export const DataTable: React.FC<Props> = ({
     setCols(_columns.map(({index}) => index));
   }, [columns]);
 
-  const ref = useRef<HTMLDivElement>();
-  useOutsideClick(ref, () => {
+  const colsPopupRef = useRef<HTMLDivElement>();
+  useOutsideClick(colsPopupRef, () => {
     if (!showColsPopUp) return;
     setShowColsPopup(false);
     if (!id) return;
     localStorage.setItem(localStorageKey.current, JSON.stringify(cols));
+  });
+
+  const sortPopupRef = useRef<HTMLDivElement>();
+  useOutsideClick(sortPopupRef, () => {
+    if (!showSortPopup) return;
+    setShowSortPopup(false);
   });
 
   const showPagination =
@@ -173,7 +172,11 @@ export const DataTable: React.FC<Props> = ({
   return (
     <>
       {(actions?.length || selectColumns) && (
-        <Flexgrid alignItems="center" marginBottom={spacing.scale200}>
+        <Flexgrid
+          alignItems="center"
+          flexGap={spacing.scale200}
+          marginBottom={spacing.scale200}
+        >
           {actions?.length && (
             <Box
               display="grid"
@@ -196,19 +199,26 @@ export const DataTable: React.FC<Props> = ({
               </Button>
             </Box>
           )}
-          {selectColumns && (
-            <Box position="relative" margin="0 0 0 auto">
+          <Box
+            margin="0 0 0 auto"
+            display="grid"
+            gridAutoFlow="column"
+            columnGap={spacing.scale200}
+            position="relative"
+          >
+            <Box position="relative" display="flex" alignItems="center">
               <Button
                 kind="minimal"
-                onClick={() => setShowColsPopup((curr) => !curr)}
+                onClick={() => setShowSortPopup((curr) => !curr)}
               >
-                <Columns />
+                <Sort />
               </Button>
-              {showColsPopUp && (
-                <div ref={ref}>
+              {showSortPopup && (
+                <div ref={sortPopupRef}>
                   <Box
                     position="absolute"
                     right={0}
+                    top={spacing.scale600}
                     background="white"
                     padding={spacing.scale400}
                     boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
@@ -216,28 +226,65 @@ export const DataTable: React.FC<Props> = ({
                     zIndex={30}
                     minWidth={200}
                   >
-                    <Checkbox
+                    <Select
                       options={_columns.map(({title, index}) => ({
                         label: title,
-                        value: index,
+                        value: title,
                       }))}
-                      value={cols}
                       onChange={(event) => {
                         const {value} = event.target;
-                        if (cols.includes(value)) {
-                          setCols((cols) =>
-                            cols.filter((val) => val !== value),
-                          );
-                        } else {
-                          setCols((cols) => [...cols, value]);
-                        }
+                        onOrderByChange(value);
                       }}
+                      value={orderBy}
                     />
                   </Box>
                 </div>
               )}
             </Box>
-          )}
+            {selectColumns && (
+              <Box position="relative" display="flex" alignItems="center">
+                <Button
+                  kind="minimal"
+                  onClick={() => setShowColsPopup((curr) => !curr)}
+                >
+                  <Columns />
+                </Button>
+                {showColsPopUp && (
+                  <div ref={colsPopupRef}>
+                    <Box
+                      position="absolute"
+                      right={0}
+                      top={spacing.scale600}
+                      background="white"
+                      padding={spacing.scale400}
+                      boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
+                      display="flex"
+                      zIndex={30}
+                      minWidth={200}
+                    >
+                      <Checkbox
+                        options={_columns.map(({title, index}) => ({
+                          label: title,
+                          value: index,
+                        }))}
+                        value={cols}
+                        onChange={(event) => {
+                          const {value} = event.target;
+                          if (cols.includes(value)) {
+                            setCols((cols) =>
+                              cols.filter((val) => val !== value),
+                            );
+                          } else {
+                            setCols((cols) => [...cols, value]);
+                          }
+                        }}
+                      />
+                    </Box>
+                  </div>
+                )}
+              </Box>
+            )}
+          </Box>
         </Flexgrid>
       )}
       <Box overflow="scroll" width="100%" display="flex">
