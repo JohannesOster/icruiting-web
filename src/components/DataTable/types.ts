@@ -12,8 +12,6 @@ export type Props = {
   onEmptyMessage?: string;
   /** An array of configuration objects which "design" the columns */
   columns: TColumn[];
-  /** If true a button / popup is displayed to select visible columns */
-  selectColumns?: boolean;
   /** The actual data to present */
   data: {[key: string]: any}[];
   /** The current limit (=amount of rows per page) */

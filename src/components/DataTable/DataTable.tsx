@@ -35,7 +35,6 @@ export const DataTable: React.FC<Props> = ({
   actions,
   onAction,
   id,
-  selectColumns = false,
   onOrderByChange,
   orderBy,
 }) => {
@@ -147,7 +146,7 @@ export const DataTable: React.FC<Props> = ({
 
   return (
     <>
-      {(actions?.length || selectColumns) && (
+      {actions?.length && (
         <Flexgrid
           alignItems="center"
           flexGap={spacing.scale200}
@@ -221,7 +220,7 @@ export const DataTable: React.FC<Props> = ({
                 </div>
               )}
             </Box>
-            {selectColumns && (
+            {actions?.length && (
               <Box position="relative" display="flex" alignItems="center">
                 <Button
                   kind="minimal"

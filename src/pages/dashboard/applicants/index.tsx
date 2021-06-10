@@ -324,7 +324,6 @@ const Applicants = () => {
       <DataTable
         id="applicants-dt"
         columns={columns}
-        selectColumns={true}
         data={applicantsResponse?.applicants || []}
         isLoading={isLoading}
         totalCount={applicantsResponse?.totalCount || 0}
