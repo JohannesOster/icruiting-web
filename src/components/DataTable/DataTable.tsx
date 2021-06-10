@@ -227,10 +227,14 @@ export const DataTable: React.FC<Props> = ({
                     minWidth={200}
                   >
                     <Select
-                      options={_columns.map(({title, index}) => ({
-                        label: title,
-                        value: title,
-                      }))}
+                      options={
+                        isLoading
+                          ? [{label: '-'.repeat(10), value: ''}]
+                          : _columns.map(({title}) => ({
+                              label: title,
+                              value: title,
+                            }))
+                      }
                       onChange={(event) => {
                         const {value} = event.target;
                         onOrderByChange(value);
