@@ -14,7 +14,7 @@ import {
   H6,
   Box,
   Typography,
-  Flexgrid,
+  FlexGrid,
   getDashboardLayout,
   Select,
   Button,
@@ -279,7 +279,7 @@ const Applicants = () => {
           </Box>
         </Dialog>
       )}
-      <Flexgrid
+      <FlexGrid
         justifyContent="space-between"
         alignItems="center"
         flexGap={spacing.scale300}
@@ -298,13 +298,13 @@ const Applicants = () => {
             }}
           />
         )}
-      </Flexgrid>
+      </FlexGrid>
       <form
         onSubmit={handleSubmit(({filter}) => {
           router.push(routeFor({offset: 0, limit, filter}));
         })}
       >
-        <Flexgrid
+        <FlexGrid
           flexGap={spacing.scale300}
           alignItems="center"
           marginBottom={spacing.scale300}
@@ -327,7 +327,7 @@ const Applicants = () => {
             löschen
           </Button>
           <Button type="submit">Suchen</Button>
-        </Flexgrid>
+        </FlexGrid>
       </form>
       <DataTable
         id="applicants-dt"

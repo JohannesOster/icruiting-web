@@ -8,7 +8,7 @@ import {
   Box,
   H3,
   H6,
-  Flexgrid,
+  FlexGrid,
   getDashboardLayout,
   withAdmin,
   Button,
@@ -102,7 +102,7 @@ const EditJob = () => {
 
   return (
     <main>
-      <Flexgrid
+      <FlexGrid
         flexGap={spacing.scale300}
         justifyContent="space-between"
         marginBottom={spacing.scale300}
@@ -118,7 +118,7 @@ const EditJob = () => {
           </Button>
           <Button onClick={() => router.back()}>Abbrechen</Button>
         </Box>
-      </Flexgrid>
+      </FlexGrid>
       {!(job || jobError) ? (
         <Spinner />
       ) : (

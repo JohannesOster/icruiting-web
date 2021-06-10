@@ -6,7 +6,7 @@ interface Props extends CSSProperties {
   flexGap?: string;
 }
 
-const FlexgridBase = styled.div<{flexGap?: string}>`
+const FlexGridBase = styled.div<{flexGap?: string}>`
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -32,10 +32,10 @@ const FlexgridBase = styled.div<{flexGap?: string}>`
   }
 `;
 
-export const Flexgrid: React.FC<Props> = ({children, flexGap, ...style}) => {
+export const FlexGrid: React.FC<Props> = ({children, flexGap, ...style}) => {
   return (
-    <FlexgridBase flexGap={flexGap} style={style}>
+    <FlexGridBase flexGap={flexGap} style={style}>
       {children}
-    </FlexgridBase>
+    </FlexGridBase>
   );
 };

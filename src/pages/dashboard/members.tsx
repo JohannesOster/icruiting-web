@@ -4,7 +4,7 @@ import {
   H3,
   H6,
   TColumn,
-  Flexgrid,
+  FlexGrid,
   getDashboardLayout,
   withAdmin,
   Button,
@@ -124,7 +124,7 @@ export const Members = () => {
       cell: (row) => {
         return (
           <>
-            <Flexgrid flexGap={spacing.scale300}>
+            <FlexGrid flexGap={spacing.scale300}>
               <Select
                 options={[
                   {label: 'Mitarbeiter', value: 'member'},
@@ -147,7 +147,7 @@ export const Members = () => {
               >
                 Speichern
               </Button>
-            </Flexgrid>
+            </FlexGrid>
           </>
         );
       },
@@ -245,7 +245,7 @@ export const Members = () => {
         </Dialog>
       )}
       <main>
-        <Flexgrid
+        <FlexGrid
           justifyContent="space-between"
           alignItems="center"
           flexGap={spacing.scale200}
@@ -255,7 +255,7 @@ export const Members = () => {
           <Button onClick={() => setShowNewMembereForm(true)}>
             Hinzufügen
           </Button>
-        </Flexgrid>
+        </FlexGrid>
         <DataTable
           columns={columns}
           data={members || []}

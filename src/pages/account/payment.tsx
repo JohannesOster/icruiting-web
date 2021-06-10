@@ -5,7 +5,7 @@ import {
   H6,
   DataTable,
   TColumn,
-  Flexgrid,
+  FlexGrid,
   Typography,
 } from 'components';
 import {PaymentMethodForm} from 'containers';
@@ -100,7 +100,7 @@ const PaymentMethods: React.FC = () => {
     {
       title: 'Aktion',
       cell: ({is_default, id}) => (
-        <Flexgrid gap={spacing.scale200}>
+        <FlexGrid gap={spacing.scale200}>
           {!is_default && (
             <Button
               kind="minimal"
@@ -143,7 +143,7 @@ const PaymentMethods: React.FC = () => {
           >
             entfernen
           </Button>
-        </Flexgrid>
+        </FlexGrid>
       ),
     },
   ];
@@ -154,7 +154,7 @@ const PaymentMethods: React.FC = () => {
       display="grid"
       rowGap={spacing.scale500}
     >
-      <Flexgrid justifyContent="space-between" flexGap={spacing.scale200}>
+      <FlexGrid justifyContent="space-between" flexGap={spacing.scale200}>
         <H3>Paymentmethods</H3>
         <Button
           onClick={() => {
@@ -169,7 +169,7 @@ const PaymentMethods: React.FC = () => {
         >
           Neue Zahlungsmethode
         </Button>
-      </Flexgrid>
+      </FlexGrid>
       <DataTable
         columns={columns}
         data={data || []}

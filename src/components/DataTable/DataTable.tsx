@@ -9,7 +9,7 @@ import {
   Table,
   Box,
   Typography,
-  Flexgrid,
+  FlexGrid,
   Spinner,
   Button,
   Select,
@@ -147,7 +147,7 @@ export const DataTable: React.FC<Props> = ({
   return (
     <>
       {actions?.length && (
-        <Flexgrid
+        <FlexGrid
           alignItems="center"
           flexGap={spacing.scale200}
           marginBottom={spacing.scale200}
@@ -264,7 +264,7 @@ export const DataTable: React.FC<Props> = ({
               </Box>
             )}
           </Box>
-        </Flexgrid>
+        </FlexGrid>
       )}
       <Box overflow="scroll" width="100%" display="flex">
         <Table style={{zIndex: 1}}>
@@ -327,13 +327,13 @@ export const DataTable: React.FC<Props> = ({
         </Box>
       )}
       {showPagination && !isLoading && (
-        <Flexgrid
+        <FlexGrid
           justifyContent="space-between"
           flexGap={spacing.scale600}
           padding={spacing.scale200}
         >
           <section>
-            <Flexgrid alignItems="center" flexGap={spacing.scale200}>
+            <FlexGrid alignItems="center" flexGap={spacing.scale200}>
               <Typography>Zeilen pro Seite: </Typography>
               <Select
                 onChange={_onRowsPerPageChange}
@@ -343,10 +343,10 @@ export const DataTable: React.FC<Props> = ({
                   value: `${val}`,
                 }))}
               />
-            </Flexgrid>
+            </FlexGrid>
           </section>
           <section>
-            <Flexgrid
+            <FlexGrid
               justifyContent="flex-end"
               flexGap={spacing.scale600}
               padding={spacing.scale200}
@@ -386,9 +386,9 @@ export const DataTable: React.FC<Props> = ({
               >
                 Nächste
               </Button>
-            </Flexgrid>
+            </FlexGrid>
           </section>
-        </Flexgrid>
+        </FlexGrid>
       )}
     </>
   );

@@ -6,7 +6,7 @@ export * from './Table';
 export * from './AuthForm';
 export * from './Typography';
 export * from './Box';
-export * from './Flexgrid';
+export * from './FlexGrid';
 export * from './FormSectionHeader';
 export * from './DashboardLayout';
 export * from './withAuth';
