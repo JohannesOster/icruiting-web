@@ -7,7 +7,7 @@ import {
   H6,
   Table,
   Box,
-  Flexgrid,
+  FlexGrid,
   getDashboardLayout,
   withAdmin,
 } from 'components';
@@ -105,7 +105,7 @@ const ApplicantReport = () => {
     <Box display="grid" rowGap={spacing.scale300}>
       <H3>Gutachten</H3>
       <Box display="grid" rowGap={spacing.scale200}>
-        <Flexgrid alignItems="center" flexGap={spacing.scale200}>
+        <FlexGrid alignItems="center" flexGap={spacing.scale200}>
           <H6>Bewerber*in - {applicant?.name}</H6>
           <Arrow
             height={spacing.scale400}
@@ -117,7 +117,7 @@ const ApplicantReport = () => {
               cursor: 'pointer',
             }}
           />
-        </Flexgrid>
+        </FlexGrid>
         {toggleState.applicant && (
           <Table>
             <tbody>
@@ -192,7 +192,7 @@ const ApplicantReport = () => {
         </Box>
       )}
       <Box display="grid" rowGap={spacing.scale200}>
-        <Flexgrid alignItems="center" flexGap={spacing.scale200}>
+        <FlexGrid alignItems="center" flexGap={spacing.scale200}>
           <H6>Details</H6>
           <Arrow
             height={spacing.scale400}
@@ -202,7 +202,7 @@ const ApplicantReport = () => {
               cursor: 'pointer',
             }}
           />
-        </Flexgrid>
+        </FlexGrid>
         {toggleState.details && (
           <Table>
             <tbody>
@@ -212,7 +212,7 @@ const ApplicantReport = () => {
                     <th
                       style={{display: 'flex', justifyContent: 'space-between'}}
                     >
-                      <Flexgrid flexGap={spacing.scale200} alignItems="center">
+                      <FlexGrid flexGap={spacing.scale200} alignItems="center">
                         <span>
                           {formScore.formTitle ||
                             {
@@ -239,7 +239,7 @@ const ApplicantReport = () => {
                             cursor: 'pointer',
                           }}
                         />
-                      </Flexgrid>
+                      </FlexGrid>
                       {formScore.replicas && (
                         <Button
                           kind="minimal"
@@ -390,7 +390,7 @@ const ApplicantReport = () => {
       </Box>
       {['assessment', 'onboarding'].includes(formCategory) && (
         <Box display="grid" rowGap={spacing.scale200}>
-          <Flexgrid alignItems="center" flexGap={spacing.scale200}>
+          <FlexGrid alignItems="center" flexGap={spacing.scale200}>
             <H6>Anforderungsprofil</H6>
             <Arrow
               height={spacing.scale400}
@@ -402,7 +402,7 @@ const ApplicantReport = () => {
                 cursor: 'pointer',
               }}
             />
-          </Flexgrid>
+          </FlexGrid>
           {toggleState.requirements && (
             <>
               <Table>

@@ -26,3 +26,4 @@ export {ReactComponent as Success} from './success.svg';
 export {ReactComponent as Info} from './info.svg';
 export {ReactComponent as Columns} from './columns.svg';
 export {ReactComponent as Download} from './download.svg';
+export {ReactComponent as Sort} from './sort.svg';

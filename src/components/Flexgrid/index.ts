@@ -1,1 +1,1 @@
-export * from './Flexgrid';
+export * from './FlexGrid';

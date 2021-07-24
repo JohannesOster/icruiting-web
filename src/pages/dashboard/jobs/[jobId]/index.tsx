@@ -10,7 +10,7 @@ import {
   DataTable,
   Table,
   getDashboardLayout,
-  Flexgrid,
+  FlexGrid,
 } from 'components';
 import {Button, Dialog, Spinner, Input} from 'components';
 import {API, FormCategory, TForm} from 'services';
@@ -341,10 +341,10 @@ const JobDetails = () => {
           style={{cursor: 'pointer'}}
           onClick={() => router.push(`/dashboard/jobs/${jobId}/edit`)}
         >
-          <Flexgrid gap={spacing.scale300} alignItems="center">
+          <FlexGrid gap={spacing.scale300} alignItems="center">
             <H6>Anforderungsprofil</H6>
             <Edit />
-          </Flexgrid>
+          </FlexGrid>
         </div>
         {isFetching && <Spinner />}
         {!isFetching && (

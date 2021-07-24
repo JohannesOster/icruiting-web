@@ -1,10 +1,10 @@
-import React, {useEffect, useReducer, useState} from 'react';
+import React, {useEffect, useReducer, useRef, useState} from 'react';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {useTheme} from 'styled-components';
 import useSWR from 'swr';
 import {useForm} from 'react-hook-form';
-import {API, Applicant} from 'services';
+import {API} from 'services';
 import {useAuth} from 'context';
 import {
   DataTable,
@@ -14,7 +14,7 @@ import {
   H6,
   Box,
   Typography,
-  Flexgrid,
+  FlexGrid,
   getDashboardLayout,
   Select,
   Button,
@@ -22,21 +22,28 @@ import {
   Input,
   withAuth,
 } from 'components';
-import account from 'pages/account';
+import {useQueryReducer} from 'components/useQueryReducer';
 
 const Applicants = () => {
   const router = useRouter();
-  type Query = {offset: number; limit: number; filter: string};
-  const query = (router.query as unknown) as Query;
-  const {offset = 0, limit = 10, filter = ''} = query;
+
+  const {query, setLimit, order, next, prev} = useQueryReducer();
+  const {offset = 0, limit = 10, filter = '', order: orderBy = ''} = query;
   const {spacing} = useTheme();
   const {currentUser} = useAuth();
+
+  const localStorageKey = useRef(`applicants-sort`);
+  useEffect(() => {
+    let sort = localStorage.getItem(localStorageKey.current);
+    if (!sort) return;
+    order(sort);
+  }, []);
 
   const {data: jobs, error: jobsError} = useSWR('GET /jobs', API.jobs.list);
   const [selectedJobId, setSelectedJobId] = useState(jobs && jobs[0]?.jobId);
 
   const key = selectedJobId
-    ? ['GET /applicants', selectedJobId, offset, limit, filter]
+    ? ['GET /applicants', selectedJobId, offset, limit, filter, orderBy]
     : null;
   const {data: applicantsResponse, error: applicantsError, revalidate} = useSWR(
     key,
@@ -45,6 +52,7 @@ const Applicants = () => {
         offset,
         limit,
         filter,
+        orderBy,
       }),
   );
 
@@ -223,9 +231,19 @@ const Applicants = () => {
     }
   };
 
-  const routeFor = (offset: number, limit: number, filter: string) => {
-    const _filter = filter ? '&filter=' + filter : '';
-    return `${router.pathname}?offset=${offset}&limit=${limit}${_filter}`;
+  const routeFor = (query: {
+    offset?: number;
+    limit?: number;
+    filter?: string;
+    orderBy?: string;
+  }) => {
+    const _offset = query.offset !== undefined ? query.offset : offset;
+    const _limit = query.limit || limit;
+    const _filter = query.filter || filter;
+    const _orderBy = query.orderBy || orderBy;
+    const orderQuery = _orderBy ? '&orderBy=' + _orderBy : '';
+    const filterQuery = _filter ? '&filter=' + _filter : '';
+    return `${router.pathname}?offset=${_offset}&limit=${_limit}${filterQuery}${orderQuery}`;
   };
 
   return (
@@ -261,7 +279,7 @@ const Applicants = () => {
           </Box>
         </Dialog>
       )}
-      <Flexgrid
+      <FlexGrid
         justifyContent="space-between"
         alignItems="center"
         flexGap={spacing.scale300}
@@ -280,13 +298,13 @@ const Applicants = () => {
             }}
           />
         )}
-      </Flexgrid>
+      </FlexGrid>
       <form
         onSubmit={handleSubmit(({filter}) => {
-          router.push(routeFor(0, limit, filter));
+          router.push(routeFor({offset: 0, limit, filter}));
         })}
       >
-        <Flexgrid
+        <FlexGrid
           flexGap={spacing.scale300}
           alignItems="center"
           marginBottom={spacing.scale300}
@@ -309,22 +327,24 @@ const Applicants = () => {
             löschen
           </Button>
           <Button type="submit">Suchen</Button>
-        </Flexgrid>
+        </FlexGrid>
       </form>
       <DataTable
         id="applicants-dt"
         columns={columns}
-        selectColumns={true}
         data={applicantsResponse?.applicants || []}
         isLoading={isLoading}
         totalCount={applicantsResponse?.totalCount || 0}
         totalPages={Math.ceil((applicantsResponse?.totalCount || 0) / limit)}
         currentPage={Math.round(offset / limit) + 1}
-        onPrev={() => router.push(routeFor(+offset - +limit, limit, filter))}
-        onNext={() => router.push(routeFor(+offset + +limit, limit, filter))}
-        onRowsPerPageChange={(rows) => {
-          router.push(routeFor(0, rows, filter));
+        onPrev={prev}
+        onNext={next}
+        onRowsPerPageChange={setLimit}
+        onOrderByChange={(by) => {
+          order(by);
+          localStorage.setItem(localStorageKey.current, by);
         }}
+        orderBy={orderBy}
         rowsPerPage={limit}
         actions={currentUser.userRole === 'admin' ? bulkActions : undefined}
         onAction={onBulkAction}

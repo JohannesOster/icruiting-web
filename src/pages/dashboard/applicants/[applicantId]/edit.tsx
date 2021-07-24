@@ -5,7 +5,7 @@ import {useForm} from 'react-hook-form';
 import config from 'amplify.config';
 import useSWR from 'swr';
 import {API, TForm} from 'services';
-import {H3, Box, Flexgrid, getDashboardLayout, withAdmin} from 'components';
+import {H3, Box, FlexGrid, getDashboardLayout, withAdmin} from 'components';
 import {useToaster} from 'context';
 import {useRouter} from 'next/router';
 import {stringToComponent} from 'components/FormBuilder/utils';
@@ -120,7 +120,7 @@ export const EditApplicant = () => {
 
   return (
     <Box display="grid" rowGap={spacing.scale400}>
-      <Flexgrid
+      <FlexGrid
         flexGap={spacing.scale300}
         justifyContent="space-between"
         marginBottom={spacing.scale300}
@@ -132,7 +132,7 @@ export const EditApplicant = () => {
           </Button>
           <Button onClick={() => router.back()}>Abbrechen</Button>
         </Box>
-      </Flexgrid>
+      </FlexGrid>
       {Form}
       <input
         hidden

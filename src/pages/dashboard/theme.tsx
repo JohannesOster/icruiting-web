@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {
   H3,
-  Flexgrid,
+  FlexGrid,
   Table,
   Box,
   withAuth,
@@ -90,7 +90,7 @@ export const Theme = () => {
 
   return (
     <Box display="grid" rowGap={spacing.scale300}>
-      <Flexgrid
+      <FlexGrid
         flexGap={spacing.scale300}
         justifyContent="space-between"
         alignItems="center"
@@ -103,7 +103,7 @@ export const Theme = () => {
         >
           icruiting - Themekit
         </a>
-      </Flexgrid>
+      </FlexGrid>
 
       <Table>
         <thead>
@@ -125,7 +125,7 @@ export const Theme = () => {
                   formRef.current?.reset();
                 }}
               >
-                <Flexgrid flexGap={spacing.scale300}>
+                <FlexGrid flexGap={spacing.scale300}>
                   <Box maxWidth="200px" overflow="hidden">
                     <Input
                       type="file"
@@ -144,7 +144,7 @@ export const Theme = () => {
                   >
                     hochladen
                   </Button>
-                </Flexgrid>
+                </FlexGrid>
               </form>
             </td>
             <td>

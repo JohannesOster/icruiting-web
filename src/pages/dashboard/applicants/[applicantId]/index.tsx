@@ -8,7 +8,7 @@ import {
   Box,
   H6,
   DataTable,
-  Flexgrid,
+  FlexGrid,
   getDashboardLayout,
 } from 'components';
 import {Button} from 'components';
@@ -154,7 +154,7 @@ const ApplicantDetails = () => {
     <Box display="grid" gridRowGap={spacing.scale700}>
       <section>
         <Box display="flex" justifyContent="space-between">
-          <Flexgrid
+          <FlexGrid
             flexGap={spacing.scale300}
             alignItems="center"
             marginBottom={spacing.scale300}
@@ -168,7 +168,7 @@ const ApplicantDetails = () => {
                 }
               />
             )}
-          </Flexgrid>
+          </FlexGrid>
           {currentUser.userRole === 'admin' && (
             <Button
               onClick={async () => {
@@ -215,7 +215,7 @@ const ApplicantDetails = () => {
           onClick={() => setShowScreeningForm((curr) => !curr)}
           style={{cursor: 'pointer'}}
         >
-          <Flexgrid alignItems="center" flexGap={spacing.scale200}>
+          <FlexGrid alignItems="center" flexGap={spacing.scale200}>
             <H6>Screening-Formular</H6>
             <Arrow
               height={spacing.scale400}
@@ -223,7 +223,7 @@ const ApplicantDetails = () => {
                 transform: `rotate(${showScreeningForm ? '90deg' : '-90deg'})`,
               }}
             />
-          </Flexgrid>
+          </FlexGrid>
         </div>
         {showScreeningForm && (
           <Box

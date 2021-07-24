@@ -7,7 +7,7 @@ import {
   TColumn,
   DataTable,
   Box,
-  Flexgrid,
+  FlexGrid,
   getDashboardLayout,
   Button,
   Dialog,
@@ -188,7 +188,7 @@ export const Jobs = () => {
           formRef?.current?.reset();
         }}
       >
-        <Flexgrid flexGap={spacing.scale300}>
+        <FlexGrid flexGap={spacing.scale300}>
           <Box maxWidth="200px" overflow="hidden">
             <Input
               type="file"
@@ -207,7 +207,7 @@ export const Jobs = () => {
           >
             hochladen
           </Button>
-        </Flexgrid>
+        </FlexGrid>
       </form>
     </Box>
   );

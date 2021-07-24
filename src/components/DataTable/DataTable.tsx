@@ -9,40 +9,16 @@ import {
   Table,
   Box,
   Typography,
-  Flexgrid,
+  FlexGrid,
   Spinner,
   Button,
   Select,
   Checkbox,
 } from 'components';
 import {useTheme} from 'styled-components';
-import {Columns, Download} from 'icons';
+import {Columns, Sort} from 'icons';
 import {useOutsideClick} from 'components/useOutsideClick';
-import {useAuth} from 'context';
-
-export type TColumn = {
-  title: string;
-  cell: (row: {[key: string]: any}) => React.ReactNode;
-};
-
-type Props = {
-  id?: string; // required to store visible columns in localstorage
-  isLoading?: boolean;
-  onEmptyMessage?: string;
-  columns: TColumn[];
-  selectColumns?: boolean;
-  data: {[key: string]: any}[];
-  getRowStyle?: (row: {[key: string]: any}) => React.CSSProperties;
-  totalPages?: number;
-  currentPage?: number;
-  totalCount?: number;
-  onPrev?: () => void;
-  onNext?: () => void;
-  onRowsPerPageChange?: (rows: number) => void;
-  rowsPerPage?: number;
-  actions?: {label: string; value: string}[];
-  onAction?: (action: string, selectedIndices: number[]) => void;
-};
+import {Props} from './types';
 
 export const DataTable: React.FC<Props> = ({
   isLoading,
@@ -54,41 +30,32 @@ export const DataTable: React.FC<Props> = ({
   currentPage,
   onPrev,
   onNext,
-  getRowStyle = (_row) => ({}),
   onRowsPerPageChange,
   rowsPerPage = 10,
   actions,
   onAction,
   id,
-  selectColumns = false,
+  onOrderByChange,
+  orderBy,
 }) => {
   const {spacing, colors} = useTheme();
   const localStorageKey = useRef(`data-table-${id}`);
 
-  const [showColsPopUp, setShowColsPopup] = useState(false);
-  const _columns = columns.map(({title}, index) => ({
-    title,
-    index: index.toString(),
-  }));
   const [cols, setCols] = useState([]);
   const _visibleCols = columns.filter((_val, index) =>
-    cols.includes(index.toString()),
+    cols.includes(`${index}`),
   );
+  const _columns = columns.map(({title}, index) => ({
+    title,
+    index: `${index}`,
+  }));
 
-  // HACK TO SET DEFAULT FOR ICONS
-  const {currentUser} = useAuth();
+  const [showSortPopup, setShowSortPopup] = useState(false);
+  const [showColsPopUp, setShowColsPopup] = useState(false);
 
   useEffect(() => {
-    let data = localStorage.getItem(localStorageKey.current);
-
-    // HACK TO SET DEFAULT FOR ICONS
-    if (!data) {
-      if (localStorageKey.current === 'data-table-applicants-dt') {
-        if (currentUser.tenantId === '8ecc98cf-a15f-4b84-8d2b-d79630569eb5') {
-          data = JSON.stringify(['1', '2', '15', '16']);
-        }
-      }
-    }
+    const key = localStorageKey.current + 'columns';
+    let data = localStorage.getItem(key);
 
     if (data) {
       const cols = JSON.parse(data);
@@ -99,12 +66,19 @@ export const DataTable: React.FC<Props> = ({
     setCols(_columns.map(({index}) => index));
   }, [columns]);
 
-  const ref = useRef<HTMLDivElement>();
-  useOutsideClick(ref, () => {
+  const colsPopupRef = useRef<HTMLDivElement>();
+  useOutsideClick(colsPopupRef, () => {
     if (!showColsPopUp) return;
     setShowColsPopup(false);
     if (!id) return;
-    localStorage.setItem(localStorageKey.current, JSON.stringify(cols));
+    const key = localStorageKey.current + 'columns';
+    localStorage.setItem(key, JSON.stringify(cols));
+  });
+
+  const sortPopupRef = useRef<HTMLDivElement>();
+  useOutsideClick(sortPopupRef, () => {
+    if (!showSortPopup) return;
+    setShowSortPopup(false);
   });
 
   const showPagination =
@@ -172,8 +146,12 @@ export const DataTable: React.FC<Props> = ({
 
   return (
     <>
-      {(actions?.length || selectColumns) && (
-        <Flexgrid alignItems="center" marginBottom={spacing.scale200}>
+      {actions?.length && (
+        <FlexGrid
+          alignItems="center"
+          flexGap={spacing.scale200}
+          marginBottom={spacing.scale200}
+        >
           {actions?.length && (
             <Box
               display="grid"
@@ -196,19 +174,26 @@ export const DataTable: React.FC<Props> = ({
               </Button>
             </Box>
           )}
-          {selectColumns && (
-            <Box position="relative" margin="0 0 0 auto">
+          <Box
+            margin="0 0 0 auto"
+            display="grid"
+            gridAutoFlow="column"
+            columnGap={spacing.scale200}
+            position="relative"
+          >
+            <Box position="relative" display="flex" alignItems="center">
               <Button
                 kind="minimal"
-                onClick={() => setShowColsPopup((curr) => !curr)}
+                onClick={() => setShowSortPopup((curr) => !curr)}
               >
-                <Columns />
+                <Sort />
               </Button>
-              {showColsPopUp && (
-                <div ref={ref}>
+              {showSortPopup && (
+                <div ref={sortPopupRef}>
                   <Box
                     position="absolute"
                     right={0}
+                    top={spacing.scale600}
                     background="white"
                     padding={spacing.scale400}
                     boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
@@ -216,29 +201,70 @@ export const DataTable: React.FC<Props> = ({
                     zIndex={30}
                     minWidth={200}
                   >
-                    <Checkbox
-                      options={_columns.map(({title, index}) => ({
-                        label: title,
-                        value: index,
-                      }))}
-                      value={cols}
+                    <Select
+                      options={
+                        isLoading
+                          ? [{label: '-'.repeat(10), value: ''}]
+                          : _columns.map(({title}) => ({
+                              label: title,
+                              value: title,
+                            }))
+                      }
                       onChange={(event) => {
                         const {value} = event.target;
-                        if (cols.includes(value)) {
-                          setCols((cols) =>
-                            cols.filter((val) => val !== value),
-                          );
-                        } else {
-                          setCols((cols) => [...cols, value]);
-                        }
+                        onOrderByChange(value);
                       }}
+                      value={orderBy}
                     />
                   </Box>
                 </div>
               )}
             </Box>
-          )}
-        </Flexgrid>
+            {actions?.length && (
+              <Box position="relative" display="flex" alignItems="center">
+                <Button
+                  kind="minimal"
+                  onClick={() => setShowColsPopup((curr) => !curr)}
+                >
+                  <Columns />
+                </Button>
+                {showColsPopUp && (
+                  <div ref={colsPopupRef}>
+                    <Box
+                      position="absolute"
+                      right={0}
+                      top={spacing.scale600}
+                      background="white"
+                      padding={spacing.scale400}
+                      boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
+                      display="flex"
+                      zIndex={30}
+                      minWidth={200}
+                    >
+                      <Checkbox
+                        options={_columns.map(({title, index}) => ({
+                          label: title,
+                          value: index,
+                        }))}
+                        value={cols}
+                        onChange={(event) => {
+                          const {value} = event.target;
+                          if (cols.includes(value)) {
+                            setCols((cols) =>
+                              cols.filter((val) => val !== value),
+                            );
+                          } else {
+                            setCols((cols) => [...cols, value]);
+                          }
+                        }}
+                      />
+                    </Box>
+                  </div>
+                )}
+              </Box>
+            )}
+          </Box>
+        </FlexGrid>
       )}
       <Box overflow="scroll" width="100%" display="flex">
         <Table style={{zIndex: 1}}>
@@ -270,7 +296,7 @@ export const DataTable: React.FC<Props> = ({
           <tbody>
             {!isLoading &&
               data.map((row, idx) => (
-                <tr key={idx} style={getRowStyle(row)}>
+                <tr key={idx}>
                   {actions && (
                     <td>
                       <Checkbox
@@ -301,13 +327,13 @@ export const DataTable: React.FC<Props> = ({
         </Box>
       )}
       {showPagination && !isLoading && (
-        <Flexgrid
+        <FlexGrid
           justifyContent="space-between"
           flexGap={spacing.scale600}
           padding={spacing.scale200}
         >
           <section>
-            <Flexgrid alignItems="center" flexGap={spacing.scale200}>
+            <FlexGrid alignItems="center" flexGap={spacing.scale200}>
               <Typography>Zeilen pro Seite: </Typography>
               <Select
                 onChange={_onRowsPerPageChange}
@@ -317,10 +343,10 @@ export const DataTable: React.FC<Props> = ({
                   value: `${val}`,
                 }))}
               />
-            </Flexgrid>
+            </FlexGrid>
           </section>
           <section>
-            <Flexgrid
+            <FlexGrid
               justifyContent="flex-end"
               flexGap={spacing.scale600}
               padding={spacing.scale200}
@@ -360,9 +386,9 @@ export const DataTable: React.FC<Props> = ({
               >
                 Nächste
               </Button>
-            </Flexgrid>
+            </FlexGrid>
           </section>
-        </Flexgrid>
+        </FlexGrid>
       )}
     </>
   );
