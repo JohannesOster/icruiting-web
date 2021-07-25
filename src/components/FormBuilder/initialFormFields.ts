@@ -2,6 +2,7 @@ import {RatingGroup, Input} from 'components';
 import {ItemTypes} from '../../components/FormBuilder/DnD';
 import {FormCategory, FormFieldIntent} from 'services';
 import {DnDItem} from 'components/FormBuilder/types';
+import clone from 'just-clone';
 
 const applicationInitialformFields: DnDItem[] = [
   {
@@ -60,10 +61,10 @@ const assessmentInitialformFields: DnDItem[] = [
 
 export const getInitialFormFields = (category: FormCategory): DnDItem[] => {
   const map = {
-    screening: assessmentInitialformFields,
-    application: applicationInitialformFields,
-    assessment: assessmentInitialformFields,
-    onboarding: assessmentInitialformFields,
+    screening: clone(assessmentInitialformFields),
+    application: clone(applicationInitialformFields),
+    assessment: clone(assessmentInitialformFields),
+    onboarding: clone(assessmentInitialformFields),
   };
   return map[category] || [];
 };
