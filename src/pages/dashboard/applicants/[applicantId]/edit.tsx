@@ -3,12 +3,12 @@ import {Button} from 'components';
 import {useTheme} from 'styled-components';
 import {useForm} from 'react-hook-form';
 import config from 'amplify.config';
-import useSWR from 'swr';
 import {API, TForm} from 'services';
 import {H3, Box, FlexGrid, getDashboardLayout, withAdmin} from 'components';
 import {useToaster} from 'context';
 import {useRouter} from 'next/router';
 import {stringToComponent} from 'components/FormBuilder/utils';
+import {useFetch} from 'components/useFetch';
 
 export const EditApplicant = () => {
   const {spacing} = useTheme();
@@ -18,14 +18,14 @@ export const EditApplicant = () => {
   const {applicantId} = router.query as {applicantId: string};
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const {data: applicant} = useSWR(
+  const {data: applicant} = useFetch(
     [`GET /applicants/${applicantId}`, applicantId],
     (_key, applicantId) => API.applicants.find(applicantId),
   );
 
   const formsKey = applicant ? [`GET /forms`, applicant.jobId] : null;
   const [form, setForm] = useState<TForm | undefined>(undefined);
-  const {data} = useSWR(formsKey, (_key, jobId) => API.forms.list(jobId));
+  const {data} = useFetch(formsKey, (_key, jobId) => API.forms.list(jobId));
 
   useEffect(() => {
     if (!data) return;

@@ -13,12 +13,12 @@ import {
 } from 'components';
 import {Button} from 'components';
 import {API, TForm} from 'services';
-import useSWR from 'swr';
 import {Arrow, Edit} from 'icons';
 import {useAuth, useToaster} from 'context';
 import {withAuth} from 'components';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {stringToComponent} from 'components/FormBuilder/utils';
+import {useFetch} from 'components/useFetch';
 
 const ApplicantDetails = () => {
   const toaster = useToaster();
@@ -29,7 +29,7 @@ const ApplicantDetails = () => {
 
   type Status = 'idle' | 'confirming' | 'submitting';
   const [status, setStatus] = useState<Status>('idle');
-  const {data: applicant} = useSWR(
+  const {data: applicant} = useFetch(
     ['GET /applicants/:applicantId', applicantId],
     (_key: string, applicantId: string) => API.applicants.find(applicantId),
   );
@@ -38,7 +38,7 @@ const ApplicantDetails = () => {
 
   const formsKey = applicant ? [`GET /forms`, applicant.jobId] : null;
   const [forms, setForms] = useState<{[key: string]: TForm[]}>({});
-  const {data} = useSWR(formsKey, (_key, jobId) => API.forms.list(jobId));
+  const {data} = useFetch(formsKey, (_key, jobId) => API.forms.list(jobId));
 
   useEffect(() => {
     if (!data) return;
@@ -61,7 +61,7 @@ const ApplicantDetails = () => {
           applicantId,
         ]
       : null;
-  const {data: submission} = useSWR(key, (_key, formId, applicantId) =>
+  const {data: submission} = useFetch(key, (_key, formId, applicantId) =>
     API.formSubmissions.find(formId, applicantId),
   );
 

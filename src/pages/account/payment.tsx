@@ -12,7 +12,6 @@ import {PaymentMethodForm} from 'containers';
 import {useTheme} from 'styled-components';
 import {useAuth, useToaster} from 'context';
 import {Button, Dialog} from 'components';
-import useSWR, {mutate} from 'swr';
 import {API} from 'services';
 import {loadStripe} from '@stripe/stripe-js';
 import {
@@ -22,6 +21,7 @@ import {
   IbanElement,
 } from '@stripe/react-stripe-js';
 import {withAdmin} from 'components';
+import {useFetch, mutate} from 'components/useFetch';
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '',
@@ -37,7 +37,7 @@ const PaymentMethods: React.FC = () => {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [fetchesClientSecret, setFetchesClientSecret] = useState(false);
 
-  const {data, error} = useSWR(
+  const {data, error} = useFetch(
     [
       `GET /tenants/${currentUser?.tenantId}/paymentMethods`,
       currentUser?.tenantId,

@@ -14,13 +14,13 @@ import {
 } from 'components';
 import {Button, Dialog, Spinner, Input} from 'components';
 import {API, FormCategory, TForm} from 'services';
-import useSWR from 'swr';
 import {useRouter} from 'next/router';
 import {withAdmin} from 'components';
 import amplifyConfig from 'amplify.config';
 import {Edit} from 'icons';
 import {useForm} from 'react-hook-form';
 import {v4 as uuidv4} from 'uuid';
+import {useFetch} from 'components/useFetch';
 
 const JobDetails = () => {
   const {spacing} = useTheme();
@@ -32,19 +32,19 @@ const JobDetails = () => {
     null,
   );
 
-  const {data: job, error: jobError} = useSWR(
+  const {data: job, error: jobError} = useFetch(
     [`GET /jobs/${jobId}`, jobId],
     (_key, jobId) => API.jobs.find(jobId),
   );
 
   const [forms, setForms] = useState<{[key: string]: TForm[]}>({});
-  const {data, error: formsError, mutate, revalidate} = useSWR(
+  const {data, error: formsError, mutate, revalidate} = useFetch(
     [`GET /forms`, jobId],
     (_key, jobId) => API.forms.list(jobId),
   );
 
   const [deletingReport, setDeletingReport] = useState(false);
-  const {data: report, revalidate: revalidateReport} = useSWR(
+  const {data: report, revalidate: revalidateReport} = useFetch(
     ['GET /jobs/:jobId/report', jobId],
     (_key, jobId) => API.jobs.retrieveReport(jobId),
   );

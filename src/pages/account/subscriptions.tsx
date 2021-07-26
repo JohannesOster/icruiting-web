@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 import {Box, H3, DataTable, TColumn} from 'components';
 import {useTheme} from 'styled-components';
 import {useAuth, useToaster} from 'context';
-import useSWR, {mutate} from 'swr';
 import {API} from 'services';
 import {Button, withAdmin} from 'components';
+import {useFetch, mutate} from 'components/useFetch';
 
 const Subscriptions: React.FC = () => {
   const {spacing} = useTheme();
@@ -13,12 +13,12 @@ const Subscriptions: React.FC = () => {
   const [addingId, setAddingId] = useState<string | null>(null);
   const {danger, success} = useToaster();
 
-  const {data: prices, error: pricesError} = useSWR(
+  const {data: prices, error: pricesError} = useFetch(
     'GET /stripe/prices',
     API.stripe.prices.list,
   );
 
-  const {data: subscriptions, error: subscriptionsError} = useSWR(
+  const {data: subscriptions, error: subscriptionsError} = useFetch(
     [
       `GET /tenants/${currentUser?.tenantId}/subscriptions`,
       currentUser?.tenantId,

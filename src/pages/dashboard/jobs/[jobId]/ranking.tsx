@@ -3,9 +3,9 @@ import Link from 'next/link';
 import {H3, DataTable, TColumn, Box, getDashboardLayout} from 'components';
 import {API} from 'services';
 import {useTheme} from 'styled-components';
-import useSWR from 'swr';
 import {withAdmin} from 'components';
 import {useRouter} from 'next/router';
+import {useFetch} from 'components/useFetch';
 
 export const Ranking = () => {
   const router = useRouter();
@@ -18,11 +18,11 @@ export const Ranking = () => {
   const {
     data: applicants,
     error: applicantsError,
-  } = useSWR(`GET /applicants?jobId=${jobId}`, () =>
+  } = useFetch(`GET /applicants?jobId=${jobId}`, () =>
     API.applicants.list(jobId),
   );
 
-  const {data: ranking, error: rankingError} = useSWR(
+  const {data: ranking, error: rankingError} = useFetch(
     [
       `GET /rankings/${jobId}?formCategory=${formCategory}`,
       jobId,
