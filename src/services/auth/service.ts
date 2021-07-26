@@ -19,6 +19,7 @@ export const Auth = () => {
   const currentUser = async (): Promise<User> => {
     const userInfo = await AmplifyAuth.currentUserInfo();
     return {
+      userId: userInfo.attributes.sub,
       email: userInfo.attributes.email,
       givenName: userInfo.attributes.given_name,
       familyName: userInfo.attributes.family_name,
