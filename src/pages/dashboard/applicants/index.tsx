@@ -23,6 +23,7 @@ import {
   withAuth,
 } from 'components';
 import {useQueryReducer} from 'components/useQueryReducer';
+import {useFetch} from 'components/useFetch';
 
 const Applicants = () => {
   const router = useRouter();
@@ -39,21 +40,24 @@ const Applicants = () => {
     order(sort);
   }, []);
 
-  const {data: jobs, error: jobsError} = useSWR('GET /jobs', API.jobs.list);
+  const {data: jobs, error: jobsError} = useFetch('GET /jobs', API.jobs.list);
   const [selectedJobId, setSelectedJobId] = useState(jobs && jobs[0]?.jobId);
 
   const key = selectedJobId
     ? ['GET /applicants', selectedJobId, offset, limit, filter, orderBy]
     : null;
-  const {data: applicantsResponse, error: applicantsError, revalidate} = useSWR(
-    key,
-    (_key, jobId) =>
-      API.applicants.list(jobId, {
-        offset,
-        limit,
-        filter,
-        orderBy,
-      }),
+
+  const {
+    data: applicantsResponse,
+    error: applicantsError,
+    revalidate,
+  } = useFetch(key, (_key, jobId) =>
+    API.applicants.list(jobId, {
+      offset,
+      limit,
+      filter,
+      orderBy,
+    }),
   );
 
   useEffect(() => {
