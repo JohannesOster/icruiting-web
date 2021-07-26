@@ -20,9 +20,9 @@ import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {email} from 'utils/form-validation';
 import {object, array} from 'yup';
 import styled, {useTheme} from 'styled-components';
-import useSWR from 'swr';
 import {API} from 'services';
 import {useToaster} from 'context';
+import {useFetch} from 'components/useFetch';
 
 export const Header = styled.header`
   display: flex;
@@ -42,7 +42,7 @@ export const Members = () => {
   const {spacing} = useTheme();
   const toaster = useToaster();
 
-  const {data: members, error, revalidate} = useSWR(
+  const {data: members, error, revalidate} = useFetch(
     '/members',
     API.members.list,
   );

@@ -2,7 +2,6 @@ import React, {useEffect, useReducer, useRef, useState} from 'react';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {useTheme} from 'styled-components';
-import useSWR from 'swr';
 import {useForm} from 'react-hook-form';
 import {API} from 'services';
 import {useAuth} from 'context';
@@ -23,6 +22,7 @@ import {
   withAuth,
 } from 'components';
 import {useQueryReducer} from 'components/useQueryReducer';
+import {useFetch} from 'components/useFetch';
 
 const Applicants = () => {
   const router = useRouter();
@@ -39,21 +39,24 @@ const Applicants = () => {
     order(sort);
   }, []);
 
-  const {data: jobs, error: jobsError} = useSWR('GET /jobs', API.jobs.list);
+  const {data: jobs, error: jobsError} = useFetch('GET /jobs', API.jobs.list);
   const [selectedJobId, setSelectedJobId] = useState(jobs && jobs[0]?.jobId);
 
   const key = selectedJobId
     ? ['GET /applicants', selectedJobId, offset, limit, filter, orderBy]
     : null;
-  const {data: applicantsResponse, error: applicantsError, revalidate} = useSWR(
-    key,
-    (_key, jobId) =>
-      API.applicants.list(jobId, {
-        offset,
-        limit,
-        filter,
-        orderBy,
-      }),
+
+  const {
+    data: applicantsResponse,
+    error: applicantsError,
+    revalidate,
+  } = useFetch(key, (_key, jobId) =>
+    API.applicants.list(jobId, {
+      offset,
+      limit,
+      filter,
+      orderBy,
+    }),
   );
 
   useEffect(() => {

@@ -16,10 +16,10 @@ import {
 } from 'components';
 import {useToaster} from 'context';
 import {useTheme} from 'styled-components';
-import useSWR from 'swr';
 import {API} from 'services';
 import {useRouter} from 'next/router';
 import config from 'amplify.config';
+import {useFetch} from 'components/useFetch';
 
 export const Jobs = () => {
   const {spacing} = useTheme();
@@ -35,7 +35,7 @@ export const Jobs = () => {
   const [files, setFiles] = useState<FileList | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
-  const {data: jobs, error, revalidate} = useSWR('GET /jobs', API.jobs.list);
+  const {data: jobs, error, revalidate} = useFetch('GET /jobs', API.jobs.list);
 
   const onDelete = () => {
     if (!shouldDeleteJobId) return;

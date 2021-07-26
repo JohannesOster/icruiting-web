@@ -16,11 +16,11 @@ import {
   Spinner,
 } from 'components';
 import {Trash} from 'icons';
-import useSWR from 'swr';
 import {useTheme} from 'styled-components';
 import {useToaster} from 'context';
 import {useRouter} from 'next/router';
 import styled from 'styled-components';
+import {useFetch} from 'components/useFetch';
 
 const OptionContainer = styled.div`
   display: grid;
@@ -38,7 +38,7 @@ const EditJob = () => {
   const {jobId} = router.query as {jobId: string};
   const [status, setStatus] = useState('idle');
 
-  const {data: job, error: jobError} = useSWR(
+  const {data: job, error: jobError} = useFetch(
     [`GET /jobs/${jobId}`, jobId],
     (_key: string, jobId) =>
       API.jobs.find(jobId).then((job) => {
