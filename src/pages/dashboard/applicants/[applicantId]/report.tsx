@@ -1,6 +1,5 @@
 import React, {useEffect, useReducer, useState} from 'react';
 import {API, TForm} from 'services';
-import useSWR from 'swr';
 import {buildRadarChart} from 'utils/report-utils';
 import {
   H3,
@@ -16,6 +15,7 @@ import {Arrow} from 'icons';
 import {Radar} from 'react-chartjs-2';
 import {useRouter} from 'next/router';
 import {Button} from 'components';
+import {useFetch} from 'components/useFetch';
 
 const ToggleSections = (<T extends string[]>(...o: T) => o)(
   'applicant',
@@ -61,24 +61,24 @@ const ApplicantReport = () => {
     toggleDispatch({type: section, args});
   };
 
-  const {data: applicant} = useSWR(
+  const {data: applicant} = useFetch(
     ['GET /applicants/:applicantId', applicantId],
     (_key, applicantId) => API.applicants.find(applicantId),
   );
 
-  const {data: report} = useSWR(
+  const {data: report} = useFetch(
     ['GET /applicant/:applicantId/report', applicantId, formCategory],
     (_key, applicantId, formCategory) =>
       API.applicants.retrieveReport(applicantId, formCategory),
   );
 
   const [form, setForm] = useState<TForm | undefined>();
-  const {data: forms, error: formsError} = useSWR(
+  const {data: forms, error: formsError} = useFetch(
     applicant ? [`GET /forms`, applicant.jobId] : null,
     (_key, jobId) => API.forms.list(jobId),
   );
 
-  const {data: reportStructure} = useSWR(
+  const {data: reportStructure} = useFetch(
     applicant ? ['GET /jobs/:jobId/report', applicant.jobId] : null,
     (_key, jobId) => API.jobs.retrieveReport(jobId),
   );

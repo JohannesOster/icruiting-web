@@ -14,8 +14,8 @@ import {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {API, TForm} from 'services';
 import {useTheme} from 'styled-components';
-import useSWR from 'swr';
 import * as yup from 'yup';
+import {useFetch} from 'components/useFetch';
 
 type FormValues = {reportFields: string[]};
 
@@ -48,7 +48,7 @@ const ReportBuilder = () => {
     router.back();
   };
 
-  const {data: forms, error: formsError} = useSWR(
+  const {data: forms, error: formsError} = useFetch(
     [`GET /forms`, jobId],
     (_key, jobId) => API.forms.list(jobId),
   );
@@ -63,7 +63,7 @@ const ReportBuilder = () => {
     setForm(_form);
   }, [forms]);
 
-  const {data: report} = useSWR(
+  const {data: report} = useFetch(
     ['GET /jobs/:jobId/report', jobId],
     (_key, jobId) => API.jobs.retrieveReport(jobId),
   );

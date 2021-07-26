@@ -22,3 +22,5 @@ export function useFetch<Data = any, Error = any>(
 
   return useSWR<Data, Error>(key, fn);
 }
+
+export {mutate} from 'swr';

@@ -13,7 +13,7 @@ import {useTheme} from 'styled-components';
 import {useAuth, useToaster} from 'context';
 import config from 'amplify.config';
 import {API} from 'services';
-import useSWR, {mutate} from 'swr';
+import {useFetch, mutate} from 'components/useFetch';
 
 export const Theme = () => {
   const {spacing} = useTheme();
@@ -24,7 +24,7 @@ export const Theme = () => {
   const [files, setFiles] = useState<FileList | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
-  const {data: tenant} = useSWR(
+  const {data: tenant} = useFetch(
     [`GET /tenants/${currentUser?.tenantId}`, currentUser?.tenantId],
     (_key, tenantId) => API.tenants.find(tenantId),
   );

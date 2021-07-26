@@ -2,12 +2,12 @@ import React, {useState, useEffect} from 'react';
 import {useForm} from 'react-hook-form';
 import styled from 'styled-components';
 import {Button, withAuth, H3, Box, getDashboardLayout} from 'components';
-import useSWR from 'swr';
 import {API, TForm} from 'services';
 import {useRouter} from 'next/router';
 import {useToaster} from 'context';
 import {stringToComponent} from 'components/FormBuilder/utils';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
+import {useFetch} from 'components/useFetch';
 
 const Form = styled.form`
   display: grid;
@@ -23,20 +23,22 @@ const ApplicantAssessment = () => {
   };
   type Status = 'idle' | 'deleting' | 'submitting';
   const [status, setStatus] = useState<Status>('idle');
-  const {data: applicant} = useSWR(
+  const {data: applicant} = useFetch(
     ['GET /applicants/:applicantId', applicantId],
     (_key, applicantId) => API.applicants.find(applicantId),
   );
   const key = applicant
     ? ['GET /form-submissions/:formId/:applicantId', formId, applicantId]
     : null;
-  const {data: submission, mutate} = useSWR(key, (_key, formId, applicantId) =>
-    API.formSubmissions.find(formId, applicantId),
+  const {data: submission, mutate} = useFetch(
+    key,
+    (_key, formId, applicantId) =>
+      API.formSubmissions.find(formId, applicantId),
   );
 
   const formsKey = applicant ? ['GET /forms', applicant.jobId] : null;
   const [form, setForm] = useState<TForm | undefined>(undefined);
-  const {data} = useSWR(formsKey, (_key, jobId) => API.forms.list(jobId));
+  const {data} = useFetch(formsKey, (_key, jobId) => API.forms.list(jobId));
 
   useEffect(() => {
     if (!data) return;

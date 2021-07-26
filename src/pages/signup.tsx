@@ -4,8 +4,8 @@ import {SignUpForm, SignUpFormValues} from 'containers';
 import {useRouter} from 'next/router';
 import {useToaster} from 'context';
 import {API} from 'services';
-import useSWR from 'swr';
 import {useTheme} from 'styled-components';
+import {useFetch} from 'components/useFetch';
 
 type Status = 'idle' | 'fetching' | 'submitting';
 const SignUp: React.FC = () => {
@@ -15,7 +15,7 @@ const SignUp: React.FC = () => {
   const [status, setStatus] = useState<Status>('fetching');
   const [selectedPriceId, setSelectedPriceId] = useState<string | null>(null);
 
-  const {data: prices, error} = useSWR(
+  const {data: prices, error} = useFetch(
     'GET /stripe/prices',
     API.stripe.prices.list,
   );

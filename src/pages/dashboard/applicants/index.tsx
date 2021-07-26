@@ -2,7 +2,6 @@ import React, {useEffect, useReducer, useRef, useState} from 'react';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {useTheme} from 'styled-components';
-import useSWR from 'swr';
 import {useForm} from 'react-hook-form';
 import {API} from 'services';
 import {useAuth} from 'context';

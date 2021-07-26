@@ -4,7 +4,6 @@ import {DndProvider} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import {useTheme} from 'styled-components';
 import {useForm} from 'react-hook-form';
-import useSWR from 'swr';
 import {Button, Input, Dialog} from 'components';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {
@@ -41,6 +40,7 @@ import {converter} from 'components/FormBuilder/converter';
 import {useRouter} from 'next/router';
 import {useFormBuilder} from 'components/FormBuilder/useFormBuilder';
 import {useToaster} from 'context';
+import {useFetch} from 'components/useFetch';
 
 type Query = {
   formId?: string;
@@ -58,11 +58,11 @@ const FormBuilder: React.FC = () => {
   const formId = useRef(formIdEdit || uuidv4());
 
   const formKey = formIdEdit ? [`GET /forms/${formId}`, formIdEdit] : null;
-  const {data: formToEdit} = useSWR(formKey, (_key, formId) =>
+  const {data: formToEdit} = useFetch(formKey, (_key, formId) =>
     API.forms.find(formId),
   );
 
-  const {data: job} = useSWR(
+  const {data: job} = useFetch(
     [`GET /jobs/${jobId}`, jobId],
     (_key: string, jobId) => API.jobs.find(jobId),
   );
