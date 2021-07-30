@@ -28,5 +28,22 @@ export const FormSubmissions = () => {
     return API.del(`/form-submissions/${formSubmissionId}`);
   };
 
-  return {find, create, update, del};
+  const exportCSV = (jobId: string, formCategory: string) => {
+    return API.get(
+      `/form-submissions?jobId=${jobId}&formCategory=${formCategory}`,
+    ).then((rows) => {
+      const delimiter = ';';
+      const csvContent = rows.map((row) => row.join(delimiter)).join('\n');
+      const blob = new Blob([csvContent], {type: 'text/csv;charset=utf-8;'});
+
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `ic-${formCategory}-export.csv`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    });
+  };
+
+  return {find, create, update, del, exportCSV};
 };

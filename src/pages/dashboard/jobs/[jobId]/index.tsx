@@ -369,33 +369,49 @@ const JobDetails = () => {
         )}
       </Box>
       <Box display="grid" gridRowGap={spacing.scale200}>
-        <H6>Rankings</H6>
+        <H6>Evaluierung</H6>
         <Table>
           <thead>
             <tr>
+              <th>Formulartyp</th>
               <th>Ranking</th>
+              <th>Datenexport</th>
             </tr>
           </thead>
           <tbody>
             {[
               {
-                title: 'Screeningranking',
+                formCategory: 'screening',
+                title: 'Screening',
                 url: `/dashboard/jobs/${jobId}/ranking?formCategory=screening`,
               },
               {
-                title: 'Assessmentranking',
+                formCategory: 'assessment',
+                title: 'Assessmet',
                 url: `/dashboard/jobs/${jobId}/ranking?formCategory=assessment`,
               },
               {
-                title: 'Onboardingranking',
+                formCategory: 'onboarding',
+                title: 'Onboarding',
                 url: `/dashboard/jobs/${jobId}/ranking?formCategory=onboarding`,
               },
-            ].map(({title, url}) => (
+            ].map(({title, url, formCategory}) => (
               <tr key={url}>
+                <td>{title}</td>
                 <td>
                   <Link href={url}>
-                    <a>{title}</a>
+                    <a>Ranking</a>
                   </Link>
+                </td>
+                <td>
+                  <Button
+                    kind="minimal"
+                    onClick={() => {
+                      API.formSubmissions.exportCSV(jobId, formCategory);
+                    }}
+                  >
+                    CSV Export
+                  </Button>
                 </td>
               </tr>
             ))}
