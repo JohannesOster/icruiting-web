@@ -15,7 +15,7 @@ import config from 'config';
 const Login: React.FC = () => {
   const {refetchUser, currentUser} = useAuth();
   const router = useRouter();
-  const {code} = router.query;
+  const {code, error, error_description} = router.query;
 
   useEffect(() => {
     if (currentUser) router.replace('/dashboard');
@@ -74,6 +74,18 @@ const Login: React.FC = () => {
     if (!code) return;
     signInUsingAccessCode(code);
   }, [code]);
+
+  useEffect(() => {
+    if (!error) return;
+    if (!error_description) return;
+    // filter error already exists entry after linking providers
+    // https://stackoverflow.com/questions/47815161/cognito-auth-flow-fails-with-already-found-an-entry-for-username-facebook-10155
+    if (!error_description.toString().startsWith('Already')) return;
+    console.error(error_description);
+    console.info('Repeat login');
+    const url = `${config.userPoolDomain}/oauth2/authorize?identity_provider=Google&response_type=code&client_id=${config.userPoolWebClientId}&${config.loginCallbackUrl}`;
+    router.replace(url);
+  }, [error]);
 
   return (
     <div
