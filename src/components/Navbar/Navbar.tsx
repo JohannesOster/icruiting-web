@@ -91,12 +91,12 @@ const Navbar: React.FC = () => {
           </MobileNavItem>
           <MobileNavItem onClick={closeMenu}>
             <Link href="/dashboard/members">
-              <a>Tenant</a>
+              <a>Mitarbeiter:innen</a>
             </Link>
           </MobileNavItem>
           <MobileNavItem onClick={closeMenu}>
             <Link href={`/dashboard/theme`}>
-              <a>Theme</a>
+              <a>Einstellungen</a>
             </Link>
           </MobileNavItem>
         </>
@@ -115,8 +115,12 @@ const Navbar: React.FC = () => {
         </Link>
       </MobileNavItem>
       <MobileNavItem onClick={closeMenu}>
-        <Typography onClick={logout}>
-          <a>Abmelden</a>
+        <Typography>
+          <a
+            href={`${config.userPoolDomain}/logout?client_id=${config.userPoolWebClientId}&logout_uri=${config.logoutCallbackUrl}`}
+          >
+            Abmelden
+          </a>
         </Typography>
       </MobileNavItem>
     </>
@@ -186,7 +190,6 @@ const Navbar: React.FC = () => {
                 router.replace(
                   `${config.userPoolDomain}/logout?client_id=${config.userPoolWebClientId}&logout_uri=${config.logoutCallbackUrl}`,
                 );
-                logout();
               }}
             >
               <DropDownItem>

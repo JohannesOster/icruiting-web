@@ -5,7 +5,8 @@ import styled, {css} from 'styled-components';
 
 export const Wrapper = styled.a<{isActive: boolean}>`
   text-align: left;
-  padding: ${({theme}) => theme.spacing.scale500};
+  padding: ${({theme}) =>
+    `${theme.spacing.scale500} ${theme.spacing.scale400}`};
   box-sizing: border-box;
   display: flex;
   align-items: center;
