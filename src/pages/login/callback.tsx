@@ -32,9 +32,9 @@ const Login: React.FC = () => {
 
     const body = new URLSearchParams();
     body.append('grant_type', 'authorization_code');
-    body.append('client_id', '3n7mi9c40kr8sp0tuoo6udvfi0');
+    body.append('client_id', config.userPoolWebClientId);
     body.append('code', code);
-    body.append('redirect_uri', 'http://localhost:3000/login/callback/');
+    body.append('redirect_uri', config.loginCallbackUrl);
 
     fetch(url, {method: 'POST', headers, body, redirect: 'follow'})
       .then((response) => response.json())
