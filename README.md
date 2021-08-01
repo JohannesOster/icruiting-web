@@ -1,3 +1,3 @@
 # icruiting-web-nextjs
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/5e9234ed-469e-43ee-bf93-c0e9e49fcf34/deploy-status)](https://app.netlify.com/sites/objective-northcutt-d95066/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/5e9234ed-469e-43ee-bf93-c0e9e49fcf34/deploy-status)](https://app.netlify.com/sites/icruiting/deploys)
