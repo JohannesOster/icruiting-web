@@ -166,8 +166,8 @@ const Applicants = () => {
       ),
     },
     {
-      title: 'Bestätigt',
-      cell: ({confirmed}) => <span>{confirmed ? 'Ja' : '-'} </span>,
+      title: 'Bewerber:innenstatus',
+      cell: ({applicantStatus}) => <span>{applicantStatus}</span>,
     },
   ];
 

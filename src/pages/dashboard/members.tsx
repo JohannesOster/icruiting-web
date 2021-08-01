@@ -251,7 +251,7 @@ export const Members = () => {
           flexGap={spacing.scale200}
           marginBottom={spacing.scale300}
         >
-          <H3>Tenant</H3>
+          <H3>Mitarbeiter:innen</H3>
           <Button onClick={() => setShowNewMembereForm(true)}>
             Hinzufügen
           </Button>

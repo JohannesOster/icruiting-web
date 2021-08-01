@@ -1,5 +1,5 @@
 import React from 'react';
-import {Users, World, Portfolio, Palette} from 'icons';
+import {Users, World, Portfolio, Settings} from 'icons';
 import {useTheme} from 'styled-components';
 import {useAuth} from 'context';
 import {SideNav, NavList, Container} from './DashboardLayout.sc';
@@ -31,11 +31,11 @@ const DashboardLayout: React.FC = ({children}) => {
             </NavLink>
             <NavLink href="/dashboard/members">
               <World style={iconsStyles} />
-              Tenant
+              Mitarbeiter:innen
             </NavLink>
             <NavLink href="/dashboard/theme">
-              <Palette style={iconsStyles} />
-              Theme
+              <Settings style={iconsStyles} />
+              Einstellungen
             </NavLink>
           </NavList>
         ) : (
