@@ -9,6 +9,7 @@ import {useTheme} from 'styled-components';
 import {yupResolver} from '@hookform/resolvers';
 import {object, string} from 'yup';
 import styles from './googleBtn.module.css';
+import config from 'config';
 
 export type LoginFormValues = {
   email: string;
@@ -96,7 +97,7 @@ export const LoginForm: React.FC<Props> = ({onSubmit}) => {
         }}
       >
         <a
-          href="https://icruiting-web-dev.auth.eu-central-1.amazoncognito.com/oauth2/authorize?identity_provider=Google&response_type=code&client_id=3n7mi9c40kr8sp0tuoo6udvfi0&http://localhost:3000/login/callback/"
+          href={`${config.userPoolDomain}/oauth2/authorize?identity_provider=Google&response_type=code&client_id=${config.userPoolWebClientId}&${config.loginCallbackUrl}`}
           className={styles.googleBtn}
         >
           <div className={styles.googleIconWrapper}>
