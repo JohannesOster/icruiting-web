@@ -29,3 +29,4 @@ export {ReactComponent as Download} from './download.svg';
 export {ReactComponent as Sort} from './sort.svg';
 export {ReactComponent as Favicon} from './favicon.svg';
 export {ReactComponent as Settings} from './settings.svg';
+export {ReactComponent as Filter} from './filter.svg';
