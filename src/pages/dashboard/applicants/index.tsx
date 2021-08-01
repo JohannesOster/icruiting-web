@@ -190,6 +190,7 @@ const Applicants = () => {
           type: 'requestBulkActionConfirmation',
           payload: {bulkAction, bulkActionIndices},
         });
+        break;
       }
       case BulkAction.download: {
         const _data = applicantsResponse.applicants
@@ -230,6 +231,8 @@ const Applicants = () => {
         link.setAttribute('href', encoded);
         link.setAttribute('download', filename);
         link.click();
+
+        break;
       }
     }
   };
