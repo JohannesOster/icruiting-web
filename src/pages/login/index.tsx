@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {
-  LoginForm,
   LoginFormValues,
-  AccountCompletionForm,
   AccountCompletionValues,
+  AccountCompletionForm,
+  LoginForm,
 } from 'containers';
 import {useAuth, useToaster} from 'context';
 import {useRouter} from 'next/router';

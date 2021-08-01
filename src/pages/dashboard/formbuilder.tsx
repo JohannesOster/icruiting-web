@@ -35,7 +35,7 @@ import {
   FormCodeTextarea,
 } from 'components/FormBuilder/FormBuilder.sc';
 import {API, FormCategory} from 'services';
-import amplifyConfig from 'amplify.config';
+import config from 'config';
 import {converter} from 'components/FormBuilder/converter';
 import {useRouter} from 'next/router';
 import {useFormBuilder} from 'components/FormBuilder/useFormBuilder';
@@ -178,7 +178,7 @@ const FormBuilder: React.FC = () => {
     if (tmp) showEditItemForm(tmp.toString());
   };
 
-  const domain = amplifyConfig.API.endpoints[0].endpoint;
+  const domain = config.endpoint.url;
   const iframeSrc = `${domain}/forms/${formId.current}/html`;
   const formCode = `<!-- Begin icruiting webform --><iframe src="${iframeSrc}" style="width: 100%; border: none;" scroll="no" id="${formId.current}-iframe" ></iframe><script>window.addEventListener("message", (event) => {if (event.origin !== "${domain}") return;document.getElementById("${formId.current}-iframe").style.height=event.data + "px";});</script><!-- End icruiting webform -->`;
   const copyCode = () => {

@@ -17,6 +17,7 @@ import {useTheme} from 'styled-components';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {useAuth} from 'context';
+import config from 'config';
 
 const Navbar: React.FC = () => {
   const {spacing} = useTheme();
@@ -183,7 +184,11 @@ const Navbar: React.FC = () => {
             <Typography onClick={logout}>
               <DropDownItem>
                 <Logout style={{width: '1em', marginRight: spacing.scale200}} />
-                Abmelden
+                <a
+                  href={`${config.userPoolDomain}/logout?client_id=${config.userPoolWebClientId}&logout_uri=${config.logoutCallbackUrl}`}
+                >
+                  Abmelden
+                </a>
               </DropDownItem>
             </Typography>
           </Box>

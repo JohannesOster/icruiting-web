@@ -1,5 +1,6 @@
 import {Auth as AmplifyAuth} from 'aws-amplify';
 import {User} from './types';
+import API from '../request';
 
 export const Auth = () => {
   const logout = async () => {
@@ -46,6 +47,10 @@ export const Auth = () => {
     return AmplifyAuth.forgotPasswordSubmit(email, confirmationCode, password);
   };
 
+  const connectAccounts = (email: string, sub: string) => {
+    return API.post('/members/connect', {body: {email, sub}});
+  };
+
   return {
     login,
     logout,
@@ -54,5 +59,6 @@ export const Auth = () => {
     completeNewPassword,
     forgotPassword,
     forgotPasswordSubmit,
+    connectAccounts,
   };
 };

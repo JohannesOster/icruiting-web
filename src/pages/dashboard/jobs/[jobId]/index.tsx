@@ -16,7 +16,7 @@ import {Button, Dialog, Spinner, Input} from 'components';
 import {API, FormCategory, TForm} from 'services';
 import {useRouter} from 'next/router';
 import {withAdmin} from 'components';
-import amplifyConfig from 'amplify.config';
+import config from 'config';
 import {Edit} from 'icons';
 import {useForm} from 'react-hook-form';
 import {v4 as uuidv4} from 'uuid';
@@ -172,7 +172,7 @@ const JobDetails = () => {
       title: 'Direktlink',
       cell: ({formId}) => {
         if (!formId) return <Typography>-</Typography>;
-        const domain = amplifyConfig.API.endpoints[0].endpoint;
+        const domain = config.endpoint.url;
         const iframeSrc = `${domain}/forms/${formId}/html`;
         return (
           <a href={iframeSrc} rel="noopener noreferrer" target="_blank">
@@ -369,33 +369,49 @@ const JobDetails = () => {
         )}
       </Box>
       <Box display="grid" gridRowGap={spacing.scale200}>
-        <H6>Rankings</H6>
+        <H6>Evaluierung</H6>
         <Table>
           <thead>
             <tr>
+              <th>Formulartyp</th>
               <th>Ranking</th>
+              <th>Datenexport</th>
             </tr>
           </thead>
           <tbody>
             {[
               {
-                title: 'Screeningranking',
+                formCategory: 'screening',
+                title: 'Screening',
                 url: `/dashboard/jobs/${jobId}/ranking?formCategory=screening`,
               },
               {
-                title: 'Assessmentranking',
+                formCategory: 'assessment',
+                title: 'Assessmet',
                 url: `/dashboard/jobs/${jobId}/ranking?formCategory=assessment`,
               },
               {
-                title: 'Onboardingranking',
+                formCategory: 'onboarding',
+                title: 'Onboarding',
                 url: `/dashboard/jobs/${jobId}/ranking?formCategory=onboarding`,
               },
-            ].map(({title, url}) => (
+            ].map(({title, url, formCategory}) => (
               <tr key={url}>
+                <td>{title}</td>
                 <td>
                   <Link href={url}>
-                    <a>{title}</a>
+                    <a>Ranking</a>
                   </Link>
+                </td>
+                <td>
+                  <Button
+                    kind="minimal"
+                    onClick={() => {
+                      API.formSubmissions.exportCSV(jobId, formCategory);
+                    }}
+                  >
+                    CSV Export
+                  </Button>
                 </td>
               </tr>
             ))}
