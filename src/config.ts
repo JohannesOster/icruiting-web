@@ -18,9 +18,10 @@ const prodConfig = {
   userPoolWebClientId: '6fb5ic9a0vkrb1osaunksajjgn',
   endpoint: {name: 'icruiting-api', url: 'https://icruiting-api.herokuapp.com'},
 
-  loginCallbackUrl: '',
-  logoutCallbackUrl: '',
-  userPoolDomain: '',
+  loginCallbackUrl: 'https://icruiting.at/login/callback/',
+  logoutCallbackUrl: 'https://icruiting.at/',
+  userPoolDomain:
+    'https://icruiting-web-prod.auth.eu-central-1.amazoncognito.com',
 };
 
 export default process.env.NODE_ENV === 'production' ? prodConfig : devConfig;
