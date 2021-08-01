@@ -11,7 +11,7 @@ import {
 } from 'components';
 import {useTheme} from 'styled-components';
 import {useAuth, useToaster} from 'context';
-import config from 'amplify.config';
+import config from 'config';
 import {API} from 'services';
 import {useFetch, mutate} from 'components/useFetch';
 
@@ -48,7 +48,7 @@ export const Theme = () => {
       const request = new XMLHttpRequest();
       request.open(
         'POST',
-        `${config.API.endpoints[0].endpoint}/tenants/${currentUser?.tenantId}/themes`,
+        `${config.endpoint.url}/tenants/${currentUser?.tenantId}/themes`,
       );
       request.setRequestHeader('Authorization', `Bearer ${token}`);
       request.onreadystatechange = () => {

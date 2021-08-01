@@ -8,6 +8,7 @@ import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {useTheme} from 'styled-components';
 import {yupResolver} from '@hookform/resolvers';
 import {object, string} from 'yup';
+import styles from './googleBtn.module.css';
 
 export type LoginFormValues = {
   email: string;
@@ -19,7 +20,7 @@ type Props = {
 };
 
 export const LoginForm: React.FC<Props> = ({onSubmit}) => {
-  const {spacing} = useTheme();
+  const {spacing, colors} = useTheme();
   const {register, errors, formState, handleSubmit} = useForm<LoginFormValues>({
     mode: 'onChange',
     resolver: yupResolver(
@@ -84,6 +85,28 @@ export const LoginForm: React.FC<Props> = ({onSubmit}) => {
         >
           Anmelden
         </Button>
+      </div>
+      <div
+        style={{
+          borderTop: '1px solid',
+          borderColor: colors.inputBorder,
+          paddingTop: spacing.scale500,
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <a
+          href="https://icruiting-web-dev.auth.eu-central-1.amazoncognito.com/oauth2/authorize?identity_provider=Google&response_type=code&client_id=3n7mi9c40kr8sp0tuoo6udvfi0&http://localhost:3000/login/callback/"
+          className={styles.googleBtn}
+        >
+          <div className={styles.googleIconWrapper}>
+            <img
+              className={styles.googleIcon}
+              src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+            />
+          </div>
+          <b className={styles.btnText}>Mit Google anmelden</b>
+        </a>
       </div>
     </AuthForm>
   );

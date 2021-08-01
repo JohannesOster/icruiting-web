@@ -16,7 +16,7 @@ import {Button, Dialog, Spinner, Input} from 'components';
 import {API, FormCategory, TForm} from 'services';
 import {useRouter} from 'next/router';
 import {withAdmin} from 'components';
-import amplifyConfig from 'amplify.config';
+import config from 'config';
 import {Edit} from 'icons';
 import {useForm} from 'react-hook-form';
 import {v4 as uuidv4} from 'uuid';
@@ -172,7 +172,7 @@ const JobDetails = () => {
       title: 'Direktlink',
       cell: ({formId}) => {
         if (!formId) return <Typography>-</Typography>;
-        const domain = amplifyConfig.API.endpoints[0].endpoint;
+        const domain = config.endpoint.url;
         const iframeSrc = `${domain}/forms/${formId}/html`;
         return (
           <a href={iframeSrc} rel="noopener noreferrer" target="_blank">

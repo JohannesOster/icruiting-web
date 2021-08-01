@@ -18,7 +18,7 @@ import {useToaster} from 'context';
 import {useTheme} from 'styled-components';
 import {API} from 'services';
 import {useRouter} from 'next/router';
-import config from 'amplify.config';
+import config from 'config';
 import {useFetch} from 'components/useFetch';
 
 export const Jobs = () => {
@@ -106,7 +106,7 @@ export const Jobs = () => {
 
         const token = await API.auth.token();
         const request = new XMLHttpRequest();
-        request.open('POST', `${config.API.endpoints[0].endpoint}/jobs/import`);
+        request.open('POST', `${config.endpoint.url}/jobs/import`);
         request.setRequestHeader('Authorization', `Bearer ${token}`);
         request.onreadystatechange = () => {
           try {

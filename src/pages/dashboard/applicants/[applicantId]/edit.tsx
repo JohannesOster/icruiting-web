@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {Button} from 'components';
 import {useTheme} from 'styled-components';
 import {useForm} from 'react-hook-form';
-import config from 'amplify.config';
+import config from 'config';
 import {API, TForm} from 'services';
 import {H3, Box, FlexGrid, getDashboardLayout, withAdmin} from 'components';
 import {useToaster} from 'context';
@@ -99,10 +99,7 @@ export const EditApplicant = () => {
     const token = await API.auth.token();
 
     const request = new XMLHttpRequest();
-    request.open(
-      'PUT',
-      `${config.API.endpoints[0].endpoint}/applicants/${applicantId}`,
-    );
+    request.open('PUT', `${config.endpoint.url}/applicants/${applicantId}`);
     request.setRequestHeader('Authorization', `Bearer ${token}`);
     request.onreadystatechange = () => {
       if (request.readyState === 4) {
