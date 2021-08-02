@@ -45,6 +45,7 @@ const EditJob = () => {
         reset(job);
         return job;
       }),
+      {revalidateOnFocus: false}
   );
 
   const {

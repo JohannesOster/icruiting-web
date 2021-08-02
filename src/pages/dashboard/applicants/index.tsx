@@ -32,15 +32,16 @@ const Applicants = () => {
   const {spacing} = useTheme();
   const {currentUser} = useAuth();
 
-  const localStorageKey = useRef(`applicants-sort`);
+  const sortLocalStorageKey = useRef(`${currentUser.userId}-applicants-sort`);
   useEffect(() => {
-    let sort = localStorage.getItem(localStorageKey.current);
+    let sort = localStorage.getItem(sortLocalStorageKey.current);
     if (!sort) return;
     order(sort);
   }, []);
 
+  const selectedJobLocalStorageKey = useRef(`${currentUser.userId}-applicants-job`);
   const {data: jobs, error: jobsError} = useFetch('GET /jobs', API.jobs.list);
-  const [selectedJobId, setSelectedJobId] = useState(jobs && jobs[0]?.jobId);
+  const [selectedJobId, setSelectedJobId] = useState(localStorage.getItem(selectedJobLocalStorageKey.current) || (jobs && jobs[0]?.jobId));
 
   const key = selectedJobId
     ? ['GET /applicants', selectedJobId, offset, limit, filter, orderBy]
@@ -61,7 +62,10 @@ const Applicants = () => {
 
   useEffect(() => {
     if (!jobs?.length) return;
-    setSelectedJobId(jobs[0].jobId);
+    if(selectedJobId) return;
+    const jobId = jobs[0].jobId;
+    setSelectedJobId(jobId);
+    localStorage.setItem(selectedJobLocalStorageKey.current, jobId);
   }, [jobs]);
 
   const loadingJob = !(jobs || jobsError);
@@ -301,7 +305,9 @@ const Applicants = () => {
             onChange={(event) => {
               const {value} = event.target;
               setSelectedJobId(value);
+              localStorage.setItem(selectedJobLocalStorageKey.current, value);
             }}
+            value={selectedJobId}
           />
         )}
       </FlexGrid>
@@ -336,7 +342,7 @@ const Applicants = () => {
         </FlexGrid>
       </form>
       <DataTable
-        id="applicants-dt"
+        id={`${currentUser.userId}-${selectedJobId}-applicants-dt`}
         columns={columns}
         data={applicantsResponse?.applicants || []}
         isLoading={isLoading}
@@ -348,7 +354,7 @@ const Applicants = () => {
         onRowsPerPageChange={setLimit}
         onOrderByChange={(by) => {
           order(by);
-          localStorage.setItem(localStorageKey.current, by);
+          localStorage.setItem(sortLocalStorageKey.current, by);
         }}
         orderBy={orderBy}
         rowsPerPage={limit}

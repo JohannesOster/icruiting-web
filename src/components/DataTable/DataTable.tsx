@@ -39,7 +39,7 @@ export const DataTable: React.FC<Props> = ({
   orderBy,
 }) => {
   const {spacing, colors} = useTheme();
-  const localStorageKey = useRef(`data-table-${id}`);
+  const localStorageKey = `data-table-${id}`;
 
   const [cols, setCols] = useState([]);
   const _visibleCols = columns.filter((_val, index) =>
@@ -54,8 +54,9 @@ export const DataTable: React.FC<Props> = ({
   const [showColsPopUp, setShowColsPopup] = useState(false);
 
   useEffect(() => {
-    const key = localStorageKey.current + 'columns';
+    const key = localStorageKey + 'columns';
     let data = localStorage.getItem(key);
+
 
     if (data) {
       const cols = JSON.parse(data);
@@ -64,14 +65,14 @@ export const DataTable: React.FC<Props> = ({
     }
 
     setCols(_columns.map(({index}) => index));
-  }, [columns]);
+  }, [columns, localStorageKey]);
 
   const colsPopupRef = useRef<HTMLDivElement>();
   useOutsideClick(colsPopupRef, () => {
     if (!showColsPopUp) return;
     setShowColsPopup(false);
     if (!id) return;
-    const key = localStorageKey.current + 'columns';
+    const key = localStorageKey + 'columns';
     localStorage.setItem(key, JSON.stringify(cols));
   });
 
