@@ -5,7 +5,7 @@ const devConfig = {
   userPoolWebClientId: '3n7mi9c40kr8sp0tuoo6udvfi0',
   endpoint: {name: 'icruiting-api', url: 'http://localhost:5000'},
 
-  loginCallbackUrl: 'http://localhost:3000/callback/',
+  loginCallbackUrl: 'http://localhost:3000/login/callback/',
   logoutCallbackUrl: 'http://localhost:3000/logout/',
   userPoolDomain:
     'https://icruiting-web-dev.auth.eu-central-1.amazoncognito.com',

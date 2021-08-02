@@ -21,6 +21,7 @@ export const EditApplicant = () => {
   const {data: applicant} = useFetch(
     [`GET /applicants/${applicantId}`, applicantId],
     (_key, applicantId) => API.applicants.find(applicantId),
+    {revalidateOnFocus: false}
   );
 
   const formsKey = applicant ? [`GET /forms`, applicant.jobId] : null;

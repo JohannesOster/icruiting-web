@@ -60,6 +60,7 @@ const FormBuilder: React.FC = () => {
   const formKey = formIdEdit ? [`GET /forms/${formId}`, formIdEdit] : null;
   const {data: formToEdit} = useFetch(formKey, (_key, formId) =>
     API.forms.find(formId),
+    {revalidateOnFocus: false} // do not refetch form while editing it
   );
 
   const {data: job} = useFetch(
