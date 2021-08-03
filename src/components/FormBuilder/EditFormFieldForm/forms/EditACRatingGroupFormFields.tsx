@@ -93,8 +93,8 @@ export const EditACRatingGroupFormFields: React.FC<Props> = ({
         label="Absicht"
         ref={register}
         options={[
-          {label: 'count_distinct', value: FormFieldIntent.countDistinct},
-          {label: 'sum_up', value: FormFieldIntent.sumUp},
+          {label: 'auszählen', value: FormFieldIntent.countDistinct},
+          {label: 'auswerten', value: FormFieldIntent.sumUp},
         ]}
       />
       <Select
