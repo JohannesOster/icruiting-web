@@ -2,16 +2,16 @@ import {useReducer} from 'react';
 
 interface RType {
   query: State;
-  filter: (by: string) => void;
   order: (by: string) => void;
   prev: () => void;
   next: () => void;
+  setFilter: (by: string) => void;
   setLimit: (limit: number) => void;
 }
 
 type State = {filter?: string; order?: string; offset?: number; limit?: number};
 type Action =
-  | {type: 'filter'; by: string}
+  | {type: 'setFilter'; by: string}
   | {type: 'prev'} // pagination
   | {type: 'next'} // pagination
   | {type: 'setLimit'; limit: number}
@@ -22,8 +22,8 @@ export const useQueryReducer = (
 ): RType => {
   const reducer = (query: State, action: Action) => {
     switch (action.type) {
-      case 'filter': {
-        return action.by ? {...query, filter: action.by} : query;
+      case 'setFilter': {
+        return {...query, filter: action.by || undefined};
       }
       case 'order': {
         return action.by ? {...query, order: action.by} : query;
@@ -48,10 +48,10 @@ export const useQueryReducer = (
 
   return {
     query,
-    filter: (by) => dispatch({type: 'filter', by}),
     order: (by) => dispatch({type: 'order', by}),
     prev: () => dispatch({type: 'prev'}),
     next: () => dispatch({type: 'next'}),
+    setFilter: (by) => dispatch({type: 'setFilter', by}),
     setLimit: (limit) => dispatch({type: 'setLimit', limit}),
   };
 };

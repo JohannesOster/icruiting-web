@@ -27,7 +27,7 @@ import {useFetch} from 'components/useFetch';
 const Applicants = () => {
   const router = useRouter();
 
-  const {query, setLimit, order, next, prev} = useQueryReducer();
+  const {query, setLimit, setFilter, order, next, prev} = useQueryReducer();
   const {offset = 0, limit = 10, filter = '', order: orderBy = ''} = query;
   const {spacing} = useTheme();
   const {currentUser} = useAuth();
@@ -247,21 +247,6 @@ const Applicants = () => {
     }
   };
 
-  const routeFor = (query: {
-    offset?: number;
-    limit?: number;
-    filter?: string;
-    orderBy?: string;
-  }) => {
-    const _offset = query.offset !== undefined ? query.offset : offset;
-    const _limit = query.limit || limit;
-    const _filter = query.filter || filter;
-    const _orderBy = query.orderBy || orderBy;
-    const orderQuery = _orderBy ? '&orderBy=' + _orderBy : '';
-    const filterQuery = _filter ? '&filter=' + _filter : '';
-    return `${router.pathname}?offset=${_offset}&limit=${_limit}${filterQuery}${orderQuery}`;
-  };
-
   return (
     <main>
       {state.bulkActionStatus && (
@@ -319,7 +304,7 @@ const Applicants = () => {
       </FlexGrid>
       <form
         onSubmit={handleSubmit(({filter}) => {
-          router.push(routeFor({offset: 0, limit, filter}));
+          setFilter(filter);
         })}
       >
         <FlexGrid
@@ -335,11 +320,7 @@ const Applicants = () => {
             disabled={!(getValues('filter') || formState.isDirty)}
             onClick={() => {
               reset();
-              if (filter) {
-                router.push(
-                  `${router.pathname}?offset=${offset}&limit=${limit}`,
-                );
-              }
+              setFilter('');
             }}
           >
             löschen
