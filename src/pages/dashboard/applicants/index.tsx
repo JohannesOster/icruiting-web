@@ -39,9 +39,14 @@ const Applicants = () => {
     order(sort);
   }, []);
 
-  const selectedJobLocalStorageKey = useRef(`${currentUser.userId}-applicants-job`);
+  const selectedJobLocalStorageKey = useRef(
+    `${currentUser.userId}-applicants-job`,
+  );
   const {data: jobs, error: jobsError} = useFetch('GET /jobs', API.jobs.list);
-  const [selectedJobId, setSelectedJobId] = useState(localStorage.getItem(selectedJobLocalStorageKey.current) || (jobs && jobs[0]?.jobId));
+  const [selectedJobId, setSelectedJobId] = useState(
+    localStorage.getItem(selectedJobLocalStorageKey.current) ||
+      (jobs && jobs[0]?.jobId),
+  );
 
   const key = selectedJobId
     ? ['GET /applicants', selectedJobId, offset, limit, filter, orderBy]
@@ -62,7 +67,8 @@ const Applicants = () => {
 
   useEffect(() => {
     if (!jobs?.length) return;
-    if(selectedJobId) return;
+    if (selectedJobId && jobs.map(({jobId}) => jobId).includes(selectedJobId))
+      return;
     const jobId = jobs[0].jobId;
     setSelectedJobId(jobId);
     localStorage.setItem(selectedJobLocalStorageKey.current, jobId);
