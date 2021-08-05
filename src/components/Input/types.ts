@@ -1,4 +1,4 @@
-import {ChangeEvent, FocusEvent} from 'react';
+import {ChangeEvent, FocusEvent, KeyboardEvent} from 'react';
 
 export type InputType =
   | 'file'
@@ -33,6 +33,7 @@ export interface InputProps {
   onBlur?(event: FocusEvent<HTMLInputElement>): void;
   onFocus?(event: FocusEvent<HTMLInputElement>): void;
   onChange?(event: ChangeEvent<HTMLInputElement>): void;
+  onKeyPress?(event: KeyboardEvent): void;
 }
 
 export interface BaseInputProps {

@@ -14,11 +14,13 @@ import {
   Button,
   Select,
   Checkbox,
+  Input,
 } from 'components';
 import {useTheme} from 'styled-components';
-import {Columns, Sort} from 'icons';
+import {Columns, Filter, Sort} from 'icons';
 import {useOutsideClick} from 'components/useOutsideClick';
 import {Props} from './types';
+import {useForm} from 'react-hook-form';
 
 export const DataTable: React.FC<Props> = ({
   isLoading,
@@ -37,6 +39,7 @@ export const DataTable: React.FC<Props> = ({
   id,
   onOrderByChange,
   orderBy,
+  onFilter,
 }) => {
   const {spacing, colors} = useTheme();
   const localStorageKey = `data-table-${id}`;
@@ -53,10 +56,11 @@ export const DataTable: React.FC<Props> = ({
   const [showSortPopup, setShowSortPopup] = useState(false);
   const [showColsPopUp, setShowColsPopup] = useState(false);
 
+  const {getValues, register} = useForm();
+
   useEffect(() => {
     const key = localStorageKey + 'columns';
     let data = localStorage.getItem(key);
-
 
     if (data) {
       const cols = JSON.parse(data);
@@ -145,6 +149,18 @@ export const DataTable: React.FC<Props> = ({
     onAction && onAction(action, selectedIndices);
   };
 
+  const _onFilter = () => {
+    const filter = Object.entries(getValues()).reduce(
+      (acc, [attribute, eq]) => {
+        if (!eq) return acc;
+        acc[attribute] = {eq};
+        return acc;
+      },
+      {},
+    );
+    onFilter && onFilter(filter);
+  };
+
   return (
     <>
       {actions?.length && (
@@ -153,28 +169,26 @@ export const DataTable: React.FC<Props> = ({
           flexGap={spacing.scale200}
           marginBottom={spacing.scale200}
         >
-          {actions?.length && (
-            <Box
-              display="grid"
-              gridAutoFlow="column"
-              alignItems="center"
-              columnGap={spacing.scale200}
+          <Box
+            display="grid"
+            gridAutoFlow="column"
+            alignItems="center"
+            columnGap={spacing.scale200}
+          >
+            <Select
+              options={[{label: '-- Aktion --', value: ''}, ...actions]}
+              onChange={({target}) => {
+                setAction(target.value);
+              }}
+            />
+            <Button
+              kind="minimal"
+              onClick={_onAction}
+              disabled={!(action && Object.keys(state).length)}
             >
-              <Select
-                options={[{label: '-- Aktion --', value: ''}, ...actions]}
-                onChange={({target}) => {
-                  setAction(target.value);
-                }}
-              />
-              <Button
-                kind="minimal"
-                onClick={_onAction}
-                disabled={!(action && Object.keys(state).length)}
-              >
-                durchführen
-              </Button>
-            </Box>
-          )}
+              durchführen
+            </Button>
+          </Box>
           <Box
             margin="0 0 0 auto"
             display="grid"
@@ -221,49 +235,47 @@ export const DataTable: React.FC<Props> = ({
                 </div>
               )}
             </Box>
-            {actions?.length && (
-              <Box position="relative" display="flex" alignItems="center">
-                <Button
-                  kind="minimal"
-                  onClick={() => setShowColsPopup((curr) => !curr)}
-                >
-                  <Columns />
-                </Button>
-                {showColsPopUp && (
-                  <div ref={colsPopupRef}>
-                    <Box
-                      position="absolute"
-                      right={0}
-                      top={spacing.scale600}
-                      background="white"
-                      padding={spacing.scale400}
-                      boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
-                      display="flex"
-                      zIndex={30}
-                      minWidth={200}
-                    >
-                      <Checkbox
-                        options={_columns.map(({title, index}) => ({
-                          label: title,
-                          value: index,
-                        }))}
-                        value={cols}
-                        onChange={(event) => {
-                          const {value} = event.target;
-                          if (cols.includes(value)) {
-                            setCols((cols) =>
-                              cols.filter((val) => val !== value),
-                            );
-                          } else {
-                            setCols((cols) => [...cols, value]);
-                          }
-                        }}
-                      />
-                    </Box>
-                  </div>
-                )}
-              </Box>
-            )}
+            <Box position="relative" display="flex" alignItems="center">
+              <Button
+                kind="minimal"
+                onClick={() => setShowColsPopup((curr) => !curr)}
+              >
+                <Columns />
+              </Button>
+              {showColsPopUp && (
+                <div ref={colsPopupRef}>
+                  <Box
+                    position="absolute"
+                    right={0}
+                    top={spacing.scale600}
+                    background="white"
+                    padding={spacing.scale400}
+                    boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
+                    display="flex"
+                    zIndex={30}
+                    minWidth={200}
+                  >
+                    <Checkbox
+                      options={_columns.map(({title, index}) => ({
+                        label: title,
+                        value: index,
+                      }))}
+                      value={cols}
+                      onChange={(event) => {
+                        const {value} = event.target;
+                        if (cols.includes(value)) {
+                          setCols((cols) =>
+                            cols.filter((val) => val !== value),
+                          );
+                        } else {
+                          setCols((cols) => [...cols, value]);
+                        }
+                      }}
+                    />
+                  </Box>
+                </div>
+              )}
+            </Box>
           </Box>
         </FlexGrid>
       )}
@@ -295,30 +307,57 @@ export const DataTable: React.FC<Props> = ({
             </tr>
           </thead>
           <tbody>
-            {!isLoading &&
-              data.map((row, idx) => (
-                <tr key={idx}>
-                  {actions && (
-                    <td>
-                      <Checkbox
-                        name={idx.toString()}
-                        options={[{label: '', value: idx.toString()}]}
-                        onChange={onCheckboxChange}
-                        value={state[idx.toString()] || []}
-                      />
-                    </td>
-                  )}
-                  {_visibleCols.map((column, idx) => (
-                    <td
-                      data-label={column.title}
-                      key={idx}
-                      style={{whiteSpace: 'nowrap', overflow: 'scroll'}}
-                    >
-                      {column.cell(row)}
+            <>
+              {actions?.length && (
+                <tr>
+                  <td>
+                    <Filter style={{cursor: 'pointer'}} onClick={_onFilter} />
+                  </td>
+                  {_visibleCols.map((col, idx) => (
+                    <td key={idx}>
+                      {col.title !== 'Bewertungsübersicht' ? (
+                        <Input
+                          placeholder={col.title}
+                          name={col.title}
+                          ref={register}
+                          onKeyPress={(event) => {
+                            if (event.key !== 'Enter') return;
+                            event.preventDefault();
+                            _onFilter();
+                          }}
+                        />
+                      ) : (
+                        '-'
+                      )}
                     </td>
                   ))}
                 </tr>
-              ))}
+              )}
+              {!isLoading &&
+                data.map((row, idx) => (
+                  <tr key={idx}>
+                    {actions && (
+                      <td>
+                        <Checkbox
+                          name={idx.toString()}
+                          options={[{label: '', value: idx.toString()}]}
+                          onChange={onCheckboxChange}
+                          value={state[idx.toString()] || []}
+                        />
+                      </td>
+                    )}
+                    {_visibleCols.map((column, idx) => (
+                      <td
+                        data-label={column.title}
+                        key={idx}
+                        style={{whiteSpace: 'nowrap', overflow: 'scroll'}}
+                      >
+                        {column.cell(row)}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+            </>
           </tbody>
         </Table>
       </Box>

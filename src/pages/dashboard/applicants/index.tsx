@@ -2,7 +2,6 @@ import React, {useEffect, useReducer, useRef, useState} from 'react';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {useTheme} from 'styled-components';
-import {useForm} from 'react-hook-form';
 import {API} from 'services';
 import {useAuth} from 'context';
 import {
@@ -18,7 +17,6 @@ import {
   Select,
   Button,
   Dialog,
-  Input,
   withAuth,
 } from 'components';
 import {useQueryReducer} from 'components/useQueryReducer';
@@ -28,7 +26,7 @@ const Applicants = () => {
   const router = useRouter();
 
   const {query, setLimit, setFilter, order, next, prev} = useQueryReducer();
-  const {offset = 0, limit = 10, filter = '', order: orderBy = ''} = query;
+  const {offset, limit, filter, order: orderBy} = query;
   const {spacing} = useTheme();
   const {currentUser} = useAuth();
 
@@ -49,19 +47,28 @@ const Applicants = () => {
   );
 
   const key = selectedJobId
-    ? ['GET /applicants', selectedJobId, offset, limit, filter, orderBy]
+    ? ['GET /applicants', selectedJobId, offset, filter, limit, orderBy]
     : null;
 
   const {
     data: applicantsResponse,
     error: applicantsError,
     revalidate,
-  } = useFetch(key, (_key, jobId) =>
+  } = useFetch(key, (_key, jobId, offset, filter, limit, orderBy) =>
     API.applicants.list(jobId, {
       offset,
       limit,
       filter,
       orderBy,
+    }),
+  );
+
+  const {data: form} = useFetch(['GET /forms', selectedJobId], (_key, jobId) =>
+    API.forms.list(jobId).then((forms) => {
+      const applicationForm = forms.find(
+        ({formCategory}) => formCategory === 'application',
+      );
+      return applicationForm;
     }),
   );
 
@@ -141,10 +148,10 @@ const Applicants = () => {
   );
 
   const columns: TColumn[] = [
-    ...(applicantsResponse?.applicants[0]?.attributes.map(({key}) => ({
-      title: key,
+    ...(form?.formFields.map(({label}) => ({
+      title: label,
       cell: (row) => {
-        const attr = row.attributes.find(({key: _key}) => key === _key);
+        const attr = row.attributes.find(({key}) => label === key);
         if (attr?.value !== row.name) return attr?.value || '';
         return (
           <Link href={`${router.pathname}/${row.applicantId}`}>
@@ -180,11 +187,6 @@ const Applicants = () => {
       cell: ({applicantStatus}) => <span>{applicantStatus}</span>,
     },
   ];
-
-  const {register, getValues, reset, formState, handleSubmit} = useForm();
-  useEffect(() => {
-    reset({filter});
-  }, [reset, filter]);
 
   const bulkActions = [
     {label: 'löschen', value: BulkAction.delete},
@@ -302,32 +304,6 @@ const Applicants = () => {
           />
         )}
       </FlexGrid>
-      <form
-        onSubmit={handleSubmit(({filter}) => {
-          setFilter(filter);
-        })}
-      >
-        <FlexGrid
-          flexGap={spacing.scale300}
-          alignItems="center"
-          marginBottom={spacing.scale300}
-        >
-          <Box flex={1}>
-            <Input placeholder="Suchen" name="filter" ref={register} />
-          </Box>
-          <Button
-            kind="minimal"
-            disabled={!(getValues('filter') || formState.isDirty)}
-            onClick={() => {
-              reset();
-              setFilter('');
-            }}
-          >
-            löschen
-          </Button>
-          <Button type="submit">Suchen</Button>
-        </FlexGrid>
-      </form>
       <DataTable
         id={`${currentUser.userId}-${selectedJobId}-applicants-dt`}
         columns={columns}
@@ -347,6 +323,7 @@ const Applicants = () => {
         rowsPerPage={limit}
         actions={currentUser.userRole === 'admin' ? bulkActions : undefined}
         onAction={onBulkAction}
+        onFilter={setFilter}
       />
     </main>
   );
