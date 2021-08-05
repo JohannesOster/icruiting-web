@@ -1,24 +1,26 @@
 import {useReducer} from 'react';
 
+type Filter = {[attribute: string]: {eq: string}};
+
 interface RType {
   query: State;
   order: (by: string) => void;
   prev: () => void;
   next: () => void;
-  setFilter: (by: string) => void;
+  setFilter: (by: Filter) => void;
   setLimit: (limit: number) => void;
 }
 
-type State = {filter?: string; order?: string; offset?: number; limit?: number};
+type State = {filter?: Filter; order?: string; offset?: number; limit?: number};
 type Action =
-  | {type: 'setFilter'; by: string}
+  | {type: 'setFilter'; by: Filter}
   | {type: 'prev'} // pagination
   | {type: 'next'} // pagination
   | {type: 'setLimit'; limit: number}
   | {type: 'order'; by: string};
 
 export const useQueryReducer = (
-  init: State = {offset: 0, limit: 10},
+  init: State = {offset: 0, limit: 10, filter: {}, order: ''},
 ): RType => {
   const reducer = (query: State, action: Action) => {
     switch (action.type) {

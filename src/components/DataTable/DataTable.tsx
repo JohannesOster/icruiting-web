@@ -20,6 +20,7 @@ import {useTheme} from 'styled-components';
 import {Columns, Filter, Sort} from 'icons';
 import {useOutsideClick} from 'components/useOutsideClick';
 import {Props} from './types';
+import {useForm} from 'react-hook-form';
 
 export const DataTable: React.FC<Props> = ({
   isLoading,
@@ -38,6 +39,7 @@ export const DataTable: React.FC<Props> = ({
   id,
   onOrderByChange,
   orderBy,
+  onFilter,
 }) => {
   const {spacing, colors} = useTheme();
   const localStorageKey = `data-table-${id}`;
@@ -53,8 +55,8 @@ export const DataTable: React.FC<Props> = ({
 
   const [showSortPopup, setShowSortPopup] = useState(false);
   const [showColsPopUp, setShowColsPopup] = useState(false);
-  const [showFilterPupup, setShowFilterPopup] = useState(false);
-  console.log(showFilterPupup);
+
+  const {getValues, register} = useForm();
 
   useEffect(() => {
     const key = localStorageKey + 'columns';
@@ -82,12 +84,6 @@ export const DataTable: React.FC<Props> = ({
   useOutsideClick(sortPopupRef, () => {
     if (!showSortPopup) return;
     setShowSortPopup(false);
-  });
-
-  const filterPupupRef = useRef<HTMLDivElement>();
-  useOutsideClick(filterPupupRef, () => {
-    if (!showFilterPupup) return;
-    setShowFilterPopup(false);
   });
 
   const showPagination =
@@ -151,6 +147,18 @@ export const DataTable: React.FC<Props> = ({
     const mapper = (idx: string) => parseInt(idx, 10);
     const selectedIndices = Object.keys(indices).map(mapper);
     onAction && onAction(action, selectedIndices);
+  };
+
+  const _onFilter = () => {
+    const filter = Object.entries(getValues()).reduce(
+      (acc, [attribute, eq]) => {
+        if (!eq) return acc;
+        acc[attribute] = {eq};
+        return acc;
+      },
+      {},
+    );
+    onFilter && onFilter(filter);
   };
 
   return (
@@ -268,51 +276,6 @@ export const DataTable: React.FC<Props> = ({
                 </div>
               )}
             </Box>
-
-            <Box position="relative" display="flex" alignItems="center">
-              <Button
-                kind="minimal"
-                onClick={() => setShowFilterPopup((curr) => !curr)}
-              >
-                <Filter />
-              </Button>
-              {showFilterPupup && (
-                <div ref={filterPupupRef}>
-                  <Box
-                    position="absolute"
-                    right={0}
-                    top={spacing.scale600}
-                    background="white"
-                    padding={spacing.scale400}
-                    boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
-                    zIndex={30}
-                    minWidth={200}
-                    as="form"
-                    display="grid"
-                    gridAutoFlow="column"
-                    columnGap={spacing.scale400}
-                    alignItems="center"
-                  >
-                    <Select
-                      options={
-                        isLoading
-                          ? [{label: '-'.repeat(10), value: ''}]
-                          : _columns.map(({title}) => ({
-                              label: title,
-                              value: title,
-                            }))
-                      }
-                      onChange={(event) => {
-                        const {value} = event.target;
-                        console.log(value);
-                      }}
-                    />
-                    <span>=</span>
-                    <Input placeholder="Wert" />
-                  </Box>
-                </div>
-              )}
-            </Box>
           </Box>
         </FlexGrid>
       )}
@@ -344,30 +307,57 @@ export const DataTable: React.FC<Props> = ({
             </tr>
           </thead>
           <tbody>
-            {!isLoading &&
-              data.map((row, idx) => (
-                <tr key={idx}>
-                  {actions && (
-                    <td>
-                      <Checkbox
-                        name={idx.toString()}
-                        options={[{label: '', value: idx.toString()}]}
-                        onChange={onCheckboxChange}
-                        value={state[idx.toString()] || []}
-                      />
-                    </td>
-                  )}
-                  {_visibleCols.map((column, idx) => (
-                    <td
-                      data-label={column.title}
-                      key={idx}
-                      style={{whiteSpace: 'nowrap', overflow: 'scroll'}}
-                    >
-                      {column.cell(row)}
+            <>
+              {actions?.length && (
+                <tr>
+                  <td>
+                    <Filter style={{cursor: 'pointer'}} onClick={_onFilter} />
+                  </td>
+                  {_visibleCols.map((col, idx) => (
+                    <td key={idx}>
+                      {col.title !== 'Bewertungsübersicht' ? (
+                        <Input
+                          placeholder={col.title}
+                          name={col.title}
+                          ref={register}
+                          onKeyPress={(event) => {
+                            if (event.key !== 'Enter') return;
+                            event.preventDefault();
+                            _onFilter();
+                          }}
+                        />
+                      ) : (
+                        '-'
+                      )}
                     </td>
                   ))}
                 </tr>
-              ))}
+              )}
+              {!isLoading &&
+                data.map((row, idx) => (
+                  <tr key={idx}>
+                    {actions && (
+                      <td>
+                        <Checkbox
+                          name={idx.toString()}
+                          options={[{label: '', value: idx.toString()}]}
+                          onChange={onCheckboxChange}
+                          value={state[idx.toString()] || []}
+                        />
+                      </td>
+                    )}
+                    {_visibleCols.map((column, idx) => (
+                      <td
+                        data-label={column.title}
+                        key={idx}
+                        style={{whiteSpace: 'nowrap', overflow: 'scroll'}}
+                      >
+                        {column.cell(row)}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+            </>
           </tbody>
         </Table>
       </Box>
