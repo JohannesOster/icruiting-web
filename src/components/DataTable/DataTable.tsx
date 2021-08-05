@@ -168,7 +168,7 @@ export const DataTable: React.FC<Props> = ({
     const filter = Object.entries(getValues()).reduce(
       (acc, [attribute, eq]) => {
         if (!eq) return acc;
-        acc[attribute] = {eq};
+        acc[mapping[attribute]] = {eq};
         return acc;
       },
       {},
@@ -179,6 +179,16 @@ export const DataTable: React.FC<Props> = ({
 
     onFilter && onFilter(filter);
   };
+
+  const escapeForUseForm = (str: string) => {
+    return str.replace(/\s/g, '').replace(/\./g, ';');
+  };
+
+  /* useForm cannot handle input field names with dots therefor a mapping has to be created */
+  const mapping = _visibleCols.reduce((acc, curr) => {
+    acc[escapeForUseForm(curr.title)] = curr.title;
+    return acc;
+  }, {});
 
   return (
     <>
@@ -337,7 +347,7 @@ export const DataTable: React.FC<Props> = ({
                       {col.title !== 'Bewertungsübersicht' ? (
                         <Input
                           placeholder={col.title}
-                          name={col.title}
+                          name={escapeForUseForm(col.title)}
                           ref={register}
                           onKeyPress={(event) => {
                             if (event.key !== 'Enter') return;

@@ -63,14 +63,11 @@ const Applicants = () => {
     }),
   );
 
-  const {data: form} = useFetch(['GET /forms', selectedJobId], (_key, jobId) =>
-    API.forms.list(jobId).then((forms) => {
-      const applicationForm = forms.find(
-        ({formCategory}) => formCategory === 'application',
-      );
-      return applicationForm;
-    }),
+  const {data: forms} = useFetch(['GET /forms', selectedJobId], (_key, jobId) =>
+    API.forms.list(jobId),
   );
+
+  const form = forms?.find(({formCategory}) => formCategory === 'application');
 
   useEffect(() => {
     if (!jobs?.length) return;
@@ -151,8 +148,16 @@ const Applicants = () => {
     ...(form?.formFields.map(({label}) => ({
       title: label,
       cell: (row) => {
-        const attr = row.attributes.find(({key}) => label === key);
-        if (attr?.value !== row.name) return attr?.value || '';
+        let attr = row.attributes.find(({key}) => label === key);
+        if (!attr?.value) attr = row.files.find(({key}) => label === key);
+
+        if (attr?.value !== row.name) {
+          return (
+            attr?.value ||
+            (attr?.uri ? <Link href={attr.uri}>{attr.key}</Link> : '')
+          );
+        }
+
         return (
           <Link href={`${router.pathname}/${row.applicantId}`}>
             <a>{row.name}</a>
