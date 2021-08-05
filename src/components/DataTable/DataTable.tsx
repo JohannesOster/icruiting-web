@@ -56,7 +56,7 @@ export const DataTable: React.FC<Props> = ({
   const [showSortPopup, setShowSortPopup] = useState(false);
   const [showColsPopUp, setShowColsPopup] = useState(false);
 
-  const {getValues, register} = useForm();
+  const {getValues, register, reset} = useForm();
 
   useEffect(() => {
     const key = localStorageKey + 'columns';
@@ -70,6 +70,21 @@ export const DataTable: React.FC<Props> = ({
 
     setCols(_columns.map(({index}) => index));
   }, [columns, localStorageKey]);
+
+  useEffect(() => {
+    const key = localStorageKey + 'filter';
+    const raw = localStorage.getItem(key);
+    if (!raw) return;
+    const filter = JSON.parse(raw) as {[attribute: string]: {eq: string}};
+    const formValues = Object.entries(filter).reduce(
+      (acc, [attribute, {eq}]) => {
+        acc[attribute] = eq;
+        return acc;
+      },
+      {},
+    );
+    reset(formValues);
+  }, [localStorageKey]);
 
   const colsPopupRef = useRef<HTMLDivElement>();
   useOutsideClick(colsPopupRef, () => {
@@ -158,6 +173,10 @@ export const DataTable: React.FC<Props> = ({
       },
       {},
     );
+
+    const key = localStorageKey + 'filter';
+    localStorage.setItem(key, JSON.stringify(filter));
+
     onFilter && onFilter(filter);
   };
 
