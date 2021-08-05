@@ -14,9 +14,10 @@ import {
   Button,
   Select,
   Checkbox,
+  Input,
 } from 'components';
 import {useTheme} from 'styled-components';
-import {Columns, Sort} from 'icons';
+import {Columns, Filter, Sort} from 'icons';
 import {useOutsideClick} from 'components/useOutsideClick';
 import {Props} from './types';
 
@@ -52,11 +53,12 @@ export const DataTable: React.FC<Props> = ({
 
   const [showSortPopup, setShowSortPopup] = useState(false);
   const [showColsPopUp, setShowColsPopup] = useState(false);
+  const [showFilterPupup, setShowFilterPopup] = useState(false);
+  console.log(showFilterPupup);
 
   useEffect(() => {
     const key = localStorageKey + 'columns';
     let data = localStorage.getItem(key);
-
 
     if (data) {
       const cols = JSON.parse(data);
@@ -80,6 +82,12 @@ export const DataTable: React.FC<Props> = ({
   useOutsideClick(sortPopupRef, () => {
     if (!showSortPopup) return;
     setShowSortPopup(false);
+  });
+
+  const filterPupupRef = useRef<HTMLDivElement>();
+  useOutsideClick(filterPupupRef, () => {
+    if (!showFilterPupup) return;
+    setShowFilterPopup(false);
   });
 
   const showPagination =
@@ -153,28 +161,26 @@ export const DataTable: React.FC<Props> = ({
           flexGap={spacing.scale200}
           marginBottom={spacing.scale200}
         >
-          {actions?.length && (
-            <Box
-              display="grid"
-              gridAutoFlow="column"
-              alignItems="center"
-              columnGap={spacing.scale200}
+          <Box
+            display="grid"
+            gridAutoFlow="column"
+            alignItems="center"
+            columnGap={spacing.scale200}
+          >
+            <Select
+              options={[{label: '-- Aktion --', value: ''}, ...actions]}
+              onChange={({target}) => {
+                setAction(target.value);
+              }}
+            />
+            <Button
+              kind="minimal"
+              onClick={_onAction}
+              disabled={!(action && Object.keys(state).length)}
             >
-              <Select
-                options={[{label: '-- Aktion --', value: ''}, ...actions]}
-                onChange={({target}) => {
-                  setAction(target.value);
-                }}
-              />
-              <Button
-                kind="minimal"
-                onClick={_onAction}
-                disabled={!(action && Object.keys(state).length)}
-              >
-                durchführen
-              </Button>
-            </Box>
-          )}
+              durchführen
+            </Button>
+          </Box>
           <Box
             margin="0 0 0 auto"
             display="grid"
@@ -221,49 +227,92 @@ export const DataTable: React.FC<Props> = ({
                 </div>
               )}
             </Box>
-            {actions?.length && (
-              <Box position="relative" display="flex" alignItems="center">
-                <Button
-                  kind="minimal"
-                  onClick={() => setShowColsPopup((curr) => !curr)}
-                >
-                  <Columns />
-                </Button>
-                {showColsPopUp && (
-                  <div ref={colsPopupRef}>
-                    <Box
-                      position="absolute"
-                      right={0}
-                      top={spacing.scale600}
-                      background="white"
-                      padding={spacing.scale400}
-                      boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
-                      display="flex"
-                      zIndex={30}
-                      minWidth={200}
-                    >
-                      <Checkbox
-                        options={_columns.map(({title, index}) => ({
-                          label: title,
-                          value: index,
-                        }))}
-                        value={cols}
-                        onChange={(event) => {
-                          const {value} = event.target;
-                          if (cols.includes(value)) {
-                            setCols((cols) =>
-                              cols.filter((val) => val !== value),
-                            );
-                          } else {
-                            setCols((cols) => [...cols, value]);
-                          }
-                        }}
-                      />
-                    </Box>
-                  </div>
-                )}
-              </Box>
-            )}
+            <Box position="relative" display="flex" alignItems="center">
+              <Button
+                kind="minimal"
+                onClick={() => setShowColsPopup((curr) => !curr)}
+              >
+                <Columns />
+              </Button>
+              {showColsPopUp && (
+                <div ref={colsPopupRef}>
+                  <Box
+                    position="absolute"
+                    right={0}
+                    top={spacing.scale600}
+                    background="white"
+                    padding={spacing.scale400}
+                    boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
+                    display="flex"
+                    zIndex={30}
+                    minWidth={200}
+                  >
+                    <Checkbox
+                      options={_columns.map(({title, index}) => ({
+                        label: title,
+                        value: index,
+                      }))}
+                      value={cols}
+                      onChange={(event) => {
+                        const {value} = event.target;
+                        if (cols.includes(value)) {
+                          setCols((cols) =>
+                            cols.filter((val) => val !== value),
+                          );
+                        } else {
+                          setCols((cols) => [...cols, value]);
+                        }
+                      }}
+                    />
+                  </Box>
+                </div>
+              )}
+            </Box>
+
+            <Box position="relative" display="flex" alignItems="center">
+              <Button
+                kind="minimal"
+                onClick={() => setShowFilterPopup((curr) => !curr)}
+              >
+                <Filter />
+              </Button>
+              {showFilterPupup && (
+                <div ref={filterPupupRef}>
+                  <Box
+                    position="absolute"
+                    right={0}
+                    top={spacing.scale600}
+                    background="white"
+                    padding={spacing.scale400}
+                    boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
+                    zIndex={30}
+                    minWidth={200}
+                    as="form"
+                    display="grid"
+                    gridAutoFlow="column"
+                    columnGap={spacing.scale400}
+                    alignItems="center"
+                  >
+                    <Select
+                      options={
+                        isLoading
+                          ? [{label: '-'.repeat(10), value: ''}]
+                          : _columns.map(({title}) => ({
+                              label: title,
+                              value: title,
+                            }))
+                      }
+                      onChange={(event) => {
+                        const {value} = event.target;
+                        console.log(value);
+                      }}
+                    />
+                    <span>=</span>
+                    <Input placeholder="Wert" />
+                  </Box>
+                </div>
+              )}
+            </Box>
           </Box>
         </FlexGrid>
       )}
