@@ -36,4 +36,6 @@ export type Props = {
   actions?: {label: string; value: string}[];
   /** Called if an action is selected and the "execute" button is pressed */
   onAction?: (action: string, selectedIndices: number[]) => void;
+  /** Is called when new filter attribute / value is set */
+  onFilter?: (filter: {[attribute: string]: {eq}}) => void;
 };

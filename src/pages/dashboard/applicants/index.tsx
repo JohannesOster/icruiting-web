@@ -2,7 +2,6 @@ import React, {useEffect, useReducer, useRef, useState} from 'react';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {useTheme} from 'styled-components';
-import {useForm} from 'react-hook-form';
 import {API} from 'services';
 import {useAuth} from 'context';
 import {
@@ -18,7 +17,6 @@ import {
   Select,
   Button,
   Dialog,
-  Input,
   withAuth,
 } from 'components';
 import {useQueryReducer} from 'components/useQueryReducer';
@@ -27,8 +25,8 @@ import {useFetch} from 'components/useFetch';
 const Applicants = () => {
   const router = useRouter();
 
-  const {query, setLimit, order, next, prev} = useQueryReducer();
-  const {offset = 0, limit = 10, filter = '', order: orderBy = ''} = query;
+  const {query, setLimit, setFilter, order, next, prev} = useQueryReducer();
+  const {offset, limit, filter, order: orderBy} = query;
   const {spacing} = useTheme();
   const {currentUser} = useAuth();
 
@@ -39,19 +37,24 @@ const Applicants = () => {
     order(sort);
   }, []);
 
-  const selectedJobLocalStorageKey = useRef(`${currentUser.userId}-applicants-job`);
+  const selectedJobLocalStorageKey = useRef(
+    `${currentUser.userId}-applicants-job`,
+  );
   const {data: jobs, error: jobsError} = useFetch('GET /jobs', API.jobs.list);
-  const [selectedJobId, setSelectedJobId] = useState(localStorage.getItem(selectedJobLocalStorageKey.current) || (jobs && jobs[0]?.jobId));
+  const [selectedJobId, setSelectedJobId] = useState(
+    localStorage.getItem(selectedJobLocalStorageKey.current) ||
+      (jobs && jobs[0]?.jobId),
+  );
 
   const key = selectedJobId
-    ? ['GET /applicants', selectedJobId, offset, limit, filter, orderBy]
+    ? ['GET /applicants', selectedJobId, offset, filter, limit, orderBy]
     : null;
 
   const {
     data: applicantsResponse,
     error: applicantsError,
     revalidate,
-  } = useFetch(key, (_key, jobId) =>
+  } = useFetch(key, (_key, jobId, offset, filter, limit, orderBy) =>
     API.applicants.list(jobId, {
       offset,
       limit,
@@ -60,9 +63,16 @@ const Applicants = () => {
     }),
   );
 
+  const {data: forms} = useFetch(['GET /forms', selectedJobId], (_key, jobId) =>
+    API.forms.list(jobId),
+  );
+
+  const form = forms?.find(({formCategory}) => formCategory === 'application');
+
   useEffect(() => {
     if (!jobs?.length) return;
-    if(selectedJobId) return;
+    if (selectedJobId && jobs.map(({jobId}) => jobId).includes(selectedJobId))
+      return;
     const jobId = jobs[0].jobId;
     setSelectedJobId(jobId);
     localStorage.setItem(selectedJobLocalStorageKey.current, jobId);
@@ -135,11 +145,19 @@ const Applicants = () => {
   );
 
   const columns: TColumn[] = [
-    ...(applicantsResponse?.applicants[0]?.attributes.map(({key}) => ({
-      title: key,
+    ...(form?.formFields.map(({label}) => ({
+      title: label,
       cell: (row) => {
-        const attr = row.attributes.find(({key: _key}) => key === _key);
-        if (attr?.value !== row.name) return attr?.value || '';
+        let attr = row.attributes.find(({key}) => label === key);
+        if (!attr?.value) attr = row.files.find(({key}) => label === key);
+
+        if (attr?.value !== row.name) {
+          return (
+            attr?.value ||
+            (attr?.uri ? <Link href={attr.uri}>{attr.key}</Link> : '')
+          );
+        }
+
         return (
           <Link href={`${router.pathname}/${row.applicantId}`}>
             <a>{row.name}</a>
@@ -174,11 +192,6 @@ const Applicants = () => {
       cell: ({applicantStatus}) => <span>{applicantStatus}</span>,
     },
   ];
-
-  const {register, getValues, reset, formState, handleSubmit} = useForm();
-  useEffect(() => {
-    reset({filter});
-  }, [reset, filter]);
 
   const bulkActions = [
     {label: 'löschen', value: BulkAction.delete},
@@ -241,21 +254,6 @@ const Applicants = () => {
     }
   };
 
-  const routeFor = (query: {
-    offset?: number;
-    limit?: number;
-    filter?: string;
-    orderBy?: string;
-  }) => {
-    const _offset = query.offset !== undefined ? query.offset : offset;
-    const _limit = query.limit || limit;
-    const _filter = query.filter || filter;
-    const _orderBy = query.orderBy || orderBy;
-    const orderQuery = _orderBy ? '&orderBy=' + _orderBy : '';
-    const filterQuery = _filter ? '&filter=' + _filter : '';
-    return `${router.pathname}?offset=${_offset}&limit=${_limit}${filterQuery}${orderQuery}`;
-  };
-
   return (
     <main>
       {state.bulkActionStatus && (
@@ -311,36 +309,6 @@ const Applicants = () => {
           />
         )}
       </FlexGrid>
-      <form
-        onSubmit={handleSubmit(({filter}) => {
-          router.push(routeFor({offset: 0, limit, filter}));
-        })}
-      >
-        <FlexGrid
-          flexGap={spacing.scale300}
-          alignItems="center"
-          marginBottom={spacing.scale300}
-        >
-          <Box flex={1}>
-            <Input placeholder="Suchen" name="filter" ref={register} />
-          </Box>
-          <Button
-            kind="minimal"
-            disabled={!(getValues('filter') || formState.isDirty)}
-            onClick={() => {
-              reset();
-              if (filter) {
-                router.push(
-                  `${router.pathname}?offset=${offset}&limit=${limit}`,
-                );
-              }
-            }}
-          >
-            löschen
-          </Button>
-          <Button type="submit">Suchen</Button>
-        </FlexGrid>
-      </form>
       <DataTable
         id={`${currentUser.userId}-${selectedJobId}-applicants-dt`}
         columns={columns}
@@ -360,6 +328,7 @@ const Applicants = () => {
         rowsPerPage={limit}
         actions={currentUser.userRole === 'admin' ? bulkActions : undefined}
         onAction={onBulkAction}
+        onFilter={setFilter}
       />
     </main>
   );

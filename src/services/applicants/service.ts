@@ -14,7 +14,7 @@ export const Applicants = () => {
     options?: {
       offset?: number;
       limit?: number;
-      filter?: string;
+      filter?: {[attribute: string]: {eq: string}};
       orderBy?: string;
     },
   ): Promise<ListResponse> => {
@@ -25,7 +25,11 @@ export const Applicants = () => {
       query += `&offset=${offset}&limit=${limit}`;
     }
 
-    if (filter !== undefined) query += `&filter=${filter}`;
+    if (filter !== undefined) {
+      Object.entries(filter).forEach(([attribute, {eq}]) => {
+        query += `&${attribute}[eq]=${eq}`;
+      });
+    }
 
     return API.get<{
       applicants: (ApplicantAPI & AssessmentsAttribute)[];

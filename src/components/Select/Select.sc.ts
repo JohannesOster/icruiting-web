@@ -12,8 +12,8 @@ export const BaseSelect = styled.select`
   background: white;
   cursor: pointer;
   outline: none;
-  width: 100%;
-  min-width: 50px;
+  // width: 100%; commented out since currently these two lines shrink filtering select in applicants overview
+  // min-width: 50px;
   padding: ${({theme}) => theme.spacing.scale300};
   padding-right: ${({theme}) => theme.spacing.scale700};
 
