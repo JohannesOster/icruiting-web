@@ -58,9 +58,10 @@ const FormBuilder: React.FC = () => {
   const formId = useRef(formIdEdit || uuidv4());
 
   const formKey = formIdEdit ? [`GET /forms/${formId}`, formIdEdit] : null;
-  const {data: formToEdit} = useFetch(formKey, (_key, formId) =>
-    API.forms.find(formId),
-    {revalidateOnFocus: false} // do not refetch form while editing it
+  const {data: formToEdit} = useFetch(
+    formKey,
+    (_key, formId) => API.forms.find(formId),
+    {revalidateOnFocus: false}, // do not refetch form while editing it
   );
 
   const {data: job} = useFetch(
@@ -79,10 +80,8 @@ const FormBuilder: React.FC = () => {
     reset({formTitle: formToEdit?.formTitle});
   }, [formToEdit, reset]);
 
-  const [
-    componentToEdit,
-    setComponentToEdit,
-  ] = useState<null | ComponentToEdit>(null);
+  const [componentToEdit, setComponentToEdit] =
+    useState<null | ComponentToEdit>(null);
   const sourceItems = getSourceFormFields(
     formToEdit?.formCategory || formCategory,
   );

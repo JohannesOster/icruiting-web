@@ -20,6 +20,7 @@ import {
 } from 'icons';
 import {FormFieldIntent, FormCategory} from 'services';
 import {DnDItem} from 'components/FormBuilder/types';
+import {v4 as uuid} from 'uuid';
 
 const DNDBase = {
   type: ItemTypes.FORM_FIELD,
@@ -61,8 +62,8 @@ const applicationFormSourceFields: DnDItem[] = [
     props: {
       label: 'Select',
       options: [
-        {label: 'Option-1', value: 'Option-1'},
-        {label: 'Option-2', value: 'Option-2'},
+        {option: uuid(), label: 'Option-1', value: 'Option-1'},
+        {option: uuid(), label: 'Option-2', value: 'Option-2'},
       ],
     },
   },
@@ -75,8 +76,9 @@ const applicationFormSourceFields: DnDItem[] = [
     props: {
       label: 'Radio',
       options: [
-        {label: 'Option-1', value: 'Option-1'},
-        {label: 'Option-2', value: 'Option-2'},
+        {option: uuid(), label: 'Option-1', value: 'Option-1'},
+        {option: uuid(), label: 'Option-2', value: 'Option-2'},
+        ,
       ],
     },
   },
@@ -89,8 +91,8 @@ const applicationFormSourceFields: DnDItem[] = [
     props: {
       label: 'Checkbox',
       options: [
-        {label: 'Option-1', value: 'Option-1'},
-        {label: 'Option-2', value: 'Option-2'},
+        {option: uuid(), label: 'Option-1', value: 'Option-1'},
+        {option: uuid(), label: 'Option-2', value: 'Option-2'},
       ],
     },
   },
@@ -120,11 +122,11 @@ const assessmentSourceFields: DnDItem[] = [
       label: 'Rating',
       name: `${Math.random().toString(36).substring(7)}`,
       options: [
-        {label: '0', value: '0'},
-        {label: '1', value: '1'},
-        {label: '2', value: '2'},
-        {label: '3', value: '3'},
-        {label: '4', value: '4'},
+        {optionId: uuid(), label: '0', value: '0'},
+        {optionId: uuid(), label: '1', value: '1'},
+        {optionId: uuid(), label: '2', value: '2'},
+        {optionId: uuid(), label: '3', value: '3'},
+        {optionId: uuid(), label: '4', value: '4'},
       ],
     },
   },

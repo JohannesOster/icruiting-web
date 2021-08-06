@@ -1,3 +1,4 @@
+import React from 'react';
 import {theme} from 'theme';
 import {createGlobalStyle, ThemeProvider} from 'styled-components';
 import Amplify from 'aws-amplify';
