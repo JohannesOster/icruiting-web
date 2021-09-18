@@ -12,12 +12,12 @@ export type Applicant = {
 };
 
 export type ApplicantAPI = {
-  applicant_id: string;
+  applicantId: string;
   jobId: string;
   screening_exists: boolean;
   attributes: {key: string; value: string}[];
   files?: {key: string; uri: string}[];
-  created_at: string;
+  createdAt: string;
 };
 
 type AssessmentsField = {
