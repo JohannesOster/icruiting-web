@@ -15,9 +15,9 @@ export const convertAPIApplicant = <T = Applicant>(
     {name: '', email: ''},
   );
 
-  return ({
+  return {
     ...applicant,
     name: attrTuple?.name,
     email: attrTuple?.email,
-  } as unknown) as T;
+  } as unknown as T;
 };

@@ -1,3 +1,4 @@
+import React from 'react';
 import {useAuth} from 'context';
 import {useRouter} from 'next/router';
 import {withAuth} from 'components';
