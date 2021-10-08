@@ -14,8 +14,9 @@ import {useAuth, useToaster} from 'context';
 import config from 'config';
 import {API} from 'services';
 import {useFetch, mutate} from 'components/useFetch';
+import Link from 'next/link';
 
-export const Theme = () => {
+export const Settings = () => {
   const {spacing} = useTheme();
   const {currentUser} = useAuth();
   type Status = 'idle' | 'submitting' | 'deleting' | 'fetching';
@@ -89,7 +90,7 @@ export const Theme = () => {
   };
 
   return (
-    <Box display="grid" rowGap={spacing.scale300}>
+    <Box display="grid" rowGap={spacing.scale200}>
       <FlexGrid
         flexGap={spacing.scale300}
         justifyContent="space-between"
@@ -181,9 +182,16 @@ export const Theme = () => {
           </tr>
         </tbody>
       </Table>
+      <H3>Zahlungen</H3>
+      <Link href="settings/subscriptions">
+        <a>Subscriptions</a>
+      </Link>
+      <Link href="settings/payment">
+        <a>Zahlungsmethoden</a>
+      </Link>
     </Box>
   );
 };
 
-Theme.getLayout = getDashboardLayout;
-export default withAuth(Theme);
+Settings.getLayout = getDashboardLayout;
+export default withAuth(Settings);
