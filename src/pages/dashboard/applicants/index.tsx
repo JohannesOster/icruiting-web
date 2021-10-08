@@ -329,6 +329,7 @@ const Applicants = () => {
         actions={currentUser.userRole === 'admin' ? bulkActions : undefined}
         onAction={onBulkAction}
         onFilter={setFilter}
+        showSortAndColsBtns={true}
       />
     </main>
   );

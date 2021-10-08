@@ -40,6 +40,7 @@ export const DataTable: React.FC<Props> = ({
   onOrderByChange,
   orderBy,
   onFilter,
+  showSortAndColsBtns,
 }) => {
   const {spacing, colors} = useTheme();
   const localStorageKey = `data-table-${id}`;
@@ -219,94 +220,98 @@ export const DataTable: React.FC<Props> = ({
             </Button>
           </Box>
         )}
-        <Box
-          margin="0 0 0 auto"
-          marginTop={action.length ? 0 : spacing.scale200}
-          marginBottom={action.length ? 0 : spacing.scale200}
-          display="grid"
-          gridAutoFlow="column"
-          columnGap={spacing.scale200}
-          position="relative"
-        >
-          <Box position="relative" display="flex" alignItems="center">
-            <Button
-              kind="minimal"
-              onClick={() => setShowSortPopup((curr) => !curr)}
-            >
-              <Sort />
-            </Button>
-            {showSortPopup && (
-              <div ref={sortPopupRef}>
-                <Box
-                  position="absolute"
-                  right={0}
-                  top={spacing.scale600}
-                  background="white"
-                  padding={spacing.scale400}
-                  boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
-                  display="flex"
-                  zIndex={30}
-                  minWidth={200}
-                >
-                  <Select
-                    options={
-                      isLoading
-                        ? [{label: '-'.repeat(10), value: ''}]
-                        : _columns.map(({title}) => ({
-                            label: title,
-                            value: title,
-                          }))
-                    }
-                    onChange={(event) => {
-                      const {value} = event.target;
-                      onOrderByChange(value);
-                    }}
-                    value={orderBy}
-                  />
-                </Box>
-              </div>
-            )}
-          </Box>
-          <Box position="relative" display="flex" alignItems="center">
-            <Button
-              kind="minimal"
-              onClick={() => setShowColsPopup((curr) => !curr)}
-            >
-              <Columns />
-            </Button>
-            {showColsPopUp && (
-              <div ref={colsPopupRef}>
-                <Box
-                  position="absolute"
-                  right={0}
-                  top={spacing.scale600}
-                  background="white"
-                  padding={spacing.scale400}
-                  boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
-                  display="flex"
-                  zIndex={30}
-                  minWidth={200}
-                >
-                  <Checkbox
-                    options={_columns.map(({title, index}) => ({
-                      label: title,
-                      value: index,
-                    }))}
-                    value={cols}
-                    onChange={(event) => {
-                      const {value} = event.target;
-                      if (cols.includes(value)) {
-                        setCols((cols) => cols.filter((val) => val !== value));
-                      } else {
-                        setCols((cols) => [...cols, value]);
+        {showSortAndColsBtns && (
+          <Box
+            margin="0 0 0 auto"
+            marginTop={action.length ? 0 : spacing.scale200}
+            marginBottom={action.length ? 0 : spacing.scale200}
+            display="grid"
+            gridAutoFlow="column"
+            columnGap={spacing.scale200}
+            position="relative"
+          >
+            <Box position="relative" display="flex" alignItems="center">
+              <Button
+                kind="minimal"
+                onClick={() => setShowSortPopup((curr) => !curr)}
+              >
+                <Sort />
+              </Button>
+              {showSortPopup && (
+                <div ref={sortPopupRef}>
+                  <Box
+                    position="absolute"
+                    right={0}
+                    top={spacing.scale600}
+                    background="white"
+                    padding={spacing.scale400}
+                    boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
+                    display="flex"
+                    zIndex={30}
+                    minWidth={200}
+                  >
+                    <Select
+                      options={
+                        isLoading
+                          ? [{label: '-'.repeat(10), value: ''}]
+                          : _columns.map(({title}) => ({
+                              label: title,
+                              value: title,
+                            }))
                       }
-                    }}
-                  />
-                </Box>
-              </div>
-            )}
+                      onChange={(event) => {
+                        const {value} = event.target;
+                        onOrderByChange(value);
+                      }}
+                      value={orderBy}
+                    />
+                  </Box>
+                </div>
+              )}
+            </Box>
+            <Box position="relative" display="flex" alignItems="center">
+              <Button
+                kind="minimal"
+                onClick={() => setShowColsPopup((curr) => !curr)}
+              >
+                <Columns />
+              </Button>
+              {showColsPopUp && (
+                <div ref={colsPopupRef}>
+                  <Box
+                    position="absolute"
+                    right={0}
+                    top={spacing.scale600}
+                    background="white"
+                    padding={spacing.scale400}
+                    boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
+                    display="flex"
+                    zIndex={30}
+                    minWidth={200}
+                  >
+                    <Checkbox
+                      options={_columns.map(({title, index}) => ({
+                        label: title,
+                        value: index,
+                      }))}
+                      value={cols}
+                      onChange={(event) => {
+                        const {value} = event.target;
+                        if (cols.includes(value)) {
+                          setCols((cols) =>
+                            cols.filter((val) => val !== value),
+                          );
+                        } else {
+                          setCols((cols) => [...cols, value]);
+                        }
+                      }}
+                    />
+                  </Box>
+                </div>
+              )}
+            </Box>
           </Box>
-        </Box>
+        )}
       </FlexGrid>
       <Box overflow="scroll" width="100%" display="flex">
         <Table style={{zIndex: 1}}>
