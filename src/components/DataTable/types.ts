@@ -38,4 +38,6 @@ export type Props = {
   onAction?: (action: string, selectedIndices: number[]) => void;
   /** Is called when new filter attribute / value is set */
   onFilter?: (filter: {[attribute: string]: {eq}}) => void;
+  /** Weather or not to show sort and cols selectors */
+  showSortAndColsBtns?: boolean;
 };
