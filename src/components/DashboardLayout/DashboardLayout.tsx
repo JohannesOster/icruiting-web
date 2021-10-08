@@ -33,7 +33,7 @@ const DashboardLayout: React.FC = ({children}) => {
               <World style={iconsStyles} />
               Mitarbeiter:innen
             </NavLink>
-            <NavLink href="/dashboard/theme">
+            <NavLink href="/dashboard/settings">
               <Settings style={iconsStyles} />
               Einstellungen
             </NavLink>
