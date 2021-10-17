@@ -25,10 +25,21 @@ import {useFetch} from 'components/useFetch';
 const Applicants = () => {
   const router = useRouter();
 
-  const {query, setLimit, setFilter, order, next, prev} = useQueryReducer();
+  const queryStorageKey = 'applicants-query';
+  const _queryInit = localStorage.getItem(queryStorageKey);
+  const _queryJSON = JSON.parse(_queryInit);
+
+  const {query, setLimit, setFilter, order, next, prev} = useQueryReducer(
+    _queryJSON ? _queryJSON : undefined,
+  );
   const {offset, limit, filter, order: orderBy} = query;
   const {spacing} = useTheme();
   const {currentUser} = useAuth();
+
+  useEffect(() => {
+    if (!query) return;
+    localStorage.setItem(queryStorageKey, JSON.stringify(query));
+  }, [query]);
 
   const sortLocalStorageKey = useRef(`${currentUser.userId}-applicants-sort`);
   useEffect(() => {
