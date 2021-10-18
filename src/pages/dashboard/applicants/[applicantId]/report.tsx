@@ -51,7 +51,7 @@ const ApplicantReport = () => {
   };
   const [toggleState, toggleDispatch] = useReducer(toggleReducer, {
     applicant: true,
-    details: false,
+    details: true,
     requirements: true,
     replicasFor: undefined,
     openForms: [],
