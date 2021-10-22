@@ -90,7 +90,7 @@ const ApplicantAssessment = () => {
       ...props
     } = item;
 
-    const _defaultValue = defaultValue || '';
+    const _defaultValue = defaultValue === undefined ? '' : defaultValue;
 
     return (
       <Component
