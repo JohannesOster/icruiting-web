@@ -31,8 +31,9 @@ const RatingGroup = forwardRef<HTMLInputElement, Props>(
           {options.map((option) => {
             // either add default checked or checked prop
             const checked: any = {};
-            if (defaultValue === option.value) checked.defaultChecked = true;
-            else if (value === option.value) checked.checked = true;
+            if (defaultValue == option.value) checked.defaultChecked = true;
+            // compare without type
+            else if (value == option.value) checked.checked = true; // compare without type
 
             return (
               <Box key={option.value}>
