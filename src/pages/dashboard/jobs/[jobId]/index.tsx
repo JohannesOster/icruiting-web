@@ -387,7 +387,7 @@ const JobDetails = () => {
               },
               {
                 formCategory: 'assessment',
-                title: 'Assessmet',
+                title: 'Assessment',
                 url: `/dashboard/jobs/${jobId}/ranking?formCategory=assessment`,
               },
               {
