@@ -43,6 +43,5 @@ const config = {
   },
 };
 
-const env = process.env.NODE_ENV || 'development';
-console.log(process.env.NODE_ENV, env, config[env]);
+const env = process.env.APP_ENV || 'development';
 export default config[env];
