@@ -5,7 +5,6 @@ const config = {
     identityPoolId: 'eu-central-1:e106c55b-c311-40d9-a7dd-bcd5d668ad2a',
     userPoolWebClientId: '3n7mi9c40kr8sp0tuoo6udvfi0',
     endpoint: {name: 'icruiting-api', url: 'http://localhost:5000'},
-
     loginCallbackUrl: 'http://localhost:3000/login/callback/',
     logoutCallbackUrl: 'http://localhost:3000/logout/',
     userPoolDomain:
@@ -20,7 +19,6 @@ const config = {
       name: 'icruiting-api',
       url: 'https://icruiting-api.herokuapp.com',
     },
-
     loginCallbackUrl: 'https://icruiting.at/login/callback/',
     logoutCallbackUrl: 'https://icruiting.at/logout/',
     userPoolDomain:
@@ -35,9 +33,8 @@ const config = {
       'https://icruiting-web-staging.auth.eu-central-1.amazoncognito.com',
     endpoint: {
       name: 'icruiting-api',
-      url: 'http://icruiting-staging.eu-central-1.elasticbeanstalk.com/',
+      url: 'https://staging.api.icruiting.at',
     },
-
     loginCallbackUrl: 'https://staging--icruiting.at/login/callback/',
     logoutCallbackUrl: 'https://staging--icruiting.at/logout/',
   },
