@@ -44,4 +44,5 @@ const config = {
 };
 
 const env = process.env.APP_ENV || 'development';
+console.log(env, process.env.APP_ENV, config[env]);
 export default config[env];
