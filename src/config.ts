@@ -38,8 +38,8 @@ const config = {
       url: 'http://icruiting-staging.eu-central-1.elasticbeanstalk.com/',
     },
 
-    loginCallbackUrl: 'https://staging.icruiting.at/login/callback/',
-    logoutCallbackUrl: 'https://staging.icruiting.at/logout/',
+    loginCallbackUrl: 'https://staging--icruiting.at/login/callback/',
+    logoutCallbackUrl: 'https://staging--icruiting.at/logout/',
   },
 };
 
