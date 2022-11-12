@@ -30,7 +30,7 @@ const config = {
     region: 'eu-central-1',
     userPoolId: 'eu-central-1_phnHtgeoA',
     identityPoolId: 'eu-central-1:60ebb35a-d0ab-4ab1-a620-ee1820b1522f',
-    userPoolWebClientId: '431pn98k14mdn80vgfnb510j2g',
+    userPoolWebClientId: '3ql8n46dkmjept28sc27ocnqjc',
     userPoolDomain:
       'https://icruiting-web-staging.auth.eu-central-1.amazoncognito.com',
     endpoint: {
