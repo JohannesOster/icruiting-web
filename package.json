@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "next start -p 5050",
-    "dev": "next dev",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider next start -p 5050",
+    "dev": "NODE_OPTIONS=--openssl-legacy-provider next dev",
     "build": "next build && next export -o build/",
     "test": "jest",
     "styleguide": "FAST_REFRESH=false styleguidist server",
