@@ -89,8 +89,10 @@ const Applicants = () => {
     localStorage.setItem(selectedJobLocalStorageKey.current, jobId);
   }, [jobs]);
 
-  const loadingJob = !(jobs || jobsError);
-  const loadingApplicants = !(applicantsResponse || applicantsError);
+  // Checking for undefined because empty array should lead to loading indicator
+  const loadingJob = jobs === undefined && !jobsError;
+  const loadingApplicants =
+    applicantsResponse === undefined && !applicantsError;
   const isLoading = loadingJob || loadingApplicants;
 
   enum BulkAction {
