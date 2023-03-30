@@ -89,7 +89,9 @@ const Applicants = () => {
     localStorage.setItem(selectedJobLocalStorageKey.current, jobId);
   }, [jobs]);
 
-  const loadingJob = !(jobs || jobsError);
+  // Checking for undefined and null, because empty array should lead to loading indicator
+  const jobsNotDefined = jobs == undefined || jobs == null;
+  const loadingJob = !(jobsNotDefined || jobsError);
   const loadingApplicants = !(applicantsResponse || applicantsError);
   const isLoading = loadingJob || loadingApplicants;
 
