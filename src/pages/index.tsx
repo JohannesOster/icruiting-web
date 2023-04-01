@@ -123,7 +123,7 @@ const LandingPage: React.FC = () => {
                 Wähle die <b>passensten</b> nicht die besten Mitarbeiter:innen.
               </H3>
               <Typography kind="body" color="secondary">
-                Eine Plattform, die Euch dabei unterstützt kollaborativ und
+                Eine Plattform, die Euch dabei unterstützt, kollaborativ und
                 anforderungsgetrieben Hiring-Entscheidungen zu treffen.
               </Typography>
             </Box>
