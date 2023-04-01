@@ -26,9 +26,9 @@ const getStylesForKind = (theme: DefaultTheme, kind?: TKind) => {
 export const getColor = (theme: DefaultTheme, color?: TColor) => {
   switch (color) {
     case 'secondary':
-      return {color: theme.colors.typographySecondary};
+      return theme.colors.typographySecondary;
     case 'error':
-      return {color: theme.colors.typographyPrimaryError};
+      return theme.colors.typographyPrimaryError;
   }
 };
 

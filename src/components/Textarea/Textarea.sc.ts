@@ -12,6 +12,7 @@ export const BaseTextarea = styled.textarea<BaseTextareaProps>`
   border-radius: ${({theme}) => theme.borders.radius100};
   background: ${({theme}) => theme.colors.inputFill};
   padding: ${({theme}) => theme.spacing.scale300};
+  resize: vertical;
   ${({theme}) => theme.typography.font100};
 
   &:focus {

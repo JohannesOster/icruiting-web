@@ -9,6 +9,8 @@ const config = {
     logoutCallbackUrl: 'http://localhost:3000/logout/',
     userPoolDomain:
       'https://icruiting-web-dev.auth.eu-central-1.amazoncognito.com',
+    discordContactWebHook:
+      'https://discord.com/api/webhooks/1091469616921981119/xr8rE7R8tY3AhysM3Tg2_Z0mocAUQS5WyPwGBuAmLQvRzpuN_tASqWEvlKIz6dPZtCRo',
   },
   production: {
     region: 'eu-central-1',
@@ -23,20 +25,8 @@ const config = {
     logoutCallbackUrl: 'https://icruiting.at/logout/',
     userPoolDomain:
       'https://icruiting-web-prod.auth.eu-central-1.amazoncognito.com',
-  },
-  staging: {
-    region: 'eu-central-1',
-    userPoolId: 'eu-central-1_phnHtgeoA',
-    identityPoolId: 'eu-central-1:60ebb35a-d0ab-4ab1-a620-ee1820b1522f',
-    userPoolWebClientId: '3ql8n46dkmjept28sc27ocnqjc',
-    userPoolDomain:
-      'https://icruiting-web-staging.auth.eu-central-1.amazoncognito.com',
-    endpoint: {
-      name: 'icruiting-api',
-      url: 'https://staging.api.icruiting.at',
-    },
-    loginCallbackUrl: 'https://staging--icruiting.at/login/callback/',
-    logoutCallbackUrl: 'https://staging--icruiting.at/logout/',
+    discordContactWebHook:
+      'https://discord.com/api/webhooks/1091469616921981119/xr8rE7R8tY3AhysM3Tg2_Z0mocAUQS5WyPwGBuAmLQvRzpuN_tASqWEvlKIz6dPZtCRo',
   },
 };
 

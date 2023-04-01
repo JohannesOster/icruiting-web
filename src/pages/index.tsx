@@ -1,17 +1,20 @@
-import React from 'react';
+import React, {useRef, useState} from 'react';
 import {useTheme} from 'styled-components';
 import {useRouter} from 'next/router';
 import Link from 'next/link';
-import {Button} from 'components';
-import {IcruitingLogo, Bunny} from 'icons';
-import {Box, Typography} from 'components';
+import {Button, H5, Input, Textarea, Typography} from 'components';
+import {Bunny} from 'icons';
+import {Box, H3, H6} from 'components';
+import {useForm} from 'react-hook-form';
 
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
+import config from 'config';
+import {useToaster} from 'context';
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 75px); // 75px = navbarheight
+  min-height: calc(100vh - 75px); // 75px = navbarheight;
 `;
 
 export const Footer = styled.footer`
@@ -28,9 +31,76 @@ export const Footer = styled.footer`
   }
 `;
 
+const Hero = styled.section`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: ${({theme}) => theme.spacing.scale600};
+  height: calc(100vh - 80px);
+  max-width: 590px;
+`;
+
+const FeaturesGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: ${({theme}) => theme.spacing.scale600};
+
+  ${({theme}) => css`
+    @media (max-width: ${theme.breakpoints.md}) {
+      grid-template-columns: 1fr;
+    }
+  `}
+`;
+
 const LandingPage: React.FC = () => {
   const {spacing} = useTheme();
   const router = useRouter();
+  const formRef = useRef<HTMLFormElement>();
+  const {success, danger} = useToaster();
+  const [loading, setLoading] = useState(false);
+
+  const {handleSubmit, register, formState} = useForm({mode: 'onChange'});
+
+  const _onSubmit = (values) => {
+    setLoading(true);
+    const msg = `*${values.name} (${values.email}) wrote:*\n${values.message}`;
+    fetch(config.discordContactWebHook, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({content: msg}),
+    })
+      .then(() => {
+        success('Nachricht erfolgreich gesendet!');
+        formRef.current.reset();
+      })
+      .catch(() => {
+        danger('Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const features = [
+    {
+      title: 'Bewerber:innenmanagement',
+      description: 'Hinfort mit E-Mail, Google Drive und co. husch, husch!',
+    },
+    {
+      title: 'Bewertungsformulare',
+      description:
+        'Gib deinen Interviews die nötige Struktur halte die Wahrnehmungen deiens Teams über individuelle Formulare fest.',
+    },
+    {
+      title: 'Rankings & Gutachten ',
+      description: 'Du bringts die Augen und Ohren, wir die Mathematik.',
+    },
+    {
+      title: 'Cookies 🍪',
+      description:
+        'icruiting verwendet zwar keine Cookies, wenn du uns aber in Wien besuchst, kaufen wir dir welche.',
+    },
+  ];
 
   return (
     <>
@@ -39,21 +109,125 @@ const LandingPage: React.FC = () => {
           flex={1}
           display="flex"
           flexDirection="column"
-          textAlign="center"
-          justifyContent="center"
-          gridRowGap={spacing.scale700}
-          alignItems="center"
+          paddingBottom={96}
+          paddingLeft={spacing.scale400}
+          paddingRight={spacing.scale400}
+          maxWidth={1280}
+          width="100%"
+          margin="0 auto"
         >
-          <Box display="flex" flexDirection="column">
-            <IcruitingLogo style={{width: '90vw'}} />
-            <Typography style={{textTransform: 'uppercase', marginTop: -15}}>
-              Recruit For Fit
-            </Typography>
+          {/* HERO */}
+          <Hero>
+            <Box display="flex" flexDirection="column" gap={spacing.scale200}>
+              <H3>
+                Wähle die <b>passensten</b> nicht die besten Mitarbeiter:innen.
+              </H3>
+              <Typography kind="body" color="secondary">
+                Eine Plattform, die Euch dabei unterstützt kollaborativ und
+                anforderungsgetrieben Hiring-Entscheidungen zu treffen.
+              </Typography>
+            </Box>
+            <Box>
+              <Button onClick={() => router.push('/signup')}>
+                Registrieren
+              </Button>
+            </Box>
+          </Hero>
+          {/* FEATURES */}
+          {/* <Box
+            display="flex"
+            flexDirection="column"
+            gap={spacing.scale600}
+            marginTop={-200}
+          >
+            <Box>
+              <H5>Was kann icruiting?</H5>
+              <Typography color="secondary">Cha-Cha-Cha 2, 3 🕺</Typography>
+            </Box>
+            <FeaturesGrid>
+              {features.map(({title, description}, idx) => (
+                <Box
+                  padding={spacing.scale400}
+                  boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
+                  borderRadius={4}
+                  key={idx}
+                >
+                  <H6 style={{wordBreak: 'break-all'}}>{title}</H6>
+                  <Typography>{description}</Typography>
+                </Box>
+              ))}
+            </FeaturesGrid>
           </Box>
-          <Box marginTop={spacing.scale400}>
-            <Button onClick={() => router.push('/signup')}>
-              Jetzt Registrieren
-            </Button>
+          {/*  */}
+          {/*<Box display="flex" flexDirection="column" gap={spacing.scale600}>
+            <H5>FAQ</H5>
+            <Box>
+              <H6>Ist icruiting für mich?</H6>{' '}
+              <Typography color="secondary">
+                Probieren geht über studieren. Du kannst (glaub ich) wenig
+                kaputt machen. 👉 <Link href="/signup">Registrieren</Link>
+              </Typography>
+            </Box>
+            <Box>
+              <H6>Was kostet der Spaß? 💸</H6>
+              <Typography>
+                <b>60€ / Monat</b>. <br />
+                Gegenvorschläge? Wir feilschen gerne.
+              </Typography>
+            </Box>
+          </Box> */}
+          {/* CONTACT */}
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="start"
+            gap={spacing.scale600}
+          >
+            <Box>
+              <H5>Kontakt</H5>
+              <Typography color="secondary">
+                Wir antworten schnell 🏃
+              </Typography>
+            </Box>
+            <form
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: spacing.scale400,
+                width: '100%',
+              }}
+              ref={formRef}
+              onSubmit={handleSubmit(_onSubmit)}
+            >
+              <Input
+                label="Name"
+                placeholder="Name"
+                name="name"
+                ref={register({required: true})}
+              />
+              <Input
+                label="E-Mail-Adresse"
+                placeholder="E-Mail-Adresse"
+                name="email"
+                ref={register({required: true})}
+                type="email"
+              />
+              <Textarea
+                label="Nachricht"
+                placeholder="Nachricht"
+                name="message"
+                ref={register({required: true})}
+              />
+              <Box>
+                <Button
+                  type="submit"
+                  disabled={!(formState.isDirty && formState.isValid)}
+                  isLoading={loading}
+                >
+                  Senden
+                </Button>
+              </Box>
+            </form>
           </Box>
         </Box>
         <Footer style={{position: 'relative'}}>

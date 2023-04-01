@@ -102,9 +102,8 @@ const SignUp: React.FC = () => {
                   kind="secondary"
                   style={{fontSize: spacing.scale500}}
                 >
-                  Preis nach Vereinbarung.
-                  {/* € {price.unit_amount / 100} /{' '}
-                  {displayValForInterval[price.recurring.interval]} */}
+                  € {price.unit_amount / 100} /{' '}
+                  {displayValForInterval[price.recurring.interval]}
                 </Typography>
                 <Box display="grid" rowGap={spacing.scale300}>
                   <Typography
