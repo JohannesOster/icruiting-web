@@ -57,6 +57,6 @@ export const FormCodeTextarea = styled.textarea`
   overflow: hidden;
   cursor: pointer;
   resize: none;
-  color: ${({theme}) => theme.colors.typographySecondary};
+  color: ${({theme}) => theme.colors.textSubdued};
   ${({theme}) => theme.typography.bodySmall};
 `;

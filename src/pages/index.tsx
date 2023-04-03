@@ -28,7 +28,7 @@ export const Footer = styled.footer`
   display: flex;
   justify-content: space-between;
   padding: ${({theme}) => theme.spacing.scale500};
-  color: ${({theme}) => theme.colors.typographySecondary};
+  color: ${({theme}) => theme.colors.textSubdued};
   border-top: 1px solid;
   border-color: ${({theme}) => theme.colors.inputBorder};
   ${({theme}) => theme.typography.body};

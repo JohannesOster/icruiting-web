@@ -37,8 +37,8 @@ export const Button: React.FC<ButtonProps> = ({
             {...(disabled
               ? {}
               : {
-                  foreground: colors.buttonLoadingSpinnerForeground,
-                  background: colors.buttonLoadingSpinnerBackground,
+                  foreground: colors.surfacePrimaryDefault,
+                  background: colors.surfacePrimarySubdued,
                 })}
           />
         </LoadingSpinnerContainer>

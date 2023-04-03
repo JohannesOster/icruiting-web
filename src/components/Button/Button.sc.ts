@@ -49,13 +49,13 @@ const getButtonStylesForKind = (
         background: none;
         color: ${destructive
           ? theme.colors.typographyPrimaryError
-          : theme.colors.typographyPrimary};
+          : theme.colors.textDefault};
         padding: 0;
 
         &:hover {
           color: ${destructive
             ? theme.colors.typographySecondaryError
-            : theme.colors.typographySecondary};
+            : theme.colors.textSubdued};
         }
 
         &:disabled {
@@ -67,21 +67,25 @@ const getButtonStylesForKind = (
       return css`
         background-color: ${destructive
           ? theme.colors.buttonPrimaryDestructiveFill
-          : theme.colors.buttonPrimaryFill};
+          : theme.colors.surfacePrimaryDefault};
         color: ${destructive
           ? theme.colors.buttonPrimaryDestructiveText
-          : theme.colors.buttonPrimaryText};
+          : theme.colors.textOnDark};
 
         &:hover {
           background-color: ${destructive
             ? theme.colors.buttonPrimaryDestructiveFillHover
-            : theme.colors.buttonPrimaryFillHover};
+            : theme.colors.surfacePrimaryHover};
         }
 
         &:disabled {
           cursor: not-allowed;
-          background-color: ${theme.colors.buttonPrimaryDisabledFill};
-          color: ${theme.colors.buttonPrimaryDisabledText};
+          background-color: ${theme.colors.surfacePrimaryDisabled};
+          color: ${theme.colors.textDisabled};
+        }
+
+        &:active {
+          background-color: ${theme.colors.surfacePrimaryActive};
         }
       `;
   }

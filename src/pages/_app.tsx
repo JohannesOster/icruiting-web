@@ -14,7 +14,7 @@ import 'styles/typography.css';
 Amplify.configure({...config, ssr: true});
 
 const GlobalStyles = createGlobalStyle`
-  body {color: ${({theme}) => theme.colors.typographyPrimary}};
+  body {color: ${({theme}) => theme.colors.textDefault}};
 `;
 
 const App = ({Component, pageProps}) => {

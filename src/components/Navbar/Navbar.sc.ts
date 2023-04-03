@@ -41,7 +41,7 @@ export const Hamburger = styled.div<{open: boolean}>`
     left: 0;
     height: 2px;
     width: 100%;
-    background: ${({theme}) => theme.colors.typographyPrimary};
+    background: ${({theme}) => theme.colors.textDefault};
     transition-timing-function: ease;
     transition-duration: 0.15s;
     :nth-child(1) {

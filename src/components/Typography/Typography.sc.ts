@@ -13,12 +13,12 @@ const getStylesForKind = (theme: DefaultTheme, kind?: TKind) => {
     case 'secondary':
       return {
         ...theme.typography.bodySmall,
-        color: theme.colors.typographySecondary,
+        color: theme.colors.textSubdued,
       };
     default:
       return {
         ...theme.typography.body,
-        color: theme.colors.typographyPrimary,
+        color: theme.colors.textDefault,
       };
   }
 };
@@ -26,7 +26,7 @@ const getStylesForKind = (theme: DefaultTheme, kind?: TKind) => {
 export const getColor = (theme: DefaultTheme, color?: TColor) => {
   switch (color) {
     case 'secondary':
-      return theme.colors.typographySecondary;
+      return theme.colors.textSubdued;
     case 'error':
       return theme.colors.typographyPrimaryError;
   }

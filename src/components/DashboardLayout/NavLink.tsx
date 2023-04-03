@@ -17,14 +17,14 @@ export const Wrapper = styled.a<{isActive: boolean}>`
 
   &:hover {
     background-color: ${({theme}) => theme.colors.inputBorder};
-    border-color: ${({theme}) => theme.colors.typographyPrimary};
+    border-color: ${({theme}) => theme.colors.textDefault};
   }
 
   ${({isActive, theme}) =>
     isActive &&
     css`
       background-color: ${theme.colors.inputBorder};
-      border-color: ${theme.colors.typographyPrimary};
+      border-color: ${theme.colors.textDefault};
     `}
 `;
 

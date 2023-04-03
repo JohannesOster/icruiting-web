@@ -79,17 +79,13 @@ export const ChipCloseBtn = styled.span`
 export const Label = styled.label<LabelProps>`
   ${({theme}) => theme.typography.body};
   color: ${({theme, error}) =>
-    error
-      ? theme.colors.typographyPrimaryError
-      : theme.colors.typographyPrimary};
+    error ? theme.colors.typographyPrimaryError : theme.colors.textDefault};
 `;
 
 export const Description = styled.span<DescriptionProps>`
   ${({theme}) => theme.typography.bodySmall};
   color: ${({theme, error}) =>
-    error
-      ? theme.colors.typographySecondaryError
-      : theme.colors.typographySecondary};
+    error ? theme.colors.typographySecondaryError : theme.colors.textSubdued};
 `;
 
 export const Errors = styled.div`

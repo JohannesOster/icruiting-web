@@ -13,7 +13,7 @@ const DashboardLayout: React.FC = ({children}) => {
     marginRight: spacing.scale300,
     height: spacing.scale500,
     width: spacing.scale500,
-    color: colors.typographyPrimary,
+    color: colors.textDefault,
   };
 
   return (

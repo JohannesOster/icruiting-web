@@ -3,28 +3,29 @@ import {animations} from './primitives';
 
 export const theme = {
   colors: {
-    // - button
-    buttonPrimaryFill: colors.primary,
-    buttonPrimaryText: colors.primary0,
-    buttonPrimaryFillHover: colors.primary700,
-    buttonPrimaryDisabledFill: colors.primary50,
-    buttonPrimaryDisabledText: colors.primary400,
+    textDefault: '#0F172A',
+    textSubdued: '#6D7175',
+    textDisabled: '#8C9196',
+    textOnDark: '#FFFFFF',
+    textPrimary: '#006280',
+    textDanger: colors.negative500,
 
+    surfacePrimaryDefault: '#006280',
+    surfacePrimarySubdued: '#ECF4F9',
+    surfacePrimaryHover: '#00465C',
+    surfacePrimaryActive: '#032D3A',
+    surfacePrimaryDisabled: '#F2F2F2',
+
+    // - button
     buttonPrimaryDestructiveFill: colors.negative400,
     buttonPrimaryDestructiveText: colors.primary0,
     buttonPrimaryDestructiveFillHover: colors.negative300,
 
     buttonMinimalDisabledText: colors.primary400,
 
-    buttonLoadingSpinnerForeground: colors.primary0,
-    buttonLoadingSpinnerBackground: colors.primary500,
-
     buttonMinimalFill: 'transparent',
     buttonMinimalText: colors.primary700,
     buttonMinimalTextHover: colors.primary0,
-
-    buttonDisabledFill: colors.primary50,
-    buttonDisabledText: colors.primary400,
 
     // - inputs
     inputBorder: colors.primary100,
@@ -44,14 +45,8 @@ export const theme = {
     ratingGroupBackgroundActive: colors.primary,
 
     // - typography
-    typographyPrimary: colors.primary800,
-    typographySecondary: colors.primary600,
     typographyPrimaryError: colors.negative400,
     typographySecondaryError: colors.negative300,
-
-    // - loadingspinner
-    loadingSpinnerBackground: colors.primary300,
-    loadingSpinnerForeground: colors.primary700,
 
     // - tables
     tableBorder: colors.primary200,

@@ -1,12 +1,14 @@
 import React, {FC} from 'react';
 import {
   Box,
+  Button,
   DisplayL,
   DisplayM,
   DisplayS,
   HeadingL,
   HeadingM,
   HeadingS,
+  Spinner,
   Typography,
 } from 'components';
 import styled, {useTheme} from 'styled-components';
@@ -40,6 +42,8 @@ const Impressum: FC = () => {
       <Typography kind="secondary">
         Wähle die passensten nicht die besten Mitarbeiter:innen.
       </Typography>
+      <Button isLoading={true}>asdf</Button>
+      <Spinner></Spinner>
     </Box>
   );
 };
