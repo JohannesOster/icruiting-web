@@ -3,7 +3,7 @@ import styled, {css} from 'styled-components';
 export const SideNav = styled.aside`
   background: white;
   border-right: 1px solid ${({theme}) => theme.colors.inputBorder};
-  width: 200px;
+  width: 220px;
   position: absolute;
   height: 100vh;
   display: flex;
@@ -31,7 +31,7 @@ export const NavList = styled.div`
 
 export const Container = styled.main`
   margin: ${({theme}) => `${theme.spacing.scale300} ${theme.spacing.scale500}`};
-  margin-left: 220px;
+  margin-left: 244px;
   padding-bottom: ${({theme}) => theme.spacing.scale300};
 
   ${({theme}) => css`

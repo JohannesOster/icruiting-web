@@ -9,7 +9,8 @@ export const Container = styled.div`
 export const BaseInput = styled.input<BaseInputProps>`
   border: 1px solid;
   border-color: ${({theme}) => theme.colors.inputBorder};
-  border-radius: ${({theme}) => theme.borders.radius100};
+  border-radius: ${({type, theme}) =>
+    type === 'file' ? '0px' : theme.borders.radius100};
   background: ${({theme}) => theme.colors.inputFill};
   padding: ${({theme}) => theme.spacing.scale300};
   ${({theme}) => theme.typography.bodySmall};
