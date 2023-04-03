@@ -2,9 +2,16 @@ import React, {useRef, useState} from 'react';
 import {useTheme} from 'styled-components';
 import {useRouter} from 'next/router';
 import Link from 'next/link';
-import {Button, H5, Input, Textarea, Typography} from 'components';
+import {
+  Box,
+  Button,
+  DisplayL,
+  HeadingM,
+  Input,
+  Textarea,
+  Typography,
+} from 'components';
 import {Bunny} from 'icons';
-import {Box, DisplayL} from 'components';
 import {useForm} from 'react-hook-form';
 
 import styled, {css} from 'styled-components';
@@ -37,7 +44,7 @@ const Hero = styled.section`
   justify-content: center;
   gap: ${({theme}) => theme.spacing.scale600};
   height: calc(100vh - 80px);
-  max-width: 1200px;
+  max-width: 790px;
 `;
 
 const FeaturesGrid = styled.div`
@@ -141,7 +148,7 @@ const LandingPage: React.FC = () => {
             marginTop={-200}
           >
             <Box>
-              <H5>Was kann icruiting?</H5>
+              <HeadingM>Was kann icruiting?</HeadingM>
               <Typography color="secondary">Cha-Cha-Cha 2, 3 🕺</Typography>
             </Box>
             <FeaturesGrid>
@@ -160,7 +167,7 @@ const LandingPage: React.FC = () => {
           </Box>
           {/*  */}
           {/*<Box display="flex" flexDirection="column" gap={spacing.scale600}>
-            <H5>FAQ</H5>
+            <HeadingM>FAQ</HeadingM>
             <Box>
               <H6>Ist icruiting für mich?</H6>{' '}
               <Typography color="secondary">
@@ -184,7 +191,7 @@ const LandingPage: React.FC = () => {
             gap={spacing.scale600}
           >
             <Box>
-              <H5>Kontakt</H5>
+              <HeadingM>Kontakt</HeadingM>
               <Typography color="secondary">
                 Wir antworten schnell 🏃
               </Typography>

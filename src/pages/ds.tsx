@@ -75,7 +75,9 @@ const Impressum: FC = () => {
 
   return (
     <Box padding={spacing.scale500} display="grid" rowGap={spacing.scale300}>
-      <H5>Wähle die passensten nicht die besten Mitarbeiter:innen.</H5>
+      <HeadingM>
+        Wähle die passensten nicht die besten Mitarbeiter:innen.
+      </HeadingM>
       <H6>Wähle die passensten nicht die besten Mitarbeiter:innen.</H6>
       <Typography kind="body">
         Wähle die passensten nicht die besten Mitarbeiter:innen.

@@ -60,8 +60,11 @@ export const HeadingL = styled.h4`
   }
 `;
 
-export const H5 = styled.h1`
-  ${({theme}) => theme.typography.font750}
+export const HeadingM = styled.h5`
+  ${({theme}) => theme._typography.headingM}
+  @media (max-width: ${({theme}) => theme.breakpoints.md}) {
+    ${({theme}) => theme._typography.mHeadingM}
+  }
 `;
 
 export const H6 = styled.h1`
