@@ -101,7 +101,9 @@ const CreateJob = () => {
           >
             Speichern
           </Button>
-          <Button onClick={() => router.back()}>Abbrechen</Button>
+          <Button kind="secondary" onClick={() => router.back()}>
+            Abbrechen
+          </Button>
         </Box>
       </FlexGrid>
       <form>

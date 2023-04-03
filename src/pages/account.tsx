@@ -43,7 +43,9 @@ const Account: React.FC = () => {
             </Typography>
             <Box display="flex" justifyContent="space-between">
               <Button onClick={() => _deleteTenant()}>Löschen</Button>
-              <Button onClick={() => setStatus('idle')}>Abbrechen</Button>
+              <Button kind="secondary" onClick={() => setStatus('idle')}>
+                Abbrechen
+              </Button>
             </Box>
           </Box>
         </Dialog>

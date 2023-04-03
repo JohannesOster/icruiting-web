@@ -134,7 +134,9 @@ export const EditApplicant = () => {
           <Button isLoading={isSubmitting} onClick={onSave}>
             Speichern
           </Button>
-          <Button onClick={() => router.back()}>Abbrechen</Button>
+          <Button kind="secondary" onClick={() => router.back()}>
+            Abbrechen
+          </Button>
         </Box>
       </FlexGrid>
       {Form}

@@ -34,6 +34,7 @@ export const DnDSourceSection = styled.section`
   margin-left: ${({theme}) => theme.spacing.scale200};
   width: 250px;
   z-index: 2;
+  background: ${({theme}) => theme.colors.surfaceDefault};
 `;
 
 export const DnDTargetSection = styled.section`
@@ -43,6 +44,7 @@ export const DnDTargetSection = styled.section`
   padding-top: ${({theme}) => theme.spacing.scale500};
   width: 100%;
   z-index: 2;
+  background: ${({theme}) => theme.colors.surfaceDefault};
 `;
 
 export const FormGrid = styled.div`

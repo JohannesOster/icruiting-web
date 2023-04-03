@@ -63,7 +63,34 @@ const getButtonStylesForKind = (
           color: ${theme.colors.buttonMinimalDisabledText};
         }
       `;
-    case 'primary':
+    case 'secondary':
+      return css`
+        border: 1px solid;
+        border-color: ${destructive
+          ? theme.colors.borderDanger
+          : theme.colors.borderPrimary};
+        background-color: ${theme.colors.surfaceDefault};
+        color: ${destructive
+          ? theme.colors.buttonPrimaryDestructiveText
+          : theme.colors.textPrimary};
+
+        &:hover {
+          background-color: ${destructive
+            ? theme.colors.buttonPrimaryDestructiveFillHover
+            : theme.colors.surfacePrimarySubdued};
+        }
+
+        &:disabled {
+          cursor: not-allowed;
+          background-color: ${theme.colors.surfacePrimaryDisabled};
+          color: ${theme.colors.textDisabled};
+        }
+
+        &:active {
+          background-color: ${theme.colors.surfacePrimarySubdued};
+        }
+      `;
+    default:
       return css`
         background-color: ${destructive
           ? theme.colors.buttonPrimaryDestructiveFill

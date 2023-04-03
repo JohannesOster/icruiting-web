@@ -10,11 +10,18 @@ export const theme = {
     textPrimary: '#006280',
     textDanger: colors.negative500,
 
+    surfaceDefault: '#FFFFFF',
+    surfaceSubdued: '#FAFBFB',
+
     surfacePrimaryDefault: '#006280',
     surfacePrimarySubdued: '#ECF4F9',
     surfacePrimaryHover: '#00465C',
     surfacePrimaryActive: '#032D3A',
     surfacePrimaryDisabled: '#F2F2F2',
+
+    borderPrimary: '#006280',
+    borderSubdued: '#E2E8F0',
+    borderDanger: colors.negative400,
 
     // - button
     buttonPrimaryDestructiveFill: colors.negative400,

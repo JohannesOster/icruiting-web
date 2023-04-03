@@ -16,11 +16,13 @@ export const RadioLabel = styled.label`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${({theme}) => theme.colors.inputBorder};
+  border: 1px solid ${({theme}) => theme.colors.borderPrimary};
   ${({theme}) => theme.typography.body};
   padding: ${({theme}) =>
     `${theme.spacing.scale300} ${theme.spacing.scale400}`};
   border-radius: ${({theme}) => theme.borders.radius100};
+  height: 45px;
+  width: 45px;
 `;
 
 export const Radio = styled.input`
@@ -29,7 +31,7 @@ export const Radio = styled.input`
   width: 0;
 
   &:checked + ${RadioLabel} {
-    background: ${({theme}) => theme.colors.ratingGroupBackgroundActive};
+    background: ${({theme}) => theme.colors.surfacePrimaryDefault};
     color: white;
   }
 `;

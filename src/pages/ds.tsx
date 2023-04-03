@@ -42,7 +42,9 @@ const Impressum: FC = () => {
       <Typography kind="secondary">
         Wähle die passensten nicht die besten Mitarbeiter:innen.
       </Typography>
-      <Button isLoading={true}>asdf</Button>
+      <Box>
+        <Button kind="secondary">asdf</Button>
+      </Box>
       <Spinner></Spinner>
     </Box>
   );

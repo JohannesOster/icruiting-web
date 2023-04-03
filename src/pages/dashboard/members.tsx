@@ -240,7 +240,9 @@ export const Members = () => {
             </Typography>
             <Box display="flex" justifyContent="space-between">
               <Button onClick={() => delMember(memberToDelete)}>Löschen</Button>
-              <Button onClick={() => setMemberToDelete(null)}>Abbrechen</Button>
+              <Button kind="secondary" onClick={() => setMemberToDelete(null)}>
+                Abbrechen
+              </Button>
             </Box>
           </Box>
         </Dialog>

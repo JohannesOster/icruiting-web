@@ -223,7 +223,9 @@ const FormBuilder: React.FC = () => {
           >
             Speichern
           </Button>
-          <Button onClick={() => router.back()}>Abbrechen</Button>
+          <Button kind="secondary" onClick={() => router.back()}>
+            Abbrechen
+          </Button>
         </ButtonGroup>
       </Box>
       <Box display="flex" position="relative" marginBottom={spacing.scale700}>
