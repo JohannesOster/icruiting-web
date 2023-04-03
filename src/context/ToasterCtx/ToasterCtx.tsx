@@ -12,7 +12,7 @@ interface ToasterCtx {
 
 const [useCtx, CtxProvider] = createCtx<ToasterCtx>();
 
-const ToasterProvider: React.FC = ({children, ...props}) => {
+const ToasterProvider = ({children, ...props}) => {
   const [toasts, setToasts] = useState<ToastProps[]>([]);
   const counter = useRef<number>(0);
 

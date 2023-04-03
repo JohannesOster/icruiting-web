@@ -258,7 +258,7 @@ const ApplicantDetails = () => {
                 <Link
                   href={`/dashboard/applicants/${applicant?.applicantId}/assessment?formId=${row.formId}`}
                 >
-                  <a>{row.formTitle}</a>
+                  {row.formTitle}
                 </Link>
               ),
             },
@@ -276,7 +276,7 @@ const ApplicantDetails = () => {
                 <Link
                   href={`/dashboard/applicants/${applicant?.applicantId}/assessment?formId=${row.formId}`}
                 >
-                  <a>{row.formTitle}</a>
+                  {row.formTitle}
                 </Link>
               ),
             },

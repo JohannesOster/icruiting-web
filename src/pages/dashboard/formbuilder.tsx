@@ -6,21 +6,10 @@ import {useTheme} from 'styled-components';
 import {useForm} from 'react-hook-form';
 import {Button, Input, Dialog} from 'components';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
-import {
-  HeadingL,
-  HeadingS,
-  Box,
-  Typography,
-  getDashboardLayout,
-  withAdmin,
-} from 'components';
+import {HeadingL, HeadingS, Box, Typography, getDashboardLayout, withAdmin} from 'components';
 import {Clipboard} from 'icons';
-import {
-  DnDFormField,
-  DnDSection,
-  DnDSourceItem,
-} from 'components/FormBuilder/DnD';
-import {DnDItem, ComponentToEdit} from 'components/FormBuilder/types';
+import {DnDFormField, DnDSection, DnDSourceItem, ItemTypes} from 'components/FormBuilder/DnD';
+import {DnDItem, ComponentToEdit, FormFieldComponent} from 'components/FormBuilder/types';
 import {EditFormFieldForm} from 'components/FormBuilder/EditFormFieldForm';
 import {getSourceFormFields} from 'components/FormBuilder/sourceFormFields';
 import {getInitialFormFields} from 'components/FormBuilder/initialFormFields';
@@ -41,6 +30,7 @@ import {useRouter} from 'next/router';
 import {useFormBuilder} from 'components/FormBuilder/useFormBuilder';
 import {useToaster} from 'context';
 import {useFetch} from 'components/useFetch';
+import {HotKeys} from 'react-hotkeys';
 
 type Query = {
   formId?: string;
@@ -64,10 +54,7 @@ const FormBuilder: React.FC = () => {
     {revalidateOnFocus: false}, // do not refetch form while editing it
   );
 
-  const {data: job} = useFetch(
-    [`GET /jobs/${jobId}`, jobId],
-    (_key: string, jobId) => API.jobs.find(jobId),
-  );
+  const {data: job} = useFetch([`GET /jobs/${jobId}`, jobId], (_key: string, jobId) => API.jobs.find(jobId));
 
   const {register, formState, errors, getValues, reset} = useForm({
     mode: 'onChange',
@@ -80,22 +67,65 @@ const FormBuilder: React.FC = () => {
     reset({formTitle: formToEdit?.formTitle});
   }, [formToEdit, reset]);
 
-  const [componentToEdit, setComponentToEdit] =
-    useState<null | ComponentToEdit>(null);
-  const sourceItems = getSourceFormFields(
-    formToEdit?.formCategory || formCategory,
-  );
+  const [componentToEdit, setComponentToEdit] = useState<null | ComponentToEdit>(null);
+  const sourceItems = getSourceFormFields(formToEdit?.formCategory || formCategory);
   const initialformFields = useMemo(
     () =>
       formToEdit
-        ? formToEdit.formFields
-            .map(converter.toDnDItem)
-            .sort((one, two) => one.rowIndex - two.rowIndex)
+        ? formToEdit.formFields.map(converter.toDnDItem).sort((one, two) => one.rowIndex - two.rowIndex)
         : getInitialFormFields(formCategory),
     [formToEdit],
   );
 
   const {formFields, ...formBuilder} = useFormBuilder(initialformFields);
+
+  const keyMap = {
+    INSERT: 'i',
+    MOVE_UP: ['k', 'up'],
+    MOVE_DOWN: ['j', 'down'],
+    MOVE_SELECTION_UP: ['shift+k', 'shift+up'],
+    MOVE_SELECTION_DOWN: ['shift+j', 'shift+down'],
+    DUPLICATE: 'd',
+    DELETE: ['del', 'backspace'],
+    EDIT: 'e',
+  };
+
+  const handlers = {
+    INSERT: useCallback(() => {
+      const newField = {
+        id: uuidv4(),
+        type: ItemTypes.FORM_FIELD,
+        rowIndex: formFields.fields.length,
+        component: 'input' as FormFieldComponent,
+        as: Input,
+        props: {label: 'Neues Feld', required: false, placeholder: '', type: 'text'},
+      };
+
+      formFields.insert(newField, formFields.fields.length);
+      setComponentToEdit({id: newField.id, component: newField.component, props: newField.props});
+    }, []),
+    MOVE_UP: useCallback(() => {
+      console.log('Move up');
+    }, []),
+    MOVE_DOWN: useCallback(() => {
+      console.log('Move up');
+    }, []),
+    MOVE_SELECTION_UP: useCallback(() => {
+      console.log('Move selection up');
+    }, []),
+    MOVE_SELECTION_DOWN: useCallback(() => {
+      console.log('Move selection down');
+    }, []),
+    DUPLICATE: useCallback(() => {
+      console.log('Duplicate');
+    }, []),
+    DELETE: useCallback(() => {
+      console.log('Delete');
+    }, []),
+    EDIT: useCallback(() => {
+      console.log('Edit');
+    }, []),
+  };
 
   useEffect(() => {
     if (!formToEdit) return;
@@ -104,9 +134,7 @@ const FormBuilder: React.FC = () => {
 
   const showEditItemForm = useCallback(
     (id: string) => {
-      const {component, props} = formFields.fields.filter(
-        (item) => item.id === id,
-      )[0];
+      const {component, props} = formFields.fields.filter((item) => item.id === id)[0];
       setComponentToEdit({id, component, props});
     },
     [formFields],
@@ -118,9 +146,7 @@ const FormBuilder: React.FC = () => {
     return (
       <DnDSourceItem key={idx} item={item}>
         <IconContainer>
-          <Icon
-            style={{color: colors.inputBorder, width: '14px', height: 'auto'}}
-          />
+          <Icon style={{color: colors.inputBorder, width: '14px', height: 'auto'}} />
         </IconContainer>
         {item.label}
       </DnDSourceItem>
@@ -157,9 +183,7 @@ const FormBuilder: React.FC = () => {
     };
 
     const request = formToEdit ? API.forms.update : API.forms.create;
-    const sucessMsg = !formToEdit
-      ? 'Formular erfolgreich erstellt.'
-      : 'Formular erfolgreich bearbeitet!';
+    const sucessMsg = !formToEdit ? 'Formular erfolgreich erstellt.' : 'Formular erfolgreich bearbeitet!';
 
     request(form)
       .then(() => {
@@ -182,9 +206,7 @@ const FormBuilder: React.FC = () => {
   const iframeSrc = `${domain}/forms/${formId.current}/html`;
   const formCode = `<!-- Begin icruiting webform --><iframe src="${iframeSrc}" style="width: 100%; border: none;" scroll="no" id="${formId.current}-iframe" ></iframe><script>window.addEventListener("message", (event) => {if (event.origin !== "${domain}") return;document.getElementById("${formId.current}-iframe").style.height=event.data + "px";});</script><!-- End icruiting webform -->`;
   const copyCode = () => {
-    const textarea = document.getElementById(
-      'form-code',
-    ) as HTMLTextAreaElement;
+    const textarea = document.getElementById('form-code') as HTMLTextAreaElement;
     if (textarea) {
       textarea.select();
       document.execCommand('copy');
@@ -197,7 +219,7 @@ const FormBuilder: React.FC = () => {
   };
 
   return (
-    <>
+    <HotKeys keyMap={keyMap} handlers={handlers}>
       {componentToEdit && job && (
         <Dialog onClose={() => setComponentToEdit(null)}>
           <EditFormFieldForm
@@ -212,15 +234,9 @@ const FormBuilder: React.FC = () => {
         </Dialog>
       )}
       <Box display="flex" alignItems="center" marginBottom={spacing.scale300}>
-        <HeadingL>
-          {formToEdit ? 'Formular bearbeiten' : 'Neues Formular'}
-        </HeadingL>
+        <HeadingL>{formToEdit ? 'Formular bearbeiten' : 'Neues Formular'}</HeadingL>
         <ButtonGroup>
-          <Button
-            onClick={onSave}
-            disabled={!formState.isValid}
-            isLoading={status === 'submitting'}
-          >
+          <Button onClick={onSave} disabled={!formState.isValid} isLoading={status === 'submitting'}>
             Speichern
           </Button>
           <Button kind="secondary" onClick={() => router.back()}>
@@ -252,9 +268,7 @@ const FormBuilder: React.FC = () => {
             <DnDSourceSection id={targetID} ref={drop}>
               <Box display="grid" rowGap={spacing.scale300}>
                 {(['assessment', 'onboarding'].includes(formCategory) ||
-                  ['assessment', 'onboarding'].includes(
-                    formToEdit?.formCategory,
-                  )) && (
+                  ['assessment', 'onboarding'].includes(formToEdit?.formCategory)) && (
                   <Input
                     label="Formulartitel"
                     placeholder="z.B. Einzelinterview"
@@ -267,8 +281,7 @@ const FormBuilder: React.FC = () => {
                 )}
                 <HeadingS style={{marginTop: 0}}>DRAG &amp; DROP</HeadingS>
                 <DragAndDropList>{FormSource}</DragAndDropList>
-                {(formCategory === 'application' ||
-                  formToEdit?.formCategory === 'application') && (
+                {(formCategory === 'application' || formToEdit?.formCategory === 'application') && (
                   <>
                     <Box display="grid" rowGap={spacing.scale300}>
                       <Box marginTop={20}>
@@ -289,12 +302,7 @@ const FormBuilder: React.FC = () => {
                             }}
                           />
                         </Typography>
-                        <FormCodeTextarea
-                          rows={20}
-                          id="form-code"
-                          onClick={copyCode}
-                          defaultValue={formCode}
-                        />
+                        <FormCodeTextarea rows={20} id="form-code" onClick={copyCode} defaultValue={formCode} />
                       </Box>
                     </Box>
                   </>
@@ -323,12 +331,13 @@ const FormBuilder: React.FC = () => {
           )}
         />
       </Box>
-    </>
+    </HotKeys>
   );
 };
 
 const DnDWrapper = () => {
   return (
+    /* @ts-ignore */
     <DndProvider backend={HTML5Backend}>
       <FormBuilder />
     </DndProvider>

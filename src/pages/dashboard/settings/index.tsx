@@ -183,12 +183,8 @@ export const Settings = () => {
         </tbody>
       </Table>
       <HeadingL>Zahlungen</HeadingL>
-      <Link href="settings/subscriptions">
-        <a>Subscriptions</a>
-      </Link>
-      <Link href="settings/payment">
-        <a>Zahlungsmethoden</a>
-      </Link>
+      <Link href="settings/subscriptions">Subscriptions</Link>
+      <Link href="settings/payment">Zahlungsmethoden</Link>
     </Box>
   );
 };

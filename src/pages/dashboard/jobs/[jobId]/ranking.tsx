@@ -47,7 +47,7 @@ export const Ranking = () => {
         <Link
           href={`/dashboard/applicants/${row.applicantId}/report?formCategory=${formCategory}`}
         >
-          <a>{row.name}</a>
+          {row.name}
         </Link>
       ),
     },

@@ -248,21 +248,15 @@ const LandingPage: React.FC = () => {
               width: 'auto',
             }}
           />
-          <Link href="/">
-            <a>icruiting.at</a>
-          </Link>
+          <Link href="/">icruiting.at</Link>
           <Box
             display="grid"
             gridAutoFlow="column"
             columnGap={spacing.scale300}
           >
-            <Link href="/impressum">
-              <a>Impressum</a>
-            </Link>
+            <Link href="/impressum">Impressum</Link>
             <span>&bull;</span>
-            <Link href="/privacy">
-              <a>Datenschutzerklärung</a>
-            </Link>
+            <Link href="/privacy">Datenschutzerklärung</Link>
           </Box>
         </Footer>
       </Container>

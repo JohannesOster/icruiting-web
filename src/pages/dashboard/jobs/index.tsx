@@ -49,17 +49,13 @@ export const Jobs = () => {
     {
       title: 'Bezeichnung',
       cell: (row) => (
-        <Link href={`${router.pathname}/${row.jobId}`}>
-          <a>{row.jobTitle}</a>
-        </Link>
+        <Link href={`${router.pathname}/${row.jobId}`}>{row.jobTitle}</Link>
       ),
     },
     {
       title: 'Aktion',
       cell: (row) => (
-        <Link href={`${router.pathname}/${row.jobId}/edit`}>
-          <a>bearbeiten</a>
-        </Link>
+        <Link href={`${router.pathname}/${row.jobId}/edit`}>bearbeiten</Link>
       ),
     },
     {

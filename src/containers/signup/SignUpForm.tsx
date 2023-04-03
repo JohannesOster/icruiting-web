@@ -89,9 +89,7 @@ export const SignUpForm: React.FC<Props> = ({onSubmit, submitting}) => {
           <span style={{marginRight: spacing.scale200}}>
             Bereits einen Account?
           </span>
-          <Link href="/login">
-            <a>Anmelden</a>
-          </Link>
+          <Link href="/login">Anmelden</Link>
         </Typography>
         <Button
           disabled={
