@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import Link from 'next/link';
 import {
-  H3,
+  HeadingL,
   H6,
   Typography,
   TColumn,
@@ -170,7 +170,7 @@ export const Jobs = () => {
         </Dialog>
       )}
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <H3>Stellen</H3>
+        <HeadingL>Stellen</HeadingL>
         <Button onClick={() => router.push(`${router.pathname}/create`)}>
           Hinzufügen
         </Button>

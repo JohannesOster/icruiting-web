@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {Box, H3, H6, Typography} from 'components';
+import {Box, HeadingL, H6, Typography} from 'components';
 import {useTheme} from 'styled-components';
 import Link from 'next/link';
 
@@ -14,7 +14,7 @@ const Privacy: FC = () => {
         rowGap={spacing.scale300}
         maxWidth="800px"
       >
-        <H3 style={{marginTop: 0}}>Datenschutzerklärung </H3>
+        <HeadingL style={{marginTop: 0}}>Datenschutzerklärung </HeadingL>
         <Typography kind="secondary">Stand: November 2020</Typography>
         <Typography>
           Der Schutz Ihrer persönlichen Daten ist uns ein besonderes Anliegen.

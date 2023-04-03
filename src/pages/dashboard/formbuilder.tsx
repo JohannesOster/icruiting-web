@@ -7,7 +7,7 @@ import {useForm} from 'react-hook-form';
 import {Button, Input, Dialog} from 'components';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {
-  H3,
+  HeadingL,
   H6,
   Box,
   Typography,
@@ -212,7 +212,9 @@ const FormBuilder: React.FC = () => {
         </Dialog>
       )}
       <Box display="flex" alignItems="center" marginBottom={spacing.scale300}>
-        <H3>{formToEdit ? 'Formular bearbeiten' : 'Neues Formular'}</H3>
+        <HeadingL>
+          {formToEdit ? 'Formular bearbeiten' : 'Neues Formular'}
+        </HeadingL>
         <ButtonGroup>
           <Button
             onClick={onSave}

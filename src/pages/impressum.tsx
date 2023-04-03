@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {Box, H3, H6, Typography} from 'components';
+import {Box, HeadingL, H6, Typography} from 'components';
 import {useTheme} from 'styled-components';
 
 const Impressum: FC = () => {
@@ -7,7 +7,7 @@ const Impressum: FC = () => {
 
   return (
     <Box padding={spacing.scale500} display="grid" rowGap={spacing.scale300}>
-      <H3 style={{margin: 0}}>Impressum</H3>
+      <HeadingL style={{margin: 0}}>Impressum</HeadingL>
       <H6>Kontakt</H6>
       <Box display="grid" gridRowGap={spacing.scale300}>
         <Typography>

@@ -6,7 +6,7 @@ import {object, array, string, mixed} from 'yup';
 import {API, TJobRequest} from 'services';
 import {
   Box,
-  H3,
+  HeadingL,
   H6,
   FlexGrid,
   getDashboardLayout,
@@ -50,40 +50,35 @@ const CreateJob = () => {
       });
   };
 
-  const {
-    register,
-    errors,
-    control,
-    handleSubmit,
-    formState,
-  } = useForm<TJobRequest>({
-    mode: 'onChange',
-    criteriaMode: 'all',
-    defaultValues: {jobRequirements: [{requirementLabel: ''}]},
-    resolver: yupResolver(
-      object({
-        jobTitle: string()
-          .min(5, 'Stellentitle muss mindestens 5 Zeichen lang sein.')
-          .max(50, 'Stellentitle darf maximal 50 Zeichen lang sein.')
-          .required('Stellentitel ist verpflichtend.'),
-        // for each item add validationrule for the label
-        jobRequirements: array().of(
-          object({
-            requirementLabel: string().required(
-              'Item ist verpflichtend auszufüllen oder zu löschen',
-            ),
-            minValue: mixed()
-              .test(
-                'isOptionalNumber',
-                'Mindestmaß muss eine Zahl sein.',
-                (value) => (value ? /^\d*\.?\d*$/.test(value) : true),
-              )
-              .transform((value) => (value === '' ? undefined : +value)),
-          }),
-        ),
-      }),
-    ),
-  });
+  const {register, errors, control, handleSubmit, formState} =
+    useForm<TJobRequest>({
+      mode: 'onChange',
+      criteriaMode: 'all',
+      defaultValues: {jobRequirements: [{requirementLabel: ''}]},
+      resolver: yupResolver(
+        object({
+          jobTitle: string()
+            .min(5, 'Stellentitle muss mindestens 5 Zeichen lang sein.')
+            .max(50, 'Stellentitle darf maximal 50 Zeichen lang sein.')
+            .required('Stellentitel ist verpflichtend.'),
+          // for each item add validationrule for the label
+          jobRequirements: array().of(
+            object({
+              requirementLabel: string().required(
+                'Item ist verpflichtend auszufüllen oder zu löschen',
+              ),
+              minValue: mixed()
+                .test(
+                  'isOptionalNumber',
+                  'Mindestmaß muss eine Zahl sein.',
+                  (value) => (value ? /^\d*\.?\d*$/.test(value) : true),
+                )
+                .transform((value) => (value === '' ? undefined : +value)),
+            }),
+          ),
+        }),
+      ),
+    });
 
   const {fields, append, remove} = useFieldArray({
     control,
@@ -97,7 +92,7 @@ const CreateJob = () => {
         justifyContent="space-between"
         marginBottom={spacing.scale300}
       >
-        <H3>Neue Stelle</H3>
+        <HeadingL>Neue Stelle</HeadingL>
         <Box display="grid" gridAutoFlow="column" columnGap={spacing.scale500}>
           <Button
             onClick={handleSubmit(onSave)}

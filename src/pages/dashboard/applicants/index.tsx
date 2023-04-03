@@ -8,7 +8,7 @@ import {
   DataTable,
   Table,
   TColumn,
-  H3,
+  HeadingL,
   H6,
   Box,
   Typography,
@@ -306,7 +306,7 @@ const Applicants = () => {
         flexGap={spacing.scale300}
         marginBottom={spacing.scale300}
       >
-        <H3>Bewerbungen</H3>
+        <HeadingL>Bewerbungen</HeadingL>
         {jobs && (
           <Select
             options={jobs.map((job) => ({

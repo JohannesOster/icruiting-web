@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Box, H3, DataTable, TColumn} from 'components';
+import {Box, HeadingL, DataTable, TColumn} from 'components';
 import {useTheme} from 'styled-components';
 import {useAuth, useToaster} from 'context';
 import {API} from 'services';
@@ -102,7 +102,7 @@ const Subscriptions: React.FC = () => {
       display="grid"
       rowGap={spacing.scale500}
     >
-      <H3>Subscriptions</H3>
+      <HeadingL>Subscriptions</HeadingL>
       <DataTable
         columns={columns}
         data={prices || []}

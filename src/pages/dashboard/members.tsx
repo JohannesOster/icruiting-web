@@ -1,7 +1,7 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import {
   DataTable,
-  H3,
+  HeadingL,
   H6,
   TColumn,
   FlexGrid,
@@ -42,10 +42,11 @@ export const Members = () => {
   const {spacing} = useTheme();
   const toaster = useToaster();
 
-  const {data: members, error, revalidate} = useFetch(
-    '/members',
-    API.members.list,
-  );
+  const {
+    data: members,
+    error,
+    revalidate,
+  } = useFetch('/members', API.members.list);
   const [memberToEdit, setMembereToEdit] = useState<{
     email: string;
     userRole: string;
@@ -251,7 +252,7 @@ export const Members = () => {
           flexGap={spacing.scale200}
           marginBottom={spacing.scale300}
         >
-          <H3>Mitarbeiter:innen</H3>
+          <HeadingL>Mitarbeiter:innen</HeadingL>
           <Button onClick={() => setShowNewMembereForm(true)}>
             Hinzufügen
           </Button>

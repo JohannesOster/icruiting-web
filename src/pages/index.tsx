@@ -4,7 +4,7 @@ import {useRouter} from 'next/router';
 import Link from 'next/link';
 import {Button, H5, Input, Textarea, Typography} from 'components';
 import {Bunny} from 'icons';
-import {Box, H3, H6} from 'components';
+import {Box, DisplayL} from 'components';
 import {useForm} from 'react-hook-form';
 
 import styled, {css} from 'styled-components';
@@ -37,7 +37,7 @@ const Hero = styled.section`
   justify-content: center;
   gap: ${({theme}) => theme.spacing.scale600};
   height: calc(100vh - 80px);
-  max-width: 590px;
+  max-width: 1200px;
 `;
 
 const FeaturesGrid = styled.div`
@@ -119,9 +119,9 @@ const LandingPage: React.FC = () => {
           {/* HERO */}
           <Hero>
             <Box display="flex" flexDirection="column" gap={spacing.scale200}>
-              <H3>
+              <DisplayL>
                 Wähle die <b>passensten</b> nicht die besten Mitarbeiter:innen.
-              </H3>
+              </DisplayL>
               <Typography kind="body" color="secondary">
                 Eine Plattform, die Euch dabei unterstützt, kollaborativ und
                 anforderungsgetrieben Hiring-Entscheidungen zu treffen.

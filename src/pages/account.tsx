@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import Link from 'next/link';
 import {useTheme} from 'styled-components';
-import {H3, Box, H6, Typography} from 'components';
+import {HeadingL, Box, H6, Typography} from 'components';
 import {useAuth, useToaster} from 'context';
 import {API} from 'services';
 import {Dialog, Button, withAuth} from 'components';
@@ -48,7 +48,7 @@ const Account: React.FC = () => {
           </Box>
         </Dialog>
       )}
-      <H3>Account</H3>
+      <HeadingL>Account</HeadingL>
       <Link href="/password-reset">
         <a>Passwort zurrücksetzten</a>
       </Link>
@@ -70,7 +70,7 @@ const Account: React.FC = () => {
       )}
       {currentUser?.userRole === 'admin' && (
         <>
-          <H3>Zahlungen</H3>
+          <HeadingL>Zahlungen</HeadingL>
           <Link href="/account/subscriptions">
             <a>Subscriptions</a>
           </Link>

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Link from 'next/link';
 import {useTheme} from 'styled-components';
 import {
-  H3,
+  HeadingL,
   H6,
   Typography,
   TColumn,
@@ -38,10 +38,12 @@ const JobDetails = () => {
   );
 
   const [forms, setForms] = useState<{[key: string]: TForm[]}>({});
-  const {data, error: formsError, mutate, revalidate} = useFetch(
-    [`GET /forms`, jobId],
-    (_key, jobId) => API.forms.list(jobId),
-  );
+  const {
+    data,
+    error: formsError,
+    mutate,
+    revalidate,
+  } = useFetch([`GET /forms`, jobId], (_key, jobId) => API.forms.list(jobId));
 
   const [deletingReport, setDeletingReport] = useState(false);
   const {data: report, revalidate: revalidateReport} = useFetch(
@@ -335,7 +337,7 @@ const JobDetails = () => {
           </form>
         </Dialog>
       )}
-      <H3>{job?.jobTitle}</H3>
+      <HeadingL>{job?.jobTitle}</HeadingL>
       <Box display="grid" gridRowGap={spacing.scale200}>
         <div
           style={{cursor: 'pointer'}}

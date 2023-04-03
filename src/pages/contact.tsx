@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {Box, H3} from 'components';
+import {Box, HeadingL} from 'components';
 import {useTheme} from 'styled-components';
 
 const Contact: FC = () => {
@@ -7,7 +7,7 @@ const Contact: FC = () => {
 
   return (
     <Box padding={spacing.scale500} display="grid" rowGap={spacing.scale200}>
-      <H3>Kontakt</H3>
+      <HeadingL>Kontakt</HeadingL>
       Bitte kontaktieren Sie den Betreiber dieser Website unter der folgenden
       E-Mail-Adresse:
       <a href="mailto:johannes.oster@icruiting.at">

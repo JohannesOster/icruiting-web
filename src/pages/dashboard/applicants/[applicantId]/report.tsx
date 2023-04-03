@@ -2,7 +2,7 @@ import React, {useEffect, useReducer, useState} from 'react';
 import {API, TForm} from 'services';
 import {buildRadarChart} from 'utils/report-utils';
 import {
-  H3,
+  HeadingL,
   H6,
   Table,
   Box,
@@ -103,7 +103,7 @@ const ApplicantReport = () => {
 
   return (
     <Box display="grid" rowGap={spacing.scale300}>
-      <H3>Gutachten</H3>
+      <HeadingL>Gutachten</HeadingL>
       <Box display="grid" rowGap={spacing.scale200}>
         <FlexGrid alignItems="center" flexGap={spacing.scale200}>
           <H6>Bewerber*in - {applicant?.name}</H6>

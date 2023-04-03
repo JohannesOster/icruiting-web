@@ -6,7 +6,7 @@ import {object, array, string, number} from 'yup';
 import {API, TJobRequest, TJob} from 'services';
 import {
   Box,
-  H3,
+  HeadingL,
   H6,
   FlexGrid,
   getDashboardLayout,
@@ -45,51 +45,45 @@ const EditJob = () => {
         reset(job);
         return job;
       }),
-      {revalidateOnFocus: false}
+    {revalidateOnFocus: false},
   );
 
-  const {
-    register,
-    errors,
-    control,
-    handleSubmit,
-    formState,
-    reset,
-  } = useForm<TJobRequest>({
-    mode: 'onChange',
-    criteriaMode: 'all',
-    defaultValues: {...job},
-    resolver: yupResolver(
-      object().shape({
-        jobTitle: string()
-          .min(5, 'Stellentitle muss mindestens 5 Zeichen lang sein.')
-          .max(50, 'Stellentitle darf maximal 50 Zeichen lang sein.')
-          .required('Stellentitel ist verpflichtend.'),
-        // for each item add validationrule for the label
-        jobRequirements: array().of(
-          object().shape({
-            requirementLabel: string().required(
-              'Item ist verpflichtend auszufüllen oder zu löschen',
-            ),
-            minValue: number()
-              .nullable()
-              .transform((value: string, originalValue?: string) => {
-                if (!originalValue) return null;
-                if (typeof originalValue === 'string') {
-                  return originalValue?.trim() === '' ? null : value;
-                }
+  const {register, errors, control, handleSubmit, formState, reset} =
+    useForm<TJobRequest>({
+      mode: 'onChange',
+      criteriaMode: 'all',
+      defaultValues: {...job},
+      resolver: yupResolver(
+        object().shape({
+          jobTitle: string()
+            .min(5, 'Stellentitle muss mindestens 5 Zeichen lang sein.')
+            .max(50, 'Stellentitle darf maximal 50 Zeichen lang sein.')
+            .required('Stellentitel ist verpflichtend.'),
+          // for each item add validationrule for the label
+          jobRequirements: array().of(
+            object().shape({
+              requirementLabel: string().required(
+                'Item ist verpflichtend auszufüllen oder zu löschen',
+              ),
+              minValue: number()
+                .nullable()
+                .transform((value: string, originalValue?: string) => {
+                  if (!originalValue) return null;
+                  if (typeof originalValue === 'string') {
+                    return originalValue?.trim() === '' ? null : value;
+                  }
 
-                return value;
-              }),
-          }),
-        ),
-      }),
-    ),
-  });
+                  return value;
+                }),
+            }),
+          ),
+        }),
+      ),
+    });
 
   const onSave = (job: TJobRequest) => {
     setStatus('submitting');
-    const _job = ({...job, jobId} as unknown) as TJob;
+    const _job = {...job, jobId} as unknown as TJob;
     API.jobs.update(_job).then(() => {
       toaster.success('Stelle erfolgreich bearbeitet.');
       router.back();
@@ -108,7 +102,7 @@ const EditJob = () => {
         justifyContent="space-between"
         marginBottom={spacing.scale300}
       >
-        <H3>Stelle bearbeiten</H3>
+        <HeadingL>Stelle bearbeiten</HeadingL>
         <Box display="grid" gridAutoFlow="column" columnGap={spacing.scale500}>
           <Button
             onClick={handleSubmit(onSave)}

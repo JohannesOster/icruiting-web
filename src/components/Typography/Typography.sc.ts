@@ -32,20 +32,32 @@ export const getColor = (theme: DefaultTheme, color?: TColor) => {
   }
 };
 
-export const H1 = styled.h1`
-  ${({theme}) => theme.typography.font1050}
+export const DisplayL = styled.h1`
+  ${({theme}) => theme._typography.displayL}
+  @media (max-width: ${({theme}) => theme.breakpoints.md}) {
+    ${({theme}) => theme._typography.mDisplayL}
+  }
 `;
 
-export const H2 = styled.h1`
-  ${({theme}) => theme.typography.font950}
+export const DisplayM = styled.h2`
+  ${({theme}) => theme._typography.displayM}
+  @media (max-width: ${({theme}) => theme.breakpoints.md}) {
+    ${({theme}) => theme._typography.mDisplayM}
+  }
 `;
 
-export const H3 = styled.h1`
-  ${({theme}) => theme.typography.font850}
+export const DisplayS = styled.h3`
+  ${({theme}) => theme._typography.displayS}
+  @media (max-width: ${({theme}) => theme.breakpoints.md}) {
+    ${({theme}) => theme._typography.mDisplayS}
+  }
 `;
 
-export const H4 = styled.h1`
-  ${({theme}) => theme.typography.font850}
+export const HeadingL = styled.h4`
+  ${({theme}) => theme._typography.headingL}
+  @media (max-width: ${({theme}) => theme.breakpoints.md}) {
+    ${({theme}) => theme._typography.mHeadingL}
+  }
 `;
 
 export const H5 = styled.h1`

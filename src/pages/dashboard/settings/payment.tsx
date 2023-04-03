@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {
   Box,
-  H3,
+  HeadingL,
   H6,
   DataTable,
   TColumn,
@@ -155,7 +155,7 @@ const PaymentMethods: React.FC = () => {
       rowGap={spacing.scale500}
     >
       <FlexGrid justifyContent="space-between" flexGap={spacing.scale200}>
-        <H3>Paymentmethods</H3>
+        <HeadingL>Paymentmethods</HeadingL>
         <Button
           onClick={() => {
             setFetchesClientSecret(true);
