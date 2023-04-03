@@ -2,7 +2,7 @@ import React, {useState, useCallback, useEffect} from 'react';
 import {
   DataTable,
   HeadingL,
-  H6,
+  HeadingS,
   TColumn,
   FlexGrid,
   getDashboardLayout,
@@ -194,7 +194,7 @@ export const Members = () => {
             setShowNewMembereForm(false);
           }}
         >
-          <H6>Neuen Mitarbeiter Einladen</H6>
+          <HeadingS>Neuen Mitarbeiter Einladen</HeadingS>
           <form
             onSubmit={handleSubmit(addMembere)}
             style={{display: 'grid', gridRowGap: spacing.scale500}}
@@ -231,7 +231,7 @@ export const Members = () => {
       {memberToDelete && (
         <Dialog onClose={() => setMemberToDelete(null)}>
           <Box display="grid" rowGap={spacing.scale300}>
-            <H6>Mitarbeiter*in unwiderruflich entfernen?</H6>
+            <HeadingS>Mitarbeiter*in unwiderruflich entfernen?</HeadingS>
             <Typography>
               Sind Sie sicher dass Sie diesen Mitarbeiter*in entfernen möchten?
               Es werden alle zusammenhängende <b>Daten gelöscht</b>{' '}

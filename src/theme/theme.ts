@@ -1,6 +1,5 @@
 import {colors, spacing, typography, borders, breakpoints} from './concepts';
 import {animations} from './primitives';
-import {typography as _typography} from './tokens/typography';
 
 export const theme = {
   colors: {
@@ -66,7 +65,6 @@ export const theme = {
   },
   spacing,
   typography,
-  _typography,
   animations,
   borders,
   breakpoints,

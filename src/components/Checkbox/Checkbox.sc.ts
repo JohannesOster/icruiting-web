@@ -15,11 +15,11 @@ export const OptionContainer = styled.div`
 `;
 
 export const OptionLabel = styled.label`
-  ${({theme}) => theme.typography.font100};
+  ${({theme}) => theme.typography.bodySmall};
 `;
 
 export const Label = styled.label<LabelProps>`
-  ${({theme}) => theme.typography.font200};
+  ${({theme}) => theme.typography.body};
   color: ${({theme, error}) =>
     error
       ? theme.colors.typographyPrimaryError
@@ -27,7 +27,7 @@ export const Label = styled.label<LabelProps>`
 `;
 
 export const Description = styled.span<DescriptionProps>`
-  ${({theme}) => theme.typography.font100};
+  ${({theme}) => theme.typography.bodySmall};
   color: ${({theme, error}) =>
     error
       ? theme.colors.typographySecondaryError
@@ -38,5 +38,5 @@ export const Errors = styled.div`
   display: grid;
   grid-row-gap: ${({theme}) => theme.spacing.scale200};
   color: ${({theme}) => theme.colors.typographyPrimaryError};
-  ${({theme}) => theme.typography.font100};
+  ${({theme}) => theme.typography.bodySmall};
 `;

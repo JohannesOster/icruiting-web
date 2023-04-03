@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {
   Box,
   HeadingL,
-  H6,
+  HeadingS,
   DataTable,
   TColumn,
   FlexGrid,
@@ -178,7 +178,7 @@ const PaymentMethods: React.FC = () => {
       {clientSecret && (
         <Dialog onClose={() => setClientSecret(null)}>
           <Box display="grid" rowGap={spacing.scale200}>
-            <H6>Bankkonto hinzufügen</H6>
+            <HeadingS>Bankkonto hinzufügen</HeadingS>
             <PaymentMethodForm onSubmit={onSubmit} />
           </Box>
         </Dialog>

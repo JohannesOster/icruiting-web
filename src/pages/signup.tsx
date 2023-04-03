@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, H6, Typography, Spinner} from 'components';
+import {Box, HeadingS, Typography, Spinner} from 'components';
 import {SignUpForm, SignUpFormValues} from 'containers';
 import {useRouter} from 'next/router';
 import {useToaster} from 'context';
@@ -97,7 +97,7 @@ const SignUp: React.FC = () => {
                 display="grid"
                 rowGap={spacing.scale700}
               >
-                <H6>{price.product.name}</H6>
+                <HeadingS>{price.product.name}</HeadingS>
                 <Typography
                   kind="secondary"
                   style={{fontSize: spacing.scale500}}

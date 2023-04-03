@@ -17,7 +17,7 @@ export const BaseButton = styled.button<BaseButtonProps>`
   border: none;
   border-radius: ${({theme}) => theme.borders.radius100};
 
-  ${({theme}) => theme.typography.font200}
+  ${({theme}) => theme.typography.button}
 
   transition-property: background-color;
   transition-duration: ${({theme}) => theme.animations.timing100};

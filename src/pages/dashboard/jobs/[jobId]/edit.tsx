@@ -7,7 +7,7 @@ import {API, TJobRequest, TJob} from 'services';
 import {
   Box,
   HeadingL,
-  H6,
+  HeadingS,
   FlexGrid,
   getDashboardLayout,
   withAdmin,
@@ -127,7 +127,7 @@ const EditJob = () => {
               errors={errorsFor(errors, 'jobTitle')}
               required
             />
-            <H6 style={{marginBottom: 0}}>Anforderungsprofil*</H6>
+            <HeadingS style={{marginBottom: 0}}>Anforderungsprofil*</HeadingS>
             <Box
               display="grid"
               gridRowGap={spacing.scale200}

@@ -9,7 +9,7 @@ import {
   Table,
   TColumn,
   HeadingL,
-  H6,
+  HeadingS,
   Box,
   Typography,
   FlexGrid,
@@ -277,7 +277,7 @@ const Applicants = () => {
           }}
         >
           <Box display="grid" rowGap={spacing.scale300}>
-            <H6>Bewerber*innen wirklich unwiderruflich löschen?</H6>
+            <HeadingS>Bewerber*innen wirklich unwiderruflich löschen?</HeadingS>
             <Typography>
               Sind Sie sicher, dass Sie alle Daten der ausgewählten
               Bewerbers*innen löschen wollen? Dieser Vorgang kann nicht

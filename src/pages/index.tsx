@@ -31,7 +31,7 @@ export const Footer = styled.footer`
   color: ${({theme}) => theme.colors.typographySecondary};
   border-top: 1px solid;
   border-color: ${({theme}) => theme.colors.inputBorder};
-  ${({theme}) => theme.typography.font200};
+  ${({theme}) => theme.typography.body};
 
   @media (max-width: ${({theme}) => theme.breakpoints.xs}) {
     display: block;
@@ -159,7 +159,7 @@ const LandingPage: React.FC = () => {
                   borderRadius={4}
                   key={idx}
                 >
-                  <H6 style={{wordBreak: 'break-all'}}>{title}</H6>
+                  <HeadingS style={{wordBreak: 'break-all'}}>{title}</HeadingS>
                   <Typography>{description}</Typography>
                 </Box>
               ))}
@@ -169,14 +169,14 @@ const LandingPage: React.FC = () => {
           {/*<Box display="flex" flexDirection="column" gap={spacing.scale600}>
             <HeadingM>FAQ</HeadingM>
             <Box>
-              <H6>Ist icruiting für mich?</H6>{' '}
+              <HeadingS>Ist icruiting für mich?</HeadingS>{' '}
               <Typography color="secondary">
                 Probieren geht über studieren. Du kannst (glaub ich) wenig
                 kaputt machen. 👉 <Link href="/signup">Registrieren</Link>
               </Typography>
             </Box>
             <Box>
-              <H6>Was kostet der Spaß? 💸</H6>
+              <HeadingS>Was kostet der Spaß? 💸</HeadingS>
               <Typography>
                 <b>60€ / Monat</b>. <br />
                 Gegenvorschläge? Wir feilschen gerne.

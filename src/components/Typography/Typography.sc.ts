@@ -12,12 +12,12 @@ const getStylesForKind = (theme: DefaultTheme, kind?: TKind) => {
   switch (kind) {
     case 'secondary':
       return {
-        ...theme.typography.font100,
+        ...theme.typography.bodySmall,
         color: theme.colors.typographySecondary,
       };
     default:
       return {
-        ...theme.typography.font200,
+        ...theme.typography.body,
         color: theme.colors.typographyPrimary,
       };
   }
@@ -33,40 +33,40 @@ export const getColor = (theme: DefaultTheme, color?: TColor) => {
 };
 
 export const DisplayL = styled.h1`
-  ${({theme}) => theme._typography.displayL}
+  ${({theme}) => theme.typography.displayL}
   @media (max-width: ${({theme}) => theme.breakpoints.md}) {
-    ${({theme}) => theme._typography.mDisplayL}
+    ${({theme}) => theme.typography.mDisplayL}
   }
 `;
 
 export const DisplayM = styled.h2`
-  ${({theme}) => theme._typography.displayM}
+  ${({theme}) => theme.typography.displayM}
   @media (max-width: ${({theme}) => theme.breakpoints.md}) {
-    ${({theme}) => theme._typography.mDisplayM}
+    ${({theme}) => theme.typography.mDisplayM}
   }
 `;
 
 export const DisplayS = styled.h3`
-  ${({theme}) => theme._typography.displayS}
+  ${({theme}) => theme.typography.displayS}
   @media (max-width: ${({theme}) => theme.breakpoints.md}) {
-    ${({theme}) => theme._typography.mDisplayS}
+    ${({theme}) => theme.typography.mDisplayS}
   }
 `;
 
 export const HeadingL = styled.h4`
-  ${({theme}) => theme._typography.headingL}
+  ${({theme}) => theme.typography.headingL}
   @media (max-width: ${({theme}) => theme.breakpoints.md}) {
-    ${({theme}) => theme._typography.mHeadingL}
+    ${({theme}) => theme.typography.mHeadingL}
   }
 `;
 
 export const HeadingM = styled.h5`
-  ${({theme}) => theme._typography.headingM}
+  ${({theme}) => theme.typography.headingM}
   @media (max-width: ${({theme}) => theme.breakpoints.md}) {
-    ${({theme}) => theme._typography.mHeadingM}
+    ${({theme}) => theme.typography.mHeadingM}
   }
 `;
 
-export const H6 = styled.h1`
-  ${({theme}) => theme.typography.font550}
+export const HeadingS = styled.h1`
+  ${({theme}) => theme.typography.headingS}
 `;

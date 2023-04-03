@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import Link from 'next/link';
 import {useTheme} from 'styled-components';
-import {HeadingL, Box, H6, Typography} from 'components';
+import {HeadingL, Box, HeadingS, Typography} from 'components';
 import {useAuth, useToaster} from 'context';
 import {API} from 'services';
 import {Dialog, Button, withAuth} from 'components';
@@ -36,7 +36,7 @@ const Account: React.FC = () => {
       {status === 'shouldDelete' && (
         <Dialog onClose={() => setStatus('shouldDelete')}>
           <Box display="grid" rowGap={spacing.scale300}>
-            <H6>Tenant unwiderruflich löschen?</H6>
+            <HeadingS>Tenant unwiderruflich löschen?</HeadingS>
             <Typography>
               Sind Sie sicher dass Sie <b>alle Daten löschen</b> wollen? Dieser
               Vorgang kann nicht rückgängig gemacht werden!

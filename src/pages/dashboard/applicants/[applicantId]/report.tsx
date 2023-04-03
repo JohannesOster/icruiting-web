@@ -3,7 +3,7 @@ import {API, TForm} from 'services';
 import {buildRadarChart} from 'utils/report-utils';
 import {
   HeadingL,
-  H6,
+  HeadingS,
   Table,
   Box,
   FlexGrid,
@@ -106,7 +106,7 @@ const ApplicantReport = () => {
       <HeadingL>Gutachten</HeadingL>
       <Box display="grid" rowGap={spacing.scale200}>
         <FlexGrid alignItems="center" flexGap={spacing.scale200}>
-          <H6>Bewerber*in - {applicant?.name}</H6>
+          <HeadingS>Bewerber*in - {applicant?.name}</HeadingS>
           <Arrow
             height={spacing.scale400}
             onClick={() => toggle('applicant')}
@@ -176,7 +176,7 @@ const ApplicantReport = () => {
 
       {report?.rank !== undefined && report?.formCategoryScore !== undefined && (
         <Box display="grid" rowGap={spacing.scale200}>
-          <H6>Übersicht</H6>
+          <HeadingS>Übersicht</HeadingS>
           <Table>
             <tbody>
               <tr>
@@ -193,7 +193,7 @@ const ApplicantReport = () => {
       )}
       <Box display="grid" rowGap={spacing.scale200}>
         <FlexGrid alignItems="center" flexGap={spacing.scale200}>
-          <H6>Details</H6>
+          <HeadingS>Details</HeadingS>
           <Arrow
             height={spacing.scale400}
             onClick={() => toggle('details')}
@@ -391,7 +391,7 @@ const ApplicantReport = () => {
       {['assessment', 'onboarding'].includes(formCategory) && (
         <Box display="grid" rowGap={spacing.scale200}>
           <FlexGrid alignItems="center" flexGap={spacing.scale200}>
-            <H6>Anforderungsprofil</H6>
+            <HeadingS>Anforderungsprofil</HeadingS>
             <Arrow
               height={spacing.scale400}
               onClick={() => toggle('requirements')}

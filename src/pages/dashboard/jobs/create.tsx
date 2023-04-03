@@ -7,7 +7,7 @@ import {API, TJobRequest} from 'services';
 import {
   Box,
   HeadingL,
-  H6,
+  HeadingS,
   FlexGrid,
   getDashboardLayout,
   Button,
@@ -114,7 +114,7 @@ const CreateJob = () => {
             errors={errorsFor(errors, 'jobTitle')}
             required
           />
-          <H6 style={{marginBottom: 0}}>Anforderungsprofil*</H6>
+          <HeadingS style={{marginBottom: 0}}>Anforderungsprofil*</HeadingS>
           <Box display="grid" gridRowGap={spacing.scale200} alignItems="center">
             {fields.map((item, idx) => {
               return (

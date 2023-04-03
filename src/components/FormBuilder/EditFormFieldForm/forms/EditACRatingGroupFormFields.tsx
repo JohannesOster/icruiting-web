@@ -1,5 +1,13 @@
 import React from 'react';
-import {Box, H6, Button, Input, Textarea, Select, Checkbox} from 'components';
+import {
+  Box,
+  HeadingS,
+  Button,
+  Input,
+  Textarea,
+  Select,
+  Checkbox,
+} from 'components';
 import {useForm, useFieldArray} from 'react-hook-form';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
@@ -32,33 +40,28 @@ export const EditACRatingGroupFormFields: React.FC<Props> = ({
   jobRequirementOptions,
   ...formValues
 }) => {
-  const {
-    register,
-    formState,
-    errors,
-    handleSubmit,
-    control,
-  } = useForm<FormValues>({
-    mode: 'onChange',
-    criteriaMode: 'all',
-    defaultValues: formValues,
-    resolver: yupResolver(
-      object({
-        label: string().required('Label ist verpflichtend'),
-        options: array().of(
-          object({
-            label: string().required(
-              'Option ist verpflichtend auszufüllen oder zu löschen',
-            ),
-            value: number().typeError(
-              'Geben sie einen eindeutigen Zahlenwert an!',
-            ),
-          }),
-        ),
-        defaultValue: mixed().transform((val) => (val ? val : null)),
-      }),
-    ),
-  });
+  const {register, formState, errors, handleSubmit, control} =
+    useForm<FormValues>({
+      mode: 'onChange',
+      criteriaMode: 'all',
+      defaultValues: formValues,
+      resolver: yupResolver(
+        object({
+          label: string().required('Label ist verpflichtend'),
+          options: array().of(
+            object({
+              label: string().required(
+                'Option ist verpflichtend auszufüllen oder zu löschen',
+              ),
+              value: number().typeError(
+                'Geben sie einen eindeutigen Zahlenwert an!',
+              ),
+            }),
+          ),
+          defaultValue: mixed().transform((val) => (val ? val : null)),
+        }),
+      ),
+    });
   const {spacing} = useTheme();
 
   const {fields, append, remove} = useFieldArray({
@@ -110,9 +113,9 @@ export const EditACRatingGroupFormFields: React.FC<Props> = ({
           })),
         ]}
       />
-      <H6 style={{marginBottom: `-${spacing.scale300}`}}>
+      <HeadingS style={{marginBottom: `-${spacing.scale300}`}}>
         Optionen (Label, Wert)
-      </H6>
+      </HeadingS>
       {fields.map((option, idx) => {
         return (
           <Box

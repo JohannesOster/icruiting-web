@@ -8,7 +8,7 @@ import {Button, Input, Dialog} from 'components';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {
   HeadingL,
-  H6,
+  HeadingS,
   Box,
   Typography,
   getDashboardLayout,
@@ -263,7 +263,7 @@ const FormBuilder: React.FC = () => {
                     errors={errorsFor(errors, 'formTitle')}
                   />
                 )}
-                <H6 style={{marginTop: 0}}>DRAG &amp; DROP</H6>
+                <HeadingS style={{marginTop: 0}}>DRAG &amp; DROP</HeadingS>
                 <DragAndDropList>{FormSource}</DragAndDropList>
                 {(formCategory === 'application' ||
                   formToEdit?.formCategory === 'application') && (

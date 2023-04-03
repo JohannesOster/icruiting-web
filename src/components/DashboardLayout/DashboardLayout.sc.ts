@@ -10,7 +10,7 @@ export const SideNav = styled.aside`
 
   a {
     text-decoration: none;
-    ${({theme}) => theme.typography.font200};
+    ${({theme}) => theme.typography.body};
     &:hover  {
       text-decoration: none;
     }
