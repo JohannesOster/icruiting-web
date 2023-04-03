@@ -7,8 +7,8 @@ import {useForm} from 'react-hook-form';
 import {Button, Input, Dialog} from 'components';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {
-  H3,
-  H6,
+  HeadingL,
+  HeadingS,
   Box,
   Typography,
   getDashboardLayout,
@@ -212,7 +212,9 @@ const FormBuilder: React.FC = () => {
         </Dialog>
       )}
       <Box display="flex" alignItems="center" marginBottom={spacing.scale300}>
-        <H3>{formToEdit ? 'Formular bearbeiten' : 'Neues Formular'}</H3>
+        <HeadingL>
+          {formToEdit ? 'Formular bearbeiten' : 'Neues Formular'}
+        </HeadingL>
         <ButtonGroup>
           <Button
             onClick={onSave}
@@ -221,7 +223,9 @@ const FormBuilder: React.FC = () => {
           >
             Speichern
           </Button>
-          <Button onClick={() => router.back()}>Abbrechen</Button>
+          <Button kind="secondary" onClick={() => router.back()}>
+            Abbrechen
+          </Button>
         </ButtonGroup>
       </Box>
       <Box display="flex" position="relative" marginBottom={spacing.scale700}>
@@ -261,7 +265,7 @@ const FormBuilder: React.FC = () => {
                     errors={errorsFor(errors, 'formTitle')}
                   />
                 )}
-                <H6 style={{marginTop: 0}}>DRAG &amp; DROP</H6>
+                <HeadingS style={{marginTop: 0}}>DRAG &amp; DROP</HeadingS>
                 <DragAndDropList>{FormSource}</DragAndDropList>
                 {(formCategory === 'application' ||
                   formToEdit?.formCategory === 'application') && (

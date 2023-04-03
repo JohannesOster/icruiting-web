@@ -18,6 +18,7 @@ import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {useAuth} from 'context';
 import config from 'config';
+import {theme} from 'theme';
 
 const Navbar: React.FC = () => {
   const {spacing} = useTheme();
@@ -209,7 +210,12 @@ const Navbar: React.FC = () => {
         <Link href="/">
           <a>
             <IcruitingLogo
-              style={{width: '110px', height: 'auto', marginBottom: -10}}
+              style={{
+                width: '110px',
+                height: 'auto',
+                marginBottom: -10,
+                fill: theme.colors.textPrimary,
+              }}
             />
           </a>
         </Link>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, H6} from 'components';
+import {Box, HeadingS} from 'components';
 import {Button, Checkbox, Input, Select, Textarea} from 'components';
 import {useForm, useFieldArray} from 'react-hook-form';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
@@ -29,33 +29,28 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
   onSubmit,
   ...formValues
 }) => {
-  const {
-    register,
-    formState,
-    errors,
-    handleSubmit,
-    control,
-  } = useForm<FormValues>({
-    mode: 'onChange',
-    criteriaMode: 'all',
-    defaultValues: formValues,
-    resolver: yupResolver(
-      object({
-        label: string().required('Label ist verpflichtend'),
-        defaultValue: mixed().transform((val) => (val ? val : null)),
-        options: array().of(
-          object({
-            label: string().required(
-              'Option ist verpflichtend auszufüllen oder zu löschen',
-            ),
-            value: number().typeError(
-              'Geben sie einen eindeutigen Zahlenwert an!',
-            ),
-          }),
-        ),
-      }),
-    ),
-  });
+  const {register, formState, errors, handleSubmit, control} =
+    useForm<FormValues>({
+      mode: 'onChange',
+      criteriaMode: 'all',
+      defaultValues: formValues,
+      resolver: yupResolver(
+        object({
+          label: string().required('Label ist verpflichtend'),
+          defaultValue: mixed().transform((val) => (val ? val : null)),
+          options: array().of(
+            object({
+              label: string().required(
+                'Option ist verpflichtend auszufüllen oder zu löschen',
+              ),
+              value: number().typeError(
+                'Geben sie einen eindeutigen Zahlenwert an!',
+              ),
+            }),
+          ),
+        }),
+      ),
+    });
   const {spacing} = useTheme();
 
   const {fields, append, remove} = useFieldArray({
@@ -111,9 +106,9 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
           })),
         ]}
       />
-      <H6 style={{marginBottom: `-${spacing.scale300}`}}>
+      <HeadingS style={{marginBottom: `-${spacing.scale300}`}}>
         Optionen (Label, Wert)
-      </H6>
+      </HeadingS>
       {fields.map((option, idx) => {
         return (
           <Box

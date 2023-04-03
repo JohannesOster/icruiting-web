@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {Box, H3, H6, Typography} from 'components';
+import {Box, HeadingL, HeadingS, Typography} from 'components';
 import {useTheme} from 'styled-components';
 import Link from 'next/link';
 
@@ -14,7 +14,7 @@ const Privacy: FC = () => {
         rowGap={spacing.scale300}
         maxWidth="800px"
       >
-        <H3 style={{marginTop: 0}}>Datenschutzerklärung </H3>
+        <HeadingL style={{marginTop: 0}}>Datenschutzerklärung </HeadingL>
         <Typography kind="secondary">Stand: November 2020</Typography>
         <Typography>
           Der Schutz Ihrer persönlichen Daten ist uns ein besonderes Anliegen.
@@ -28,7 +28,7 @@ const Privacy: FC = () => {
           lit f DSGVO dar. Soweit im Folgenden nichts anderes geregelt wird,
           werden diese Daten von uns nicht weiterverarbeitet.
         </Typography>
-        <H6>Verantwortliche</H6>
+        <HeadingS>Verantwortliche</HeadingS>
         <Typography>
           Die Datenverarbeitung auf dieser Website erfolgt durch den
           Websitebetreiber. Dessen Kontaktdaten können Sie dem{' '}
@@ -37,7 +37,7 @@ const Privacy: FC = () => {
           </Link>{' '}
           dieser Website entnehmen.
         </Typography>
-        <H6>Ihre Rechte</H6>
+        <HeadingS>Ihre Rechte</HeadingS>
         <Typography>
           Ihnen stehen bezüglich Ihrer bei uns gespeicherten Daten grundsätzlich
           die Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung,
@@ -55,7 +55,7 @@ const Privacy: FC = () => {
           </a>{' '}
           zu finden ist, beschweren.
         </Typography>
-        <H6>TLS-Verschlüsselung</H6>
+        <HeadingS>TLS-Verschlüsselung</HeadingS>
         <Typography>
           Wir verwenden https um Daten abhörsicher im Internet zu übertragen
           <a href="https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32016R0679&from=DE&tid=121248723">
@@ -68,7 +68,7 @@ const Privacy: FC = () => {
           Schlosssymbol links oben im Browser und der Verwendung des Schemas
           https (anstatt http) als Teil unserer Internetadresse.
         </Typography>
-        <H6>Externes Hosting</H6>
+        <HeadingS>Externes Hosting</HeadingS>
         <Typography>
           Wir nutzen die Dienste von Heroku (Der Service wird von
           Salesforce.com, Inc., San Francisco, California 94105, angeboten). Die
@@ -103,7 +103,7 @@ const Privacy: FC = () => {
           Erhalts der Betriebssicherheit dieser Webseiten gemäß Art. 6 Abs. 1 S.
           1 lit. f DSGVO.
         </Typography>
-        <H6>Datenspeicherung</H6>
+        <HeadingS>Datenspeicherung</HeadingS>
         <Typography>
           Für die Dantenspeicherung verwenden wir Dienste von Amazon Web
           Services, Inc., 410 Terry Avenue North, Seattle WA 98109, USA,
@@ -122,7 +122,7 @@ const Privacy: FC = () => {
           berechtigten Interesse des Betriebes und des Erhalts der
           Betriebssicherheit dieser Webseiten gem. Art. 6 Abs. 1 lit. f. DS-GVO.
         </Typography>
-        <H6>Zahlungen</H6>
+        <HeadingS>Zahlungen</HeadingS>
         <Typography>
           Bei der Zahlung mittels Lastschriftverfahren erfolgt die
           Zahlungsabwicklung über Dienste des Zahlungsdienstleisters Stripe
@@ -130,7 +130,7 @@ const Privacy: FC = () => {
           2, Irland. Nähere Informationen zum Datenschutz von Stripe finden Sie
           unter https://stripe.com/de/privacy#translation.
         </Typography>
-        <H6>Registrierung, Anmeldung, Nutzerkonto</H6>
+        <HeadingS>Registrierung, Anmeldung, Nutzerkonto</HeadingS>
         <Typography>
           Wir verwenden Amazon Cognito von AWS für Authorisierungsdienste. Dafür
           werden die im Zuge der Registrierung sowie dem Login angegebene Daten

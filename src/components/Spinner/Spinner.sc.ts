@@ -9,9 +9,9 @@ export const Spinner = styled.span<SpinnerProps>`
   box-sizing: border-box;
 
   border-color: ${({theme, background}) =>
-    background || theme.colors.loadingSpinnerBackground};
+    background || theme.colors.surfacePrimarySubdued};
   border-top-color: ${({theme, foreground}) =>
-    foreground || theme.colors.loadingSpinnerForeground};
+    foreground || theme.colors.surfacePrimaryDefault};
 
   @keyframes spinnerAnimation {
     0% {

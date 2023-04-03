@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {
   Box,
-  H3,
-  H6,
+  HeadingL,
+  HeadingS,
   DataTable,
   TColumn,
   FlexGrid,
@@ -155,7 +155,7 @@ const PaymentMethods: React.FC = () => {
       rowGap={spacing.scale500}
     >
       <FlexGrid justifyContent="space-between" flexGap={spacing.scale200}>
-        <H3>Paymentmethods</H3>
+        <HeadingL>Paymentmethods</HeadingL>
         <Button
           onClick={() => {
             setFetchesClientSecret(true);
@@ -178,7 +178,7 @@ const PaymentMethods: React.FC = () => {
       {clientSecret && (
         <Dialog onClose={() => setClientSecret(null)}>
           <Box display="grid" rowGap={spacing.scale200}>
-            <H6>Bankkonto hinzufügen</H6>
+            <HeadingS>Bankkonto hinzufügen</HeadingS>
             <PaymentMethodForm onSubmit={onSubmit} />
           </Box>
         </Dialog>

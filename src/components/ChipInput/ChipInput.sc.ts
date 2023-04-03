@@ -41,7 +41,7 @@ export const BaseChipInput = styled.input<BaseChipInpusProps>`
   flex: 1;
   border: none;
   padding: ${({theme}) => theme.spacing.scale300};
-  ${({theme}) => theme.typography.font100};
+  ${({theme}) => theme.typography.bodySmall};
 
   &:focus {
     outline: none;
@@ -68,7 +68,7 @@ export const Chip = styled.span`
   display: inline-grid;
   grid-auto-flow: column;
   grid-column-gap: ${({theme}) => theme.spacing.scale200};
-  ${({theme}) => theme.typography.font200};
+  ${({theme}) => theme.typography.body};
   border-radius: ${({theme}) => theme.borders.radius100};
 `;
 
@@ -77,24 +77,20 @@ export const ChipCloseBtn = styled.span`
 `;
 
 export const Label = styled.label<LabelProps>`
-  ${({theme}) => theme.typography.font200};
+  ${({theme}) => theme.typography.body};
   color: ${({theme, error}) =>
-    error
-      ? theme.colors.typographyPrimaryError
-      : theme.colors.typographyPrimary};
+    error ? theme.colors.typographyPrimaryError : theme.colors.textDefault};
 `;
 
 export const Description = styled.span<DescriptionProps>`
-  ${({theme}) => theme.typography.font100};
+  ${({theme}) => theme.typography.bodySmall};
   color: ${({theme, error}) =>
-    error
-      ? theme.colors.typographySecondaryError
-      : theme.colors.typographySecondary};
+    error ? theme.colors.typographySecondaryError : theme.colors.textSubdued};
 `;
 
 export const Errors = styled.div`
   display: grid;
   grid-row-gap: ${({theme}) => theme.spacing.scale200};
   color: ${({theme}) => theme.colors.typographyPrimaryError};
-  ${({theme}) => theme.typography.font100};
+  ${({theme}) => theme.typography.bodySmall};
 `;

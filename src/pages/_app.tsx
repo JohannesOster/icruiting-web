@@ -14,19 +14,26 @@ import 'styles/typography.css';
 Amplify.configure({...config, ssr: true});
 
 const GlobalStyles = createGlobalStyle`
-  body {color: ${({theme}) => theme.colors.typographyPrimary}};
+  body {color: ${({theme}) => theme.colors.textDefault}};
 `;
 
 const App = ({Component, pageProps}) => {
   const {isAuthenticating} = useAuth();
 
-  const getLayout = Component.getLayout || ((page) => <>{page}</>);
+  const getLayout =
+    Component.getLayout ||
+    ((page) => (
+      <>
+        <Navbar />
+        {page}
+      </>
+    ));
 
   return (
     <ThemeProvider theme={theme}>
       <ToasterProvider>
         <GlobalStyles />
-        <Navbar />
+        {/* <Navbar /> */}
         {isAuthenticating ? (
           <Box
             height="100vh"

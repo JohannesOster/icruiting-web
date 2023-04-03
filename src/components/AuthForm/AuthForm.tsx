@@ -1,5 +1,5 @@
 import React from 'react';
-import {H6} from 'components';
+import {HeadingS} from 'components';
 import styled from 'styled-components';
 
 type Props = {
@@ -24,7 +24,7 @@ const Container = styled.div`
 
 const AuthForm: React.FC<Props> = ({title, children, onSubmit}) => (
   <Container>
-    <H6>{title}</H6>
+    <HeadingS>{title}</HeadingS>
     <Form onSubmit={onSubmit}>{children}</Form>
   </Container>
 );

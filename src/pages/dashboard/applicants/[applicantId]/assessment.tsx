@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useForm} from 'react-hook-form';
 import styled from 'styled-components';
-import {Button, withAuth, H3, Box, getDashboardLayout} from 'components';
+import {Button, withAuth, HeadingL, Box, getDashboardLayout} from 'components';
 import {API, TForm} from 'services';
 import {useRouter} from 'next/router';
 import {useToaster} from 'context';
@@ -109,9 +109,9 @@ const ApplicantAssessment = () => {
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <H3>
+        <HeadingL>
           {applicant?.name}: {form?.formTitle}
-        </H3>
+        </HeadingL>
         <Button
           disabled={!submission}
           isLoading={status === 'deleting'}

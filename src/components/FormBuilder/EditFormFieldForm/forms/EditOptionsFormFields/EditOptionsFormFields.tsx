@@ -3,7 +3,7 @@ import {useForm, useFieldArray} from 'react-hook-form';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {useTheme} from 'styled-components';
 import {object, array, string} from 'yup';
-import {H6, Box} from 'components';
+import {HeadingS, Box} from 'components';
 import {Button, Input, Textarea, Checkbox} from 'components';
 import {Form} from '../StyledForm.sc';
 import {yupResolver} from '@hookform/resolvers';
@@ -27,33 +27,28 @@ export const EditOptionsFormFields: FC<Props> = ({
   acceptEmptyOption = false,
   ...formValues
 }) => {
-  const {
-    register,
-    errors,
-    control,
-    handleSubmit,
-    formState,
-  } = useForm<FormValues>({
-    mode: 'onChange',
-    criteriaMode: 'all',
-    defaultValues: formValues,
-    resolver: yupResolver(
-      object({
-        label: string().required('Label ist verpflichtend'),
-        options: array().of(
-          object({
-            ...(!acceptEmptyOption
-              ? {
-                  label: string().required(
-                    'Option ist verpflichtend auszufüllen oder zu löschen',
-                  ),
-                }
-              : {label: string()}),
-          }),
-        ),
-      }),
-    ),
-  });
+  const {register, errors, control, handleSubmit, formState} =
+    useForm<FormValues>({
+      mode: 'onChange',
+      criteriaMode: 'all',
+      defaultValues: formValues,
+      resolver: yupResolver(
+        object({
+          label: string().required('Label ist verpflichtend'),
+          options: array().of(
+            object({
+              ...(!acceptEmptyOption
+                ? {
+                    label: string().required(
+                      'Option ist verpflichtend auszufüllen oder zu löschen',
+                    ),
+                  }
+                : {label: string()}),
+            }),
+          ),
+        }),
+      ),
+    });
   const {spacing} = useTheme();
 
   const {fields, append, remove, move} = useFieldArray({
@@ -91,7 +86,9 @@ export const EditOptionsFormFields: FC<Props> = ({
         ref={register}
         options={[{label: 'Verpflichtend', value: 'required'}]}
       />
-      <H6 style={{marginBottom: `-${spacing.scale300}`}}>Optionen</H6>
+      <HeadingS style={{marginBottom: `-${spacing.scale300}`}}>
+        Optionen
+      </HeadingS>
       <Box display="grid" rowGap={spacing.scale500}>
         {fields.map((option, idx) => {
           return (

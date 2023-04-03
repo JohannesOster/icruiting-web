@@ -11,7 +11,7 @@ export const BaseToast = styled.div<{fadeOut: boolean}>`
   padding: 16px;
   border-left: 3px solid;
 
-  ${({theme}) => theme.typography.font200};
+  ${({theme}) => theme.typography.body};
 
   opacity: 1;
   animation-name: toasterAnimation;

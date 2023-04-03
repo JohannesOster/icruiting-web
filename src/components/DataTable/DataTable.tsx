@@ -445,7 +445,7 @@ export const DataTable: React.FC<Props> = ({
                   style={{
                     width: 0.5,
                     height: 16,
-                    background: colors.typographyPrimary,
+                    background: colors.textDefault,
                   }}
                 />
                 <Typography>

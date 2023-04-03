@@ -2,7 +2,7 @@ import React from 'react';
 import {yupResolver} from '@hookform/resolvers';
 import {
   Box,
-  H3,
+  HeadingL,
   getDashboardLayout,
   Button,
   Checkbox,
@@ -76,7 +76,7 @@ const ReportBuilder = () => {
 
   return (
     <Box>
-      <H3>Gutachten</H3>
+      <HeadingL>Gutachten</HeadingL>
       {!(forms || formsError) ? (
         <Spinner />
       ) : (

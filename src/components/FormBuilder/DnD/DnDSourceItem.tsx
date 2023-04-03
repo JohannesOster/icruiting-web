@@ -10,7 +10,7 @@ const Item = styled.div`
   display: flex;
   align-items: center;
   cursor: move;
-  ${({theme}) => theme.typography.font200}
+  ${({theme}) => theme.typography.body}
 `;
 
 type Props = {

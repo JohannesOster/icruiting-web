@@ -1,8 +1,8 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import {
   DataTable,
-  H3,
-  H6,
+  HeadingL,
+  HeadingS,
   TColumn,
   FlexGrid,
   getDashboardLayout,
@@ -42,10 +42,11 @@ export const Members = () => {
   const {spacing} = useTheme();
   const toaster = useToaster();
 
-  const {data: members, error, revalidate} = useFetch(
-    '/members',
-    API.members.list,
-  );
+  const {
+    data: members,
+    error,
+    revalidate,
+  } = useFetch('/members', API.members.list);
   const [memberToEdit, setMembereToEdit] = useState<{
     email: string;
     userRole: string;
@@ -193,7 +194,7 @@ export const Members = () => {
             setShowNewMembereForm(false);
           }}
         >
-          <H6>Neuen Mitarbeiter Einladen</H6>
+          <HeadingS>Neuen Mitarbeiter Einladen</HeadingS>
           <form
             onSubmit={handleSubmit(addMembere)}
             style={{display: 'grid', gridRowGap: spacing.scale500}}
@@ -230,7 +231,7 @@ export const Members = () => {
       {memberToDelete && (
         <Dialog onClose={() => setMemberToDelete(null)}>
           <Box display="grid" rowGap={spacing.scale300}>
-            <H6>Mitarbeiter*in unwiderruflich entfernen?</H6>
+            <HeadingS>Mitarbeiter*in unwiderruflich entfernen?</HeadingS>
             <Typography>
               Sind Sie sicher dass Sie diesen Mitarbeiter*in entfernen möchten?
               Es werden alle zusammenhängende <b>Daten gelöscht</b>{' '}
@@ -239,7 +240,9 @@ export const Members = () => {
             </Typography>
             <Box display="flex" justifyContent="space-between">
               <Button onClick={() => delMember(memberToDelete)}>Löschen</Button>
-              <Button onClick={() => setMemberToDelete(null)}>Abbrechen</Button>
+              <Button kind="secondary" onClick={() => setMemberToDelete(null)}>
+                Abbrechen
+              </Button>
             </Box>
           </Box>
         </Dialog>
@@ -251,7 +254,7 @@ export const Members = () => {
           flexGap={spacing.scale200}
           marginBottom={spacing.scale300}
         >
-          <H3>Mitarbeiter:innen</H3>
+          <HeadingL>Mitarbeiter:innen</HeadingL>
           <Button onClick={() => setShowNewMembereForm(true)}>
             Hinzufügen
           </Button>

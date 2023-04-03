@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {
-  H3,
+  HeadingL,
   FlexGrid,
   Table,
   Box,
@@ -96,7 +96,7 @@ export const Settings = () => {
         justifyContent="space-between"
         alignItems="center"
       >
-        <H3>Theme</H3>
+        <HeadingL>Theme</HeadingL>
         <a
           href="https://github.com/JohannesOster/icruiting-theme-kit.git"
           target="_blank"
@@ -182,7 +182,7 @@ export const Settings = () => {
           </tr>
         </tbody>
       </Table>
-      <H3>Zahlungen</H3>
+      <HeadingL>Zahlungen</HeadingL>
       <Link href="settings/subscriptions">
         <a>Subscriptions</a>
       </Link>

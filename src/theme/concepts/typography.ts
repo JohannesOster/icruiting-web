@@ -1,59 +1,64 @@
-const defaultFontFamily =
-  'system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif';
+const defaultFontFamily = '"DM Sans", sans-serif';
 
 export const typography = {
-  font100: {
+  displayL: {
     fontFamily: defaultFontFamily,
-    fontSize: '14px',
-    fontWeight: 400,
-    lineHeight: '20px',
+    fontWeight: 700,
+    fontSize: '65px',
+    letterSpacing: '-0.5px',
   },
-  font150: {
+  mDisplayL: {fontSize: '32px'},
+  displayM: {
     fontFamily: defaultFontFamily,
-    fontSize: '14px',
-    fontWeight: 500,
-    lineHeight: '16px',
+    fontWeight: 700,
+    fontSize: '52px',
   },
-  font200: {
+  mDisplayM: {fontSize: '28px'},
+  displayS: {
     fontFamily: defaultFontFamily,
-    fontSize: '16px',
-    fontWeight: 400,
-    lineHeight: '24px',
+    fontWeight: 700,
+    fontSize: '37px',
+    letterSpacing: '0.25px',
   },
-  font350: {
+  mDisplayS: {fontSize: '26px'},
+
+  headingL: {
     fontFamily: defaultFontFamily,
-    fontSize: '16px',
-    fontWeight: 500,
-    lineHeight: '20px',
+    fontWeight: 700,
+    fontSize: '26px',
   },
-  font550: {
+  mHeadingL: {fontSize: '24px'},
+  headingM: {
     fontFamily: defaultFontFamily,
-    fontSize: '20px',
-    fontWeight: 500,
-    lineHeight: '28px',
+    fontWeight: 700,
+    fontSize: '22px',
+    letterSpacing: '0.15px',
   },
-  font750: {
+  mHeadingM: {fontSize: '20px'},
+  headingS: {
     fontFamily: defaultFontFamily,
-    fontSize: '28px',
-    fontWeight: 500,
-    lineHeight: '36px',
+    fontWeight: 700,
+    fonSize: '17px',
+    letterSpacing: '0.15px',
+    textTransform: 'uppercase' as 'uppercase',
   },
-  font850: {
+
+  body: {
     fontFamily: defaultFontFamily,
-    fontSize: '32px',
-    fontWeight: 500,
-    lineHeight: '40px',
+    fontSize: '17px',
+    letterSpacing: '0.5px',
   },
-  font950: {
+  bodySmall: {
     fontFamily: defaultFontFamily,
-    fontSize: '36px',
-    fontWeight: 500,
-    lineHeight: '44px',
+    fontSize: '15px',
+    letterSpacing: '0.25px',
   },
-  font1050: {
+
+  button: {
     fontFamily: defaultFontFamily,
-    fontSize: '40px',
-    fontWeight: 500,
-    lineHeight: '52px',
+    fontWeight: 700,
+    fontSize: '15px',
+    letterSpacing: '1.25px',
+    textTransform: 'uppercase' as 'uppercase',
   },
 };

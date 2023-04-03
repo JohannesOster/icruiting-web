@@ -1,6 +1,6 @@
 import {ReactNode, MouseEvent} from 'react';
 
-export type ButtonKind = 'primary' | 'minimal';
+export type ButtonKind = 'primary' | 'secondary' | 'minimal';
 
 export interface BaseButtonProps {
   isLoading?: boolean;
