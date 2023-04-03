@@ -56,7 +56,7 @@ export const typography = {
 
   button: {
     fontFamily: defaultFontFamily,
-    fontWeight: 500,
+    fontWeight: 700,
     fontSize: '15px',
     letterSpacing: '1.25px',
     textTransform: 'uppercase' as 'uppercase',
