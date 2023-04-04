@@ -128,7 +128,7 @@ const applicationFormSourceFields: DnDItem[] = [
   {
     ...DNDBase,
     icon: File,
-    label: 'Fileupload',
+    label: 'Datei',
     as: Input,
     component: 'file_upload',
     props: {type: 'file', label: 'Fileupload', accept: 'application/pdf'},

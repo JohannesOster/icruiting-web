@@ -4,15 +4,34 @@ import {DndProvider} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import {useTheme} from 'styled-components';
 import {useForm} from 'react-hook-form';
-import {Button, Input, Dialog, HeadingM, HeadingL, HeadingS} from 'components';
-import {Box, getDashboardLayout, withAdmin} from 'components';
-import {errorsFor} from 'utils/react-hook-form-errors-for';
+import {HotKeys} from 'react-hotkeys';
+import {useRouter} from 'next/router';
+
+import {API, FormCategory} from 'services';
+import config from 'config';
+import {useToaster} from 'context';
+
+import {
+  Button,
+  Input,
+  Dialog,
+  HeadingL,
+  HeadingS,
+  Typography,
+  Box,
+  getDashboardLayout,
+  withAdmin,
+  useFetch,
+} from 'components';
 import {Clipboard} from 'icons';
+import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {DnDFormField, DnDSection, DnDSourceItem, ItemTypes} from 'components/FormBuilder/DnD';
 import {DnDItem, ComponentToEdit, FormFieldComponent} from 'components/FormBuilder/types';
 import {EditFormFieldForm} from 'components/FormBuilder/EditFormFieldForm';
 import {getSourceFormFields} from 'components/FormBuilder/sourceFormFields';
 import {getInitialFormFields} from 'components/FormBuilder/initialFormFields';
+import {converter} from 'components/FormBuilder/converter';
+import {useFormBuilder} from 'components/FormBuilder/useFormBuilder';
 import {
   DragAndDropList,
   IconContainer,
@@ -24,14 +43,6 @@ import {
   FormCodeTextarea,
   Command,
 } from 'components/FormBuilder/FormBuilder.sc';
-import {API, FormCategory} from 'services';
-import config from 'config';
-import {converter} from 'components/FormBuilder/converter';
-import {useRouter} from 'next/router';
-import {useFormBuilder} from 'components/FormBuilder/useFormBuilder';
-import {useToaster} from 'context';
-import {useFetch} from 'components/useFetch';
-import {HotKeys} from 'react-hotkeys';
 
 type Query = {
   formId?: string;
@@ -40,12 +51,12 @@ type Query = {
 };
 
 const FormBuilder: React.FC = () => {
-  const {colors, spacing, shadows, borders} = useTheme();
+  const {colors, spacing, borders} = useTheme();
   const toaster = useToaster();
   const router = useRouter();
   const {formId: formIdEdit, formCategory, jobId} = router.query as Query;
 
-  const [status, setStatus] = useState('idle');
+  const [status, setStatus] = useState<'idle' | 'submitting'>('idle');
   const formId = useRef(formIdEdit || uuidv4());
 
   const formKey = formIdEdit ? [`GET /forms/${formId}`, formIdEdit] : null;
@@ -55,16 +66,19 @@ const FormBuilder: React.FC = () => {
     {revalidateOnFocus: false}, // do not refetch form while editing it
   );
 
+  // fetch job for job requirements in assessment forms
   const {data: job} = useFetch([`GET /jobs/${jobId}`, jobId], (_key: string, jobId) =>
     API.jobs.find(jobId),
   );
 
+  // form title form
   const {register, formState, errors, getValues, reset} = useForm({
     mode: 'onChange',
     defaultValues: {formTitle: formToEdit?.formTitle},
     criteriaMode: 'all',
   });
 
+  // after fetching form to edit, reset form title
   useEffect(() => {
     if (!formToEdit) return;
     reset({formTitle: formToEdit?.formTitle});
@@ -84,6 +98,7 @@ const FormBuilder: React.FC = () => {
 
   const {formFields, ...formBuilder} = useFormBuilder(initialformFields);
 
+  /* Keyboard short cut handling */
   const keyMap = {
     INSERT: 'i',
     MOVE_UP: ['k', 'up'],
@@ -132,11 +147,13 @@ const FormBuilder: React.FC = () => {
     }, []),
   };
 
+  // once either the form was fetched or the default initial formfields were set reset the formbuilder model
   useEffect(() => {
     if (!formToEdit) return;
     formFields.reset(initialformFields);
   }, [initialformFields]);
 
+  // helper function, set form to edit by id
   const showEditItemForm = useCallback(
     (id: string) => {
       const {component, props} = formFields.fields.filter((item) => item.id === id)[0];
@@ -145,7 +162,7 @@ const FormBuilder: React.FC = () => {
     [formFields],
   );
 
-  /** Map the array of form source items to actual jsx */
+  /** Map the array of form source items to jsx */
   const FormSource = sourceItems.map((item: DnDItem, idx: number) => {
     const Icon = item.icon || (() => <></>);
     return (
@@ -158,7 +175,7 @@ const FormBuilder: React.FC = () => {
     );
   });
 
-  /** Map the array of formFields to actual jsx */
+  /** Map the array of DnD formFields to jsx */
   const Form = formFields.fields.map((item: DnDItem) => {
     const Component = item.as;
     return (
@@ -177,6 +194,7 @@ const FormBuilder: React.FC = () => {
     );
   });
 
+  // handle save form
   const onSave = () => {
     setStatus('submitting');
     const form = {
@@ -209,6 +227,7 @@ const FormBuilder: React.FC = () => {
     if (tmp) showEditItemForm(tmp.toString());
   };
 
+  /* iframe helper */
   const domain = config.endpoint.url;
   const iframeSrc = `${domain}/forms/${formId.current}/html`;
   const formCode = `<!-- Begin icruiting webform --><iframe src="${iframeSrc}" style="width: 100%; border: none;" scroll="no" id="${formId.current}-iframe" ></iframe><script>window.addEventListener("message", (event) => {if (event.origin !== "${domain}") return;document.getElementById("${formId.current}-iframe").style.height=event.data + "px";});</script><!-- End icruiting webform -->`;
@@ -254,6 +273,19 @@ const FormBuilder: React.FC = () => {
             Speichern
           </Button>
         </ButtonGroup>
+      </Box>
+      <Box marginBottom={spacing.scale300} display="flex" gap={spacing.scale400}>
+        <Button kind="minimal">
+          <Clipboard
+            style={{
+              width: spacing.scale400,
+              height: spacing.scale400,
+              marginRight: spacing.scale200,
+              alignSelf: 'center',
+            }}
+          />
+          iFrame einbinden
+        </Button>
       </Box>
       <Box display="flex" position="relative" marginBottom={spacing.scale700}>
         <DnDSection
@@ -307,57 +339,60 @@ const FormBuilder: React.FC = () => {
                   )}
                   <HeadingS style={{marginTop: 0}}>Drag &amp; Drop</HeadingS>
                   <DragAndDropList>{FormSource}</DragAndDropList>
-                  {/* {(formCategory === 'application' ||
-                    formToEdit?.formCategory === 'application') && (
-                    <>
-                      <Box display="grid" rowGap={spacing.scale300}>
-                        <Box marginTop={20}>
-                          <Typography
+                  <Box
+                    marginTop={spacing.scale400}
+                    display="flex"
+                    flexDirection="column"
+                    gap={spacing.scale300}
+                  >
+                    {(formCategory === 'application' ||
+                      formToEdit?.formCategory === 'application') && (
+                      <Box display="flex" flexDirection="column">
+                        <Typography
+                          style={{
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                          }}
+                          onClick={copyCode}
+                        >
+                          iFrame kopieren
+                          <Clipboard
                             style={{
-                              cursor: 'pointer',
-                              display: 'flex',
-                              alignItems: 'center',
+                              marginLeft: spacing.scale200,
+                              height: spacing.scale400,
+                              width: 'auto',
                             }}
-                            onClick={copyCode}
-                          >
-                            Formular einbinden
-                            <Clipboard
-                              style={{
-                                marginLeft: spacing.scale200,
-                                height: spacing.scale400,
-                                width: 'auto',
-                              }}
-                            />
-                          </Typography>
-                          <FormCodeTextarea
-                            rows={20}
-                            id="form-code"
-                            onClick={copyCode}
-                            defaultValue={formCode}
                           />
-                        </Box>
+                        </Typography>
+                        <FormCodeTextarea
+                          id="form-code"
+                          rows={10}
+                          onClick={copyCode}
+                          defaultValue={formCode}
+                        />
                       </Box>
-                    </>
-                  )}
-                  <Input
-                    type="file"
-                    label=".json Datei importieren"
-                    onChange={(event) => {
-                      const {files} = event.target;
-                      const file = files[0];
-                      if (!file) return;
-                      const fileReader = new FileReader();
-                      fileReader.onload = () => {
-                        const json = fileReader.result as string;
-                        const result = JSON.parse(json);
-                        const _formFields = result.formFields
-                          .map(converter.toDnDItem)
-                          .sort((one, two) => one.rowIndex - two.rowIndex);
-                        formFields.reset(_formFields);
-                      };
-                      fileReader.readAsText(file);
-                    }}
-                  /> */}
+                    )}
+                    <Input
+                      type="file"
+                      label=".json Datei importieren"
+                      onChange={(event) => {
+                        const {files} = event.target;
+                        const file = files[0];
+                        if (!file) return;
+                        const fileReader = new FileReader();
+                        fileReader.onload = () => {
+                          const json = fileReader.result as string;
+                          const result = JSON.parse(json);
+                          const _formFields = result.formFields
+                            .map(converter.toDnDItem)
+                            .sort((one, two) => one.rowIndex - two.rowIndex);
+                          formFields.reset(_formFields);
+                        };
+                        fileReader.readAsText(file);
+                      }}
+                    />
+                  </Box>
                 </Box>
               </DnDSourceSection>
             )}

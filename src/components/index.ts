@@ -11,6 +11,7 @@ export * from './FormSectionHeader';
 export * from './DashboardLayout';
 export * from './withAuth';
 export * from './useOutsideClick';
+export * from './useFetch';
 
 export * from './Button';
 export * from './Input';
