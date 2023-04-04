@@ -12,7 +12,7 @@ export const Button: React.FC<ButtonProps> = ({
   type = 'button',
   ...props
 }) => {
-  const {colors} = useTheme();
+  const {colors, spacing} = useTheme();
 
   const _onClick = (event: MouseEvent<HTMLButtonElement>) => {
     if (isLoading) return;
@@ -21,24 +21,17 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   return (
-    <BaseButton
-      isLoading={isLoading}
-      disabled={disabled}
-      onClick={_onClick}
-      type={type}
-      {...props}
-    >
-      <span style={isLoading ? {opacity: 0, height: 0} : {display: 'flex'}}>
-        {children}
-      </span>
+    <BaseButton isLoading={isLoading} disabled={disabled} onClick={_onClick} type={type} {...props}>
+      <span style={isLoading ? {opacity: 0, height: 0} : {display: 'flex'}}>{children}</span>
       {isLoading && (
         <LoadingSpinnerContainer>
           <Spinner
+            size={spacing.scale400}
             {...(disabled
               ? {}
               : {
-                  foreground: colors.buttonLoadingSpinnerForeground,
-                  background: colors.buttonLoadingSpinnerBackground,
+                  foreground: colors.surfacePrimaryDefault,
+                  background: colors.surfacePrimarySubdued,
                 })}
           />
         </LoadingSpinnerContainer>

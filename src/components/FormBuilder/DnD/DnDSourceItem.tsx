@@ -4,13 +4,13 @@ import {DnDItem} from '../types';
 import styled from 'styled-components';
 
 const Item = styled.div`
-  padding: ${({theme}) =>
-    `${theme.spacing.scale200} ${theme.spacing.scale300}`};
-  background: ${({theme}) => theme.colors.inputBorder};
+  padding: ${({theme}) => `${theme.spacing.scale200} ${theme.spacing.scale200}`};
+  background: ${({theme}) => theme.colors.surfaceSubdued};
+  box-shadow: ${({theme}) => theme.shadows.card};
   display: flex;
+  gap: ${({theme}) => theme.spacing.scale200};
   align-items: center;
   cursor: move;
-  ${({theme}) => theme.typography.font200}
 `;
 
 type Props = {
@@ -19,10 +19,7 @@ type Props = {
 };
 
 /** A dragable component which acts as a source for the dnd-form builder  */
-export const DnDSourceItem: React.FC<Props> = ({
-  item: sourceItem,
-  ...props
-}) => {
+export const DnDSourceItem: React.FC<Props> = ({item: sourceItem, ...props}) => {
   const {icon, label, ...item} = sourceItem; // ignore icon and title parameters of DnDSourceItem
   const [{isDragging}, drag] = useDrag({
     item,

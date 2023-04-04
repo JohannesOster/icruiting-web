@@ -1,51 +1,101 @@
 import React from 'react';
-import {Users, World, Portfolio, Settings} from 'icons';
+import {
+  IcruitingLogo,
+  Users,
+  World,
+  Portfolio,
+  Settings,
+  Logout,
+  Account,
+} from 'icons';
 import {useTheme} from 'styled-components';
 import {useAuth} from 'context';
-import {SideNav, NavList, Container} from './DashboardLayout.sc';
+import {SideNav, NavList, Container, LogoContainer} from './DashboardLayout.sc';
 import {NavLink} from './NavLink';
+import Link from 'next/link';
+import {Box} from 'components';
 
-const DashboardLayout: React.FC = ({children}) => {
+const DashboardLayout = ({children}) => {
   const {colors, spacing} = useTheme();
   const {currentUser} = useAuth();
 
   const iconsStyles = {
-    marginRight: spacing.scale300,
-    height: spacing.scale500,
-    width: spacing.scale500,
-    color: colors.typographyPrimary,
+    marginRight: spacing.scale200,
+    height: spacing.scale400,
+    width: spacing.scale400,
+    color: colors.textDefault,
   };
 
   return (
     <>
       <SideNav>
-        {currentUser?.userRole === 'admin' ? (
+        <LogoContainer>
+          <Link href="/">
+            <IcruitingLogo
+              style={{
+                width: '110px',
+                height: 'auto',
+                marginBottom: -10,
+                fill: colors.textPrimary,
+              }}
+            />
+          </Link>
+        </LogoContainer>
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="space-between"
+          height="100%"
+        >
+          {currentUser?.userRole === 'admin' ? (
+            <NavList>
+              <NavLink href="/dashboard/jobs">
+                <Portfolio style={iconsStyles} />
+                Stellen
+              </NavLink>
+              <NavLink href="/dashboard/applicants">
+                <Users style={iconsStyles} />
+                Bewerbungen
+              </NavLink>
+              <NavLink href="/dashboard/members">
+                <World style={iconsStyles} />
+                Mitarbeiter:innen
+              </NavLink>
+            </NavList>
+          ) : (
+            <NavList>
+              <NavLink href="/dashboard/applicants">
+                <Users style={iconsStyles} />
+                Bewerbungen
+              </NavLink>
+            </NavList>
+          )}
           <NavList>
-            <NavLink href="/dashboard/jobs">
-              <Portfolio style={iconsStyles} />
-              Stellen
+            <NavLink href="/account">
+              <Account style={iconsStyles} />
+              Account
             </NavLink>
-            <NavLink href="/dashboard/applicants">
-              <Users style={iconsStyles} />
-              Bewerbungen
+            <NavLink href="/logout">
+              <Logout style={iconsStyles} />
+              Abmelden
             </NavLink>
-            <NavLink href="/dashboard/members">
-              <World style={iconsStyles} />
-              Mitarbeiter:innen
-            </NavLink>
-            <NavLink href="/dashboard/settings">
-              <Settings style={iconsStyles} />
-              Einstellungen
-            </NavLink>
+            {currentUser?.userRole === 'admin' && (
+              <NavLink href="/dashboard/settings">
+                <Settings style={iconsStyles} />
+                Einstellungen
+              </NavLink>
+            )}
+            <Box
+              borderTop={`1px solid ${colors.borderSubdued}`}
+              padding={`${spacing.scale200} ${spacing.scale500}`}
+              fontSize={13}
+              textOverflow="ellipsis"
+              overflow="hidden"
+            >
+              {currentUser.email}
+            </Box>
           </NavList>
-        ) : (
-          <NavList>
-            <NavLink href="/dashboard/applicants">
-              <Users style={iconsStyles} />
-              Bewerbungen
-            </NavLink>
-          </NavList>
-        )}
+        </Box>
       </SideNav>
       <Container>{children}</Container>
     </>

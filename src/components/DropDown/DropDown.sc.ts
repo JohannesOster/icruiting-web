@@ -6,7 +6,7 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   z-index: 10;
-  ${({theme}) => theme.typography.font200};
+  ${({theme}) => theme.typography.body};
 `;
 
 export const Overlay = styled.div`

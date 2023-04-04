@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, H6, Button, Input, Textarea, Select, Checkbox} from 'components';
+import {Box, HeadingS, Button, Input, Textarea, Select, Checkbox} from 'components';
 import {useForm, useFieldArray} from 'react-hook-form';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
@@ -32,13 +32,7 @@ export const EditACRatingGroupFormFields: React.FC<Props> = ({
   jobRequirementOptions,
   ...formValues
 }) => {
-  const {
-    register,
-    formState,
-    errors,
-    handleSubmit,
-    control,
-  } = useForm<FormValues>({
+  const {register, formState, errors, handleSubmit, control} = useForm<FormValues>({
     mode: 'onChange',
     criteriaMode: 'all',
     defaultValues: formValues,
@@ -47,12 +41,8 @@ export const EditACRatingGroupFormFields: React.FC<Props> = ({
         label: string().required('Label ist verpflichtend'),
         options: array().of(
           object({
-            label: string().required(
-              'Option ist verpflichtend auszufüllen oder zu löschen',
-            ),
-            value: number().typeError(
-              'Geben sie einen eindeutigen Zahlenwert an!',
-            ),
+            label: string().required('Option ist verpflichtend auszufüllen oder zu löschen'),
+            value: number().typeError('Geben sie einen eindeutigen Zahlenwert an!'),
           }),
         ),
         defaultValue: mixed().transform((val) => (val ? val : null)),
@@ -110,9 +100,7 @@ export const EditACRatingGroupFormFields: React.FC<Props> = ({
           })),
         ]}
       />
-      <H6 style={{marginBottom: `-${spacing.scale300}`}}>
-        Optionen (Label, Wert)
-      </H6>
+      <HeadingS style={{marginBottom: `-${spacing.scale300}`}}>Optionen (Label, Wert)</HeadingS>
       {fields.map((option, idx) => {
         return (
           <Box
@@ -129,6 +117,7 @@ export const EditACRatingGroupFormFields: React.FC<Props> = ({
               defaultValue={option.label}
               ref={register()}
               errors={errorsFor(errors, `options[${idx}].label`)}
+              autoFocus={true}
             />
             <Input
               name={`options[${idx}].value`}
@@ -145,9 +134,7 @@ export const EditACRatingGroupFormFields: React.FC<Props> = ({
         );
       })}
       <div>
-        <Button onClick={() => append({label: '', value: ''})}>
-          Neues Item
-        </Button>
+        <Button onClick={() => append({label: '', value: ''})}>Neues Item</Button>
       </div>
       <Checkbox
         name="required"

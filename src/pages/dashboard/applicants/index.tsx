@@ -8,8 +8,8 @@ import {
   DataTable,
   Table,
   TColumn,
-  H3,
-  H6,
+  HeadingL,
+  HeadingS,
   Box,
   Typography,
   FlexGrid,
@@ -172,9 +172,7 @@ const Applicants = () => {
         }
 
         return (
-          <Link href={`${router.pathname}/${row.applicantId}`}>
-            <a>{row.name}</a>
-          </Link>
+          <Link href={`${router.pathname}/${row.applicantId}`}>{row.name}</Link>
         );
       },
     })) || []),
@@ -277,7 +275,7 @@ const Applicants = () => {
           }}
         >
           <Box display="grid" rowGap={spacing.scale300}>
-            <H6>Bewerber*innen wirklich unwiderruflich löschen?</H6>
+            <HeadingS>Bewerber*innen wirklich unwiderruflich löschen?</HeadingS>
             <Typography>
               Sind Sie sicher, dass Sie alle Daten der ausgewählten
               Bewerbers*innen löschen wollen? Dieser Vorgang kann nicht
@@ -306,7 +304,7 @@ const Applicants = () => {
         flexGap={spacing.scale300}
         marginBottom={spacing.scale300}
       >
-        <H3>Bewerbungen</H3>
+        <HeadingL>Bewerbungen</HeadingL>
         {jobs && (
           <Select
             options={jobs.map((job) => ({

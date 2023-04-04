@@ -56,9 +56,7 @@ export const LoginForm: React.FC<Props> = ({onSubmit}) => {
       />
       <Typography kind="secondary">
         <span style={{marginRight: spacing.scale200}}>Passwort vergessen?</span>
-        <Link href="/password-reset">
-          <a>Passwort zurücksetzen?</a>
-        </Link>
+        <Link href="/password-reset">Passwort zurücksetzen?</Link>
       </Typography>
       <div
         style={{
@@ -73,9 +71,7 @@ export const LoginForm: React.FC<Props> = ({onSubmit}) => {
           <span style={{marginRight: spacing.scale200}}>
             Noch keinen Account?
           </span>
-          <Link href="/signup">
-            <a>Registrieren</a>
-          </Link>
+          <Link href="/signup">Registrieren</Link>
         </Typography>
         <Button
           disabled={

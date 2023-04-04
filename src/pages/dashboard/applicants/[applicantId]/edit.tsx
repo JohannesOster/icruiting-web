@@ -4,7 +4,13 @@ import {useTheme} from 'styled-components';
 import {useForm} from 'react-hook-form';
 import config from 'config';
 import {API, TForm} from 'services';
-import {H3, Box, FlexGrid, getDashboardLayout, withAdmin} from 'components';
+import {
+  HeadingL,
+  Box,
+  FlexGrid,
+  getDashboardLayout,
+  withAdmin,
+} from 'components';
 import {useToaster} from 'context';
 import {useRouter} from 'next/router';
 import {stringToComponent} from 'components/FormBuilder/utils';
@@ -21,7 +27,7 @@ export const EditApplicant = () => {
   const {data: applicant} = useFetch(
     [`GET /applicants/${applicantId}`, applicantId],
     (_key, applicantId) => API.applicants.find(applicantId),
-    {revalidateOnFocus: false}
+    {revalidateOnFocus: false},
   );
 
   const formsKey = applicant ? [`GET /forms`, applicant.jobId] : null;
@@ -123,12 +129,14 @@ export const EditApplicant = () => {
         justifyContent="space-between"
         marginBottom={spacing.scale300}
       >
-        <H3>Bewerber*in bearbeiten</H3>
+        <HeadingL>Bewerber*in bearbeiten</HeadingL>
         <Box display="grid" gridAutoFlow="column" columnGap={spacing.scale500}>
           <Button isLoading={isSubmitting} onClick={onSave}>
             Speichern
           </Button>
-          <Button onClick={() => router.back()}>Abbrechen</Button>
+          <Button kind="secondary" onClick={() => router.back()}>
+            Abbrechen
+          </Button>
         </Box>
       </FlexGrid>
       {Form}

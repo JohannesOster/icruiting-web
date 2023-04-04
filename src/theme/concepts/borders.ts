@@ -31,7 +31,7 @@ export const borders = {
     borderStyle: 'solid',
     borderWidth: '1px',
   },
-  radius100: sizes.scale50,
+  radius100: sizes.scale100,
   radius200: sizes.scale300,
   radius300: sizes.scale300,
   radius400: sizes.scale400,

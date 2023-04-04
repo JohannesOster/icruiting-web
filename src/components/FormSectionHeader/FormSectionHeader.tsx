@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {H6, Typography} from 'components';
+import {HeadingS, Typography} from 'components';
 
 interface Props {
   label: string;
@@ -9,7 +9,7 @@ interface Props {
 export const FormSectionHeader: FC<Props> = ({label, description}) => {
   return (
     <div>
-      <H6>{label}</H6>
+      <HeadingS>{label}</HeadingS>
       {description && <Typography kind="secondary">{description}</Typography>}
     </div>
   );

@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import Link from 'next/link';
 import {useTheme} from 'styled-components';
-import {H3, Box, H6, Typography} from 'components';
+import {HeadingL, Box, HeadingS, Typography} from 'components';
 import {useAuth, useToaster} from 'context';
 import {API} from 'services';
 import {Dialog, Button, withAuth} from 'components';
@@ -36,22 +36,22 @@ const Account: React.FC = () => {
       {status === 'shouldDelete' && (
         <Dialog onClose={() => setStatus('shouldDelete')}>
           <Box display="grid" rowGap={spacing.scale300}>
-            <H6>Tenant unwiderruflich löschen?</H6>
+            <HeadingS>Tenant unwiderruflich löschen?</HeadingS>
             <Typography>
               Sind Sie sicher dass Sie <b>alle Daten löschen</b> wollen? Dieser
               Vorgang kann nicht rückgängig gemacht werden!
             </Typography>
             <Box display="flex" justifyContent="space-between">
               <Button onClick={() => _deleteTenant()}>Löschen</Button>
-              <Button onClick={() => setStatus('idle')}>Abbrechen</Button>
+              <Button kind="secondary" onClick={() => setStatus('idle')}>
+                Abbrechen
+              </Button>
             </Box>
           </Box>
         </Dialog>
       )}
-      <H3>Account</H3>
-      <Link href="/password-reset">
-        <a>Passwort zurrücksetzten</a>
-      </Link>
+      <HeadingL>Account</HeadingL>
+      <Link href="/password-reset">Passwort zurrücksetzten</Link>
       {currentUser?.userRole === 'admin' && (
         <Box>
           <Button
@@ -70,13 +70,9 @@ const Account: React.FC = () => {
       )}
       {currentUser?.userRole === 'admin' && (
         <>
-          <H3>Zahlungen</H3>
-          <Link href="/account/subscriptions">
-            <a>Subscriptions</a>
-          </Link>
-          <Link href="/account/payment">
-            <a>Zahlungsmethoden</a>
-          </Link>
+          <HeadingL>Zahlungen</HeadingL>
+          <Link href="/account/subscriptions">Subscriptions</Link>
+          <Link href="/account/payment">Zahlungsmethoden</Link>
         </>
       )}
     </Box>

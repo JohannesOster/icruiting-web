@@ -18,8 +18,9 @@ import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {useAuth} from 'context';
 import config from 'config';
+import {theme} from 'theme';
 
-const Navbar: React.FC = () => {
+const Navbar = () => {
   const {spacing} = useTheme();
   const router = useRouter();
   const {currentUser, logout, isAuthenticating} = useAuth();
@@ -46,22 +47,16 @@ const Navbar: React.FC = () => {
   const unauthenticatedMobileNav = (
     <>
       <MobileNavItem onClick={closeMenu}>
-        <a href="/docs/">Dokumentation</a>
+        <a href="https://docs.icruiting.at">Dokumentation</a>
       </MobileNavItem>
       <MobileNavItem onClick={closeMenu}>
-        <Link href="/contact">
-          <a>Kontakt</a>
-        </Link>
+        <Link href="/contact">Kontakt</Link>
       </MobileNavItem>
       <MobileNavItem onClick={closeMenu}>
-        <Link href="/login">
-          <a>Anmelden</a>
-        </Link>
+        <Link href="/login">Anmelden</Link>
       </MobileNavItem>
       <MobileNavItem onClick={closeMenu}>
-        <Link href="/signup">
-          <a>Registrieren</a>
-        </Link>
+        <Link href="/signup">Registrieren</Link>
       </MobileNavItem>
     </>
   );
@@ -80,24 +75,16 @@ const Navbar: React.FC = () => {
       {currentUser?.userRole === 'admin' && (
         <>
           <MobileNavItem onClick={closeMenu}>
-            <Link href="/dashboard/jobs">
-              <a>Stellen</a>
-            </Link>
+            <Link href="/dashboard/jobs">Stellen</Link>
           </MobileNavItem>
           <MobileNavItem onClick={closeMenu}>
-            <Link href="/dashboard/applicants">
-              <a>Bewerber*innen</a>
-            </Link>
+            <Link href="/dashboard/applicants">Bewerber*innen</Link>
           </MobileNavItem>
           <MobileNavItem onClick={closeMenu}>
-            <Link href="/dashboard/members">
-              <a>Mitarbeiter:innen</a>
-            </Link>
+            <Link href="/dashboard/members">Mitarbeiter:innen</Link>
           </MobileNavItem>
           <MobileNavItem onClick={closeMenu}>
-            <Link href={`/dashboard/theme`}>
-              <a>Einstellungen</a>
-            </Link>
+            <Link href={`/dashboard/theme`}>Einstellungen</Link>
           </MobileNavItem>
         </>
       )}
@@ -105,14 +92,10 @@ const Navbar: React.FC = () => {
         <Separator />
       </Box>
       <MobileNavItem onClick={closeMenu}>
-        <Link href="/account">
-          <a>Account</a>
-        </Link>
+        <Link href="/account">Account</Link>
       </MobileNavItem>
       <MobileNavItem onClick={closeMenu}>
-        <Link href="/contact">
-          <a>Kontakt</a>
-        </Link>
+        <Link href="/contact">Kontakt</Link>
       </MobileNavItem>
       <MobileNavItem onClick={closeMenu}>
         <Typography>
@@ -138,14 +121,10 @@ const Navbar: React.FC = () => {
         </a>
       </NavItem>
       <NavItem>
-        <Link href="/contact">
-          <a>Kontakt</a>
-        </Link>
+        <Link href="/contact">Kontakt</Link>
       </NavItem>
       <NavItem>
-        <Link href="/login">
-          <a>Anmelden</a>
-        </Link>
+        <Link href="/login">Anmelden</Link>
       </NavItem>
       <NavItem>
         <Button onClick={() => router.push('/signup')}>Registrieren</Button>
@@ -165,14 +144,10 @@ const Navbar: React.FC = () => {
         </a>
       </NavItem>
       <NavItem>
-        <Link href="/contact">
-          <a>Kontakt</a>
-        </Link>
+        <Link href="/contact">Kontakt</Link>
       </NavItem>
       <NavItem>
-        <Link href="/dashboard">
-          <a>Dashboard</a>
-        </Link>
+        <Link href="/dashboard">Dashboard</Link>
       </NavItem>
       <NavItem>
         <DropDown label={currentUser?.email || 'Account'}>
@@ -207,11 +182,14 @@ const Navbar: React.FC = () => {
     <Header>
       <div style={{zIndex: 25, cursor: 'pointer'}} onClick={closeMenu}>
         <Link href="/">
-          <a>
-            <IcruitingLogo
-              style={{width: '110px', height: 'auto', marginBottom: -10}}
-            />
-          </a>
+          <IcruitingLogo
+            style={{
+              width: '110px',
+              height: 'auto',
+              marginBottom: -10,
+              fill: theme.colors.textPrimary,
+            }}
+          />
         </Link>
       </div>
       {!isAuthenticating && (

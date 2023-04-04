@@ -3,10 +3,9 @@ import Link from 'next/link';
 import {useRouter} from 'next/router';
 import styled, {css} from 'styled-components';
 
-export const Wrapper = styled.a<{isActive: boolean}>`
+export const Wrapper = styled.span<{isActive: boolean}>`
   text-align: left;
-  padding: ${({theme}) =>
-    `${theme.spacing.scale500} ${theme.spacing.scale400}`};
+  padding: ${({theme}) => `${theme.spacing.scale500}`};
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -16,15 +15,15 @@ export const Wrapper = styled.a<{isActive: boolean}>`
   transition: background-color 200ms, border-color 200ms;
 
   &:hover {
-    background-color: ${({theme}) => theme.colors.inputBorder};
-    border-color: ${({theme}) => theme.colors.typographyPrimary};
+    background-color: ${({theme}) => theme.colors.surfacePrimarySubdued};
+    border-color: ${({theme}) => theme.colors.surfacePrimaryHover};
   }
 
   ${({isActive, theme}) =>
     isActive &&
     css`
-      background-color: ${theme.colors.inputBorder};
-      border-color: ${theme.colors.typographyPrimary};
+      background-color: ${theme.colors.surfacePrimarySubdued};
+      border-color: ${theme.colors.surfacePrimaryDefault};
     `}
 `;
 

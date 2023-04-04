@@ -29,13 +29,12 @@ export const converter = {
 
     if (formField.required) _formField.props.required = !!formField.required;
     if (formField.options) _formField.props.options = formField.options;
-    if (formField.jobRequirementId)
-      _formField.props.jobRequirementId = formField.jobRequirementId;
+    if (formField.jobRequirementId) _formField.props.jobRequirementId = formField.jobRequirementId;
     if (formField.intent) _formField.props.intent = formField.intent;
 
     return _formField;
   },
-  toAPIFormField: (formField: DnDItem) => {
+  toAPIFormField: (formField: DnDItem, idx: number) => {
     const {
       label,
       placeholder,

@@ -1,6 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
-import {H3, DataTable, TColumn, Box, getDashboardLayout} from 'components';
+import {
+  HeadingL,
+  DataTable,
+  TColumn,
+  Box,
+  getDashboardLayout,
+} from 'components';
 import {API} from 'services';
 import {useTheme} from 'styled-components';
 import {withAdmin} from 'components';
@@ -15,11 +21,9 @@ export const Ranking = () => {
   };
   const {spacing} = useTheme();
 
-  const {
-    data: applicants,
-    error: applicantsError,
-  } = useFetch(`GET /applicants?jobId=${jobId}`, () =>
-    API.applicants.list(jobId),
+  const {data: applicants, error: applicantsError} = useFetch(
+    `GET /applicants?jobId=${jobId}`,
+    () => API.applicants.list(jobId),
   );
 
   const {data: ranking, error: rankingError} = useFetch(
@@ -43,7 +47,7 @@ export const Ranking = () => {
         <Link
           href={`/dashboard/applicants/${row.applicantId}/report?formCategory=${formCategory}`}
         >
-          <a>{row.name}</a>
+          {row.name}
         </Link>
       ),
     },
@@ -61,7 +65,7 @@ export const Ranking = () => {
 
   return (
     <Box display="grid" rowGap={spacing.scale300}>
-      <H3>
+      <HeadingL>
         Ranking-
         {
           {
@@ -70,7 +74,7 @@ export const Ranking = () => {
             onboarding: 'Onboarding',
           }[formCategory]
         }
-      </H3>
+      </HeadingL>
       <DataTable columns={columns} data={data || []} isLoading={isLoading} />
     </Box>
   );

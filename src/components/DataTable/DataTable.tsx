@@ -1,10 +1,4 @@
-import React, {
-  ChangeEvent,
-  useEffect,
-  useReducer,
-  useRef,
-  useState,
-} from 'react';
+import React, {ChangeEvent, useEffect, useReducer, useRef, useState} from 'react';
 import {
   Table,
   Box,
@@ -46,9 +40,7 @@ export const DataTable: React.FC<Props> = ({
   const localStorageKey = `data-table-${id}`;
 
   const [cols, setCols] = useState([]);
-  const _visibleCols = columns.filter((_val, index) =>
-    cols.includes(`${index}`),
-  );
+  const _visibleCols = columns.filter((_val, index) => cols.includes(`${index}`));
   const _columns = columns.map(({title}, index) => ({
     title,
     index: `${index}`,
@@ -77,13 +69,10 @@ export const DataTable: React.FC<Props> = ({
     const raw = localStorage.getItem(key);
     if (!raw) return;
     const filter = JSON.parse(raw) as {[attribute: string]: {eq: string}};
-    const formValues = Object.entries(filter).reduce(
-      (acc, [attribute, {eq}]) => {
-        acc[attribute] = eq;
-        return acc;
-      },
-      {},
-    );
+    const formValues = Object.entries(filter).reduce((acc, [attribute, {eq}]) => {
+      acc[attribute] = eq;
+      return acc;
+    }, {});
     reset(formValues);
   }, [localStorageKey]);
 
@@ -103,13 +92,9 @@ export const DataTable: React.FC<Props> = ({
   });
 
   const showPagination =
-    totalCount !== undefined &&
-    totalPages !== undefined &&
-    currentPage !== undefined;
+    totalCount !== undefined && totalPages !== undefined && currentPage !== undefined;
 
-  const _onRowsPerPageChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
+  const _onRowsPerPageChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const {value} = event.target;
     let asInt = parseInt(value, 10);
     if (isNaN(asInt)) asInt = 1;
@@ -125,10 +110,7 @@ export const DataTable: React.FC<Props> = ({
         masterCheckbox: action.value,
         ...Array(data?.length)
           .fill(0)
-          .reduce(
-            (acc, _curr, idx) => ({...acc, [idx.toString()]: idx.toString()}),
-            {},
-          ),
+          .reduce((acc, _curr, idx) => ({...acc, [idx.toString()]: idx.toString()}), {}),
       };
     }
 
@@ -166,14 +148,11 @@ export const DataTable: React.FC<Props> = ({
   };
 
   const _onFilter = () => {
-    const filter = Object.entries(getValues()).reduce(
-      (acc, [attribute, eq]) => {
-        if (!eq) return acc;
-        acc[mapping[attribute]] = {eq};
-        return acc;
-      },
-      {},
-    );
+    const filter = Object.entries(getValues()).reduce((acc, [attribute, eq]) => {
+      if (!eq) return acc;
+      acc[mapping[attribute]] = {eq};
+      return acc;
+    }, {});
 
     const key = localStorageKey + 'filter';
     localStorage.setItem(key, JSON.stringify(filter));
@@ -193,11 +172,7 @@ export const DataTable: React.FC<Props> = ({
 
   return (
     <>
-      <FlexGrid
-        alignItems="center"
-        flexGap={spacing.scale200}
-        marginBottom={spacing.scale200}
-      >
+      <FlexGrid alignItems="center" flexGap={spacing.scale200} marginBottom={spacing.scale200}>
         {actions?.length && (
           <Box
             display="grid"
@@ -231,14 +206,11 @@ export const DataTable: React.FC<Props> = ({
             position="relative"
           >
             <Box position="relative" display="flex" alignItems="center">
-              <Button
-                kind="minimal"
-                onClick={() => setShowSortPopup((curr) => !curr)}
-              >
-                <Sort />
-              </Button>
-              {showSortPopup && (
-                <div ref={sortPopupRef}>
+              <div ref={sortPopupRef}>
+                <Button kind="minimal" onClick={() => setShowSortPopup((curr) => !curr)}>
+                  <Sort />
+                </Button>
+                {showSortPopup && (
                   <Box
                     position="absolute"
                     right={0}
@@ -266,18 +238,15 @@ export const DataTable: React.FC<Props> = ({
                       value={orderBy}
                     />
                   </Box>
-                </div>
-              )}
+                )}
+              </div>
             </Box>
             <Box position="relative" display="flex" alignItems="center">
-              <Button
-                kind="minimal"
-                onClick={() => setShowColsPopup((curr) => !curr)}
-              >
-                <Columns />
-              </Button>
-              {showColsPopUp && (
-                <div ref={colsPopupRef}>
+              <div ref={colsPopupRef}>
+                <Button kind="minimal" onClick={() => setShowColsPopup((curr) => !curr)}>
+                  <Columns />
+                </Button>
+                {showColsPopUp && (
                   <Box
                     position="absolute"
                     right={0}
@@ -298,17 +267,15 @@ export const DataTable: React.FC<Props> = ({
                       onChange={(event) => {
                         const {value} = event.target;
                         if (cols.includes(value)) {
-                          setCols((cols) =>
-                            cols.filter((val) => val !== value),
-                          );
+                          setCols((cols) => cols.filter((val) => val !== value));
                         } else {
                           setCols((cols) => [...cols, value]);
                         }
                       }}
                     />
                   </Box>
-                </div>
-              )}
+                )}
+              </div>
             </Box>
           </Box>
         )}
@@ -323,18 +290,13 @@ export const DataTable: React.FC<Props> = ({
                     options={[{label: '', value: 'masterCheckbox'}]}
                     onChange={onCheckboxChange}
                     value={state.masterCheckbox}
-                    indeterminate={
-                      Object.keys(state).length > 0 && !state.masterCheckbox
-                    }
+                    indeterminate={Object.keys(state).length > 0 && !state.masterCheckbox}
                     disabled={data.length === 0}
                   />
                 </th>
               )}
               {_visibleCols.map(({title}, idx) => (
-                <th
-                  key={idx}
-                  style={{whiteSpace: 'nowrap', overflowX: 'scroll'}}
-                >
+                <th key={idx} style={{whiteSpace: 'nowrap', overflowX: 'scroll'}}>
                   {title}
                 </th>
               ))}
@@ -425,11 +387,7 @@ export const DataTable: React.FC<Props> = ({
               flexGap={spacing.scale600}
               padding={spacing.scale200}
             >
-              <Button
-                kind="minimal"
-                disabled={currentPage! <= 1}
-                onClick={onPrev}
-              >
+              <Button kind="minimal" disabled={currentPage! <= 1} onClick={onPrev}>
                 Vorherige
               </Button>
               <Box
@@ -445,19 +403,15 @@ export const DataTable: React.FC<Props> = ({
                   style={{
                     width: 0.5,
                     height: 16,
-                    background: colors.typographyPrimary,
+                    background: colors.textDefault,
                   }}
                 />
                 <Typography>
-                  Zeilen: {(currentPage - 1) * data.length + 1}-
-                  {currentPage * data.length} aus {totalCount}
+                  Zeilen: {(currentPage - 1) * data.length + 1}-{currentPage * data.length} aus{' '}
+                  {totalCount}
                 </Typography>
               </Box>
-              <Button
-                kind="minimal"
-                disabled={currentPage! >= totalPages!}
-                onClick={onNext}
-              >
+              <Button kind="minimal" disabled={currentPage! >= totalPages!} onClick={onNext}>
                 Nächste
               </Button>
             </FlexGrid>

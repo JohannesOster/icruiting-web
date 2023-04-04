@@ -12,46 +12,63 @@ const getStylesForKind = (theme: DefaultTheme, kind?: TKind) => {
   switch (kind) {
     case 'secondary':
       return {
-        ...theme.typography.font100,
-        color: theme.colors.typographySecondary,
+        ...theme.typography.bodySmall,
+        color: theme.colors.textSubdued,
       };
     default:
       return {
-        ...theme.typography.font200,
-        color: theme.colors.typographyPrimary,
+        ...theme.typography.body,
+        color: theme.colors.textDefault,
       };
   }
 };
 
 export const getColor = (theme: DefaultTheme, color?: TColor) => {
   switch (color) {
+    case 'primary':
+      return theme.colors.textDefault;
     case 'secondary':
-      return theme.colors.typographySecondary;
+      return theme.colors.textSubdued;
     case 'error':
       return theme.colors.typographyPrimaryError;
   }
 };
 
-export const H1 = styled.h1`
-  ${({theme}) => theme.typography.font1050}
+export const DisplayL = styled.h1`
+  ${({theme}) => theme.typography.displayL}
+  @media (max-width: ${({theme}) => theme.breakpoints.md}) {
+    ${({theme}) => theme.typography.mDisplayL}
+  }
 `;
 
-export const H2 = styled.h1`
-  ${({theme}) => theme.typography.font950}
+export const DisplayM = styled.h2`
+  ${({theme}) => theme.typography.displayM}
+  @media (max-width: ${({theme}) => theme.breakpoints.md}) {
+    ${({theme}) => theme.typography.mDisplayM}
+  }
 `;
 
-export const H3 = styled.h1`
-  ${({theme}) => theme.typography.font850}
+export const DisplayS = styled.h3`
+  ${({theme}) => theme.typography.displayS}
+  @media (max-width: ${({theme}) => theme.breakpoints.md}) {
+    ${({theme}) => theme.typography.mDisplayS}
+  }
 `;
 
-export const H4 = styled.h1`
-  ${({theme}) => theme.typography.font850}
+export const HeadingL = styled.h4`
+  ${({theme}) => theme.typography.headingL}
+  @media (max-width: ${({theme}) => theme.breakpoints.md}) {
+    ${({theme}) => theme.typography.mHeadingL}
+  }
 `;
 
-export const H5 = styled.h1`
-  ${({theme}) => theme.typography.font750}
+export const HeadingM = styled.h5`
+  ${({theme}) => theme.typography.headingM}
+  @media (max-width: ${({theme}) => theme.breakpoints.md}) {
+    ${({theme}) => theme.typography.mHeadingM}
+  }
 `;
 
-export const H6 = styled.h1`
-  ${({theme}) => theme.typography.font550}
+export const HeadingS = styled.h1`
+  ${({theme}) => theme.typography.headingS}
 `;

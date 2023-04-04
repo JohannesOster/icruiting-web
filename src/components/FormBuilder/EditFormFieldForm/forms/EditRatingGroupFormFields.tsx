@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, H6} from 'components';
+import {Box, HeadingS} from 'components';
 import {Button, Checkbox, Input, Select, Textarea} from 'components';
 import {useForm, useFieldArray} from 'react-hook-form';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
@@ -25,17 +25,8 @@ type Props = {
   onSubmit: (values: FormValues) => void;
 } & FormValues;
 
-export const EditRatingGroupFormFields: React.FC<Props> = ({
-  onSubmit,
-  ...formValues
-}) => {
-  const {
-    register,
-    formState,
-    errors,
-    handleSubmit,
-    control,
-  } = useForm<FormValues>({
+export const EditRatingGroupFormFields: React.FC<Props> = ({onSubmit, ...formValues}) => {
+  const {register, formState, errors, handleSubmit, control} = useForm<FormValues>({
     mode: 'onChange',
     criteriaMode: 'all',
     defaultValues: formValues,
@@ -45,12 +36,8 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
         defaultValue: mixed().transform((val) => (val ? val : null)),
         options: array().of(
           object({
-            label: string().required(
-              'Option ist verpflichtend auszufüllen oder zu löschen',
-            ),
-            value: number().typeError(
-              'Geben sie einen eindeutigen Zahlenwert an!',
-            ),
+            label: string().required('Option ist verpflichtend auszufüllen oder zu löschen'),
+            value: number().typeError('Geben sie einen eindeutigen Zahlenwert an!'),
           }),
         ),
       }),
@@ -65,12 +52,13 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <Textarea
+      <Input
         name="label"
         label="Label"
         placeholder="Label"
         ref={register}
         errors={errorsFor(errors, 'label')}
+        autoFocus={true}
       />
       <Textarea
         name="description"
@@ -111,9 +99,7 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
           })),
         ]}
       />
-      <H6 style={{marginBottom: `-${spacing.scale300}`}}>
-        Optionen (Label, Wert)
-      </H6>
+      <HeadingS style={{marginBottom: `-${spacing.scale300}`}}>Optionen (Label, Wert)</HeadingS>
       {fields.map((option, idx) => {
         return (
           <Box
@@ -147,9 +133,7 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
         );
       })}
       <div>
-        <Button onClick={() => append({label: '', value: ''})}>
-          Neues Item
-        </Button>
+        <Button onClick={() => append({label: '', value: ''})}>Neues Item</Button>
       </div>
       <Checkbox
         name="required"

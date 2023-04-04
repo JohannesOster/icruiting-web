@@ -17,7 +17,7 @@ export const BaseButton = styled.button<BaseButtonProps>`
   border: none;
   border-radius: ${({theme}) => theme.borders.radius100};
 
-  ${({theme}) => theme.typography.font200}
+  ${({theme}) => theme.typography.button}
 
   transition-property: background-color;
   transition-duration: ${({theme}) => theme.animations.timing100};
@@ -49,13 +49,13 @@ const getButtonStylesForKind = (
         background: none;
         color: ${destructive
           ? theme.colors.typographyPrimaryError
-          : theme.colors.typographyPrimary};
+          : theme.colors.textDefault};
         padding: 0;
 
         &:hover {
           color: ${destructive
             ? theme.colors.typographySecondaryError
-            : theme.colors.typographySecondary};
+            : theme.colors.textSubdued};
         }
 
         &:disabled {
@@ -63,25 +63,56 @@ const getButtonStylesForKind = (
           color: ${theme.colors.buttonMinimalDisabledText};
         }
       `;
-    case 'primary':
+    case 'secondary':
       return css`
-        background-color: ${destructive
-          ? theme.colors.buttonPrimaryDestructiveFill
-          : theme.colors.buttonPrimaryFill};
+        border: 1px solid;
+        border-color: ${destructive
+          ? theme.colors.borderDanger
+          : theme.colors.borderPrimary};
+        background-color: ${theme.colors.surfaceDefault};
         color: ${destructive
           ? theme.colors.buttonPrimaryDestructiveText
-          : theme.colors.buttonPrimaryText};
+          : theme.colors.textPrimary};
 
         &:hover {
           background-color: ${destructive
             ? theme.colors.buttonPrimaryDestructiveFillHover
-            : theme.colors.buttonPrimaryFillHover};
+            : theme.colors.surfacePrimarySubdued};
         }
 
         &:disabled {
           cursor: not-allowed;
-          background-color: ${theme.colors.buttonPrimaryDisabledFill};
-          color: ${theme.colors.buttonPrimaryDisabledText};
+          background-color: ${theme.colors.surfacePrimaryDisabled};
+          color: ${theme.colors.textDisabled};
+        }
+
+        &:active {
+          background-color: ${theme.colors.surfacePrimarySubdued};
+        }
+      `;
+    default:
+      return css`
+        background-color: ${destructive
+          ? theme.colors.buttonPrimaryDestructiveFill
+          : theme.colors.surfacePrimaryDefault};
+        color: ${destructive
+          ? theme.colors.buttonPrimaryDestructiveText
+          : theme.colors.textOnDark};
+
+        &:hover {
+          background-color: ${destructive
+            ? theme.colors.buttonPrimaryDestructiveFillHover
+            : theme.colors.surfacePrimaryHover};
+        }
+
+        &:disabled {
+          cursor: not-allowed;
+          background-color: ${theme.colors.surfacePrimaryDisabled};
+          color: ${theme.colors.textDisabled};
+        }
+
+        &:active {
+          background-color: ${theme.colors.surfacePrimaryActive};
         }
       `;
   }

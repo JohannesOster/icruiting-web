@@ -2,9 +2,16 @@ import React, {useRef, useState} from 'react';
 import {useTheme} from 'styled-components';
 import {useRouter} from 'next/router';
 import Link from 'next/link';
-import {Button, H5, Input, Textarea, Typography} from 'components';
+import {
+  Box,
+  Button,
+  DisplayL,
+  HeadingM,
+  Input,
+  Textarea,
+  Typography,
+} from 'components';
 import {Bunny} from 'icons';
-import {Box, H3, H6} from 'components';
 import {useForm} from 'react-hook-form';
 
 import styled, {css} from 'styled-components';
@@ -21,10 +28,10 @@ export const Footer = styled.footer`
   display: flex;
   justify-content: space-between;
   padding: ${({theme}) => theme.spacing.scale500};
-  color: ${({theme}) => theme.colors.typographySecondary};
+  color: ${({theme}) => theme.colors.textSubdued};
   border-top: 1px solid;
   border-color: ${({theme}) => theme.colors.inputBorder};
-  ${({theme}) => theme.typography.font200};
+  ${({theme}) => theme.typography.body};
 
   @media (max-width: ${({theme}) => theme.breakpoints.xs}) {
     display: block;
@@ -37,7 +44,7 @@ const Hero = styled.section`
   justify-content: center;
   gap: ${({theme}) => theme.spacing.scale600};
   height: calc(100vh - 80px);
-  max-width: 590px;
+  max-width: 790px;
 `;
 
 const FeaturesGrid = styled.div`
@@ -119,9 +126,9 @@ const LandingPage: React.FC = () => {
           {/* HERO */}
           <Hero>
             <Box display="flex" flexDirection="column" gap={spacing.scale200}>
-              <H3>
+              <DisplayL>
                 Wähle die <b>passensten</b> nicht die besten Mitarbeiter:innen.
-              </H3>
+              </DisplayL>
               <Typography kind="body" color="secondary">
                 Eine Plattform, die Euch dabei unterstützt, kollaborativ und
                 anforderungsgetrieben Hiring-Entscheidungen zu treffen.
@@ -141,7 +148,7 @@ const LandingPage: React.FC = () => {
             marginTop={-200}
           >
             <Box>
-              <H5>Was kann icruiting?</H5>
+              <HeadingM>Was kann icruiting?</HeadingM>
               <Typography color="secondary">Cha-Cha-Cha 2, 3 🕺</Typography>
             </Box>
             <FeaturesGrid>
@@ -152,7 +159,7 @@ const LandingPage: React.FC = () => {
                   borderRadius={4}
                   key={idx}
                 >
-                  <H6 style={{wordBreak: 'break-all'}}>{title}</H6>
+                  <HeadingS style={{wordBreak: 'break-all'}}>{title}</HeadingS>
                   <Typography>{description}</Typography>
                 </Box>
               ))}
@@ -160,16 +167,16 @@ const LandingPage: React.FC = () => {
           </Box>
           {/*  */}
           {/*<Box display="flex" flexDirection="column" gap={spacing.scale600}>
-            <H5>FAQ</H5>
+            <HeadingM>FAQ</HeadingM>
             <Box>
-              <H6>Ist icruiting für mich?</H6>{' '}
+              <HeadingS>Ist icruiting für mich?</HeadingS>{' '}
               <Typography color="secondary">
                 Probieren geht über studieren. Du kannst (glaub ich) wenig
                 kaputt machen. 👉 <Link href="/signup">Registrieren</Link>
               </Typography>
             </Box>
             <Box>
-              <H6>Was kostet der Spaß? 💸</H6>
+              <HeadingS>Was kostet der Spaß? 💸</HeadingS>
               <Typography>
                 <b>60€ / Monat</b>. <br />
                 Gegenvorschläge? Wir feilschen gerne.
@@ -184,7 +191,7 @@ const LandingPage: React.FC = () => {
             gap={spacing.scale600}
           >
             <Box>
-              <H5>Kontakt</H5>
+              <HeadingM>Kontakt</HeadingM>
               <Typography color="secondary">
                 Wir antworten schnell 🏃
               </Typography>
@@ -241,21 +248,15 @@ const LandingPage: React.FC = () => {
               width: 'auto',
             }}
           />
-          <Link href="/">
-            <a>icruiting.at</a>
-          </Link>
+          <Link href="/">icruiting.at</Link>
           <Box
             display="grid"
             gridAutoFlow="column"
             columnGap={spacing.scale300}
           >
-            <Link href="/impressum">
-              <a>Impressum</a>
-            </Link>
+            <Link href="/impressum">Impressum</Link>
             <span>&bull;</span>
-            <Link href="/privacy">
-              <a>Datenschutzerklärung</a>
-            </Link>
+            <Link href="/privacy">Datenschutzerklärung</Link>
           </Box>
         </Footer>
       </Container>

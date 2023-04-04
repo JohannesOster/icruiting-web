@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import Link from 'next/link';
 import {useTheme} from 'styled-components';
 import {
-  H3,
-  H6,
+  HeadingL,
+  HeadingS,
   Typography,
   TColumn,
   Box,
@@ -38,10 +38,12 @@ const JobDetails = () => {
   );
 
   const [forms, setForms] = useState<{[key: string]: TForm[]}>({});
-  const {data, error: formsError, mutate, revalidate} = useFetch(
-    [`GET /forms`, jobId],
-    (_key, jobId) => API.forms.list(jobId),
-  );
+  const {
+    data,
+    error: formsError,
+    mutate,
+    revalidate,
+  } = useFetch([`GET /forms`, jobId], (_key, jobId) => API.forms.list(jobId));
 
   const [deletingReport, setDeletingReport] = useState(false);
   const {data: report, revalidate: revalidateReport} = useFetch(
@@ -104,7 +106,7 @@ const JobDetails = () => {
         <Link
           href={`${formBuilderURL}?formCategory=${formCategory}&jobId=${jobId}`}
         >
-          <a>hinzufügen</a>
+          hinzufügen
         </Link>
       );
     }
@@ -118,7 +120,7 @@ const JobDetails = () => {
         alignItems="center"
       >
         <Link href={`${formBuilderURL}?formId=${formId}&jobId=${jobId}`}>
-          <a>bearbeiten</a>
+          bearbeiten
         </Link>
         <span>/</span>
         <Button
@@ -260,7 +262,7 @@ const JobDetails = () => {
           }}
         >
           <Box display="grid" rowGap={spacing.scale300}>
-            <H6>Formular unwiderruflich löschen?</H6>
+            <HeadingS>Formular unwiderruflich löschen?</HeadingS>
             <Typography>
               Sind Sie sicher, dass Sie diese Formular unwiderruflich löschen
               wollen? Sollte es sich um eine Bewerbungsformular handeln gehen
@@ -335,14 +337,14 @@ const JobDetails = () => {
           </form>
         </Dialog>
       )}
-      <H3>{job?.jobTitle}</H3>
+      <HeadingL>{job?.jobTitle}</HeadingL>
       <Box display="grid" gridRowGap={spacing.scale200}>
         <div
           style={{cursor: 'pointer'}}
           onClick={() => router.push(`/dashboard/jobs/${jobId}/edit`)}
         >
           <FlexGrid gap={spacing.scale300} alignItems="center">
-            <H6>Anforderungsprofil</H6>
+            <HeadingS>Anforderungsprofil</HeadingS>
             <Edit />
           </FlexGrid>
         </div>
@@ -369,7 +371,7 @@ const JobDetails = () => {
         )}
       </Box>
       <Box display="grid" gridRowGap={spacing.scale200}>
-        <H6>Evaluierung</H6>
+        <HeadingS>Evaluierung</HeadingS>
         <Table>
           <thead>
             <tr>
@@ -399,9 +401,7 @@ const JobDetails = () => {
               <tr key={url}>
                 <td>{title}</td>
                 <td>
-                  <Link href={url}>
-                    <a>Ranking</a>
-                  </Link>
+                  <Link href={url}>Ranking</Link>
                 </td>
                 <td>
                   <Button
@@ -419,7 +419,7 @@ const JobDetails = () => {
         </Table>
       </Box>
       <Box display="grid" gridRowGap={spacing.scale200}>
-        <H6>Gutachen gestalten</H6>
+        <HeadingS>Gutachen gestalten</HeadingS>
         <Table>
           <thead>
             <tr>
@@ -433,7 +433,7 @@ const JobDetails = () => {
               <td>
                 {!report ? (
                   <Link href={`/dashboard/jobs/${jobId}/reportbuilder`}>
-                    <a>hinzufügen</a>
+                    hinzufügen
                   </Link>
                 ) : (
                   <Box
@@ -444,7 +444,7 @@ const JobDetails = () => {
                     alignItems="center"
                   >
                     <Link href={`/dashboard/jobs/${jobId}/reportbuilder`}>
-                      <a>bearbeiten</a>
+                      bearbeiten
                     </Link>
                     <span>/</span>
                     <Button
@@ -467,7 +467,7 @@ const JobDetails = () => {
         </Table>
       </Box>
       <Box display="grid" gridRowGap={spacing.scale200}>
-        <H6>Bewerbungs-Formular</H6>
+        <HeadingS>Bewerbungs-Formular</HeadingS>
         <DataTable
           columns={formsTableColumns}
           data={applicationFormsData}
@@ -475,7 +475,7 @@ const JobDetails = () => {
         />
       </Box>
       <Box display="grid" gridRowGap={spacing.scale200}>
-        <H6>Screening-Formular</H6>
+        <HeadingS>Screening-Formular</HeadingS>
         <DataTable
           columns={baseCols}
           data={screeningFormsData}
@@ -484,7 +484,7 @@ const JobDetails = () => {
       </Box>
       <Box display="grid" gridRowGap={spacing.scale200}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <H6>Assessment-Formulare</H6>
+          <HeadingS>Assessment-Formulare</HeadingS>
           <Button
             onClick={() =>
               router.push(
@@ -503,7 +503,7 @@ const JobDetails = () => {
       </Box>
       <Box display="grid" gridRowGap={spacing.scale200}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <H6>Onboarding-Formulare</H6>
+          <HeadingS>Onboarding-Formulare</HeadingS>
           <Button
             onClick={() =>
               router.push(

@@ -6,7 +6,7 @@ import {useTheme} from 'styled-components';
 import {
   Table,
   Box,
-  H6,
+  HeadingS,
   DataTable,
   FlexGrid,
   getDashboardLayout,
@@ -159,7 +159,7 @@ const ApplicantDetails = () => {
             alignItems="center"
             marginBottom={spacing.scale300}
           >
-            <H6>Bewerber*innendaten</H6>
+            <HeadingS>Bewerber*innendaten</HeadingS>
             {currentUser?.userRole === 'admin' && (
               <Edit
                 style={{cursor: 'pointer'}}
@@ -216,7 +216,7 @@ const ApplicantDetails = () => {
           style={{cursor: 'pointer'}}
         >
           <FlexGrid alignItems="center" flexGap={spacing.scale200}>
-            <H6>Screening-Formular</H6>
+            <HeadingS>Screening-Formular</HeadingS>
             <Arrow
               height={spacing.scale400}
               style={{
@@ -248,7 +248,7 @@ const ApplicantDetails = () => {
         )}
       </form>
       <section>
-        <H6>Assessment-Formulare</H6>
+        <HeadingS>Assessment-Formulare</HeadingS>
         <DataTable
           data={forms.assessment || []}
           columns={[
@@ -258,7 +258,7 @@ const ApplicantDetails = () => {
                 <Link
                   href={`/dashboard/applicants/${applicant?.applicantId}/assessment?formId=${row.formId}`}
                 >
-                  <a>{row.formTitle}</a>
+                  {row.formTitle}
                 </Link>
               ),
             },
@@ -266,7 +266,7 @@ const ApplicantDetails = () => {
         />
       </section>
       <section>
-        <H6>Onboarding-Formulare</H6>
+        <HeadingS>Onboarding-Formulare</HeadingS>
         <DataTable
           data={forms.onboarding || []}
           columns={[
@@ -276,7 +276,7 @@ const ApplicantDetails = () => {
                 <Link
                   href={`/dashboard/applicants/${applicant?.applicantId}/assessment?formId=${row.formId}`}
                 >
-                  <a>{row.formTitle}</a>
+                  {row.formTitle}
                 </Link>
               ),
             },

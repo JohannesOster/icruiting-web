@@ -15,7 +15,7 @@ export const Table = styled.table`
       th,
       td {
         padding: ${({theme}) => theme.spacing.scale200};
-        ${({theme}) => theme.typography.font150};
+        ${({theme}) => theme.typography.bodySmall};
         text-transform: uppercase;
         max-width: 250px;
 
@@ -30,13 +30,14 @@ export const Table = styled.table`
     tr {
       border: 1px solid;
       border-color: ${({theme}) => theme.colors.tableBorder};
-      ${({theme}) => theme.typography.font200};
+      ${({theme}) => theme.typography.body};
 
       td,
       th {
         padding: ${({theme}) =>
           `${theme.spacing.scale300} ${theme.spacing.scale200}`};
         max-width: 30vw;
+        background: ${({theme}) => theme.colors.surfaceDefault};
 
         &:last-child {
           border: none;
