@@ -18,11 +18,8 @@ export const RadioLabel = styled.label`
   justify-content: center;
   border: 1px solid ${({theme}) => theme.colors.borderPrimary};
   ${({theme}) => theme.typography.body};
-  padding: ${({theme}) =>
-    `${theme.spacing.scale300} ${theme.spacing.scale400}`};
+  padding: ${({theme}) => `${theme.spacing.scale300} ${theme.spacing.scale400}`};
   border-radius: ${({theme}) => theme.borders.radius100};
-  height: 45px;
-  width: 45px;
 `;
 
 export const Radio = styled.input`
