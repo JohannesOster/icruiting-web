@@ -14,6 +14,7 @@ const OptionBar = styled.div`
   right: ${({theme}) => theme.spacing.scale400};
   display: grid;
   grid-auto-flow: column;
+  grid-gap: ${({theme}) => theme.spacing.scale100};
 
   div {
     height: ${({theme}) => theme.spacing.scale600};
@@ -157,6 +158,8 @@ export const DnDFormField: React.FC<Props> = ({
   drop(ref);
   preview(ref);
 
+  const iconsStyles = {width: 'auto', height: spacing.scale400};
+
   return (
     <Container ref={ref} style={{opacity: isDragging ? 0.6 : 1}}>
       <DragArea ref={drag}>
@@ -166,7 +169,7 @@ export const DnDFormField: React.FC<Props> = ({
         {onEdit && (
           <>
             <div style={{cursor: 'pointer'}} onClick={() => onDuplicate(id)}>
-              <Duplicate style={{width: 'auto', height: spacing.scale300}} />
+              <Duplicate style={iconsStyles} />
             </div>
             <div
               style={{cursor: 'pointer'}}
@@ -174,7 +177,7 @@ export const DnDFormField: React.FC<Props> = ({
                 onEdit(id);
               }}
             >
-              <Edit style={{width: 'auto', height: spacing.scale300}} />
+              <Edit style={iconsStyles} />
             </div>
           </>
         )}
@@ -185,7 +188,7 @@ export const DnDFormField: React.FC<Props> = ({
               onDelete(id);
             }}
           >
-            <Trash style={{width: 'auto', height: spacing.scale300}} />
+            <Trash style={iconsStyles} />
           </div>
         )}
       </OptionBar>
