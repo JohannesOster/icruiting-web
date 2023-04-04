@@ -3,17 +3,15 @@ import {useDrag, useDrop} from 'react-dnd';
 import {XYCoord} from 'dnd-core';
 import {ItemTypes} from './ItemTypes';
 import {DnDItem} from '../types';
-import {Move, Trash, Edit, Duplicate} from 'icons';
+import {Trash, Edit, Duplicate, Drag} from 'icons';
 import styled, {useTheme} from 'styled-components';
 
 /** Absolute positioned top right bar with options */
 const OptionBar = styled.div`
   position: absolute;
   right: 0;
-  top: -${({theme}) => theme.spacing.scale500};
-  background: white;
-  box-shadow: 1px 1px 5px 0px rgba(64, 64, 64, 0.3);
-  border-radius: ${({theme}) => theme.borders.radius100};
+  top: ${({theme}) => theme.spacing.scale100};
+  right: ${({theme}) => theme.spacing.scale400};
   display: grid;
   grid-auto-flow: column;
 
@@ -24,6 +22,30 @@ const OptionBar = styled.div`
     justify-content: center;
     align-items: center;
   }
+`;
+
+const Container = styled.div`
+  position: relative;
+  display: flex;
+  border-radius: ${({theme}) => theme.borders.radius100};
+  box-shadow: ${({theme}) => theme.shadows.card};
+  overflow: hidden;
+`;
+
+const DragArea = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: move;
+  background: ${({theme}) => theme.colors.surfaceSubdued};
+  padding: ${({theme}) => theme.spacing.scale400};
+`;
+
+const FieldArea = styled.div`
+  padding: ${({theme}) => theme.spacing.scale400};
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background: ${({theme}) => theme.colors.surfaceDefault};
 `;
 
 type Props = {
@@ -96,8 +118,7 @@ export const DnDFormField: React.FC<Props> = ({
       const hoverBoundingRect = ref.current.getBoundingClientRect();
 
       // Get vertical middle of the hovered element (this)
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 
       // Determine mouse position
       const clientOffset = monitor.getClientOffset();
@@ -137,14 +158,11 @@ export const DnDFormField: React.FC<Props> = ({
   preview(ref);
 
   return (
-    <div
-      ref={ref}
-      style={{position: 'relative', opacity: isDragging ? 0.6 : 1}}
-    >
+    <Container ref={ref} style={{opacity: isDragging ? 0.6 : 1}}>
+      <DragArea ref={drag}>
+        <Drag />
+      </DragArea>
       <OptionBar>
-        <div ref={drag} style={{cursor: 'move'}}>
-          <Move style={{width: 'auto', height: spacing.scale300}} />
-        </div>
         {onEdit && (
           <>
             <div style={{cursor: 'pointer'}} onClick={() => onDuplicate(id)}>
@@ -171,7 +189,7 @@ export const DnDFormField: React.FC<Props> = ({
           </div>
         )}
       </OptionBar>
-      {children}
-    </div>
+      <FieldArea>{children}</FieldArea>
+    </Container>
   );
 };

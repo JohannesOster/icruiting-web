@@ -4,9 +4,9 @@ import {DndProvider} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import {useTheme} from 'styled-components';
 import {useForm} from 'react-hook-form';
-import {Button, Input, Dialog} from 'components';
+import {Button, Input, Dialog, HeadingM, HeadingL, HeadingS} from 'components';
+import {Box, getDashboardLayout, withAdmin} from 'components';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
-import {HeadingL, HeadingS, Box, Typography, getDashboardLayout, withAdmin} from 'components';
 import {Clipboard} from 'icons';
 import {DnDFormField, DnDSection, DnDSourceItem, ItemTypes} from 'components/FormBuilder/DnD';
 import {DnDItem, ComponentToEdit, FormFieldComponent} from 'components/FormBuilder/types';
@@ -22,6 +22,7 @@ import {
   DnDTargetSection,
   FormGrid,
   FormCodeTextarea,
+  Command,
 } from 'components/FormBuilder/FormBuilder.sc';
 import {API, FormCategory} from 'services';
 import config from 'config';
@@ -39,7 +40,7 @@ type Query = {
 };
 
 const FormBuilder: React.FC = () => {
-  const {colors, spacing} = useTheme();
+  const {colors, spacing, shadows, borders} = useTheme();
   const toaster = useToaster();
   const router = useRouter();
   const {formId: formIdEdit, formCategory, jobId} = router.query as Query;
@@ -54,7 +55,9 @@ const FormBuilder: React.FC = () => {
     {revalidateOnFocus: false}, // do not refetch form while editing it
   );
 
-  const {data: job} = useFetch([`GET /jobs/${jobId}`, jobId], (_key: string, jobId) => API.jobs.find(jobId));
+  const {data: job} = useFetch([`GET /jobs/${jobId}`, jobId], (_key: string, jobId) =>
+    API.jobs.find(jobId),
+  );
 
   const {register, formState, errors, getValues, reset} = useForm({
     mode: 'onChange',
@@ -72,7 +75,9 @@ const FormBuilder: React.FC = () => {
   const initialformFields = useMemo(
     () =>
       formToEdit
-        ? formToEdit.formFields.map(converter.toDnDItem).sort((one, two) => one.rowIndex - two.rowIndex)
+        ? formToEdit.formFields
+            .map(converter.toDnDItem)
+            .sort((one, two) => one.rowIndex - two.rowIndex)
         : getInitialFormFields(formCategory),
     [formToEdit],
   );
@@ -146,7 +151,7 @@ const FormBuilder: React.FC = () => {
     return (
       <DnDSourceItem key={idx} item={item}>
         <IconContainer>
-          <Icon style={{color: colors.inputBorder, width: '14px', height: 'auto'}} />
+          <Icon style={{height: spacing.scale400, width: spacing.scale400}} />
         </IconContainer>
         {item.label}
       </DnDSourceItem>
@@ -183,7 +188,9 @@ const FormBuilder: React.FC = () => {
     };
 
     const request = formToEdit ? API.forms.update : API.forms.create;
-    const sucessMsg = !formToEdit ? 'Formular erfolgreich erstellt.' : 'Formular erfolgreich bearbeitet!';
+    const sucessMsg = !formToEdit
+      ? 'Formular erfolgreich erstellt.'
+      : 'Formular erfolgreich bearbeitet!';
 
     request(form)
       .then(() => {
@@ -233,14 +240,18 @@ const FormBuilder: React.FC = () => {
           />
         </Dialog>
       )}
-      <Box display="flex" alignItems="center" marginBottom={spacing.scale300}>
+      <Box display="flex" alignItems="center" marginBottom={spacing.scale600}>
         <HeadingL>{formToEdit ? 'Formular bearbeiten' : 'Neues Formular'}</HeadingL>
         <ButtonGroup>
-          <Button onClick={onSave} disabled={!formState.isValid} isLoading={status === 'submitting'}>
-            Speichern
-          </Button>
           <Button kind="secondary" onClick={() => router.back()}>
             Abbrechen
+          </Button>
+          <Button
+            onClick={onSave}
+            disabled={!formState.isValid}
+            isLoading={status === 'submitting'}
+          >
+            Speichern
           </Button>
         </ButtonGroup>
       </Box>
@@ -249,6 +260,7 @@ const FormBuilder: React.FC = () => {
           onHover={formBuilder.onOutsideHover}
           render={(targetID, drop) => <Overlay id={targetID} ref={drop} />}
         />
+
         <DnDSection
           onDrop={_onDrop}
           render={(targetID, drop) => (
@@ -262,74 +274,95 @@ const FormBuilder: React.FC = () => {
             </DnDTargetSection>
           )}
         />
-        <DnDSection
-          onHover={formBuilder.onOutsideHover}
-          render={(targetID, drop) => (
-            <DnDSourceSection id={targetID} ref={drop}>
-              <Box display="grid" rowGap={spacing.scale300}>
-                {(['assessment', 'onboarding'].includes(formCategory) ||
-                  ['assessment', 'onboarding'].includes(formToEdit?.formCategory)) && (
-                  <Input
-                    label="Formulartitel"
-                    placeholder="z.B. Einzelinterview"
-                    name="formTitle"
-                    ref={register({
-                      required: 'Formulartitel ist verpflichtend!',
-                    })}
-                    errors={errorsFor(errors, 'formTitle')}
-                  />
-                )}
-                <HeadingS style={{marginTop: 0}}>DRAG &amp; DROP</HeadingS>
-                <DragAndDropList>{FormSource}</DragAndDropList>
-                {(formCategory === 'application' || formToEdit?.formCategory === 'application') && (
-                  <>
-                    <Box display="grid" rowGap={spacing.scale300}>
-                      <Box marginTop={20}>
-                        <Typography
-                          style={{
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                          }}
-                          onClick={copyCode}
-                        >
-                          Formular einbinden
-                          <Clipboard
+        <Box
+          display="flex"
+          flexDirection="column"
+          gap={spacing.scale400}
+          marginLeft={spacing.scale400}
+        >
+          <Box
+            width="100%"
+            background={colors.surfaceDefault}
+            padding={spacing.scale400}
+            borderRadius={borders.radius100}
+          >
+            <b>Tipp: </b> Drücke <Command>i</Command>, um ein neues Feld hinzuzufügen.
+          </Box>
+          <DnDSection
+            onHover={formBuilder.onOutsideHover}
+            render={(targetID, drop) => (
+              <DnDSourceSection id={targetID} ref={drop}>
+                <Box display="grid" rowGap={spacing.scale300}>
+                  {(['assessment', 'onboarding'].includes(formCategory) ||
+                    ['assessment', 'onboarding'].includes(formToEdit?.formCategory)) && (
+                    <Input
+                      label="Formulartitel"
+                      placeholder="z.B. Einzelinterview"
+                      name="formTitle"
+                      ref={register({
+                        required: 'Formulartitel ist verpflichtend!',
+                      })}
+                      errors={errorsFor(errors, 'formTitle')}
+                    />
+                  )}
+                  <HeadingS style={{marginTop: 0}}>Drag &amp; Drop</HeadingS>
+                  <DragAndDropList>{FormSource}</DragAndDropList>
+                  {/* {(formCategory === 'application' ||
+                    formToEdit?.formCategory === 'application') && (
+                    <>
+                      <Box display="grid" rowGap={spacing.scale300}>
+                        <Box marginTop={20}>
+                          <Typography
                             style={{
-                              marginLeft: spacing.scale200,
-                              height: spacing.scale400,
-                              width: 'auto',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
                             }}
+                            onClick={copyCode}
+                          >
+                            Formular einbinden
+                            <Clipboard
+                              style={{
+                                marginLeft: spacing.scale200,
+                                height: spacing.scale400,
+                                width: 'auto',
+                              }}
+                            />
+                          </Typography>
+                          <FormCodeTextarea
+                            rows={20}
+                            id="form-code"
+                            onClick={copyCode}
+                            defaultValue={formCode}
                           />
-                        </Typography>
-                        <FormCodeTextarea rows={20} id="form-code" onClick={copyCode} defaultValue={formCode} />
+                        </Box>
                       </Box>
-                    </Box>
-                  </>
-                )}
-                <Input
-                  type="file"
-                  label=".json Datei importieren"
-                  onChange={(event) => {
-                    const {files} = event.target;
-                    const file = files[0];
-                    if (!file) return;
-                    const fileReader = new FileReader();
-                    fileReader.onload = () => {
-                      const json = fileReader.result as string;
-                      const result = JSON.parse(json);
-                      const _formFields = result.formFields
-                        .map(converter.toDnDItem)
-                        .sort((one, two) => one.rowIndex - two.rowIndex);
-                      formFields.reset(_formFields);
-                    };
-                    fileReader.readAsText(file);
-                  }}
-                />
-              </Box>
-            </DnDSourceSection>
-          )}
-        />
+                    </>
+                  )}
+                  <Input
+                    type="file"
+                    label=".json Datei importieren"
+                    onChange={(event) => {
+                      const {files} = event.target;
+                      const file = files[0];
+                      if (!file) return;
+                      const fileReader = new FileReader();
+                      fileReader.onload = () => {
+                        const json = fileReader.result as string;
+                        const result = JSON.parse(json);
+                        const _formFields = result.formFields
+                          .map(converter.toDnDItem)
+                          .sort((one, two) => one.rowIndex - two.rowIndex);
+                        formFields.reset(_formFields);
+                      };
+                      fileReader.readAsText(file);
+                    }}
+                  /> */}
+                </Box>
+              </DnDSourceSection>
+            )}
+          />
+        </Box>
       </Box>
     </HotKeys>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
-import {Button, Input, Select, Textarea, Checkbox} from 'components';
-import {useForm, Controller} from 'react-hook-form';
+import {Button, Input, Textarea, Checkbox} from 'components';
+import {useForm} from 'react-hook-form';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {object, string} from 'yup';
 import {Form} from './StyledForm.sc';
@@ -19,18 +19,8 @@ type Props = {
   onSubmit: (values: FormValues) => void;
 } & FormValues;
 
-export const EditInputFormFieldsForm: React.FC<Props> = ({
-  onSubmit,
-  ...formValues
-}) => {
-  const {
-    register,
-    formState,
-    errors,
-    handleSubmit,
-    trigger,
-    control,
-  } = useForm<FormValues>({
+export const EditInputFormFieldsForm: React.FC<Props> = ({onSubmit, ...formValues}) => {
+  const {register, formState, errors, handleSubmit, trigger, control} = useForm<FormValues>({
     mode: 'onChange',
     criteriaMode: 'all',
     defaultValues: formValues,
@@ -42,19 +32,6 @@ export const EditInputFormFieldsForm: React.FC<Props> = ({
     ),
   });
 
-  const inputTypesMap = {
-    text: 'Text',
-    email: 'E-Mail-Adresse',
-    tel: 'Telefonnummer',
-    number: 'Nummer',
-    date: 'Datum',
-  };
-
-  const inputTypes = Object.entries(inputTypesMap).map(([key, value]) => ({
-    label: value,
-    value: key,
-  }));
-
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Input
@@ -64,29 +41,15 @@ export const EditInputFormFieldsForm: React.FC<Props> = ({
         ref={register}
         errors={errorsFor(errors, 'label')}
       />
-      <Input
-        name="placeholder"
-        label="Placeholder"
-        placeholder="Placeholder"
-        ref={register}
-        errors={errorsFor(errors, 'placeholder')}
-      />
-      <Controller
-        name="type"
-        control={control}
-        render={({onChange, ...props}) => (
-          <Select
-            label="Datentyp"
-            options={inputTypes}
-            errors={errorsFor(errors, 'type')}
-            onChange={(event) => {
-              onChange(event);
-              trigger('placeholder');
-            }}
-            {...props}
-          />
-        )}
-      />
+      {formValues.type !== 'date' && (
+        <Input
+          name="placeholder"
+          label="Placeholder"
+          placeholder="Placeholder"
+          ref={register}
+          errors={errorsFor(errors, 'placeholder')}
+        />
+      )}
       <Textarea
         name="description"
         label="Beschreibung"

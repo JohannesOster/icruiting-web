@@ -1,22 +1,19 @@
 import {ItemTypes} from '../../components/FormBuilder/DnD';
-import {
-  RatingGroup,
-  FormSectionHeader,
-  Input,
-  Select,
-  Textarea,
-  Radio,
-  Checkbox,
-} from 'components';
+import {RatingGroup, FormSectionHeader, Input, Select, Textarea, Radio, Checkbox} from 'components';
 import {
   Area,
   Select as SelectIcon,
   Radio as RadioIcon,
-  Shell,
+  Cursor,
   Rating,
-  Upload,
+  Textarea as TextareaIcon,
   Checkbox as CheckboxIcon,
   Heading,
+  Hash,
+  Calendar,
+  Mail,
+  File,
+  Phone,
 } from 'icons';
 import {FormFieldIntent, FormCategory} from 'services';
 import {DnDItem} from 'components/FormBuilder/types';
@@ -39,7 +36,7 @@ const applicationFormSourceFields: DnDItem[] = [
   },
   {
     ...DNDBase,
-    icon: Shell,
+    icon: Cursor,
     label: 'Textfeld',
     as: Input,
     component: 'input',
@@ -47,7 +44,39 @@ const applicationFormSourceFields: DnDItem[] = [
   },
   {
     ...DNDBase,
-    icon: Area,
+    icon: Hash,
+    label: 'Nummernfeld',
+    as: Input,
+    component: 'input',
+    props: {placeholder: 'Nummernfeld', label: 'Nummernfeld', type: 'number'},
+  },
+  {
+    ...DNDBase,
+    icon: Calendar,
+    label: 'Datum',
+    as: Input,
+    component: 'input',
+    props: {label: 'Datum', type: 'date'},
+  },
+  {
+    ...DNDBase,
+    icon: Mail,
+    label: 'E-Mail-Addresse',
+    as: Input,
+    component: 'input',
+    props: {placeholder: 'E-Mail-Addresse', label: 'E-Mail-Addresse', type: 'email'},
+  },
+  {
+    ...DNDBase,
+    icon: Phone,
+    label: 'Telefonnummer',
+    as: Input,
+    component: 'input',
+    props: {placeholder: 'Telefonnummer', label: 'Telefonnummer', type: 'tel'},
+  },
+  {
+    ...DNDBase,
+    icon: TextareaIcon,
     label: 'Textarea',
     as: Textarea,
     component: 'textarea',
@@ -98,15 +127,11 @@ const applicationFormSourceFields: DnDItem[] = [
   },
   {
     ...DNDBase,
-    icon: Upload,
+    icon: File,
     label: 'Fileupload',
     as: Input,
     component: 'file_upload',
-    props: {
-      type: 'file',
-      label: 'Fileupload',
-      accept: 'application/pdf',
-    },
+    props: {type: 'file', label: 'Fileupload', accept: 'application/pdf'},
   },
 ];
 
