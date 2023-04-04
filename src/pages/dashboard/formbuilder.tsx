@@ -110,6 +110,11 @@ const FormBuilder: React.FC = () => {
   });
 
   const onKey = (e: KeyboardEvent) => {
+    if (componentToEdit) return;
+    const inputs = ['input', 'select', 'button', 'textarea'];
+    const activeElement = document.activeElement?.tagName.toLowerCase() || '';
+
+    if (inputs.includes(activeElement)) return;
     if (e.key === 'i') {
       e.preventDefault();
       setShowCommandPalette(true);
@@ -299,6 +304,7 @@ const FormBuilder: React.FC = () => {
                   {(['assessment', 'onboarding'].includes(formCategory) ||
                     ['assessment', 'onboarding'].includes(formToEdit?.formCategory)) && (
                     <Input
+                      id="formTitle"
                       label="Formulartitel"
                       placeholder="z.B. Einzelinterview"
                       name="formTitle"
