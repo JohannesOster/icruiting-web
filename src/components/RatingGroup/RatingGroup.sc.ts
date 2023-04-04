@@ -20,6 +20,7 @@ export const RadioLabel = styled.label`
   ${({theme}) => theme.typography.body};
   padding: ${({theme}) => `${theme.spacing.scale300} ${theme.spacing.scale400}`};
   border-radius: ${({theme}) => theme.borders.radius100};
+  cursor: pointer;
 `;
 
 export const Radio = styled.input`
