@@ -6,25 +6,6 @@ import {DnDItem} from '../types';
 import {Trash, Edit, Duplicate, Drag} from 'icons';
 import styled, {useTheme} from 'styled-components';
 
-/** Absolute positioned top right bar with options */
-const OptionBar = styled.div`
-  position: absolute;
-  right: 0;
-  top: ${({theme}) => theme.spacing.scale100};
-  right: ${({theme}) => theme.spacing.scale400};
-  display: grid;
-  grid-auto-flow: column;
-  grid-gap: ${({theme}) => theme.spacing.scale100};
-
-  div {
-    height: ${({theme}) => theme.spacing.scale600};
-    width: ${({theme}) => theme.spacing.scale600};
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-`;
-
 const Container = styled.div`
   position: relative;
   display: flex;
@@ -47,6 +28,32 @@ const FieldArea = styled.div`
   flex-direction: column;
   flex: 1;
   background: ${({theme}) => theme.colors.surfaceDefault};
+`;
+
+/** Absolute positioned top right bar with options */
+const OptionBar = styled.div`
+  position: absolute;
+  right: 0;
+  top: ${({theme}) => theme.spacing.scale100};
+  right: ${({theme}) => theme.spacing.scale400};
+  grid-auto-flow: column;
+  grid-gap: ${({theme}) => theme.spacing.scale100};
+  border-radius: ${({theme}) => theme.borders.radius100};
+  background: ${({theme}) => theme.colors.surfaceDefault};
+  box-shadow: ${({theme}) => theme.shadows.card};
+  display: none;
+
+  ${Container}:hover & {
+    display: grid;
+  }
+
+  div {
+    height: ${({theme}) => theme.spacing.scale600};
+    width: ${({theme}) => theme.spacing.scale600};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 type Props = {
