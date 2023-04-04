@@ -70,4 +70,7 @@ export const theme = {
   animations,
   borders,
   breakpoints,
+  shadows: {
+    card: '0px 0px 5px rgba(0, 0, 0, 0.05), 0px 1px 2px rgba(0, 0, 0, 0.15)',
+  },
 };

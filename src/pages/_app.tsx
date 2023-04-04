@@ -14,7 +14,10 @@ import 'styles/typography.css';
 Amplify.configure({...config, ssr: true});
 
 const GlobalStyles = createGlobalStyle`
-  body {color: ${({theme}) => theme.colors.textDefault}};
+  body {
+    ${({theme}) => theme.typography.body};
+    color: ${({theme}) => theme.colors.textDefault};
+  };
 `;
 
 const App = ({Component, pageProps}) => {
@@ -35,13 +38,7 @@ const App = ({Component, pageProps}) => {
         <GlobalStyles />
         {/* <Navbar /> */}
         {isAuthenticating ? (
-          <Box
-            height="100vh"
-            width="100vw"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
+          <Box height="100vh" width="100vw" display="flex" alignItems="center" justifyContent="center">
             <Spinner />
           </Box>
         ) : (

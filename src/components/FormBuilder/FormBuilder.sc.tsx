@@ -2,12 +2,11 @@ import styled from 'styled-components';
 
 export const DragAndDropList = styled.div`
   display: grid;
-  grid-row-gap: ${({theme}) => theme.spacing.scale200};
-  margin-top: ${({theme}) => theme.spacing.scale200};
+  grid-row-gap: ${({theme}) => theme.spacing.scale400};
 `;
 
 export const IconContainer = styled.span`
-  width: ${({theme}) => theme.spacing.scale600};
+  width: ${({theme}) => theme.spacing.scale400};
   display: inline-flex;
   align-items: center;
 `;
@@ -19,6 +18,16 @@ export const ButtonGroup = styled.div`
   grid-column-gap: ${({theme}) => theme.spacing.scale300};
 `;
 
+export const Command = styled.span`
+  padding: ${({theme}) => theme.spacing.scale50} ${({theme}) => theme.spacing.scale200};
+  border-radius: ${({theme}) => theme.borders.radius100};
+  ${({theme}) => theme.typography.bodySmall};
+  background: ${({theme}) => theme.colors.surfacePrimarySubdued};
+  border: 1px solid;
+  border-color: ${({theme}) => theme.colors.borderSubdued};
+  line-height: 2;
+`;
+
 export const Overlay = styled.div`
   position: absolute;
   top: 0;
@@ -28,29 +37,20 @@ export const Overlay = styled.div`
 `;
 
 export const DnDSourceSection = styled.section`
-  border: 1px solid ${({theme}) => theme.colors.inputBorder};
   border-radius: ${({theme}) => theme.borders.radius100};
-  padding: ${({theme}) => theme.spacing.scale200};
-  margin-left: ${({theme}) => theme.spacing.scale200};
-  width: 250px;
+  padding: ${({theme}) => theme.spacing.scale300};
   z-index: 2;
   background: ${({theme}) => theme.colors.surfaceDefault};
 `;
 
 export const DnDTargetSection = styled.section`
-  border: 1px solid ${({theme}) => theme.colors.inputBorder};
-  border-radius: ${({theme}) => theme.borders.radius100};
-  padding: ${({theme}) => theme.spacing.scale200};
-  padding-top: ${({theme}) => theme.spacing.scale500};
   width: 100%;
   z-index: 2;
-  background: ${({theme}) => theme.colors.surfaceDefault};
 `;
 
 export const FormGrid = styled.div`
   display: grid;
   grid-row-gap: ${({theme}) => theme.spacing.scale600};
-  margin-top: ${({theme}) => theme.spacing.scale200};
 `;
 
 export const FormCodeTextarea = styled.textarea`

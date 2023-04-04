@@ -18,17 +18,12 @@ type Props = {
   onSubmit: (values: FormValues) => void;
 } & FormValues;
 
-export const EditFileUploadFormFields: React.FC<Props> = ({
-  onSubmit,
-  ...formValues
-}) => {
+export const EditFileUploadFormFields: React.FC<Props> = ({onSubmit, ...formValues}) => {
   const {register, formState, errors, handleSubmit} = useForm<FormValues>({
     mode: 'onChange',
     criteriaMode: 'all',
     defaultValues: formValues,
-    resolver: yupResolver(
-      object({label: string().required('Label ist verpflichtend')}),
-    ),
+    resolver: yupResolver(object({label: string().required('Label ist verpflichtend')})),
   });
 
   const acceptMap = {
@@ -49,6 +44,7 @@ export const EditFileUploadFormFields: React.FC<Props> = ({
         placeholder="Label"
         ref={register}
         errors={errorsFor(errors, 'label')}
+        autoFocus={true}
       />
       <Textarea
         name="description"

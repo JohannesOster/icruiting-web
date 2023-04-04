@@ -106,7 +106,7 @@ const JobDetails = () => {
         <Link
           href={`${formBuilderURL}?formCategory=${formCategory}&jobId=${jobId}`}
         >
-          <a>hinzufügen</a>
+          hinzufügen
         </Link>
       );
     }
@@ -120,7 +120,7 @@ const JobDetails = () => {
         alignItems="center"
       >
         <Link href={`${formBuilderURL}?formId=${formId}&jobId=${jobId}`}>
-          <a>bearbeiten</a>
+          bearbeiten
         </Link>
         <span>/</span>
         <Button
@@ -401,9 +401,7 @@ const JobDetails = () => {
               <tr key={url}>
                 <td>{title}</td>
                 <td>
-                  <Link href={url}>
-                    <a>Ranking</a>
-                  </Link>
+                  <Link href={url}>Ranking</Link>
                 </td>
                 <td>
                   <Button
@@ -435,7 +433,7 @@ const JobDetails = () => {
               <td>
                 {!report ? (
                   <Link href={`/dashboard/jobs/${jobId}/reportbuilder`}>
-                    <a>hinzufügen</a>
+                    hinzufügen
                   </Link>
                 ) : (
                   <Box
@@ -446,7 +444,7 @@ const JobDetails = () => {
                     alignItems="center"
                   >
                     <Link href={`/dashboard/jobs/${jobId}/reportbuilder`}>
-                      <a>bearbeiten</a>
+                      bearbeiten
                     </Link>
                     <span>/</span>
                     <Button

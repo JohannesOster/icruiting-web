@@ -32,10 +32,7 @@ const Privacy: FC = () => {
         <Typography>
           Die Datenverarbeitung auf dieser Website erfolgt durch den
           Websitebetreiber. Dessen Kontaktdaten können Sie dem{' '}
-          <Link href="/impressum">
-            <a>Impressum</a>
-          </Link>{' '}
-          dieser Website entnehmen.
+          <Link href="/impressum">Impressum</Link> dieser Website entnehmen.
         </Typography>
         <HeadingS>Ihre Rechte</HeadingS>
         <Typography>

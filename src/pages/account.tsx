@@ -51,9 +51,7 @@ const Account: React.FC = () => {
         </Dialog>
       )}
       <HeadingL>Account</HeadingL>
-      <Link href="/password-reset">
-        <a>Passwort zurrücksetzten</a>
-      </Link>
+      <Link href="/password-reset">Passwort zurrücksetzten</Link>
       {currentUser?.userRole === 'admin' && (
         <Box>
           <Button
@@ -73,12 +71,8 @@ const Account: React.FC = () => {
       {currentUser?.userRole === 'admin' && (
         <>
           <HeadingL>Zahlungen</HeadingL>
-          <Link href="/account/subscriptions">
-            <a>Subscriptions</a>
-          </Link>
-          <Link href="/account/payment">
-            <a>Zahlungsmethoden</a>
-          </Link>
+          <Link href="/account/subscriptions">Subscriptions</Link>
+          <Link href="/account/payment">Zahlungsmethoden</Link>
         </>
       )}
     </Box>

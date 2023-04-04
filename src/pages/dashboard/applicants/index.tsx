@@ -172,9 +172,7 @@ const Applicants = () => {
         }
 
         return (
-          <Link href={`${router.pathname}/${row.applicantId}`}>
-            <a>{row.name}</a>
-          </Link>
+          <Link href={`${router.pathname}/${row.applicantId}`}>{row.name}</Link>
         );
       },
     })) || []),

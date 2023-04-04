@@ -25,6 +25,8 @@ const getStylesForKind = (theme: DefaultTheme, kind?: TKind) => {
 
 export const getColor = (theme: DefaultTheme, color?: TColor) => {
   switch (color) {
+    case 'primary':
+      return theme.colors.textDefault;
     case 'secondary':
       return theme.colors.textSubdued;
     case 'error':

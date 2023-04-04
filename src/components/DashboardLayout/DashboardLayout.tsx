@@ -13,9 +13,9 @@ import {useAuth} from 'context';
 import {SideNav, NavList, Container, LogoContainer} from './DashboardLayout.sc';
 import {NavLink} from './NavLink';
 import Link from 'next/link';
-import {Box, Typography} from 'components';
+import {Box} from 'components';
 
-const DashboardLayout: React.FC = ({children}) => {
+const DashboardLayout = ({children}) => {
   const {colors, spacing} = useTheme();
   const {currentUser} = useAuth();
 
@@ -31,16 +31,14 @@ const DashboardLayout: React.FC = ({children}) => {
       <SideNav>
         <LogoContainer>
           <Link href="/">
-            <a>
-              <IcruitingLogo
-                style={{
-                  width: '110px',
-                  height: 'auto',
-                  marginBottom: -10,
-                  fill: colors.textPrimary,
-                }}
-              />
-            </a>
+            <IcruitingLogo
+              style={{
+                width: '110px',
+                height: 'auto',
+                marginBottom: -10,
+                fill: colors.textPrimary,
+              }}
+            />
           </Link>
         </LogoContainer>
         <Box

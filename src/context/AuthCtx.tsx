@@ -11,7 +11,7 @@ interface AuthContext {
 
 const [useCtx, CtxProvider] = createCtx<AuthContext>();
 
-const AuthProvider: React.FC = (props) => {
+const AuthProvider = (props) => {
   const [isAuthenticating, setIsAuthenticating] = useState<boolean>(true);
   const [currentUser, setCurrentUser] = useState<User | undefined>();
 

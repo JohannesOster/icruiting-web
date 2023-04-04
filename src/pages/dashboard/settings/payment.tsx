@@ -70,7 +70,7 @@ const PaymentMethods: React.FC = () => {
 
       await API.tenants.paymentMethods.setDefault(
         currentUser?.tenantId || '',
-        setupIntent?.payment_method || '',
+        (setupIntent?.payment_method || '') as any as string,
       );
 
       mutate([
