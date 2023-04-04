@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Button, Input, Textarea, Checkbox} from 'components';
 import {useForm} from 'react-hook-form';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
@@ -20,16 +20,11 @@ type Props = {
 } & FormValues;
 
 export const EditInputFormFieldsForm: React.FC<Props> = ({onSubmit, ...formValues}) => {
-  const {register, formState, errors, handleSubmit, trigger, control} = useForm<FormValues>({
+  const {register, formState, errors, handleSubmit} = useForm<FormValues>({
     mode: 'onChange',
     criteriaMode: 'all',
     defaultValues: formValues,
-    resolver: yupResolver(
-      object({
-        label: string().required('Label ist verpflichtend'),
-        type: string().required('Typ ist verpflichtend'),
-      }),
-    ),
+    resolver: yupResolver(object({label: string().required('Label ist verpflichtend')})),
   });
 
   return (
@@ -40,6 +35,7 @@ export const EditInputFormFieldsForm: React.FC<Props> = ({onSubmit, ...formValue
         placeholder="Label"
         ref={register}
         errors={errorsFor(errors, 'label')}
+        autoFocus={true}
       />
       {formValues.type !== 'date' && (
         <Input

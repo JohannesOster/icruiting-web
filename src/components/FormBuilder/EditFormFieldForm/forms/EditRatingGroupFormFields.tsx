@@ -25,32 +25,24 @@ type Props = {
   onSubmit: (values: FormValues) => void;
 } & FormValues;
 
-export const EditRatingGroupFormFields: React.FC<Props> = ({
-  onSubmit,
-  ...formValues
-}) => {
-  const {register, formState, errors, handleSubmit, control} =
-    useForm<FormValues>({
-      mode: 'onChange',
-      criteriaMode: 'all',
-      defaultValues: formValues,
-      resolver: yupResolver(
-        object({
-          label: string().required('Label ist verpflichtend'),
-          defaultValue: mixed().transform((val) => (val ? val : null)),
-          options: array().of(
-            object({
-              label: string().required(
-                'Option ist verpflichtend auszufüllen oder zu löschen',
-              ),
-              value: number().typeError(
-                'Geben sie einen eindeutigen Zahlenwert an!',
-              ),
-            }),
-          ),
-        }),
-      ),
-    });
+export const EditRatingGroupFormFields: React.FC<Props> = ({onSubmit, ...formValues}) => {
+  const {register, formState, errors, handleSubmit, control} = useForm<FormValues>({
+    mode: 'onChange',
+    criteriaMode: 'all',
+    defaultValues: formValues,
+    resolver: yupResolver(
+      object({
+        label: string().required('Label ist verpflichtend'),
+        defaultValue: mixed().transform((val) => (val ? val : null)),
+        options: array().of(
+          object({
+            label: string().required('Option ist verpflichtend auszufüllen oder zu löschen'),
+            value: number().typeError('Geben sie einen eindeutigen Zahlenwert an!'),
+          }),
+        ),
+      }),
+    ),
+  });
   const {spacing} = useTheme();
 
   const {fields, append, remove} = useFieldArray({
@@ -60,12 +52,13 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <Textarea
+      <Input
         name="label"
         label="Label"
         placeholder="Label"
         ref={register}
         errors={errorsFor(errors, 'label')}
+        autoFocus={true}
       />
       <Textarea
         name="description"
@@ -106,9 +99,7 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
           })),
         ]}
       />
-      <HeadingS style={{marginBottom: `-${spacing.scale300}`}}>
-        Optionen (Label, Wert)
-      </HeadingS>
+      <HeadingS style={{marginBottom: `-${spacing.scale300}`}}>Optionen (Label, Wert)</HeadingS>
       {fields.map((option, idx) => {
         return (
           <Box
@@ -142,9 +133,7 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({
         );
       })}
       <div>
-        <Button onClick={() => append({label: '', value: ''})}>
-          Neues Item
-        </Button>
+        <Button onClick={() => append({label: '', value: ''})}>Neues Item</Button>
       </div>
       <Checkbox
         name="required"

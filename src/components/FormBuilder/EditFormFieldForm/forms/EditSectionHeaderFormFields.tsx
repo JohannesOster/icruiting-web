@@ -16,17 +16,12 @@ type Props = {
   onSubmit: (values: FormValues) => void;
 } & FormValues;
 
-export const EditSectionHeaderFormFieldsForm: React.FC<Props> = ({
-  onSubmit,
-  ...formValues
-}) => {
+export const EditSectionHeaderFormFieldsForm: React.FC<Props> = ({onSubmit, ...formValues}) => {
   const {register, formState, errors, handleSubmit} = useForm<FormValues>({
     mode: 'onChange',
     criteriaMode: 'all',
     defaultValues: formValues,
-    resolver: yupResolver(
-      object({label: string().required('Label ist verpflichtend')}),
-    ),
+    resolver: yupResolver(object({label: string().required('Label ist verpflichtend')})),
   });
 
   return (
@@ -37,6 +32,7 @@ export const EditSectionHeaderFormFieldsForm: React.FC<Props> = ({
         placeholder="Label"
         ref={register}
         errors={errorsFor(errors, 'label')}
+        autoFocus={true}
       />
       <Textarea
         name="description"

@@ -4,7 +4,6 @@ import {DndProvider} from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import {useTheme} from 'styled-components';
 import {useForm} from 'react-hook-form';
-import {HotKeys} from 'react-hotkeys';
 import {useRouter} from 'next/router';
 
 import {API, FormCategory} from 'services';
@@ -22,6 +21,7 @@ import {
   getDashboardLayout,
   withAdmin,
   useFetch,
+  CommandPalette,
 } from 'components';
 import {Clipboard} from 'icons';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
@@ -43,6 +43,7 @@ import {
   FormCodeTextarea,
   Command,
 } from 'components/FormBuilder/FormBuilder.sc';
+import {randString} from 'components/FormBuilder/utils';
 
 type Query = {
   formId?: string;
@@ -54,6 +55,8 @@ const FormBuilder: React.FC = () => {
   const {colors, spacing, borders} = useTheme();
   const toaster = useToaster();
   const router = useRouter();
+  const [showCommandPalette, setShowCommandPalette] = useState(false);
+
   const {formId: formIdEdit, formCategory, jobId} = router.query as Query;
 
   const [status, setStatus] = useState<'idle' | 'submitting'>('idle');
@@ -99,52 +102,32 @@ const FormBuilder: React.FC = () => {
   const {formFields, ...formBuilder} = useFormBuilder(initialformFields);
 
   /* Keyboard short cut handling */
-  const keyMap = {
-    INSERT: 'i',
-    MOVE_UP: ['k', 'up'],
-    MOVE_DOWN: ['j', 'down'],
-    MOVE_SELECTION_UP: ['shift+k', 'shift+up'],
-    MOVE_SELECTION_DOWN: ['shift+j', 'shift+down'],
-    DUPLICATE: 'd',
-    DELETE: ['del', 'backspace'],
-    EDIT: 'e',
+  useEffect(() => {
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+    };
+  });
+
+  const onKey = (e: KeyboardEvent) => {
+    if (e.key === 'i') {
+      e.preventDefault();
+      setShowCommandPalette(true);
+    }
   };
 
-  const handlers = {
-    INSERT: useCallback(() => {
-      const newField = {
-        id: uuidv4(),
-        type: ItemTypes.FORM_FIELD,
-        rowIndex: formFields.fields.length,
-        component: 'input' as FormFieldComponent,
-        as: Input,
-        props: {label: 'Neues Feld', required: false, placeholder: '', type: 'text'},
-      };
+  const commands = sourceItems.map((item) => ({
+    ...item,
+    label: item.label || '',
+    id: randString(),
+  }));
+  const handleInsert = (cmd) => {
+    if (cmd != null) {
+      formFields.insert(cmd, formFields.fields.length);
+      setComponentToEdit({id: cmd.id, component: cmd.component, props: cmd.props});
+    }
 
-      formFields.insert(newField, formFields.fields.length);
-      setComponentToEdit({id: newField.id, component: newField.component, props: newField.props});
-    }, []),
-    MOVE_UP: useCallback(() => {
-      console.log('Move up');
-    }, []),
-    MOVE_DOWN: useCallback(() => {
-      console.log('Move up');
-    }, []),
-    MOVE_SELECTION_UP: useCallback(() => {
-      console.log('Move selection up');
-    }, []),
-    MOVE_SELECTION_DOWN: useCallback(() => {
-      console.log('Move selection down');
-    }, []),
-    DUPLICATE: useCallback(() => {
-      console.log('Duplicate');
-    }, []),
-    DELETE: useCallback(() => {
-      console.log('Delete');
-    }, []),
-    EDIT: useCallback(() => {
-      console.log('Edit');
-    }, []),
+    setShowCommandPalette(false);
   };
 
   // once either the form was fetched or the default initial formfields were set reset the formbuilder model
@@ -245,7 +228,8 @@ const FormBuilder: React.FC = () => {
   };
 
   return (
-    <HotKeys keyMap={keyMap} handlers={handlers}>
+    <>
+      {showCommandPalette && <CommandPalette commands={commands} onSelect={handleInsert} />}
       {componentToEdit && job && (
         <Dialog onClose={() => setComponentToEdit(null)}>
           <EditFormFieldForm
@@ -399,7 +383,7 @@ const FormBuilder: React.FC = () => {
           />
         </Box>
       </Box>
-    </HotKeys>
+    </>
   );
 };
 

@@ -37,3 +37,4 @@ export {ReactComponent as Mail} from './mail.svg';
 export {ReactComponent as Phone} from './phone.svg';
 export {ReactComponent as Textarea} from './textarea.svg';
 export {ReactComponent as File} from './file.svg';
+export {ReactComponent as Enter} from './enter.svg';

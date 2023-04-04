@@ -18,17 +18,12 @@ type Props = {
   onSubmit: (values: FormValues) => void;
 } & FormValues;
 
-export const EditTextareaFormFieldsForm: React.FC<Props> = ({
-  onSubmit,
-  ...formValues
-}) => {
+export const EditTextareaFormFieldsForm: React.FC<Props> = ({onSubmit, ...formValues}) => {
   const {register, formState, errors, handleSubmit} = useForm<FormValues>({
     mode: 'onChange',
     criteriaMode: 'all',
     defaultValues: formValues,
-    resolver: yupResolver(
-      object({label: string().required('Label ist verpflichtend')}),
-    ),
+    resolver: yupResolver(object({label: string().required('Label ist verpflichtend')})),
   });
 
   const inputTypesMap = {
@@ -52,6 +47,7 @@ export const EditTextareaFormFieldsForm: React.FC<Props> = ({
         placeholder="Label"
         ref={register}
         errors={errorsFor(errors, 'label')}
+        autoFocus={true}
       />
       <Input
         name="placeholder"
