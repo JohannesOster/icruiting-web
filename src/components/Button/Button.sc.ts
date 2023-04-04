@@ -29,8 +29,7 @@ export const BaseButton = styled.button<BaseButtonProps>`
       pointer-events: none;
     `}
 
-  ${({theme, kind, destructive}) =>
-    getButtonStylesForKind(theme, kind, destructive)};
+  ${({theme, kind, destructive}) => getButtonStylesForKind(theme, kind, destructive)};
 `;
 
 export const LoadingSpinnerContainer = styled.div`
@@ -47,15 +46,11 @@ const getButtonStylesForKind = (
     case 'minimal':
       return css`
         background: none;
-        color: ${destructive
-          ? theme.colors.typographyPrimaryError
-          : theme.colors.textDefault};
+        color: ${destructive ? theme.colors.typographyPrimaryError : theme.colors.textDefault};
         padding: 0;
 
         &:hover {
-          color: ${destructive
-            ? theme.colors.typographySecondaryError
-            : theme.colors.textSubdued};
+          color: ${destructive ? theme.colors.typographySecondaryError : theme.colors.textSubdued};
         }
 
         &:disabled {
@@ -66,9 +61,7 @@ const getButtonStylesForKind = (
     case 'secondary':
       return css`
         border: 1px solid;
-        border-color: ${destructive
-          ? theme.colors.borderDanger
-          : theme.colors.borderPrimary};
+        border-color: ${destructive ? theme.colors.borderDanger : theme.colors.borderPrimary};
         background-color: ${theme.colors.surfaceDefault};
         color: ${destructive
           ? theme.colors.buttonPrimaryDestructiveText
@@ -95,9 +88,7 @@ const getButtonStylesForKind = (
         background-color: ${destructive
           ? theme.colors.buttonPrimaryDestructiveFill
           : theme.colors.surfacePrimaryDefault};
-        color: ${destructive
-          ? theme.colors.buttonPrimaryDestructiveText
-          : theme.colors.textOnDark};
+        color: ${destructive ? theme.colors.buttonPrimaryDestructiveText : theme.colors.textOnDark};
 
         &:hover {
           background-color: ${destructive

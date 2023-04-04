@@ -59,6 +59,7 @@ export const typography = {
     fontWeight: 700,
     fontSize: '15px',
     letterSpacing: '1.25px',
+    lineHeight: '20px',
     textTransform: 'uppercase' as 'uppercase',
   },
 };

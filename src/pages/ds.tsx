@@ -52,7 +52,6 @@ const Impressum: FC = () => {
         Wähle die passensten nicht die besten Mitarbeiter:innen.
       </Typography>
       <Box></Box>
-      <Spinner></Spinner>
     </Box>
   );
 };

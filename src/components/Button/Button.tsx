@@ -26,7 +26,7 @@ export const Button: React.FC<ButtonProps> = ({
       {isLoading && (
         <LoadingSpinnerContainer>
           <Spinner
-            size={spacing.scale400}
+            size="20px"
             {...(disabled
               ? {}
               : {
