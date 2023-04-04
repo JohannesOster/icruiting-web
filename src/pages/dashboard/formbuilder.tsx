@@ -258,19 +258,6 @@ const FormBuilder: React.FC = () => {
           </Button>
         </ButtonGroup>
       </Box>
-      <Box marginBottom={spacing.scale300} display="flex" gap={spacing.scale400}>
-        <Button kind="minimal">
-          <Clipboard
-            style={{
-              width: spacing.scale400,
-              height: spacing.scale400,
-              marginRight: spacing.scale200,
-              alignSelf: 'center',
-            }}
-          />
-          iFrame einbinden
-        </Button>
-      </Box>
       <Box display="flex" position="relative" marginBottom={spacing.scale700}>
         <DnDSection
           onHover={formBuilder.onOutsideHover}
