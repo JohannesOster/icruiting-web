@@ -2,8 +2,6 @@ import React, {useRef, useState} from 'react';
 import Link from 'next/link';
 import {
   HeadingL,
-  HeadingS,
-  Typography,
   TColumn,
   DataTable,
   Box,

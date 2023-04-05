@@ -8,7 +8,6 @@ import {
   MobileNavItem,
   Hamburger,
   NavContainer,
-  Separator,
 } from './Navbar.sc';
 import {DropDown, Typography, Box} from 'components';
 import {Button} from 'components';
@@ -21,7 +20,7 @@ import config from 'config';
 import {theme} from 'theme';
 
 const Navbar = () => {
-  const {spacing} = useTheme();
+  const {spacing, colors} = useTheme();
   const router = useRouter();
   const {currentUser, logout, isAuthenticating} = useAuth();
 
@@ -46,77 +45,81 @@ const Navbar = () => {
 
   const unauthenticatedMobileNav = (
     <>
-      <MobileNavItem onClick={closeMenu}>
-        <a href="https://docs.icruiting.at">Dokumentation</a>
-      </MobileNavItem>
-      <MobileNavItem onClick={closeMenu}>
-        <Link href="/contact">Kontakt</Link>
-      </MobileNavItem>
-      <MobileNavItem onClick={closeMenu}>
-        <Link href="/login">Anmelden</Link>
-      </MobileNavItem>
-      <MobileNavItem onClick={closeMenu}>
-        <Link href="/signup">Registrieren</Link>
-      </MobileNavItem>
+      <Box>
+        <MobileNavItem onClick={closeMenu}>
+          <a href="https://docs.icruiting.at">Dokumentation</a>
+        </MobileNavItem>
+        <MobileNavItem onClick={closeMenu}>
+          <Link href="/contact">Kontakt</Link>
+        </MobileNavItem>
+      </Box>
+      <Box textAlign="center">
+        <MobileNavItem onClick={closeMenu} style={{borderBottom: 'none'}}>
+          <Link href="/login">Anmelden</Link>
+        </MobileNavItem>
+        <MobileNavItem
+          onClick={closeMenu}
+          style={{
+            background: colors.surfacePrimaryDefault,
+            color: colors.textOnDark,
+            border: 'none',
+          }}
+        >
+          <Link href="/signup">Registrieren</Link>
+        </MobileNavItem>
+      </Box>
     </>
   );
 
   const authenticatedMobileNav = (
     <>
-      <MobileNavItem onClick={closeMenu}>
-        <a
-          href="https://docs.icruiting.at"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Dokumentation
-        </a>
-      </MobileNavItem>
-      {currentUser?.userRole === 'admin' && (
-        <>
-          <MobileNavItem onClick={closeMenu}>
-            <Link href="/dashboard/jobs">Stellen</Link>
-          </MobileNavItem>
-          <MobileNavItem onClick={closeMenu}>
-            <Link href="/dashboard/applicants">Bewerber*innen</Link>
-          </MobileNavItem>
-          <MobileNavItem onClick={closeMenu}>
-            <Link href="/dashboard/members">Mitarbeiter:innen</Link>
-          </MobileNavItem>
-          <MobileNavItem onClick={closeMenu}>
-            <Link href={`/dashboard/theme`}>Einstellungen</Link>
-          </MobileNavItem>
-        </>
-      )}
-      <Box padding={`${spacing.scale200} ${spacing.scale500}`}>
-        <Separator />
-      </Box>
-      <MobileNavItem onClick={closeMenu}>
-        <Link href="/account">Account</Link>
-      </MobileNavItem>
-      <MobileNavItem onClick={closeMenu}>
-        <Link href="/contact">Kontakt</Link>
-      </MobileNavItem>
-      <MobileNavItem onClick={closeMenu}>
-        <Typography>
-          <a
-            href={`${config.userPoolDomain}/logout?client_id=${config.userPoolWebClientId}&logout_uri=${config.logoutCallbackUrl}`}
-          >
-            Abmelden
+      <Box>
+        <MobileNavItem onClick={closeMenu}>
+          <a href="https://docs.icruiting.at" rel="noopener noreferrer" target="_blank">
+            Dokumentation
           </a>
-        </Typography>
-      </MobileNavItem>
+        </MobileNavItem>
+        {currentUser?.userRole === 'admin' && (
+          <>
+            <MobileNavItem onClick={closeMenu}>
+              <Link href="/dashboard/jobs">Stellen</Link>
+            </MobileNavItem>
+            <MobileNavItem onClick={closeMenu}>
+              <Link href="/dashboard/applicants">Bewerber*innen</Link>
+            </MobileNavItem>
+            <MobileNavItem onClick={closeMenu}>
+              <Link href="/dashboard/members">Mitarbeiter:innen</Link>
+            </MobileNavItem>
+            <MobileNavItem onClick={closeMenu}>
+              <Link href={`/dashboard/theme`}>Einstellungen</Link>
+            </MobileNavItem>
+          </>
+        )}
+      </Box>
+      <Box>
+        <MobileNavItem onClick={closeMenu}>
+          <Link href="/account">Account</Link>
+        </MobileNavItem>
+        <MobileNavItem onClick={closeMenu}>
+          <Link href="/contact">Kontakt</Link>
+        </MobileNavItem>
+        <MobileNavItem onClick={closeMenu}>
+          <Typography>
+            <a
+              href={`${config.userPoolDomain}/logout?client_id=${config.userPoolWebClientId}&logout_uri=${config.logoutCallbackUrl}`}
+            >
+              Abmelden
+            </a>
+          </Typography>
+        </MobileNavItem>
+      </Box>
     </>
   );
 
   const unauthenticatedDesktopNav = (
     <>
       <NavItem>
-        <a
-          href="https://docs.icruiting.at"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
+        <a href="https://docs.icruiting.at" rel="noopener noreferrer" target="_blank">
           Dokumentation
         </a>
       </NavItem>
@@ -135,11 +138,7 @@ const Navbar = () => {
   const authenticatedDesktopNav = (
     <>
       <NavItem>
-        <a
-          href="https://docs.icruiting.at"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
+        <a href="https://docs.icruiting.at" rel="noopener noreferrer" target="_blank">
           Dokumentation
         </a>
       </NavItem>
@@ -154,9 +153,7 @@ const Navbar = () => {
           <Box position="relative">
             <Link href="/account">
               <DropDownItem>
-                <UserCircle
-                  style={{width: '1em', marginRight: spacing.scale200}}
-                />
+                <UserCircle style={{width: '1em', marginRight: spacing.scale200}} />
                 Account
               </DropDownItem>
             </Link>
@@ -195,22 +192,16 @@ const Navbar = () => {
       {!isAuthenticating && (
         <>
           <NavContainer style={{marginLeft: 'auto'}}>
-            <Hamburger
-              open={menuOpen}
-              onClick={() => setMenuOpen((open) => !open)}
-            >
+            <Hamburger open={menuOpen} onClick={() => setMenuOpen((open) => !open)}>
               <span></span>
               <span></span>
               <span></span>
             </Hamburger>
             <DesktopNav>
-              {currentUser
-                ? authenticatedDesktopNav
-                : unauthenticatedDesktopNav}
+              {currentUser ? authenticatedDesktopNav : unauthenticatedDesktopNav}
             </DesktopNav>
           </NavContainer>
           <MobileNav open={menuOpen}>
-            <Separator />
             {currentUser ? authenticatedMobileNav : unauthenticatedMobileNav}
           </MobileNav>
         </>
