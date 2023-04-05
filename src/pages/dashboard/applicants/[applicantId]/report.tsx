@@ -1,15 +1,7 @@
 import React, {useEffect, useReducer, useState} from 'react';
 import {API, TForm} from 'services';
 import {buildRadarChart} from 'utils/report-utils';
-import {
-  HeadingL,
-  HeadingS,
-  Table,
-  Box,
-  FlexGrid,
-  getDashboardLayout,
-  withAdmin,
-} from 'components';
+import {HeadingL, HeadingS, Table, Box, FlexGrid, getDashboardLayout, withAdmin} from 'components';
 import {useTheme} from 'styled-components';
 import {Arrow} from 'icons';
 import {Radar} from 'react-chartjs-2';
@@ -24,11 +16,8 @@ const ToggleSections = (<T extends string[]>(...o: T) => o)(
   'replicasFor',
   'openForms',
 );
-type ToggleSectionUnion = typeof ToggleSections[number];
-type ToggleState = Record<
-  ToggleSectionUnion,
-  boolean | string | string[] | undefined
->;
+type ToggleSectionUnion = (typeof ToggleSections)[number];
+type ToggleState = Record<ToggleSectionUnion, boolean | string | string[] | undefined>;
 type ToggleAction = {type: ToggleSectionUnion; args?: any};
 
 const ApplicantReport = () => {
@@ -36,10 +25,7 @@ const ApplicantReport = () => {
   const router = useRouter();
   const {applicantId, formCategory} = router.query as any;
 
-  const toggleReducer = (
-    state: ToggleState,
-    action: ToggleAction,
-  ): ToggleState => {
+  const toggleReducer = (state: ToggleState, action: ToggleAction): ToggleState => {
     if (action.type === 'openForms') {
       const curr = state.openForms as string[];
       const idx = curr.findIndex((formId) => formId === action.args);
@@ -68,8 +54,7 @@ const ApplicantReport = () => {
 
   const {data: report} = useFetch(
     ['GET /applicant/:applicantId/report', applicantId, formCategory],
-    (_key, applicantId, formCategory) =>
-      API.applicants.retrieveReport(applicantId, formCategory),
+    (_key, applicantId, formCategory) => API.applicants.retrieveReport(applicantId, formCategory),
   );
 
   const [form, setForm] = useState<TForm | undefined>();
@@ -85,16 +70,13 @@ const ApplicantReport = () => {
 
   useEffect(() => {
     if (!forms) return;
-    const _form = forms.find(
-      ({formCategory}) => formCategory === 'application',
-    );
+    const _form = forms.find(({formCategory}) => formCategory === 'application');
     if (!_form) return;
     setForm(_form);
   }, [forms]);
 
   const _buildRadarChart = () => {
-    if (!(report && report.jobRequirementResults))
-      return {data: {}, options: {}};
+    if (!(report && report.jobRequirementResults)) return {data: {}, options: {}};
 
     return buildRadarChart(report.jobRequirementResults as any);
   };
@@ -111,9 +93,7 @@ const ApplicantReport = () => {
             height={spacing.scale400}
             onClick={() => toggle('applicant')}
             style={{
-              transform: `rotate(${
-                toggleState.applicant ? '90deg' : '-90deg'
-              })`,
+              transform: `rotate(${toggleState.applicant ? '90deg' : '-90deg'})`,
               cursor: 'pointer',
             }}
           />
@@ -125,9 +105,7 @@ const ApplicantReport = () => {
                 const label = form?.formFields.find(
                   ({formFieldId}) => formFieldId === fieldId,
                 )?.label;
-                const attribute = applicant?.attributes.find(
-                  ({key}) => key === label,
-                );
+                const attribute = applicant?.attributes.find(({key}) => key === label);
                 if (attribute) {
                   return (
                     <tr key={idx}>
@@ -155,11 +133,7 @@ const ApplicantReport = () => {
                     ) : (
                       <>
                         <td>
-                          <a
-                            href={file.uri}
-                            rel="noopener noreferrer"
-                            target="_blank"
-                          >
+                          <a href={file.uri} rel="noopener noreferrer" target="_blank">
                             {file.key}
                           </a>
                         </td>
@@ -209,9 +183,7 @@ const ApplicantReport = () => {
               {report?.formResults?.map((formScore) => (
                 <React.Fragment key={formScore.formId}>
                   <tr>
-                    <th
-                      style={{display: 'flex', justifyContent: 'space-between'}}
-                    >
+                    <th style={{display: 'flex', justifyContent: 'space-between'}}>
                       <FlexGrid flexGap={spacing.scale200} alignItems="center">
                         <span>
                           {formScore.formTitle ||
@@ -221,18 +193,14 @@ const ApplicantReport = () => {
                               onboarding: 'Onboarding',
                             }[formCategory]}
                           {formScore.replicas &&
-                            ` und ${
-                              formScore.replicas.length - 1
-                            } weitere(s) Formulare`}
+                            ` und ${formScore.replicas.length - 1} weitere(s) Formulare`}
                         </span>
                         <Arrow
                           height={spacing.scale400}
                           onClick={() => toggle('openForms', formScore.formId)}
                           style={{
                             transform: `rotate(${
-                              !(toggleState.openForms as string[]).includes(
-                                formScore.formId,
-                              )
+                              !(toggleState.openForms as string[]).includes(formScore.formId)
                                 ? '90deg'
                                 : '-90deg'
                             })`,
@@ -246,9 +214,7 @@ const ApplicantReport = () => {
                           onClick={() => {
                             toggle(
                               'replicasFor',
-                              toggleState.replicasFor
-                                ? undefined
-                                : formScore.formId,
+                              toggleState.replicasFor ? undefined : formScore.formId,
                             );
                           }}
                         >
@@ -257,14 +223,11 @@ const ApplicantReport = () => {
                       )}
                     </th>
                     <th>
-                      {formScore.formScore || '-'} &isin; [
-                      {formScore.possibleMinFormScore},{' '}
+                      {formScore.formScore || '-'} &isin; [{formScore.possibleMinFormScore},{' '}
                       {formScore.possibleMaxFormScore}]
                     </th>
                   </tr>
-                  {(toggleState.openForms as string[]).includes(
-                    formScore.formId,
-                  ) && (
+                  {(toggleState.openForms as string[]).includes(formScore.formId) && (
                     <>
                       {toggleState.replicasFor === formScore.formId && (
                         <tr>
@@ -288,50 +251,45 @@ const ApplicantReport = () => {
                                       </th>
                                       <th></th>
                                     </tr>
-                                    {replica.formFieldScores.map(
-                                      (formFieldScore) => (
-                                        <tr key={formFieldScore.formFieldId}>
-                                          <td>{formFieldScore.label}</td>
-                                          <td>
-                                            {formFieldScore.intent ===
-                                              'aggregate' && (
-                                              <ul
-                                                style={{
-                                                  listStylePosition: 'outside',
-                                                  listStyle: 'circle',
-                                                  paddingLeft: '1em',
-                                                }}
-                                              >
-                                                {formFieldScore.aggregatedValues?.map(
-                                                  (value: string, idx) => (
-                                                    <li
-                                                      key={idx}
-                                                      style={{
-                                                        whiteSpace: 'pre-line',
-                                                      }}
-                                                    >
-                                                      {value}
-                                                    </li>
-                                                  ),
-                                                )}
-                                              </ul>
-                                            )}
-                                            {formFieldScore.intent ===
-                                              'sum_up' &&
-                                              `${formFieldScore.formFieldScore} | σ = ${formFieldScore.stdDevFormFieldScore}`}
-                                            {formFieldScore.intent ===
-                                              'count_distinct' &&
-                                              Object.entries(
-                                                formFieldScore.countDistinct,
-                                              ).map(([key, value], idx) => (
+                                    {replica.formFieldScores.map((formFieldScore) => (
+                                      <tr key={formFieldScore.formFieldId}>
+                                        <td>{formFieldScore.label}</td>
+                                        <td>
+                                          {formFieldScore.intent === 'aggregate' && (
+                                            <ul
+                                              style={{
+                                                listStylePosition: 'outside',
+                                                listStyle: 'circle',
+                                                paddingLeft: '1em',
+                                              }}
+                                            >
+                                              {formFieldScore.aggregatedValues?.map(
+                                                (value: string, idx) => (
+                                                  <li
+                                                    key={idx}
+                                                    style={{
+                                                      whiteSpace: 'pre-line',
+                                                    }}
+                                                  >
+                                                    {value}
+                                                  </li>
+                                                ),
+                                              )}
+                                            </ul>
+                                          )}
+                                          {formFieldScore.intent === 'sum_up' &&
+                                            `${formFieldScore.formFieldScore} | σ = ${formFieldScore.stdDevFormFieldScore}`}
+                                          {formFieldScore.intent === 'count_distinct' &&
+                                            Object.entries(formFieldScore.countDistinct).map(
+                                              ([key, value], idx) => (
                                                 <li key={idx}>
                                                   {key}: {value}
                                                 </li>
-                                              ))}
-                                          </td>
-                                        </tr>
-                                      ),
-                                    )}
+                                              ),
+                                            )}
+                                        </td>
+                                      </tr>
+                                    ))}
                                   </React.Fragment>
                                 ))}
                                 <tr>
@@ -355,16 +313,11 @@ const ApplicantReport = () => {
                                   paddingLeft: '1em',
                                 }}
                               >
-                                {formFieldScore.aggregatedValues?.map(
-                                  (value: any, idx: number) => (
-                                    <li
-                                      key={idx}
-                                      style={{whiteSpace: 'pre-line'}}
-                                    >
-                                      {value}
-                                    </li>
-                                  ),
-                                )}
+                                {formFieldScore.aggregatedValues?.map((value: any, idx: number) => (
+                                  <li key={idx} style={{whiteSpace: 'pre-line'}}>
+                                    {value}
+                                  </li>
+                                ))}
                               </ul>
                             )}
                             {formFieldScore.intent === 'sum_up' &&
@@ -396,9 +349,7 @@ const ApplicantReport = () => {
               height={spacing.scale400}
               onClick={() => toggle('requirements')}
               style={{
-                transform: `rotate(${
-                  toggleState.requirements ? '90deg' : '-90deg'
-                })`,
+                transform: `rotate(${toggleState.requirements ? '90deg' : '-90deg'})`,
                 cursor: 'pointer',
               }}
             />
@@ -412,11 +363,7 @@ const ApplicantReport = () => {
                       <React.Fragment key={key}>
                         <tr>
                           <td>{requirementResult.requirementLabel}</td>
-                          <td>
-                            {Math.round(
-                              100 * requirementResult.jobRequirementScore,
-                            ) / 100}
-                          </td>
+                          <td>{Math.round(100 * requirementResult.jobRequirementScore) / 100}</td>
                         </tr>
                       </React.Fragment>
                     ),
