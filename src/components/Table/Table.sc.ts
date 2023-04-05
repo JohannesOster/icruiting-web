@@ -34,8 +34,7 @@ export const Table = styled.table`
 
       td,
       th {
-        padding: ${({theme}) =>
-          `${theme.spacing.scale300} ${theme.spacing.scale200}`};
+        padding: ${({theme}) => `${theme.spacing.scale300} ${theme.spacing.scale200}`};
         max-width: 30vw;
         background: ${({theme}) => theme.colors.surfaceDefault};
 

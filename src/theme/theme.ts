@@ -57,7 +57,7 @@ export const theme = {
 
     // - tables
     tableBorder: colors.primary200,
-    tableHeaderFill: colors.primary100,
+    tableHeaderFill: '#F0F3F4',
     tableRowFill: colors.primary50,
 
     // - toasters
