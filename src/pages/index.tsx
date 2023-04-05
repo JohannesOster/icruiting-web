@@ -2,21 +2,16 @@ import React, {useRef, useState} from 'react';
 import {useTheme} from 'styled-components';
 import {useRouter} from 'next/router';
 import Link from 'next/link';
-import {
-  Box,
-  Button,
-  DisplayL,
-  HeadingM,
-  Input,
-  Textarea,
-  Typography,
-} from 'components';
+import {Box, Button, DisplayL, HeadingM, Input, Textarea, Typography} from 'components';
 import {Bunny} from 'icons';
 import {useForm} from 'react-hook-form';
 
 import styled, {css} from 'styled-components';
 import config from 'config';
 import {useToaster} from 'context';
+import {object, string} from 'yup';
+import {yupResolver} from '@hookform/resolvers';
+import {errorsFor} from 'utils/react-hook-form-errors-for';
 
 export const Container = styled.div`
   display: flex;
@@ -66,7 +61,17 @@ const LandingPage: React.FC = () => {
   const {success, danger} = useToaster();
   const [loading, setLoading] = useState(false);
 
-  const {handleSubmit, register, formState} = useForm({mode: 'onChange'});
+  const {handleSubmit, register, formState, errors} = useForm({
+    mode: 'onChange',
+    criteriaMode: 'all',
+    resolver: yupResolver(
+      object({
+        name: string().required('Bitte gibt Deinen Namen ein.'),
+        email: string().email('Bitte gib eine gültige E-Mail-Adresse an.'),
+        message: string().required('Bitte gibt Deine Nachricht ein.'),
+      }),
+    ),
+  });
 
   const _onSubmit = (values) => {
     setLoading(true);
@@ -130,14 +135,12 @@ const LandingPage: React.FC = () => {
                 Wähle die <b>passensten</b> nicht die besten Mitarbeiter:innen.
               </DisplayL>
               <Typography kind="body" color="secondary">
-                Eine Plattform, die Euch dabei unterstützt, kollaborativ und
-                anforderungsgetrieben Hiring-Entscheidungen zu treffen.
+                Eine Plattform, die Euch dabei unterstützt, kollaborativ und anforderungsgetrieben
+                Hiring-Entscheidungen zu treffen.
               </Typography>
             </Box>
             <Box>
-              <Button onClick={() => router.push('/signup')}>
-                Registrieren
-              </Button>
+              <Button onClick={() => router.push('/signup')}>Registrieren</Button>
             </Box>
           </Hero>
           {/* FEATURES */}
@@ -184,17 +187,10 @@ const LandingPage: React.FC = () => {
             </Box>
           </Box> */}
           {/* CONTACT */}
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="start"
-            gap={spacing.scale600}
-          >
+          <Box display="flex" flexDirection="column" alignItems="start" gap={spacing.scale600}>
             <Box>
               <HeadingM>Kontakt</HeadingM>
-              <Typography color="secondary">
-                Wir antworten schnell 🏃
-              </Typography>
+              <Typography color="secondary">Wir antworten schnell 🏃</Typography>
             </Box>
             <form
               style={{
@@ -211,6 +207,7 @@ const LandingPage: React.FC = () => {
                 placeholder="Name"
                 name="name"
                 ref={register({required: true})}
+                errors={errorsFor(errors, 'name')}
               />
               <Input
                 label="E-Mail-Adresse"
@@ -218,12 +215,14 @@ const LandingPage: React.FC = () => {
                 name="email"
                 ref={register({required: true})}
                 type="email"
+                errors={errorsFor(errors, 'email')}
               />
               <Textarea
                 label="Nachricht"
                 placeholder="Nachricht"
                 name="message"
                 ref={register({required: true})}
+                errors={errorsFor(errors, 'message')}
               />
               <Box>
                 <Button
@@ -249,11 +248,7 @@ const LandingPage: React.FC = () => {
             }}
           />
           <Link href="/">icruiting.at</Link>
-          <Box
-            display="grid"
-            gridAutoFlow="column"
-            columnGap={spacing.scale300}
-          >
+          <Box display="grid" gridAutoFlow="column" columnGap={spacing.scale300}>
             <Link href="/impressum">Impressum</Link>
             <span>&bull;</span>
             <Link href="/privacy">Datenschutzerklärung</Link>
