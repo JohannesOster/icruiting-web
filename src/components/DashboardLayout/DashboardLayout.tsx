@@ -104,11 +104,13 @@ const DashboardLayout = ({children}) => {
       </SideNav>
       <Container>{children}</Container>
       <MobiltTabBar>
-        <MobileTabBarItem>
-          <Link href="/dashboard/jobs">
-            <Portfolio style={tabBarIconStyles} fill={tabIconFill('jobs')} />
-          </Link>
-        </MobileTabBarItem>
+        {currentUser?.userRole === 'admin' && (
+          <MobileTabBarItem>
+            <Link href="/dashboard/jobs">
+              <Portfolio style={tabBarIconStyles} fill={tabIconFill('jobs')} />
+            </Link>
+          </MobileTabBarItem>
+        )}
 
         <MobileTabBarItem>
           <Link href="/dashboard/applicants">
@@ -116,11 +118,13 @@ const DashboardLayout = ({children}) => {
           </Link>
         </MobileTabBarItem>
 
-        <MobileTabBarItem>
-          <Link href="/dashboard/members">
-            <World style={tabBarIconStyles} fill={tabIconFill('/members')} />
-          </Link>
-        </MobileTabBarItem>
+        {currentUser?.userRole === 'admin' && (
+          <MobileTabBarItem>
+            <Link href="/dashboard/members">
+              <World style={tabBarIconStyles} fill={tabIconFill('/members')} />
+            </Link>
+          </MobileTabBarItem>
+        )}
 
         <MobileTabBarItem>
           <Link href="/account">
@@ -128,11 +132,13 @@ const DashboardLayout = ({children}) => {
           </Link>
         </MobileTabBarItem>
 
-        <MobileTabBarItem>
-          <Link href="/dashboard/settings">
-            <Settings style={tabBarIconStyles} fill={tabIconFill('/settings')} />
-          </Link>
-        </MobileTabBarItem>
+        {currentUser?.userRole === 'admin' && (
+          <MobileTabBarItem>
+            <Link href="/dashboard/settings">
+              <Settings style={tabBarIconStyles} fill={tabIconFill('/settings')} />
+            </Link>
+          </MobileTabBarItem>
+        )}
       </MobiltTabBar>
     </>
   );
