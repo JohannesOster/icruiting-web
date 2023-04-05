@@ -24,10 +24,7 @@ const PasswordReset: React.FC = () => {
       });
   };
 
-  const submitCodeForm = async ({
-    confirmationCode,
-    password,
-  }: PasswordFormValues) => {
+  const submitCodeForm = async ({confirmationCode, password}: PasswordFormValues) => {
     await API.auth
       .forgotPasswordSubmit(email.current, confirmationCode, password)
       .then(() => {
@@ -39,14 +36,10 @@ const PasswordReset: React.FC = () => {
       });
   };
 
-  return (
-    <main style={{margin: spacing.scale600}}>
-      {!sentCode ? (
-        <EmailForm onSubmit={submitMailForm} />
-      ) : (
-        <PasswordForm onSubmit={submitCodeForm} email={email.current} />
-      )}
-    </main>
+  return !sentCode ? (
+    <EmailForm onSubmit={submitMailForm} />
+  ) : (
+    <PasswordForm onSubmit={submitCodeForm} email={email.current} />
   );
 };
 

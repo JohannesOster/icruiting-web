@@ -15,10 +15,7 @@ const SignUp: React.FC = () => {
   const [status, setStatus] = useState<Status>('fetching');
   const [selectedPriceId, setSelectedPriceId] = useState<string | null>(null);
 
-  const {data: prices, error} = useFetch(
-    'GET /stripe/prices',
-    API.stripe.prices.list,
-  );
+  const {data: prices, error} = useFetch('GET /stripe/prices', API.stripe.prices.list);
 
   useEffect(() => {
     if (!(prices || error)) return;
@@ -42,9 +39,7 @@ const SignUp: React.FC = () => {
         stripePriceId: selectedPriceId,
       });
 
-      toaster.success(
-        'Erfolgreich registriert. Bestätigen Sie bitte Ihre E-Mail-Adresse!',
-      );
+      toaster.success('Erfolgreich registriert. Bestätigen Sie bitte Ihre E-Mail-Adresse!');
 
       router.push('/login');
     } catch (err) {
@@ -56,14 +51,9 @@ const SignUp: React.FC = () => {
   const displayValForInterval = {month: 'Monat'} as {[key: string]: string};
 
   return (
-    <Box margin={spacing.scale500} marginTop={spacing.scale700}>
+    <Box margin="0 auto" padding="132px 0">
       {status === 'fetching' && !prices?.length && (
-        <Box
-          position="absolute"
-          top="50%"
-          left="50%"
-          transform="translate(-50%, -50%)"
-        >
+        <Box position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)">
           <Spinner />
         </Box>
       )}
@@ -76,13 +66,9 @@ const SignUp: React.FC = () => {
         {prices?.map((price) => (
           <div key={price.id} onClick={() => setSelectedPriceId(price.id)}>
             <Box
-              border={`1px solid ${
-                selectedPriceId === price.id ? 'black' : 'lightgray'
-              }`}
+              border={`1px solid ${selectedPriceId === price.id ? 'black' : 'lightgray'}`}
               cursor="pointer"
-              transform={
-                selectedPriceId === price.id ? 'scale(1.1)' : 'scale(1)'
-              }
+              transform={selectedPriceId === price.id ? 'scale(1.1)' : 'scale(1)'}
               transition="all 0.1s"
               boxShadow={
                 selectedPriceId === price.id
@@ -98,24 +84,14 @@ const SignUp: React.FC = () => {
                 rowGap={spacing.scale700}
               >
                 <HeadingS>{price.product.name}</HeadingS>
-                <Typography
-                  kind="secondary"
-                  style={{fontSize: spacing.scale500}}
-                >
-                  € {price.unit_amount / 100} /{' '}
-                  {displayValForInterval[price.recurring.interval]}
+                <Typography kind="secondary" style={{fontSize: spacing.scale500}}>
+                  € {price.unit_amount / 100} / {displayValForInterval[price.recurring.interval]}
                 </Typography>
                 <Box display="grid" rowGap={spacing.scale300}>
-                  <Typography
-                    kind="secondary"
-                    style={{fontSize: spacing.scale500}}
-                  >
+                  <Typography kind="secondary" style={{fontSize: spacing.scale500}}>
                     14 Tage Trial
                   </Typography>
-                  <Typography
-                    kind="secondary"
-                    style={{fontSize: spacing.scale300}}
-                  >
+                  <Typography kind="secondary" style={{fontSize: spacing.scale300}}>
                     <strong>Keine Zahlungsmethode</strong>
                     <br />
                     notwendig
@@ -126,9 +102,9 @@ const SignUp: React.FC = () => {
           </div>
         ))}
       </Box>
-      {selectedPriceId && (
-        <SignUpForm onSubmit={onSubmit} submitting={status === 'submitting'} />
-      )}
+      <Box marginTop="-100px">
+        {selectedPriceId && <SignUpForm onSubmit={onSubmit} submitting={status === 'submitting'} />}
+      </Box>
     </Box>
   );
 };
