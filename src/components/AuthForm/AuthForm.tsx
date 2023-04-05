@@ -17,7 +17,8 @@ const Container = styled.div`
   width: 80%;
   min-width: 200px;
   max-width: 600px;
-  margin: 50px auto;
+  margin: 0 auto;
+  padding-top: 140px;
   display: grid;
   row-gap: ${({theme}) => theme.spacing.scale200};
 `;
