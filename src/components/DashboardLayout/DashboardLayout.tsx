@@ -123,6 +123,12 @@ const DashboardLayout = ({children}) => {
         </MobileTabBarItem>
 
         <MobileTabBarItem>
+          <Link href="/account">
+            <Account style={tabBarIconStyles} fill={tabIconFill('/account')} />
+          </Link>
+        </MobileTabBarItem>
+
+        <MobileTabBarItem>
           <Link href="/dashboard/settings">
             <Settings style={tabBarIconStyles} fill={tabIconFill('/settings')} />
           </Link>

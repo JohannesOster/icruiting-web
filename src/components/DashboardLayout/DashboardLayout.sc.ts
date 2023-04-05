@@ -57,7 +57,7 @@ export const Container = styled.main`
 `;
 
 export const MobiltTabBar = styled.div`
-  display: flex;
+  display: none;
   height: 56px;
   width: 100%;
   position: fixed;

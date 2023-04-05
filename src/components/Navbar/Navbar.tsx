@@ -79,22 +79,9 @@ const Navbar = () => {
             Dokumentation
           </a>
         </MobileNavItem>
-        {currentUser?.userRole === 'admin' && (
-          <>
-            <MobileNavItem onClick={closeMenu}>
-              <Link href="/dashboard/jobs">Stellen</Link>
-            </MobileNavItem>
-            <MobileNavItem onClick={closeMenu}>
-              <Link href="/dashboard/applicants">Bewerber*innen</Link>
-            </MobileNavItem>
-            <MobileNavItem onClick={closeMenu}>
-              <Link href="/dashboard/members">Mitarbeiter:innen</Link>
-            </MobileNavItem>
-            <MobileNavItem onClick={closeMenu}>
-              <Link href={`/dashboard/theme`}>Einstellungen</Link>
-            </MobileNavItem>
-          </>
-        )}
+        <MobileNavItem onClick={closeMenu}>
+          <Link href="/dashboard">Dashboard</Link>
+        </MobileNavItem>
       </Box>
       <Box>
         <MobileNavItem onClick={closeMenu}>
