@@ -1,29 +1,39 @@
 import React from 'react';
-import {
-  IcruitingLogo,
-  Users,
-  World,
-  Portfolio,
-  Settings,
-  Logout,
-  Account,
-} from 'icons';
+import {IcruitingLogo, Users, World, Portfolio, Settings, Logout, Account} from 'icons';
 import {useTheme} from 'styled-components';
 import {useAuth} from 'context';
-import {SideNav, NavList, Container, LogoContainer} from './DashboardLayout.sc';
+import {
+  SideNav,
+  NavList,
+  Container,
+  LogoContainer,
+  MobiltTabBar,
+  MobileTabBarItem,
+} from './DashboardLayout.sc';
 import {NavLink} from './NavLink';
 import Link from 'next/link';
 import {Box} from 'components';
+import {useRouter} from 'next/router';
 
 const DashboardLayout = ({children}) => {
   const {colors, spacing} = useTheme();
   const {currentUser} = useAuth();
+  const router = useRouter();
 
   const iconsStyles = {
     marginRight: spacing.scale200,
     height: spacing.scale400,
     width: spacing.scale400,
     color: colors.textDefault,
+  };
+
+  const tabBarIconStyles = {
+    height: spacing.scale500,
+    width: spacing.scale500,
+  };
+
+  const tabIconFill = (path: string) => {
+    return router.pathname.includes(path) ? colors.textPrimary : colors.textDefault;
   };
 
   return (
@@ -41,12 +51,7 @@ const DashboardLayout = ({children}) => {
             />
           </Link>
         </LogoContainer>
-        <Box
-          display="flex"
-          flexDirection="column"
-          justifyContent="space-between"
-          height="100%"
-        >
+        <Box display="flex" flexDirection="column" justifyContent="space-between" height="100%">
           {currentUser?.userRole === 'admin' ? (
             <NavList>
               <NavLink href="/dashboard/jobs">
@@ -98,6 +103,31 @@ const DashboardLayout = ({children}) => {
         </Box>
       </SideNav>
       <Container>{children}</Container>
+      <MobiltTabBar>
+        <MobileTabBarItem>
+          <Link href="/dashboard/jobs">
+            <Portfolio style={tabBarIconStyles} fill={tabIconFill('jobs')} />
+          </Link>
+        </MobileTabBarItem>
+
+        <MobileTabBarItem>
+          <Link href="/dashboard/applicants">
+            <Users style={tabBarIconStyles} fill={tabIconFill('/applicants')} />
+          </Link>
+        </MobileTabBarItem>
+
+        <MobileTabBarItem>
+          <Link href="/dashboard/members">
+            <World style={tabBarIconStyles} fill={tabIconFill('/members')} />
+          </Link>
+        </MobileTabBarItem>
+
+        <MobileTabBarItem>
+          <Link href="/dashboard/settings">
+            <Settings style={tabBarIconStyles} fill={tabIconFill('/settings')} />
+          </Link>
+        </MobileTabBarItem>
+      </MobiltTabBar>
     </>
   );
 };

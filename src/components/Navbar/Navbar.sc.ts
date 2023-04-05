@@ -46,8 +46,7 @@ export const Hamburger = styled.div<{open: boolean}>`
     transition-duration: 0.15s;
     :nth-child(1) {
       top: 0;
-      transform: ${({open}) =>
-        open ? 'translateY(8px) rotate(45deg)' : 'rotate(0)'};
+      transform: ${({open}) => (open ? 'translateY(8px) rotate(45deg)' : 'rotate(0)')};
     }
     :nth-child(2) {
       top: 8px;
@@ -55,8 +54,7 @@ export const Hamburger = styled.div<{open: boolean}>`
     }
     :nth-child(3) {
       top: 16px;
-      transform: ${({open}) =>
-        open ? 'translateY(-8px) rotate(-45deg)' : 'rotate(0)'};
+      transform: ${({open}) => (open ? 'translateY(-8px) rotate(-45deg)' : 'rotate(0)')};
     }
   }
 
@@ -67,15 +65,24 @@ export const Hamburger = styled.div<{open: boolean}>`
   `}
 `;
 
+export const MobileNavItem = styled.div`
+  border-bottom: 1px solid ${({theme}) => theme.colors.borderSubdued};
+  > * {
+    display: block;
+    padding: ${({theme}) => `${theme.spacing.scale400} ${theme.spacing.scale500}`};
+  }
+`;
+
 export const MobileNav = styled.nav<{open: boolean}>`
   padding-top: 80px; // header height
   z-index: 10;
   background: white;
-  display: grid;
-  grid-row-gap: ${({theme}) => theme.spacing.scale200};
   position: fixed;
   justify-content: stretch;
   align-content: start;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
   top: 0;
   left: 0;
   bottom: 0;
@@ -85,18 +92,17 @@ export const MobileNav = styled.nav<{open: boolean}>`
 
   transition: opacity 0.1s ease-in-out;
 
+  ${MobileNavItem}:first-child {
+    margin-top: -1px;
+    display: block;
+    border-top: 1px solid ${({theme}) => theme.colors.borderSubdued};
+  }
+
   ${({theme}) => css`
     @media (min-width: ${theme.breakpoints.md}) {
       display: none;
     }
   `};
-`;
-
-export const MobileNavItem = styled.div`
-  > * {
-    padding: ${({theme}) =>
-      `${theme.spacing.scale200} ${theme.spacing.scale500}`};
-  }
 `;
 
 export const DesktopNav = styled.ul`

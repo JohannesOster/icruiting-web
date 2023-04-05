@@ -50,7 +50,37 @@ export const Container = styled.main`
 
   ${({theme}) => css`
     @media (max-width: ${theme.breakpoints.md}) {
-      margin-left: ${theme.spacing.scale500};
+      padding-left: ${theme.spacing.scale500};
+      padding-bottom: 72px; // 56px + 16px
     }
   `};
+`;
+
+export const MobiltTabBar = styled.div`
+  display: flex;
+  height: 56px;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  z-index: 100;
+  border-top: 1px solid ${({theme}) => theme.colors.borderSubdued};
+  background: ${({theme}) => theme.colors.surfaceDefault};
+
+  ${({theme}) => css`
+    @media (max-width: ${theme.breakpoints.md}) {
+      display: flex;
+    }
+  `};
+`;
+
+export const MobileTabBarItem = styled.div`
+  flex: 1;
+
+  > * {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
