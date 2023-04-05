@@ -206,6 +206,7 @@ export const Jobs = () => {
                 description="Die Bezeichnung der Stelle."
                 ref={register}
                 errors={errorsFor(errors, 'jobTitle')}
+                autoFocus
                 required
               />
             </DialogBody>
