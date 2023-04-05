@@ -22,6 +22,7 @@ import {
   withAdmin,
   useFetch,
   CommandPalette,
+  DialogBody,
 } from 'components';
 import {Clipboard} from 'icons';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
@@ -235,16 +236,18 @@ const FormBuilder: React.FC = () => {
     <>
       {showCommandPalette && <CommandPalette commands={commands} onSelect={handleInsert} />}
       {componentToEdit && job && (
-        <Dialog onClose={() => setComponentToEdit(null)}>
-          <EditFormFieldForm
-            componentToEdit={componentToEdit}
-            onSubmit={(values) => {
-              formFields.edit(componentToEdit.id, values);
-              setComponentToEdit(null);
-            }}
-            formCategory={formToEdit?.formCategory || formCategory}
-            job={job}
-          />
+        <Dialog onClose={() => setComponentToEdit(null)} title="Formularfeld bearbeiten">
+          <DialogBody>
+            <EditFormFieldForm
+              componentToEdit={componentToEdit}
+              onSubmit={(values) => {
+                formFields.edit(componentToEdit.id, values);
+                setComponentToEdit(null);
+              }}
+              formCategory={formToEdit?.formCategory || formCategory}
+              job={job}
+            />
+          </DialogBody>
         </Dialog>
       )}
       <Box display="flex" alignItems="center" marginBottom={spacing.scale600}>

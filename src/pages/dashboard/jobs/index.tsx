@@ -13,6 +13,8 @@ import {
   Dialog,
   Input,
   withAdmin,
+  DialogBody,
+  DialogFooter,
 } from 'components';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {useToaster} from 'context';
@@ -164,41 +166,39 @@ export const Jobs = () => {
           onClose={() => {
             setShouldDeleteJobId(null);
           }}
+          title="Stelle wirklich unwiderruflich löschen?"
         >
-          <Box display="grid" rowGap={spacing.scale300}>
-            <HeadingS>Stelle wirklich unwiderruflich löschen?</HeadingS>
-            <Typography>
-              Sind Sie sicher, dass Sie die alle mit dieser Stelle in Verbingung stehenden Daten
-              löschen wollen? Das inkludiert auch <b>alle Bewerber*innen</b> die sich über das
-              Bewerbungsformular dieser stelle beworben haben! Dieser Vorgang kann nicht rückgängig
-              gemacht werden.
-            </Typography>
-            <Box display="flex" justifyContent="space-between">
-              <Button
-                onClick={() => {
-                  onDelete();
-                  setShouldDeleteJobId(null);
-                }}
-              >
-                Löschen
-              </Button>
-              <Button
-                onClick={() => {
-                  setShouldDeleteJobId(null);
-                }}
-              >
-                Abbrechen
-              </Button>
-            </Box>
-          </Box>
+          <DialogBody>
+            Sind Sie sicher, dass Sie die alle mit dieser Stelle in Verbingung stehenden Daten
+            löschen wollen? Das inkludiert auch <b>alle Bewerber*innen</b> die sich über das
+            Bewerbungsformular dieser stelle beworben haben! Dieser Vorgang kann nicht rückgängig
+            gemacht werden.
+          </DialogBody>
+          <DialogFooter>
+            <Button
+              onClick={() => {
+                setShouldDeleteJobId(null);
+              }}
+              kind="secondary"
+            >
+              Abbrechen
+            </Button>
+            <Button
+              onClick={() => {
+                onDelete();
+                setShouldDeleteJobId(null);
+              }}
+              destructive
+            >
+              Löschen
+            </Button>
+          </DialogFooter>
         </Dialog>
       )}
       {showNewJobDialog && (
-        <Dialog onClose={() => setShowNewJobDialog(false)}>
+        <Dialog onClose={() => setShowNewJobDialog(false)} title="Neue Stelle">
           <form>
-            <Box display="grid" rowGap={spacing.scale300}>
-              <HeadingS>Neue Stelle</HeadingS>
-
+            <DialogBody>
               <Input
                 name="jobTitle"
                 label="Stellentitel"
@@ -208,19 +208,19 @@ export const Jobs = () => {
                 errors={errorsFor(errors, 'jobTitle')}
                 required
               />
-              <Box display="flex" justifyContent="space-between">
-                <Button onClick={() => setShowNewJobDialog(false)} kind="minimal">
-                  Abbrechen
-                </Button>
-                <Button
-                  onClick={handleSubmit(onSubmit)}
-                  disabled={!formState.isValid}
-                  isLoading={status === 'submitting'}
-                >
-                  Speichern
-                </Button>
-              </Box>
-            </Box>
+            </DialogBody>
+            <DialogFooter>
+              <Button onClick={() => setShowNewJobDialog(false)} kind="secondary">
+                Abbrechen
+              </Button>
+              <Button
+                onClick={handleSubmit(onSubmit)}
+                disabled={!(formState.isValid && formState.isDirty)}
+                isLoading={status === 'submitting'}
+              >
+                Speichern
+              </Button>
+            </DialogFooter>
           </form>
         </Dialog>
       )}

@@ -9,10 +9,12 @@ import {
   HeadingL,
   HeadingM,
   HeadingS,
-  Spinner,
+  Dialog,
   Typography,
+  DialogFooter,
+  DialogBody,
 } from 'components';
-import styled, {useTheme} from 'styled-components';
+import {useTheme} from 'styled-components';
 import {getSourceFormFields} from 'components/FormBuilder/sourceFormFields';
 import {randString} from 'components/FormBuilder/utils';
 
@@ -52,6 +54,13 @@ const Impressum: FC = () => {
         Wähle die passensten nicht die besten Mitarbeiter:innen.
       </Typography>
       <Box></Box>
+      <Dialog title="Title" onClose={() => {}}>
+        <DialogBody>Dupudoo</DialogBody>
+        <DialogFooter>
+          <Button kind="minimal">Abbrechen</Button>
+          <Button>Speichern</Button>
+        </DialogFooter>
+      </Dialog>
     </Box>
   );
 };

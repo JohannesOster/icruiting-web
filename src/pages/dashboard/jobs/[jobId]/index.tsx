@@ -11,6 +11,8 @@ import {
   Table,
   getDashboardLayout,
   FlexGrid,
+  DialogBody,
+  DialogFooter,
 } from 'components';
 import {Button, Dialog, Spinner, Input} from 'components';
 import {API, FormCategory, TForm} from 'services';
@@ -21,6 +23,9 @@ import {Edit} from 'icons';
 import {useForm} from 'react-hook-form';
 import {v4 as uuidv4} from 'uuid';
 import {useFetch} from 'components/useFetch';
+import {errorsFor} from 'utils/react-hook-form-errors-for';
+import {yupResolver} from '@hookform/resolvers';
+import {object, string} from 'yup';
 
 const JobDetails = () => {
   const {spacing} = useTheme();
@@ -28,13 +33,10 @@ const JobDetails = () => {
   const {jobId} = router.query as {jobId: string};
   const [exporing, setExporting] = useState<string | undefined>();
   const [deletingFormId, setDeletingFormId] = useState<string | null>(null);
-  const [shouldDeleteFormId, setShouldDeleteFormId] = useState<string | null>(
-    null,
-  );
+  const [shouldDeleteFormId, setShouldDeleteFormId] = useState<string | null>(null);
 
-  const {data: job, error: jobError} = useFetch(
-    [`GET /jobs/${jobId}`, jobId],
-    (_key, jobId) => API.jobs.find(jobId),
+  const {data: job, error: jobError} = useFetch([`GET /jobs/${jobId}`, jobId], (_key, jobId) =>
+    API.jobs.find(jobId),
   );
 
   const [forms, setForms] = useState<{[key: string]: TForm[]}>({});
@@ -56,9 +58,51 @@ const JobDetails = () => {
     setFormToReplicate(null);
     reset({});
   };
+
+  const onSubmitReplica = async (values: {replicaFormTitle: string}) => {
+    if (replicaToEdit) {
+      const form = ((forms.onboarding || []) as any).reduce((acc, {replicas}) => {
+        const replica = replicas?.find(({formId}) => formId === replicaToEdit);
+        if (!replica) return acc;
+        return replica;
+      }, {} as any);
+
+      if (!form) return closeReplicaDialog();
+      await API.forms.update({
+        ...form,
+        formTitle: values.replicaFormTitle,
+      });
+      revalidate();
+      closeReplicaDialog();
+      return;
+    }
+
+    await API.forms.create({
+      formId: uuidv4(),
+      jobId: job.jobId,
+      formTitle: values.replicaFormTitle,
+      formCategory: 'onboarding',
+      formFields: [],
+      replicaOf: formToReplicate,
+    });
+    revalidate();
+    closeReplicaDialog();
+  };
+
   const [replicaToEdit, setReplicaToEdit] = useState<string | null>(null);
   const [formToReplicate, setFormToReplicate] = useState<string | null>(null);
-  const {handleSubmit, register, reset} = useForm();
+  const {handleSubmit, register, reset, errors, formState} = useForm({
+    mode: 'onChange',
+    criteriaMode: 'all',
+    resolver: yupResolver(
+      object({
+        replicaFormTitle: string()
+          .min(3, 'Formulartitel muss mindestens 3 Zeichen lang sein.')
+          .max(50, 'Formulartitel darf maximal 50 Zeichen lang sein.')
+          .required('Formulartitel ist verpflichtend.'),
+      }),
+    ),
+  });
 
   const onDelete = () => {
     if (!shouldDeleteFormId) return;
@@ -86,9 +130,7 @@ const JobDetails = () => {
 
       if (!acc[curr.replicaOf]) acc[curr.replicaOf] = {};
       if (!acc[curr.replicaOf]?.replicas) acc[curr.replicaOf].replicas = [];
-      acc[curr.replicaOf].replicas = acc[curr.replicaOf].replicas.concat([
-        curr,
-      ]);
+      acc[curr.replicaOf].replicas = acc[curr.replicaOf].replicas.concat([curr]);
 
       return acc;
     }, {} as any);
@@ -103,9 +145,7 @@ const JobDetails = () => {
   const actionCell = ({formCategory, formId}: {[key: string]: any}) => {
     if (!formId) {
       return (
-        <Link
-          href={`${formBuilderURL}?formCategory=${formCategory}&jobId=${jobId}`}
-        >
+        <Link href={`${formBuilderURL}?formCategory=${formCategory}&jobId=${jobId}`}>
           hinzufügen
         </Link>
       );
@@ -119,9 +159,7 @@ const JobDetails = () => {
         justifyContent="left"
         alignItems="center"
       >
-        <Link href={`${formBuilderURL}?formId=${formId}&jobId=${jobId}`}>
-          bearbeiten
-        </Link>
+        <Link href={`${formBuilderURL}?formId=${formId}&jobId=${jobId}`}>bearbeiten</Link>
         <span>/</span>
         <Button
           isLoading={deletingFormId === formId}
@@ -157,9 +195,7 @@ const JobDetails = () => {
             isLoading={exporing === formId}
             onClick={() => {
               setExporting(formId);
-              API.forms
-                .exportJSON(formId)
-                .finally(() => setExporting(undefined));
+              API.forms.exportJSON(formId).finally(() => setExporting(undefined));
             }}
           >
             JSON Export
@@ -219,9 +255,7 @@ const JobDetails = () => {
                     <Button
                       kind="minimal"
                       onClick={() => {
-                        const title = data?.find(
-                          ({formId}) => formId === replicaFormId,
-                        )?.formTitle;
+                        const title = data?.find(({formId}) => formId === replicaFormId)?.formTitle;
                         reset({replicaFormTitle: title});
                         setReplicaToEdit(replicaFormId);
                       }}
@@ -229,10 +263,7 @@ const JobDetails = () => {
                       bearbeiten
                     </Button>
                     <span>/</span>
-                    <Button
-                      kind="minimal"
-                      onClick={() => setShouldDeleteFormId(replicaFormId)}
-                    >
+                    <Button kind="minimal" onClick={() => setShouldDeleteFormId(replicaFormId)}>
                       löschen
                     </Button>
                   </Box>
@@ -260,85 +291,60 @@ const JobDetails = () => {
           onClose={() => {
             setShouldDeleteFormId(null);
           }}
+          title="Formular unwiderruflich löschen?"
         >
-          <Box display="grid" rowGap={spacing.scale300}>
-            <HeadingS>Formular unwiderruflich löschen?</HeadingS>
-            <Typography>
-              Sind Sie sicher, dass Sie diese Formular unwiderruflich löschen
-              wollen? Sollte es sich um eine Bewerbungsformular handeln gehen
-              sämtlich <b>Attribute aller Bewerber*innen</b> dieser Stelle
-              verloren!
-            </Typography>
-            <Box display="flex" justifyContent="space-between">
-              <Button
-                onClick={() => {
-                  onDelete();
-                  setShouldDeleteFormId(null);
-                }}
-              >
-                Löschen
-              </Button>
-              <Button
-                onClick={() => {
-                  setShouldDeleteFormId(null);
-                }}
-              >
-                Abbrechen
-              </Button>
-            </Box>
-          </Box>
+          <DialogBody>
+            Sind Sie sicher, dass Sie diese Formular unwiderruflich löschen wollen? Sollte es sich
+            um eine Bewerbungsformular handeln gehen sämtlich <b>Attribute aller Bewerber*innen</b>{' '}
+            dieser Stelle verloren!
+          </DialogBody>
+          <DialogFooter>
+            <Button
+              onClick={() => {
+                setShouldDeleteFormId(null);
+              }}
+              kind="secondary"
+            >
+              Abbrechen
+            </Button>
+            <Button
+              onClick={() => {
+                onDelete();
+                setShouldDeleteFormId(null);
+              }}
+              destructive
+            >
+              Löschen
+            </Button>
+          </DialogFooter>
         </Dialog>
       )}
       {(replicaToEdit || formToReplicate) && (
-        <Dialog onClose={closeReplicaDialog}>
-          <form
-            onSubmit={handleSubmit(async (values) => {
-              if (replicaToEdit) {
-                const form = ((forms.onboarding || []) as any).reduce(
-                  (acc, {replicas}) => {
-                    const replica = replicas?.find(
-                      ({formId}) => formId === replicaToEdit,
-                    );
-                    if (!replica) return acc;
-                    return replica;
-                  },
-                  {} as any,
-                );
-                if (!form) return closeReplicaDialog();
-                await API.forms.update({
-                  ...form,
-                  formTitle: values.replicaFormTitle,
-                });
-                revalidate();
-                closeReplicaDialog();
-                return;
-              }
-
-              await API.forms.create({
-                formId: uuidv4(),
-                jobId: job.jobId,
-                formTitle: values.replicaFormTitle,
-                formCategory: 'onboarding',
-                formFields: [],
-                replicaOf: formToReplicate,
-              });
-              revalidate();
-              closeReplicaDialog();
-            })}
-            style={{display: 'grid', rowGap: spacing.scale300}}
-          >
-            <Input
-              label="Formulartitel"
-              placeholder="Formulartitel"
-              name="replicaFormTitle"
-              ref={register}
-            />
-            <Button type="submit">Speichern</Button>
+        <Dialog onClose={closeReplicaDialog} title="Replikat hinzufügen">
+          <form onSubmit={handleSubmit(onSubmitReplica)}>
+            <DialogBody>
+              <Input
+                label="Formulartitel"
+                placeholder="Formulartitel"
+                name="replicaFormTitle"
+                ref={register}
+                errors={errorsFor(errors, 'replicaFormTitle')}
+                required
+              />
+            </DialogBody>
+            <DialogFooter>
+              <Button onClick={closeReplicaDialog} kind="secondary">
+                Abbrechen
+              </Button>
+              <Button type="submit" disabled={!(formState.isValid && formState.isDirty)}>
+                Speichern
+              </Button>
+            </DialogFooter>
           </form>
         </Dialog>
       )}
       <HeadingL>{job?.jobTitle}</HeadingL>
-      <Box display="grid" gridRowGap={spacing.scale200}>
+      <Box display="grid" rowGap={spacing.scale200}>
         <div
           style={{cursor: 'pointer'}}
           onClick={() => router.push(`/dashboard/jobs/${jobId}/edit`)}
@@ -358,14 +364,12 @@ const JobDetails = () => {
               </tr>
             </thead>
             <tbody>
-              {job?.jobRequirements?.map(
-                ({requirementLabel, minValue}, idx) => (
-                  <tr key={idx}>
-                    <td>{requirementLabel}</td>
-                    <td>{minValue || 'Keine Angabe'}</td>
-                  </tr>
-                ),
-              )}
+              {job?.jobRequirements?.map(({requirementLabel, minValue}, idx) => (
+                <tr key={idx}>
+                  <td>{requirementLabel}</td>
+                  <td>{minValue || 'Keine Angabe'}</td>
+                </tr>
+              ))}
             </tbody>
           </Table>
         )}
@@ -432,9 +436,7 @@ const JobDetails = () => {
               <td>Gutachten</td>
               <td>
                 {!report ? (
-                  <Link href={`/dashboard/jobs/${jobId}/reportbuilder`}>
-                    hinzufügen
-                  </Link>
+                  <Link href={`/dashboard/jobs/${jobId}/reportbuilder`}>hinzufügen</Link>
                 ) : (
                   <Box
                     display="grid"
@@ -443,9 +445,7 @@ const JobDetails = () => {
                     justifyContent="left"
                     alignItems="center"
                   >
-                    <Link href={`/dashboard/jobs/${jobId}/reportbuilder`}>
-                      bearbeiten
-                    </Link>
+                    <Link href={`/dashboard/jobs/${jobId}/reportbuilder`}>bearbeiten</Link>
                     <span>/</span>
                     <Button
                       kind="minimal"
@@ -468,57 +468,37 @@ const JobDetails = () => {
       </Box>
       <Box display="grid" gridRowGap={spacing.scale200}>
         <HeadingS>Bewerbungs-Formular</HeadingS>
-        <DataTable
-          columns={formsTableColumns}
-          data={applicationFormsData}
-          isLoading={isFetching}
-        />
+        <DataTable columns={formsTableColumns} data={applicationFormsData} isLoading={isFetching} />
       </Box>
       <Box display="grid" gridRowGap={spacing.scale200}>
         <HeadingS>Screening-Formular</HeadingS>
-        <DataTable
-          columns={baseCols}
-          data={screeningFormsData}
-          isLoading={isFetching}
-        />
+        <DataTable columns={baseCols} data={screeningFormsData} isLoading={isFetching} />
       </Box>
       <Box display="grid" gridRowGap={spacing.scale200}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <HeadingS>Assessment-Formulare</HeadingS>
           <Button
             onClick={() =>
-              router.push(
-                `/dashboard/formbuilder?formCategory=assessment&jobId=${jobId}`,
-              )
+              router.push(`/dashboard/formbuilder?formCategory=assessment&jobId=${jobId}`)
             }
           >
             Hinzufügen
           </Button>
         </Box>
-        <DataTable
-          columns={baseCols}
-          data={forms.assessment || []}
-          isLoading={isFetching}
-        />
+        <DataTable columns={baseCols} data={forms.assessment || []} isLoading={isFetching} />
       </Box>
       <Box display="grid" gridRowGap={spacing.scale200}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <HeadingS>Onboarding-Formulare</HeadingS>
           <Button
             onClick={() =>
-              router.push(
-                `/dashboard/formbuilder?formCategory=onboarding&jobId=${jobId}`,
-              )
+              router.push(`/dashboard/formbuilder?formCategory=onboarding&jobId=${jobId}`)
             }
           >
             Hinzufügen
           </Button>
         </Box>
-        <DataTable
-          columns={onboardingCols}
-          data={forms.onboarding || []}
-          isLoading={isFetching}
-        />
+        <DataTable columns={onboardingCols} data={forms.onboarding || []} isLoading={isFetching} />
       </Box>
     </main>
   );

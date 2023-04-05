@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import Link from 'next/link';
 import {useTheme} from 'styled-components';
-import {HeadingL, Box, HeadingS, Typography} from 'components';
+import {HeadingL, Box, HeadingS, Typography, DialogBody, DialogFooter} from 'components';
 import {useAuth, useToaster} from 'context';
 import {API} from 'services';
 import {Dialog, Button, withAuth} from 'components';
@@ -34,20 +34,19 @@ const Account: React.FC = () => {
       gridRowGap={spacing.scale300}
     >
       {status === 'shouldDelete' && (
-        <Dialog onClose={() => setStatus('shouldDelete')}>
-          <Box display="grid" rowGap={spacing.scale300}>
-            <HeadingS>Tenant unwiderruflich löschen?</HeadingS>
-            <Typography>
-              Sind Sie sicher dass Sie <b>alle Daten löschen</b> wollen? Dieser
-              Vorgang kann nicht rückgängig gemacht werden!
-            </Typography>
-            <Box display="flex" justifyContent="space-between">
-              <Button onClick={() => _deleteTenant()}>Löschen</Button>
-              <Button kind="secondary" onClick={() => setStatus('idle')}>
-                Abbrechen
-              </Button>
-            </Box>
-          </Box>
+        <Dialog onClose={() => setStatus('shouldDelete')} title="Tenant unwiderruflich löschen?">
+          <DialogBody>
+            Sind Sie sicher dass Sie <b>alle Daten löschen</b> wollen? Dieser Vorgang kann nicht
+            rückgängig gemacht werden!
+          </DialogBody>
+          <DialogFooter>
+            <Button kind="secondary" onClick={() => setStatus('idle')}>
+              Abbrechen
+            </Button>
+            <Button onClick={() => _deleteTenant()} destructive>
+              Löschen
+            </Button>
+          </DialogFooter>
         </Dialog>
       )}
       <HeadingL>Account</HeadingL>
