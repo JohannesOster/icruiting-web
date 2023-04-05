@@ -12,6 +12,9 @@ export const Header = styled.header`
   display: flex;
   align-items: center;
   position: relative;
+  position: fixed;
+  background: ${({theme}) => theme.colors.surfaceDefault};
+  z-index: 100;
 
   a {
     text-decoration: none;

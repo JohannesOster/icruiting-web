@@ -38,7 +38,7 @@ const Hero = styled.section`
   flex-direction: column;
   justify-content: center;
   gap: ${({theme}) => theme.spacing.scale600};
-  height: calc(100vh - 80px);
+  height: 100vh;
   max-width: 790px;
 `;
 
