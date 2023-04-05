@@ -3,14 +3,7 @@ import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {useForm} from 'react-hook-form';
 import {useTheme} from 'styled-components';
-import {
-  Table,
-  Box,
-  HeadingS,
-  DataTable,
-  FlexGrid,
-  getDashboardLayout,
-} from 'components';
+import {Table, Box, HeadingS, DataTable, FlexGrid, getDashboardLayout} from 'components';
 import {Button} from 'components';
 import {API, TForm} from 'services';
 import {Arrow, Edit} from 'icons';
@@ -55,11 +48,7 @@ const ApplicantDetails = () => {
 
   const key =
     applicant && screeningForm
-      ? [
-          'GET /form-submissions/:formId/:applicantId',
-          screeningForm.formId,
-          applicantId,
-        ]
+      ? ['GET /form-submissions/:formId/:applicantId', screeningForm.formId, applicantId]
       : null;
   const {data: submission} = useFetch(key, (_key, formId, applicantId) =>
     API.formSubmissions.find(formId, applicantId),
@@ -83,9 +72,7 @@ const ApplicantDetails = () => {
       submission: values,
     };
 
-    const action = submission
-      ? API.formSubmissions.update
-      : API.formSubmissions.create;
+    const action = submission ? API.formSubmissions.update : API.formSubmissions.create;
 
     setStatus('submitting');
     action(body).then(() => {
@@ -98,9 +85,7 @@ const ApplicantDetails = () => {
   };
 
   const formFields = screeningForm?.formFields
-    .filter(
-      (field) => field.visibility === 'all' || currentUser.userRole === 'admin',
-    )
+    .filter((field) => field.visibility === 'all' || currentUser.userRole === 'admin')
     .map((item) => {
       const Component = stringToComponent(item.component);
       // destructure to avoid passing unnecessary props to component
@@ -121,9 +106,7 @@ const ApplicantDetails = () => {
         return (
           <Component
             ref={register({
-              ...(item.required
-                ? {required: 'Dieses Feld ist verpflichtend'}
-                : {}),
+              ...(item.required ? {required: 'Dieses Feld ist verpflichtend'} : {}),
             })}
             errors={errorsFor(errors, item.formFieldId)}
             key={item.formFieldId}
@@ -137,9 +120,7 @@ const ApplicantDetails = () => {
       return (
         <Component
           ref={register({
-            ...(item.required
-              ? {required: 'Dieses Feld ist verpflichtend'}
-              : {}),
+            ...(item.required ? {required: 'Dieses Feld ist verpflichtend'} : {}),
           })}
           errors={errorsFor(errors, item.formFieldId)}
           key={item.formFieldId}
@@ -154,18 +135,12 @@ const ApplicantDetails = () => {
     <Box display="grid" gridRowGap={spacing.scale700}>
       <section>
         <Box display="flex" justifyContent="space-between">
-          <FlexGrid
-            flexGap={spacing.scale300}
-            alignItems="center"
-            marginBottom={spacing.scale300}
-          >
-            <HeadingS>Bewerber*innendaten</HeadingS>
+          <FlexGrid flexGap={spacing.scale300} alignItems="center" marginBottom={spacing.scale300}>
+            <HeadingS>Bewerber:innendaten</HeadingS>
             {currentUser?.userRole === 'admin' && (
               <Edit
                 style={{cursor: 'pointer'}}
-                onClick={() =>
-                  router.push(`/dashboard/applicants/${applicantId}/edit`)
-                }
+                onClick={() => router.push(`/dashboard/applicants/${applicantId}/edit`)}
               />
             )}
           </FlexGrid>
@@ -191,9 +166,7 @@ const ApplicantDetails = () => {
             </tr>
             {applicant?.attributes.map((attr, idx) => (
               <tr key={idx}>
-                <td style={{borderRight: '1px solid ' + colors.inputBorder}}>
-                  {attr.key}
-                </td>
+                <td style={{borderRight: '1px solid ' + colors.inputBorder}}>{attr.key}</td>
                 <td>{attr.value.toString()}</td>
               </tr>
             ))}
@@ -211,10 +184,7 @@ const ApplicantDetails = () => {
         </Table>
       </section>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div
-          onClick={() => setShowScreeningForm((curr) => !curr)}
-          style={{cursor: 'pointer'}}
-        >
+        <div onClick={() => setShowScreeningForm((curr) => !curr)} style={{cursor: 'pointer'}}>
           <FlexGrid alignItems="center" flexGap={spacing.scale200}>
             <HeadingS>Screening-Formular</HeadingS>
             <Arrow
@@ -226,11 +196,7 @@ const ApplicantDetails = () => {
           </FlexGrid>
         </div>
         {showScreeningForm && (
-          <Box
-            display="grid"
-            gridRowGap={spacing.scale500}
-            paddingTop={spacing.scale200}
-          >
+          <Box display="grid" gridRowGap={spacing.scale500} paddingTop={spacing.scale200}>
             {formFields}
             {formFields?.length && (
               <Box marginTop={spacing.scale300}>

@@ -4,13 +4,7 @@ import {useTheme} from 'styled-components';
 import {useForm} from 'react-hook-form';
 import config from 'config';
 import {API, TForm} from 'services';
-import {
-  HeadingL,
-  Box,
-  FlexGrid,
-  getDashboardLayout,
-  withAdmin,
-} from 'components';
+import {HeadingL, Box, FlexGrid, getDashboardLayout, withAdmin} from 'components';
 import {useToaster} from 'context';
 import {useRouter} from 'next/router';
 import {stringToComponent} from 'components/FormBuilder/utils';
@@ -115,7 +109,7 @@ export const EditApplicant = () => {
           toaster.danger(request.responseText);
           return;
         }
-        toaster.success('Bewerber*in erfolgreich bearbeitet');
+        toaster.success('Bewerber:in erfolgreich bearbeitet');
         router.back();
       }
     };
@@ -129,7 +123,7 @@ export const EditApplicant = () => {
         justifyContent="space-between"
         marginBottom={spacing.scale300}
       >
-        <HeadingL>Bewerber*in bearbeiten</HeadingL>
+        <HeadingL>Bewerber:in bearbeiten</HeadingL>
         <Box display="grid" gridAutoFlow="column" columnGap={spacing.scale500}>
           <Button isLoading={isSubmitting} onClick={onSave}>
             Speichern
@@ -140,13 +134,7 @@ export const EditApplicant = () => {
         </Box>
       </FlexGrid>
       {Form}
-      <input
-        hidden
-        ref={register}
-        value={form?.formId || ''}
-        onChange={() => {}}
-        name="formId"
-      />
+      <input hidden ref={register} value={form?.formId || ''} onChange={() => {}} name="formId" />
     </Box>
   );
 };

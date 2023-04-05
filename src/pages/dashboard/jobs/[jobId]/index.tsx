@@ -285,7 +285,7 @@ const JobDetails = () => {
         >
           <DialogBody>
             Sind Sie sicher, dass Sie diese Formular unwiderruflich löschen wollen? Sollte es sich
-            um eine Bewerbungsformular handeln gehen sämtlich <b>Attribute aller Bewerber*innen</b>{' '}
+            um eine Bewerbungsformular handeln gehen sämtlich <b>Attribute aller Bewerber:innen</b>{' '}
             dieser Stelle verloren!
           </DialogBody>
           <DialogFooter>
