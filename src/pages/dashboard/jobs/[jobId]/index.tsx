@@ -2,24 +2,20 @@ import React, {useEffect, useState} from 'react';
 import Link from 'next/link';
 import {useTheme} from 'styled-components';
 import {
-  HeadingL,
   HeadingS,
   Typography,
   TColumn,
   Box,
   DataTable,
-  Table,
-  getDashboardLayout,
-  FlexGrid,
+  getJobsLayout,
   DialogBody,
   DialogFooter,
 } from 'components';
-import {Button, Dialog, Spinner, Input} from 'components';
+import {Button, Dialog, Input} from 'components';
 import {API, FormCategory, TForm} from 'services';
 import {useRouter} from 'next/router';
 import {withAdmin} from 'components';
 import config from 'config';
-import {Edit} from 'icons';
 import {useForm} from 'react-hook-form';
 import {v4 as uuidv4} from 'uuid';
 import {useFetch} from 'components/useFetch';
@@ -46,12 +42,6 @@ const JobDetails = () => {
     mutate,
     revalidate,
   } = useFetch([`GET /forms`, jobId], (_key, jobId) => API.forms.list(jobId));
-
-  const [deletingReport, setDeletingReport] = useState(false);
-  const {data: report, revalidate: revalidateReport} = useFetch(
-    ['GET /jobs/:jobId/report', jobId],
-    (_key, jobId) => API.jobs.retrieveReport(jobId),
-  );
 
   const closeReplicaDialog = () => {
     setReplicaToEdit(null);
@@ -343,138 +333,15 @@ const JobDetails = () => {
           </form>
         </Dialog>
       )}
-      <HeadingL>{job?.jobTitle}</HeadingL>
       <Box display="grid" rowGap={spacing.scale200}>
-        <div
-          style={{cursor: 'pointer'}}
-          onClick={() => router.push(`/dashboard/jobs/${jobId}/edit`)}
-        >
-          <FlexGrid gap={spacing.scale300} alignItems="center">
-            <HeadingS>Anforderungsprofil</HeadingS>
-            <Edit />
-          </FlexGrid>
-        </div>
-        {isFetching && <Spinner />}
-        {!isFetching && (
-          <Table>
-            <thead>
-              <tr>
-                <th>Anforderung</th>
-                <th>Mindestmaß</th>
-              </tr>
-            </thead>
-            <tbody>
-              {job?.jobRequirements?.map(({requirementLabel, minValue}, idx) => (
-                <tr key={idx}>
-                  <td>{requirementLabel}</td>
-                  <td>{minValue || 'Keine Angabe'}</td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        )}
-      </Box>
-      <Box display="grid" gridRowGap={spacing.scale200}>
-        <HeadingS>Evaluierung</HeadingS>
-        <Table>
-          <thead>
-            <tr>
-              <th>Formulartyp</th>
-              <th>Ranking</th>
-              <th>Datenexport</th>
-            </tr>
-          </thead>
-          <tbody>
-            {[
-              {
-                formCategory: 'screening',
-                title: 'Screening',
-                url: `/dashboard/jobs/${jobId}/ranking?formCategory=screening`,
-              },
-              {
-                formCategory: 'assessment',
-                title: 'Assessment',
-                url: `/dashboard/jobs/${jobId}/ranking?formCategory=assessment`,
-              },
-              {
-                formCategory: 'onboarding',
-                title: 'Onboarding',
-                url: `/dashboard/jobs/${jobId}/ranking?formCategory=onboarding`,
-              },
-            ].map(({title, url, formCategory}) => (
-              <tr key={url}>
-                <td>{title}</td>
-                <td>
-                  <Link href={url}>Ranking</Link>
-                </td>
-                <td>
-                  <Button
-                    kind="minimal"
-                    onClick={() => {
-                      API.formSubmissions.exportCSV(jobId, formCategory);
-                    }}
-                  >
-                    CSV Export
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </Box>
-      <Box display="grid" gridRowGap={spacing.scale200}>
-        <HeadingS>Gutachen gestalten</HeadingS>
-        <Table>
-          <thead>
-            <tr>
-              <th>Gutachten</th>
-              <th>Aktion</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Gutachten</td>
-              <td>
-                {!report ? (
-                  <Link href={`/dashboard/jobs/${jobId}/reportbuilder`}>hinzufügen</Link>
-                ) : (
-                  <Box
-                    display="grid"
-                    gridColumnGap={spacing.scale200}
-                    gridAutoFlow="column"
-                    justifyContent="left"
-                    alignItems="center"
-                  >
-                    <Link href={`/dashboard/jobs/${jobId}/reportbuilder`}>bearbeiten</Link>
-                    <span>/</span>
-                    <Button
-                      kind="minimal"
-                      isLoading={deletingReport}
-                      onClick={async () => {
-                        setDeletingReport(true);
-                        await API.jobs.delReport(jobId);
-                        await revalidateReport();
-                        setDeletingReport(false);
-                      }}
-                    >
-                      löschen
-                    </Button>
-                  </Box>
-                )}
-              </td>
-            </tr>
-          </tbody>
-        </Table>
-      </Box>
-      <Box display="grid" gridRowGap={spacing.scale200}>
         <HeadingS>Bewerbungs-Formular</HeadingS>
         <DataTable columns={formsTableColumns} data={applicationFormsData} isLoading={isFetching} />
       </Box>
-      <Box display="grid" gridRowGap={spacing.scale200}>
+      <Box display="grid" rowGap={spacing.scale200}>
         <HeadingS>Screening-Formular</HeadingS>
         <DataTable columns={baseCols} data={screeningFormsData} isLoading={isFetching} />
       </Box>
-      <Box display="grid" gridRowGap={spacing.scale200}>
+      <Box display="grid" rowGap={spacing.scale200}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <HeadingS>Assessment-Formulare</HeadingS>
           <Button
@@ -487,7 +354,7 @@ const JobDetails = () => {
         </Box>
         <DataTable columns={baseCols} data={forms.assessment || []} isLoading={isFetching} />
       </Box>
-      <Box display="grid" gridRowGap={spacing.scale200}>
+      <Box display="grid" rowGap={spacing.scale200}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <HeadingS>Onboarding-Formulare</HeadingS>
           <Button
@@ -504,5 +371,5 @@ const JobDetails = () => {
   );
 };
 
-JobDetails.getLayout = getDashboardLayout;
+JobDetails.getLayout = getJobsLayout;
 export default withAdmin(JobDetails);

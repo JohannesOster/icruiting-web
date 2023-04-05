@@ -9,6 +9,7 @@ export * from './Box';
 export * from './FlexGrid';
 export * from './FormSectionHeader';
 export * from './DashboardLayout';
+export * from './JobsLayout';
 export * from './withAuth';
 export * from './useOutsideClick';
 export * from './useFetch';
