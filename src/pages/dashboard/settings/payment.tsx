@@ -146,9 +146,7 @@ const PaymentMethods: React.FC = () => {
       <DataTable columns={columns} data={data || []} isLoading={!(data || error)} />
       {clientSecret && (
         <Dialog onClose={() => setClientSecret(null)} title="Bankkonto hinzufügen">
-          <Box display="grid" rowGap={spacing.scale200}>
-            <PaymentMethodForm onSubmit={onSubmit} />
-          </Box>
+          <PaymentMethodForm onSubmit={onSubmit} />
         </Dialog>
       )}
     </Box>

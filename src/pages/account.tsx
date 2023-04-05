@@ -31,7 +31,7 @@ const Account: React.FC = () => {
     <Box
       margin={`${spacing.scale300} ${spacing.scale500}`}
       display="grid"
-      gridRowGap={spacing.scale300}
+      rowGap={spacing.scale300}
     >
       {status === 'shouldDelete' && (
         <Dialog onClose={() => setStatus('shouldDelete')} title="Tenant unwiderruflich löschen?">
@@ -50,23 +50,25 @@ const Account: React.FC = () => {
         </Dialog>
       )}
       <HeadingL>Account</HeadingL>
-      <Link href="/password-reset">Passwort zurrücksetzten</Link>
-      {currentUser?.userRole === 'admin' && (
-        <Box>
-          <Button
-            kind="minimal"
-            onClick={(event) => {
-              event.preventDefault();
-              setStatus('shouldDelete');
-            }}
-            isLoading={status === 'isDeleting'}
-          >
-            <Typography style={{color: colors.typographyPrimaryError}}>
-              Account und Tenant unwiderruflich löschen
-            </Typography>
-          </Button>
-        </Box>
-      )}
+      <Box display="flex" gap={spacing.scale400} flexDirection="column">
+        <Link href="/password-reset">Passwort zurrücksetzten</Link>
+        <Link href="/logout">Abmelden</Link>
+        {currentUser?.userRole === 'admin' && (
+          <Box>
+            <Button
+              kind="primary"
+              onClick={(event) => {
+                event.preventDefault();
+                setStatus('shouldDelete');
+              }}
+              isLoading={status === 'isDeleting'}
+              destructive
+            >
+              Account und Tenant löschen
+            </Button>
+          </Box>
+        )}
+      </Box>
       {currentUser?.userRole === 'admin' && (
         <>
           <HeadingL>Zahlungen</HeadingL>
