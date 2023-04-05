@@ -113,7 +113,6 @@ const FormBuilder: React.FC = () => {
     if (componentToEdit) return;
     const inputs = ['input', 'select', 'button', 'textarea'];
     const activeElement = document.activeElement?.tagName.toLowerCase() || '';
-
     if (inputs.includes(activeElement)) return;
     if (e.key === 'i') {
       e.preventDefault();
