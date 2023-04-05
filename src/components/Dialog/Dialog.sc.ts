@@ -20,7 +20,7 @@ export const ContentBackground = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   padding: ${({theme}) => theme.spacing.scale600};
-  min-width: 200px;
+  min-width: 500px;
 
   @media (max-width: 568px) {
     overflow: scroll;
