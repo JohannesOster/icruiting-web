@@ -187,7 +187,13 @@ const LandingPage: React.FC = () => {
             </Box>
           </Box> */}
           {/* CONTACT */}
-          <Box display="flex" flexDirection="column" alignItems="start" gap={spacing.scale600}>
+          <Box
+            id="contact"
+            display="flex"
+            flexDirection="column"
+            alignItems="start"
+            gap={spacing.scale600}
+          >
             <Box>
               <HeadingM>Kontakt</HeadingM>
               <Typography color="secondary">Wir antworten schnell 🏃</Typography>

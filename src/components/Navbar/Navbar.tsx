@@ -50,7 +50,7 @@ const Navbar = () => {
           <a href="https://docs.icruiting.at">Dokumentation</a>
         </MobileNavItem>
         <MobileNavItem onClick={closeMenu}>
-          <Link href="/contact">Kontakt</Link>
+          <Link href="/#contact">Kontakt</Link>
         </MobileNavItem>
       </Box>
       <Box textAlign="center">
@@ -88,7 +88,7 @@ const Navbar = () => {
           <Link href="/account">Account</Link>
         </MobileNavItem>
         <MobileNavItem onClick={closeMenu}>
-          <Link href="/contact">Kontakt</Link>
+          <Link href="/#contact">Kontakt</Link>
         </MobileNavItem>
         <MobileNavItem onClick={closeMenu}>
           <Typography>
@@ -111,7 +111,7 @@ const Navbar = () => {
         </a>
       </NavItem>
       <NavItem>
-        <Link href="/contact">Kontakt</Link>
+        <Link href="/#contact">Kontakt</Link>
       </NavItem>
       <NavItem>
         <Link href="/login">Anmelden</Link>
@@ -130,7 +130,7 @@ const Navbar = () => {
         </a>
       </NavItem>
       <NavItem>
-        <Link href="/contact">Kontakt</Link>
+        <Link href="/#contact">Kontakt</Link>
       </NavItem>
       <NavItem>
         <Link href="/dashboard">Dashboard</Link>
