@@ -13,6 +13,8 @@ import {
   Dialog,
   Typography,
   Box,
+  DialogBody,
+  DialogFooter,
 } from 'components';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers';
@@ -42,11 +44,7 @@ export const Members = () => {
   const {spacing} = useTheme();
   const toaster = useToaster();
 
-  const {
-    data: members,
-    error,
-    revalidate,
-  } = useFetch('/members', API.members.list);
+  const {data: members, error, revalidate} = useFetch('/members', API.members.list);
   const [memberToEdit, setMembereToEdit] = useState<{
     email: string;
     userRole: string;
@@ -56,20 +54,16 @@ export const Members = () => {
   const [deletingMember, setDeletingMember] = useState<string | null>(null);
   const [showNewMembereForm, setShowNewMembereForm] = useState(false);
 
-  const {errors, formState, handleSubmit, reset, control} = useForm<FormValues>(
-    {
-      mode: 'onChange',
-      resolver: yupResolver(
-        object({
-          emails: array()
-            .of(email)
-            .required('Email(s) ist ein verpflichtendes Feld.'),
-        }),
-      ),
-      criteriaMode: 'all',
-      defaultValues: {emails: []},
-    },
-  );
+  const {errors, formState, handleSubmit, reset, control} = useForm<FormValues>({
+    mode: 'onChange',
+    resolver: yupResolver(
+      object({
+        emails: array().of(email).required('Email(s) ist ein verpflichtendes Feld.'),
+      }),
+    ),
+    criteriaMode: 'all',
+    defaultValues: {emails: []},
+  });
 
   const addMembere = useCallback(
     async ({emails}: {emails: string[]}) => {
@@ -193,58 +187,59 @@ export const Members = () => {
           onClose={() => {
             setShowNewMembereForm(false);
           }}
+          title="Neuen Mitarbeiter Einladen"
         >
-          <HeadingS>Neuen Mitarbeiter Einladen</HeadingS>
-          <form
-            onSubmit={handleSubmit(addMembere)}
-            style={{display: 'grid', gridRowGap: spacing.scale500}}
-          >
-            <Controller
-              name="emails"
-              control={control}
-              render={(props) => (
-                <ChipInput
-                  description="Tab klicken um E-Mail-Adresse zu bestätigen"
-                  placeholder="E-Mail-Adresse"
-                  label="E-Mail-Adresse des neuen Mitarbeiters"
-                  errors={
-                    errorsFor(errors, 'emails').length
-                      ? errorsFor(errors, 'emails')
-                      : errorsFor(errors, 'emails[0]')
-                  }
-                  autoFocus
-                  {...props}
-                />
-              )}
-            />
-
-            <Button
-              disabled={!(formState.isValid && formState.isDirty)}
-              isLoading={formState.isSubmitting}
-              type="submit"
-            >
-              Einladung senden
-            </Button>
+          <form onSubmit={handleSubmit(addMembere)}>
+            <DialogBody>
+              <Controller
+                name="emails"
+                control={control}
+                render={(props) => (
+                  <ChipInput
+                    description='"Tab" klicken um E-Mail-Adresse zu bestätigen'
+                    placeholder="E-Mail-Adresse"
+                    label="E-Mail-Adresse des neuen Mitarbeiters"
+                    errors={
+                      errorsFor(errors, 'emails').length
+                        ? errorsFor(errors, 'emails')
+                        : errorsFor(errors, 'emails[0]')
+                    }
+                    autoFocus
+                    {...props}
+                  />
+                )}
+              />
+            </DialogBody>
+            <DialogFooter>
+              <Button
+                disabled={!(formState.isValid && formState.isDirty)}
+                isLoading={formState.isSubmitting}
+                type="submit"
+              >
+                Einladung senden
+              </Button>
+            </DialogFooter>
           </form>
         </Dialog>
       )}
       {memberToDelete && (
-        <Dialog onClose={() => setMemberToDelete(null)}>
-          <Box display="grid" rowGap={spacing.scale300}>
-            <HeadingS>Mitarbeiter*in unwiderruflich entfernen?</HeadingS>
-            <Typography>
-              Sind Sie sicher dass Sie diesen Mitarbeiter*in entfernen möchten?
-              Es werden alle zusammenhängende <b>Daten gelöscht</b>{' '}
-              (Bewertungen)? Dieser Vorgang kann nicht rückgängig gemacht
-              werden!
-            </Typography>
-            <Box display="flex" justifyContent="space-between">
-              <Button onClick={() => delMember(memberToDelete)}>Löschen</Button>
-              <Button kind="secondary" onClick={() => setMemberToDelete(null)}>
-                Abbrechen
-              </Button>
-            </Box>
-          </Box>
+        <Dialog
+          onClose={() => setMemberToDelete(null)}
+          title="Mitarbeiter:in unwiderruflich entfernen?"
+        >
+          <DialogBody>
+            Sind Sie sicher dass Sie diesen Mitarbeiter:in entfernen möchten? Es werden alle
+            zusammenhängende <b>Daten gelöscht</b> (Bewertungen)? Dieser Vorgang kann nicht
+            rückgängig gemacht werden!
+          </DialogBody>
+          <DialogFooter>
+            <Button kind="secondary" onClick={() => setMemberToDelete(null)}>
+              Abbrechen
+            </Button>
+            <Button onClick={() => delMember(memberToDelete)} destructive>
+              Löschen
+            </Button>
+          </DialogFooter>
         </Dialog>
       )}
       <main>
@@ -255,15 +250,9 @@ export const Members = () => {
           marginBottom={spacing.scale300}
         >
           <HeadingL>Mitarbeiter:innen</HeadingL>
-          <Button onClick={() => setShowNewMembereForm(true)}>
-            Hinzufügen
-          </Button>
+          <Button onClick={() => setShowNewMembereForm(true)}>Hinzufügen</Button>
         </FlexGrid>
-        <DataTable
-          columns={columns}
-          data={members || []}
-          isLoading={!(members || error)}
-        />
+        <DataTable columns={columns} data={members || []} isLoading={!(members || error)} />
       </main>
     </>
   );

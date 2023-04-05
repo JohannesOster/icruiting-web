@@ -1,31 +1,16 @@
 import React, {useState} from 'react';
-import {
-  Box,
-  HeadingL,
-  HeadingS,
-  DataTable,
-  TColumn,
-  FlexGrid,
-  Typography,
-} from 'components';
+import {Box, HeadingL, HeadingS, DataTable, TColumn, FlexGrid, Typography} from 'components';
 import {PaymentMethodForm} from 'containers';
 import {useTheme} from 'styled-components';
 import {useAuth, useToaster} from 'context';
 import {Button, Dialog} from 'components';
 import {API} from 'services';
 import {loadStripe} from '@stripe/stripe-js';
-import {
-  Elements,
-  useElements,
-  useStripe,
-  IbanElement,
-} from '@stripe/react-stripe-js';
+import {Elements, useElements, useStripe, IbanElement} from '@stripe/react-stripe-js';
 import {withAdmin} from 'components';
 import {useFetch, mutate} from 'components/useFetch';
 
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '',
-);
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
 const PaymentMethods: React.FC = () => {
   const {spacing} = useTheme();
   const {currentUser} = useAuth();
@@ -38,10 +23,7 @@ const PaymentMethods: React.FC = () => {
   const [fetchesClientSecret, setFetchesClientSecret] = useState(false);
 
   const {data, error} = useFetch(
-    [
-      `GET /tenants/${currentUser?.tenantId}/paymentMethods`,
-      currentUser?.tenantId,
-    ],
+    [`GET /tenants/${currentUser?.tenantId}/paymentMethods`, currentUser?.tenantId],
     (_key, tenantId) => API.tenants.paymentMethods.list(tenantId),
   );
 
@@ -51,20 +33,15 @@ const PaymentMethods: React.FC = () => {
     try {
       const iban = elements.getElement(IbanElement);
       if (!iban) {
-        throw new Error(
-          'Ein unbekannter Fehler ist aufgetreten, bitte versuchen Sie es erneut.',
-        );
+        throw new Error('Ein unbekannter Fehler ist aufgetreten, bitte versuchen Sie es erneut.');
       }
 
-      const {error, setupIntent} = await stripe.confirmSepaDebitSetup(
-        clientSecret,
-        {
-          payment_method: {
-            sepa_debit: iban,
-            billing_details: {name: values.name, email: values.email},
-          },
+      const {error, setupIntent} = await stripe.confirmSepaDebitSetup(clientSecret, {
+        payment_method: {
+          sepa_debit: iban,
+          billing_details: {name: values.name, email: values.email},
         },
-      );
+      });
 
       if (error) throw error;
 
@@ -73,16 +50,12 @@ const PaymentMethods: React.FC = () => {
         (setupIntent?.payment_method || '') as any as string,
       );
 
-      mutate([
-        `GET /tenants/${currentUser?.tenantId}/paymentMethods`,
-        currentUser?.tenantId,
-      ]);
+      mutate([`GET /tenants/${currentUser?.tenantId}/paymentMethods`, currentUser?.tenantId]);
       iban.clear();
       success('Zahlungsmethode erfolgreich hinzugefügt');
     } catch (error) {
       danger(
-        error.message ||
-          'Ein unbekannter Fehler ist aufgetreten, bitte versuchen Sie es erneut.',
+        error.message || 'Ein unbekannter Fehler ist aufgetreten, bitte versuchen Sie es erneut.',
       );
     }
     setClientSecret(null);
@@ -170,15 +143,10 @@ const PaymentMethods: React.FC = () => {
           Neue Zahlungsmethode
         </Button>
       </FlexGrid>
-      <DataTable
-        columns={columns}
-        data={data || []}
-        isLoading={!(data || error)}
-      />
+      <DataTable columns={columns} data={data || []} isLoading={!(data || error)} />
       {clientSecret && (
-        <Dialog onClose={() => setClientSecret(null)}>
+        <Dialog onClose={() => setClientSecret(null)} title="Bankkonto hinzufügen">
           <Box display="grid" rowGap={spacing.scale200}>
-            <HeadingS>Bankkonto hinzufügen</HeadingS>
             <PaymentMethodForm onSubmit={onSubmit} />
           </Box>
         </Dialog>

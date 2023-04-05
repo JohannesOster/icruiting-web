@@ -6,11 +6,11 @@ export const Overlay = styled.div`
   left: 0;
   height: 100vh;
   width: 100vw;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.4);
   z-index: 30;
 `;
 
-export const ContentBackground = styled.div`
+export const Container = styled.div`
   box-sizing: border-box;
   background: white;
   position: absolute;
@@ -19,8 +19,8 @@ export const ContentBackground = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: ${({theme}) => theme.spacing.scale600};
   min-width: 500px;
+  border-radius: ${({theme}) => theme.borders.radius100};
 
   @media (max-width: 568px) {
     overflow: scroll;
@@ -30,12 +30,29 @@ export const ContentBackground = styled.div`
   }
 `;
 
+export const Header = styled.header`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: ${({theme}) => `${theme.spacing.scale400} ${theme.spacing.scale600}`};
+  border-bottom: 1px solid ${({theme}) => theme.colors.borderSubdued};
+`;
+
+export const DialogBody = styled.section`
+  padding: ${({theme}) => `${theme.spacing.scale400} ${theme.spacing.scale600}`};
+`;
+
+export const DialogFooter = styled.footer`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: ${({theme}) => `${theme.spacing.scale400} ${theme.spacing.scale600}`};
+  border-top: 1px solid ${({theme}) => theme.colors.borderSubdued};
+`;
+
 export const Close = styled.span`
-  position: absolute;
   display: flex;
   cursor: pointer;
-  top: 0;
-  right: 0;
   padding: ${({theme}) => theme.spacing.scale200};
 
   svg {

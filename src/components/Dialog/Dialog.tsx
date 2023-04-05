@@ -1,8 +1,15 @@
 import React, {useEffect} from 'react';
-import {Overlay, ContentBackground, Close} from './Dialog.sc';
-import {DialogProps} from './types';
+import {Overlay, Container, Close, Header} from './Dialog.sc';
+import {HeadingM} from 'components';
 
-export const Dialog: React.FC<DialogProps> = ({onClose, children}) => {
+interface DialogProps {
+  onClose: () => void;
+  title: string;
+  children?: React.ReactNode;
+}
+
+export {DialogBody, DialogFooter} from './Dialog.sc';
+export const Dialog: React.FC<DialogProps> = ({onClose, title, children}) => {
   const onMouseDown = (event: React.MouseEvent) => {
     // ignore clicks on children
     if (event.target !== event.currentTarget) return;
@@ -22,14 +29,17 @@ export const Dialog: React.FC<DialogProps> = ({onClose, children}) => {
 
   return (
     <Overlay onMouseDown={onMouseDown}>
-      <ContentBackground>
-        <Close onClick={() => onClose()}>
-          <svg viewBox="0 0 40 40">
-            <path d="M 10,10 L 30,30 M 30,10 L 10,30" />
-          </svg>
-        </Close>
+      <Container>
+        <Header>
+          <HeadingM>{title}</HeadingM>
+          <Close onClick={onClose}>
+            <svg viewBox="0 0 40 40">
+              <path d="M 10,10 L 30,30 M 30,10 L 10,30" />
+            </svg>
+          </Close>
+        </Header>
         {children}
-      </ContentBackground>
+      </Container>
     </Overlay>
   );
 };

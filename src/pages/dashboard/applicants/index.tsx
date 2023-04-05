@@ -18,6 +18,8 @@ import {
   Button,
   Dialog,
   withAuth,
+  DialogBody,
+  DialogFooter,
 } from 'components';
 import {useQueryReducer} from 'components/useQueryReducer';
 import {useFetch} from 'components/useFetch';
@@ -48,13 +50,10 @@ const Applicants = () => {
     order(sort);
   }, []);
 
-  const selectedJobLocalStorageKey = useRef(
-    `${currentUser.userId}-applicants-job`,
-  );
+  const selectedJobLocalStorageKey = useRef(`${currentUser.userId}-applicants-job`);
   const {data: jobs, error: jobsError} = useFetch('GET /jobs', API.jobs.list);
   const [selectedJobId, setSelectedJobId] = useState(
-    localStorage.getItem(selectedJobLocalStorageKey.current) ||
-      (jobs && jobs[0]?.jobId),
+    localStorage.getItem(selectedJobLocalStorageKey.current) || (jobs && jobs[0]?.jobId),
   );
 
   const key = selectedJobId
@@ -82,8 +81,7 @@ const Applicants = () => {
 
   useEffect(() => {
     if (!jobs?.length) return;
-    if (selectedJobId && jobs.map(({jobId}) => jobId).includes(selectedJobId))
-      return;
+    if (selectedJobId && jobs.map(({jobId}) => jobId).includes(selectedJobId)) return;
     const jobId = jobs[0].jobId;
     setSelectedJobId(jobId);
     localStorage.setItem(selectedJobLocalStorageKey.current, jobId);
@@ -91,8 +89,7 @@ const Applicants = () => {
 
   // Checking for undefined because empty array should lead to loading indicator
   const loadingJob = jobs === undefined && !jobsError;
-  const loadingApplicants =
-    applicantsResponse === undefined && !applicantsError;
+  const loadingApplicants = applicantsResponse === undefined && !applicantsError;
   const isLoading = loadingJob || loadingApplicants;
 
   enum BulkAction {
@@ -165,15 +162,10 @@ const Applicants = () => {
         if (!attr?.value) attr = row.files.find(({key}) => label === key);
 
         if (attr?.value !== row.name) {
-          return (
-            attr?.value ||
-            (attr?.uri ? <Link href={attr.uri}>{attr.key}</Link> : '')
-          );
+          return attr?.value || (attr?.uri ? <Link href={attr.uri}>{attr.key}</Link> : '');
         }
 
-        return (
-          <Link href={`${router.pathname}/${row.applicantId}`}>{row.name}</Link>
-        );
+        return <Link href={`${router.pathname}/${row.applicantId}`}>{row.name}</Link>;
       },
     })) || []),
     {
@@ -208,10 +200,7 @@ const Applicants = () => {
     {label: 'löschen', value: BulkAction.delete},
     {label: '.csv download', value: BulkAction.download},
   ];
-  const onBulkAction = (
-    bulkAction: BulkAction,
-    bulkActionIndices: number[],
-  ) => {
+  const onBulkAction = (bulkAction: BulkAction, bulkActionIndices: number[]) => {
     switch (bulkAction) {
       case BulkAction.delete: {
         dispatch({
@@ -246,9 +235,7 @@ const Applicants = () => {
 
         csv += _data
           .map((row) => {
-            return headers
-              .map((header) => escape(row[header]))
-              .join(colDelimiter);
+            return headers.map((header) => escape(row[header])).join(colDelimiter);
           })
           .join(rowDelimiter);
 
@@ -273,29 +260,28 @@ const Applicants = () => {
             if (state.bulkActionStatus === 'pending') return;
             dispatch({type: 'cancelBulkAction'});
           }}
+          title="Bewerber:innen wirklich unwiderruflich löschen?"
         >
-          <Box display="grid" rowGap={spacing.scale300}>
-            <HeadingS>Bewerber*innen wirklich unwiderruflich löschen?</HeadingS>
-            <Typography>
-              Sind Sie sicher, dass Sie alle Daten der ausgewählten
-              Bewerbers*innen löschen wollen? Dieser Vorgang kann nicht
-              rückgängig gemacht werden.
-            </Typography>
-            <Box display="flex" justifyContent="space-between">
-              <Button
-                onClick={() => dispatch({type: 'confirmBulkAction'})}
-                isLoading={state.bulkActionStatus === 'pending'}
-              >
-                Löschen
-              </Button>
-              <Button
-                onClick={() => dispatch({type: 'cancelBulkAction'})}
-                disabled={state.bulkActionStatus === 'pending'}
-              >
-                Abbrechen
-              </Button>
-            </Box>
-          </Box>
+          <DialogBody>
+            Sind Sie sicher, dass Sie alle Daten der ausgewählten Bewerbers*innen löschen wollen?
+            Dieser Vorgang kann nicht rückgängig gemacht werden.
+          </DialogBody>
+          <DialogFooter>
+            <Button
+              onClick={() => dispatch({type: 'cancelBulkAction'})}
+              disabled={state.bulkActionStatus === 'pending'}
+              kind="secondary"
+            >
+              Abbrechen
+            </Button>
+            <Button
+              onClick={() => dispatch({type: 'confirmBulkAction'})}
+              isLoading={state.bulkActionStatus === 'pending'}
+              destructive
+            >
+              Löschen
+            </Button>
+          </DialogFooter>
         </Dialog>
       )}
       <FlexGrid
