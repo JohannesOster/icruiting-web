@@ -6,8 +6,8 @@ const Impressum: FC = () => {
   const {spacing} = useTheme();
 
   return (
-    <Box padding={spacing.scale500} display="grid" rowGap={spacing.scale300}>
-      <HeadingL style={{margin: 0}}>Impressum</HeadingL>
+    <Box padding={spacing.scale500} display="grid" rowGap={spacing.scale300} paddingTop={104}>
+      <HeadingL>Impressum</HeadingL>
       <HeadingS>Kontakt</HeadingS>
       <Box display="grid" rowGap={spacing.scale300}>
         <Typography>
