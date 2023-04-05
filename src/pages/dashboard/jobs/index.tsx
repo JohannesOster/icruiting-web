@@ -218,6 +218,7 @@ export const Jobs = () => {
                 onClick={handleSubmit(onSubmit)}
                 disabled={!(formState.isValid && formState.isDirty)}
                 isLoading={status === 'submitting'}
+                type="submit"
               >
                 Speichern
               </Button>
