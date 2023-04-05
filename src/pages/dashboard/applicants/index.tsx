@@ -263,7 +263,7 @@ const Applicants = () => {
           title="Bewerber:innen wirklich unwiderruflich löschen?"
         >
           <DialogBody>
-            Sind Sie sicher, dass Sie alle Daten der ausgewählten Bewerbers*innen löschen wollen?
+            Sind Sie sicher, dass Sie alle Daten der ausgewählten Bewerbers:innen löschen wollen?
             Dieser Vorgang kann nicht rückgängig gemacht werden.
           </DialogBody>
           <DialogFooter>

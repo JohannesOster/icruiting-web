@@ -168,7 +168,7 @@ export const Jobs = () => {
         >
           <DialogBody>
             Sind Sie sicher, dass Sie die alle mit dieser Stelle in Verbingung stehenden Daten
-            löschen wollen? Das inkludiert auch <b>alle Bewerber*innen</b> die sich über das
+            löschen wollen? Das inkludiert auch <b>alle Bewerber:innen</b> die sich über das
             Bewerbungsformular dieser stelle beworben haben! Dieser Vorgang kann nicht rückgängig
             gemacht werden.
           </DialogBody>

@@ -89,7 +89,7 @@ const ApplicantReport = () => {
       <Box display="grid" rowGap={spacing.scale200}>
         <div onClick={() => toggle('applicant')}>
           <FlexGrid alignItems="center" flexGap={spacing.scale200} cursor="pointer">
-            <HeadingS>Bewerber*in - {applicant?.name}</HeadingS>
+            <HeadingS>Bewerber:in - {applicant?.name}</HeadingS>
             <Arrow
               height={spacing.scale400}
               style={{transform: `rotate(${toggleState.applicant ? '90deg' : '-90deg'})`}}
