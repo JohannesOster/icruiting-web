@@ -26,8 +26,8 @@ import {
 } from 'components';
 import {Clipboard} from 'icons';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
-import {DnDFormField, DnDSection, DnDSourceItem, ItemTypes} from 'components/FormBuilder/DnD';
-import {DnDItem, ComponentToEdit, FormFieldComponent} from 'components/FormBuilder/types';
+import {DnDFormField, DnDSection, DnDSourceItem} from 'components/FormBuilder/DnD';
+import {DnDItem, ComponentToEdit} from 'components/FormBuilder/types';
 import {EditFormFieldForm} from 'components/FormBuilder/EditFormFieldForm';
 import {getSourceFormFields} from 'components/FormBuilder/sourceFormFields';
 import {getInitialFormFields} from 'components/FormBuilder/initialFormFields';
@@ -306,7 +306,6 @@ const FormBuilder: React.FC = () => {
                   {(['assessment', 'onboarding'].includes(formCategory) ||
                     ['assessment', 'onboarding'].includes(formToEdit?.formCategory)) && (
                     <Input
-                      id="formTitle"
                       label="Formulartitel"
                       placeholder="z.B. Einzelinterview"
                       name="formTitle"
