@@ -87,17 +87,15 @@ const ApplicantReport = () => {
     <Box display="grid" rowGap={spacing.scale300}>
       <HeadingL>Gutachten</HeadingL>
       <Box display="grid" rowGap={spacing.scale200}>
-        <FlexGrid alignItems="center" flexGap={spacing.scale200}>
-          <HeadingS>Bewerber*in - {applicant?.name}</HeadingS>
-          <Arrow
-            height={spacing.scale400}
-            onClick={() => toggle('applicant')}
-            style={{
-              transform: `rotate(${toggleState.applicant ? '90deg' : '-90deg'})`,
-              cursor: 'pointer',
-            }}
-          />
-        </FlexGrid>
+        <div onClick={() => toggle('applicant')}>
+          <FlexGrid alignItems="center" flexGap={spacing.scale200} cursor="pointer">
+            <HeadingS>Bewerber*in - {applicant?.name}</HeadingS>
+            <Arrow
+              height={spacing.scale400}
+              style={{transform: `rotate(${toggleState.applicant ? '90deg' : '-90deg'})`}}
+            />
+          </FlexGrid>
+        </div>
         {toggleState.applicant && (
           <Table>
             <tbody>
@@ -166,61 +164,69 @@ const ApplicantReport = () => {
         </Box>
       )}
       <Box display="grid" rowGap={spacing.scale200}>
-        <FlexGrid alignItems="center" flexGap={spacing.scale200}>
-          <HeadingS>Details</HeadingS>
-          <Arrow
-            height={spacing.scale400}
-            onClick={() => toggle('details')}
-            style={{
-              transform: `rotate(${toggleState.details ? '90deg' : '-90deg'})`,
-              cursor: 'pointer',
-            }}
-          />
-        </FlexGrid>
+        <div onClick={() => toggle('details')}>
+          <FlexGrid alignItems="center" flexGap={spacing.scale200} cursor="pointer">
+            <HeadingS>Details</HeadingS>
+            <Arrow
+              height={spacing.scale400}
+              style={{transform: `rotate(${toggleState.details ? '90deg' : '-90deg'})`}}
+            />
+          </FlexGrid>
+        </div>
         {toggleState.details && (
           <Table>
             <tbody>
               {report?.formResults?.map((formScore) => (
                 <React.Fragment key={formScore.formId}>
                   <tr>
-                    <th style={{display: 'flex', justifyContent: 'space-between'}}>
-                      <FlexGrid flexGap={spacing.scale200} alignItems="center">
-                        <span>
-                          {formScore.formTitle ||
-                            {
-                              screening: 'Screening',
-                              assessment: 'Assessment',
-                              onboarding: 'Onboarding',
-                            }[formCategory]}
-                          {formScore.replicas &&
-                            ` und ${formScore.replicas.length - 1} weitere(s) Formulare`}
-                        </span>
-                        <Arrow
-                          height={spacing.scale400}
-                          onClick={() => toggle('openForms', formScore.formId)}
-                          style={{
-                            transform: `rotate(${
-                              !(toggleState.openForms as string[]).includes(formScore.formId)
-                                ? '90deg'
-                                : '-90deg'
-                            })`,
-                            cursor: 'pointer',
-                          }}
-                        />
-                      </FlexGrid>
-                      {formScore.replicas && (
-                        <Button
-                          kind="minimal"
-                          onClick={() => {
-                            toggle(
-                              'replicasFor',
-                              toggleState.replicasFor ? undefined : formScore.formId,
-                            );
-                          }}
-                        >
-                          Replikate anzeigen
-                        </Button>
-                      )}
+                    <th>
+                      <Box
+                        display="flex"
+                        flexDirection="column"
+                        alignItems="start"
+                        gap={spacing.scale200}
+                      >
+                        <div onClick={() => toggle('openForms', formScore.formId)}>
+                          <FlexGrid flexGap={spacing.scale200} alignItems="center" cursor="pointer">
+                            <span>
+                              {formScore.formTitle ||
+                                {
+                                  screening: 'Screening',
+                                  assessment: 'Assessment',
+                                  onboarding: 'Onboarding',
+                                }[formCategory]}
+                              {formScore.replicas &&
+                                ` und ${formScore.replicas.length - 1} weitere(s) Formulare`}
+                            </span>
+                            <Arrow
+                              height={spacing.scale400}
+                              style={{
+                                transform: `rotate(${
+                                  !(toggleState.openForms as string[]).includes(formScore.formId)
+                                    ? '90deg'
+                                    : '-90deg'
+                                })`,
+                              }}
+                            />
+                          </FlexGrid>
+                        </div>
+                        {formScore.replicas && (
+                          <Button
+                            kind="minimal"
+                            onClick={() => {
+                              toggle(
+                                'replicasFor',
+                                toggleState.replicasFor ? undefined : formScore.formId,
+                              );
+                            }}
+                          >
+                            Replikate{' '}
+                            {toggleState.replicasFor === formScore.formId
+                              ? 'ausblenden'
+                              : 'anzeigen'}
+                          </Button>
+                        )}
+                      </Box>
                     </th>
                     <th>
                       {formScore.formScore || '-'} &isin; [{formScore.possibleMinFormScore},{' '}
@@ -343,17 +349,17 @@ const ApplicantReport = () => {
       </Box>
       {['assessment', 'onboarding'].includes(formCategory) && (
         <Box display="grid" rowGap={spacing.scale200}>
-          <FlexGrid alignItems="center" flexGap={spacing.scale200}>
-            <HeadingS>Anforderungsprofil</HeadingS>
-            <Arrow
-              height={spacing.scale400}
-              onClick={() => toggle('requirements')}
-              style={{
-                transform: `rotate(${toggleState.requirements ? '90deg' : '-90deg'})`,
-                cursor: 'pointer',
-              }}
-            />
-          </FlexGrid>
+          <div onClick={() => toggle('requirements')}>
+            <FlexGrid alignItems="center" flexGap={spacing.scale200} cursor="pointer">
+              <HeadingS>Anforderungsprofil</HeadingS>
+              <Arrow
+                height={spacing.scale400}
+                style={{
+                  transform: `rotate(${toggleState.requirements ? '90deg' : '-90deg'})`,
+                }}
+              />
+            </FlexGrid>
+          </div>
           {toggleState.requirements && (
             <>
               <Table>
