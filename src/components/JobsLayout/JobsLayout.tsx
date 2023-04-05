@@ -39,10 +39,6 @@ const TabBarItem = styled.div<{isActive?: boolean}>`
     }
   }
 
-  > a {
-    text-decoration: none;
-  }
-
   > svg {
     fill: ${({theme, isActive}) =>
       isActive ? theme.colors.textPrimary : theme.colors.textDefault};
@@ -62,14 +58,21 @@ const JobsLayout = ({children}) => {
       <Box display="flex" flexDirection="column" gap="12px">
         <HeadingM>{job?.jobTitle}</HeadingM>
         <TabBar>
-          <TabBarItem isActive={router.pathname.endsWith('[jobId]')}>
-            <Path />
-            <Link href={`/dashboard/jobs/${jobId}`}>Formulare</Link>
-          </TabBarItem>
-          <TabBarItem isActive={router.pathname.endsWith('rankings-overview')}>
-            <Report />
-            <Link href={`/dashboard/jobs/${jobId}/rankings-overview`}>Rankings / Gutachten</Link>
-          </TabBarItem>
+          <Link href={`/dashboard/jobs/${jobId}`} style={{textDecoration: 'none'}}>
+            <TabBarItem isActive={router.pathname.endsWith('[jobId]')}>
+              <Path />
+              Formulare
+            </TabBarItem>
+          </Link>
+          <Link
+            href={`/dashboard/jobs/${jobId}/rankings-overview`}
+            style={{textDecoration: 'none'}}
+          >
+            <TabBarItem isActive={router.pathname.endsWith('rankings-overview')}>
+              <Report />
+              Rankings / Gutachten
+            </TabBarItem>
+          </Link>
         </TabBar>
       </Box>
       {children}
