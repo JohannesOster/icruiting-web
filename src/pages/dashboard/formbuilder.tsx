@@ -237,17 +237,15 @@ const FormBuilder: React.FC = () => {
       {showCommandPalette && <CommandPalette commands={commands} onSelect={handleInsert} />}
       {componentToEdit && job && (
         <Dialog onClose={() => setComponentToEdit(null)} title="Formularfeld bearbeiten">
-          <DialogBody>
-            <EditFormFieldForm
-              componentToEdit={componentToEdit}
-              onSubmit={(values) => {
-                formFields.edit(componentToEdit.id, values);
-                setComponentToEdit(null);
-              }}
-              formCategory={formToEdit?.formCategory || formCategory}
-              job={job}
-            />
-          </DialogBody>
+          <EditFormFieldForm
+            componentToEdit={componentToEdit}
+            onSubmit={(values) => {
+              formFields.edit(componentToEdit.id, values);
+              setComponentToEdit(null);
+            }}
+            formCategory={formToEdit?.formCategory || formCategory}
+            job={job}
+          />
         </Dialog>
       )}
       <Box display="flex" alignItems="center" marginBottom={spacing.scale600}>

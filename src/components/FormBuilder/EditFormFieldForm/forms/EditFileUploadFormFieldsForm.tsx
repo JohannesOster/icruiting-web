@@ -1,31 +1,14 @@
 import React from 'react';
-import {Input, Button, Textarea, Select, Checkbox} from 'components';
-import {useForm} from 'react-hook-form';
+import {Input, Textarea, Select, Checkbox} from 'components';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {object, string} from 'yup';
-import {Form} from './StyledForm.sc';
 import {yupResolver} from '@hookform/resolvers';
+import {EditFormFieldsProps} from '../EditFormFieldForm';
 
-type FormValues = {
-  label: string;
-  description: string;
-  accept: string;
-  required?: boolean;
-};
-
-type Props = {
-  /** Submit handler for the form */
-  onSubmit: (values: FormValues) => void;
-} & FormValues;
-
-export const EditFileUploadFormFields: React.FC<Props> = ({onSubmit, ...formValues}) => {
-  const {register, formState, errors, handleSubmit} = useForm<FormValues>({
-    mode: 'onChange',
-    criteriaMode: 'all',
-    defaultValues: formValues,
-    resolver: yupResolver(object({label: string().required('Label ist verpflichtend')})),
-  });
-
+export const EditFileUploadFormFieldsResolver = yupResolver(
+  object({label: string().required('Label ist verpflichtend')}),
+);
+export const EditFileUploadFormFieldsForm: React.FC<EditFormFieldsProps> = ({register, errors}) => {
   const acceptMap = {
     'application/pdf': 'PDF',
     'image/jpeg': 'JPEG',
@@ -37,7 +20,7 @@ export const EditFileUploadFormFields: React.FC<Props> = ({onSubmit, ...formValu
   }));
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <>
       <Input
         name="label"
         label="Label"
@@ -65,11 +48,6 @@ export const EditFileUploadFormFields: React.FC<Props> = ({onSubmit, ...formValu
         ref={register}
         options={[{label: 'Verpflichtend', value: 'required'}]}
       />
-      <div>
-        <Button disabled={!formState.isValid} type="submit">
-          Speichern
-        </Button>
-      </div>
-    </Form>
+    </>
   );
 };

@@ -97,7 +97,7 @@ const DashboardLayout = ({children}) => {
               textOverflow="ellipsis"
               overflow="hidden"
             >
-              {currentUser.email}
+              {currentUser?.email}
             </Box>
           </NavList>
         </Box>

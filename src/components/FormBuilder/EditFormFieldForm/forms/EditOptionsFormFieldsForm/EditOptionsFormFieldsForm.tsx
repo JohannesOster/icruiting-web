@@ -1,52 +1,32 @@
 import React, {FC} from 'react';
-import {useForm, useFieldArray} from 'react-hook-form';
+import {useFieldArray} from 'react-hook-form';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {useTheme} from 'styled-components';
 import {object, array, string} from 'yup';
-import {HeadingS, Box, DialogFooter} from 'components';
+import {HeadingS, Box} from 'components';
 import {Button, Input, Textarea, Checkbox} from 'components';
-import {Form} from '../StyledForm.sc';
 import {yupResolver} from '@hookform/resolvers';
 import {DnDOptionContainer} from './DnDOptionContainer';
 import {Add} from 'icons';
+import {EditFormFieldsProps} from '../../EditFormFieldForm';
 
-type FormValues = {
-  label: string;
-  description: string;
-  options: {label: string; value: string}[];
-  required?: boolean;
-};
+export const EditOptionsFormFieldsResolver = (acceptEmptyOption = false) =>
+  yupResolver(
+    object({
+      label: string().required('Label ist verpflichtend'),
+      options: array().of(
+        object({
+          ...(!acceptEmptyOption
+            ? {
+                label: string().required('Option ist verpflichtend auszufüllen oder zu löschen'),
+              }
+            : {label: string()}),
+        }),
+      ),
+    }),
+  );
 
-type Props = {
-  /** Submit handler for the form */
-  onSubmit: (values: FormValues) => void;
-  acceptEmptyOption?: boolean;
-} & FormValues;
-
-export const EditOptionsFormFields: FC<Props> = ({
-  onSubmit,
-  acceptEmptyOption = false,
-  ...formValues
-}) => {
-  const {register, errors, control, handleSubmit, formState} = useForm<FormValues>({
-    mode: 'onChange',
-    criteriaMode: 'all',
-    defaultValues: formValues,
-    resolver: yupResolver(
-      object({
-        label: string().required('Label ist verpflichtend'),
-        options: array().of(
-          object({
-            ...(!acceptEmptyOption
-              ? {
-                  label: string().required('Option ist verpflichtend auszufüllen oder zu löschen'),
-                }
-              : {label: string()}),
-          }),
-        ),
-      }),
-    ),
-  });
+export const EditOptionsFormFieldsForm: FC<EditFormFieldsProps> = ({register, errors, control}) => {
   const {spacing} = useTheme();
 
   const {fields, append, remove, move} = useFieldArray({
@@ -54,17 +34,8 @@ export const EditOptionsFormFields: FC<Props> = ({
     name: 'options',
   });
 
-  const _onSubmit = (values: FormValues) => {
-    // Add missing "value" to option
-    values.options = values.options.map((option) => ({
-      ...option,
-      value: option.label,
-    }));
-    onSubmit(values);
-  };
-
   return (
-    <Form onSubmit={handleSubmit(_onSubmit)}>
+    <>
       <Input
         name="label"
         label="Label"
@@ -113,11 +84,6 @@ export const EditOptionsFormFields: FC<Props> = ({
           Neues Item
         </Button>
       </div>
-      <div>
-        <Button disabled={!formState.isValid} type="submit">
-          Speichern
-        </Button>
-      </div>
-    </Form>
+    </>
   );
 };

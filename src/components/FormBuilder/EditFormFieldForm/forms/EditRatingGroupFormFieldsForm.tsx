@@ -1,48 +1,33 @@
 import React from 'react';
 import {Box, HeadingS} from 'components';
 import {Button, Checkbox, Input, Select, Textarea} from 'components';
-import {useForm, useFieldArray} from 'react-hook-form';
+import {useFieldArray} from 'react-hook-form';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
 import {object, array, string, mixed, number} from 'yup';
-import {Form} from './StyledForm.sc';
-import {Trash} from 'icons';
+import {Add, Trash} from 'icons';
 import {useTheme} from 'styled-components';
 import {FormFieldIntent} from 'services';
+import {EditFormFieldsProps} from '../EditFormFieldForm';
 
-type FormValues = {
-  label: string;
-  description: string;
-  options: {label: string; value: string}[];
-  visibility: string;
-  intent: FormFieldIntent;
-  required: boolean;
-  defaultValue?: string;
-};
-
-type Props = {
-  /** Submit handler for the form */
-  onSubmit: (values: FormValues) => void;
-} & FormValues;
-
-export const EditRatingGroupFormFields: React.FC<Props> = ({onSubmit, ...formValues}) => {
-  const {register, formState, errors, handleSubmit, control} = useForm<FormValues>({
-    mode: 'onChange',
-    criteriaMode: 'all',
-    defaultValues: formValues,
-    resolver: yupResolver(
+export const EditRatingGroupFormFieldsResolver = yupResolver(
+  object({
+    label: string().required('Label ist verpflichtend'),
+    defaultValue: mixed().transform((val) => (val ? val : null)),
+    options: array().of(
       object({
-        label: string().required('Label ist verpflichtend'),
-        defaultValue: mixed().transform((val) => (val ? val : null)),
-        options: array().of(
-          object({
-            label: string().required('Option ist verpflichtend auszufüllen oder zu löschen'),
-            value: number().typeError('Geben sie einen eindeutigen Zahlenwert an!'),
-          }),
-        ),
+        label: string().required('Option ist verpflichtend auszufüllen oder zu löschen'),
+        value: number().typeError('Geben sie einen eindeutigen Zahlenwert an!'),
       }),
     ),
-  });
+  }),
+);
+
+export const EditRatingGroupFormFieldsForm: React.FC<EditFormFieldsProps> = ({
+  register,
+  errors,
+  control,
+}) => {
   const {spacing} = useTheme();
 
   const {fields, append, remove} = useFieldArray({
@@ -51,7 +36,7 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({onSubmit, ...formVal
   });
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <>
       <Input
         name="label"
         label="Label"
@@ -110,6 +95,12 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({onSubmit, ...formVal
             columnGap={spacing.scale300}
             key={option.id}
           >
+            <input
+              defaultValue={option.optionId}
+              name={`options[${idx}].optionId`}
+              ref={register}
+              hidden
+            />
             <Input
               name={`options[${idx}].label`}
               placeholder="Label"
@@ -133,18 +124,16 @@ export const EditRatingGroupFormFields: React.FC<Props> = ({onSubmit, ...formVal
         );
       })}
       <div>
-        <Button onClick={() => append({label: '', value: ''})}>Neues Item</Button>
+        <Button kind="minimal" onClick={() => append({label: '', value: ''})}>
+          <Add style={{marginRight: spacing.scale200}} fill="currentColor" />
+          Neues Item
+        </Button>
       </div>
       <Checkbox
         name="required"
         ref={register}
         options={[{label: 'Verpflichtend', value: 'required'}]}
       />
-      <div>
-        <Button disabled={!formState.isValid} type="submit">
-          Speichern
-        </Button>
-      </div>
-    </Form>
+    </>
   );
 };

@@ -1,34 +1,20 @@
-import React, {useEffect, useRef} from 'react';
-import {Button, Input, Textarea, Checkbox} from 'components';
-import {useForm} from 'react-hook-form';
+import React from 'react';
+import {Input, Textarea, Checkbox} from 'components';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {object, string} from 'yup';
-import {Form} from './StyledForm.sc';
 import {yupResolver} from '@hookform/resolvers';
+import {EditFormFieldsProps} from '../EditFormFieldForm';
 
-type FormValues = {
-  label: string;
-  placeholder?: string;
-  type: string;
-  description: string;
-  required?: boolean;
-};
-
-type Props = {
-  /** Submit handler for the form */
-  onSubmit: (values: FormValues) => void;
-} & FormValues;
-
-export const EditInputFormFieldsForm: React.FC<Props> = ({onSubmit, ...formValues}) => {
-  const {register, formState, errors, handleSubmit} = useForm<FormValues>({
-    mode: 'onChange',
-    criteriaMode: 'all',
-    defaultValues: formValues,
-    resolver: yupResolver(object({label: string().required('Label ist verpflichtend')})),
-  });
-
+export const EditInputFormFieldsResolver = yupResolver(
+  object({label: string().required('Label ist verpflichtend')}),
+);
+export const EditInputFormFieldsForm: React.FC<EditFormFieldsProps> = ({
+  register,
+  errors,
+  initialValues,
+}) => {
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <>
       <Input
         name="label"
         label="Label"
@@ -37,7 +23,7 @@ export const EditInputFormFieldsForm: React.FC<Props> = ({onSubmit, ...formValue
         errors={errorsFor(errors, 'label')}
         autoFocus={true}
       />
-      {formValues.type !== 'date' && (
+      {initialValues.type !== 'date' && (
         <Input
           name="placeholder"
           label="Placeholder"
@@ -58,11 +44,6 @@ export const EditInputFormFieldsForm: React.FC<Props> = ({onSubmit, ...formValue
         ref={register}
         options={[{label: 'Verpflichtend', value: 'required'}]}
       />
-      <div>
-        <Button disabled={!formState.isValid} type="submit">
-          Speichern
-        </Button>
-      </div>
-    </Form>
+    </>
   );
 };
