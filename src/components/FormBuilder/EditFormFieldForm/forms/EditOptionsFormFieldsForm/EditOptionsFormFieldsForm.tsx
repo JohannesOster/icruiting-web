@@ -50,11 +50,6 @@ export const EditOptionsFormFieldsForm: FC<EditFormFieldsProps> = ({register, er
         ref={register}
         errors={errorsFor(errors, 'description')}
       />
-      <Checkbox
-        name="required"
-        ref={register}
-        options={[{label: 'Verpflichtend', value: 'required'}]}
-      />
       <HeadingS style={{marginBottom: `-${spacing.scale300}`}}>Optionen</HeadingS>
       <Box display="grid" rowGap={spacing.scale500}>
         {fields.map((option, idx) => {
@@ -84,6 +79,11 @@ export const EditOptionsFormFieldsForm: FC<EditFormFieldsProps> = ({register, er
           Neues Item
         </Button>
       </div>
+      <Checkbox
+        name="required"
+        ref={register}
+        options={[{label: 'Verpflichtend', value: 'required'}]}
+      />
     </>
   );
 };
