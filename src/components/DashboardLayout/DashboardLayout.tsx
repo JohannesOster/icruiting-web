@@ -76,7 +76,7 @@ const DashboardLayout = ({children}) => {
             </NavList>
           )}
           <NavList>
-            <NavLink href="/account">
+            <NavLink href="/dashboard/account">
               <Account style={iconsStyles} />
               Account
             </NavLink>
@@ -127,8 +127,8 @@ const DashboardLayout = ({children}) => {
         )}
 
         <MobileTabBarItem>
-          <Link href="/account">
-            <Account style={tabBarIconStyles} fill={tabIconFill('/account')} />
+          <Link href="/dashboard/account">
+            <Account style={tabBarIconStyles} fill={tabIconFill('/dashboard/account')} />
           </Link>
         </MobileTabBarItem>
 

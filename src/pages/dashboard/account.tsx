@@ -1,12 +1,12 @@
 import React, {useCallback, useState} from 'react';
 import Link from 'next/link';
 import {useTheme} from 'styled-components';
-import {HeadingL, Box, DialogBody, DialogFooter} from 'components';
+import {HeadingL, Box, DialogBody, DialogFooter, getDashboardLayout} from 'components';
 import {useAuth, useToaster} from 'context';
 import {API} from 'services';
 import {Dialog, Button, withAuth} from 'components';
 
-const Account: React.FC = () => {
+const Account = () => {
   const {currentUser, refetchUser} = useAuth();
   const {spacing} = useTheme();
   const {success, danger} = useToaster();
@@ -28,13 +28,7 @@ const Account: React.FC = () => {
   }, [refetchUser, setStatus, danger, success]);
 
   return (
-    <Box
-      margin={`${spacing.scale300} ${spacing.scale500}`}
-      marginTop={0}
-      paddingTop={106}
-      display="grid"
-      rowGap={spacing.scale300}
-    >
+    <Box display="grid" rowGap={spacing.scale300}>
       {status === 'shouldDelete' && (
         <Dialog onClose={() => setStatus('shouldDelete')} title="Tenant unwiderruflich löschen?">
           <DialogBody>
@@ -74,12 +68,13 @@ const Account: React.FC = () => {
       {currentUser?.userRole === 'admin' && (
         <>
           <HeadingL>Zahlungen</HeadingL>
-          <Link href="/account/subscriptions">Subscriptions</Link>
-          <Link href="/account/payment">Zahlungsmethoden</Link>
+          <Link href="/dashboard/settings/subscriptions">Subscriptions</Link>
+          <Link href="/dashboard/settings/payment">Zahlungsmethoden</Link>
         </>
       )}
     </Box>
   );
 };
 
+Account.getLayout = getDashboardLayout;
 export default withAuth(Account);

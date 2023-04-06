@@ -85,7 +85,7 @@ const Navbar = () => {
       </Box>
       <Box>
         <MobileNavItem onClick={closeMenu}>
-          <Link href="/account">Account</Link>
+          <Link href="/dashboard/account">Account</Link>
         </MobileNavItem>
         <MobileNavItem onClick={closeMenu}>
           <Link href="/#contact">Kontakt</Link>
@@ -138,7 +138,7 @@ const Navbar = () => {
       <NavItem>
         <DropDown label={currentUser?.email || 'Account'}>
           <Box position="relative">
-            <Link href="/account">
+            <Link href="/dashboard/account">
               <DropDownItem>
                 <UserCircle style={{width: '1em', marginRight: spacing.scale200}} />
                 Account
