@@ -36,12 +36,13 @@ export const EditACRatingGroupFormFieldsForm: React.FC<EditFormFieldsProps> = ({
 
   return (
     <>
-      <Textarea
+      <Input
         name="label"
         label="Label"
         placeholder="Label"
         ref={register}
         errors={errorsFor(errors, 'label')}
+        autoFocus={true}
       />
       <Select
         name="jobRequirementId"
@@ -101,7 +102,6 @@ export const EditACRatingGroupFormFieldsForm: React.FC<EditFormFieldsProps> = ({
               defaultValue={option.label}
               ref={register()}
               errors={errorsFor(errors, `options[${idx}].label`)}
-              autoFocus={true}
             />
             <Input
               name={`options[${idx}].value`}

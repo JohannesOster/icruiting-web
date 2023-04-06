@@ -243,6 +243,7 @@ const FormBuilder: React.FC = () => {
               formFields.edit(componentToEdit.id, values);
               setComponentToEdit(null);
             }}
+            onCancel={() => setComponentToEdit(null)}
             formCategory={formToEdit?.formCategory || formCategory}
             job={job}
           />
