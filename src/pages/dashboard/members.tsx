@@ -165,7 +165,7 @@ export const Members = () => {
       },
     },
     {
-      title: 'Entfernen',
+      title: 'Aktion',
       // eslint-disable-next-line react/display-name
       cell: (row) => (
         <Button
