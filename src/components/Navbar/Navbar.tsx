@@ -91,13 +91,7 @@ const Navbar = () => {
           <Link href="/#contact">Kontakt</Link>
         </MobileNavItem>
         <MobileNavItem onClick={closeMenu}>
-          <Typography>
-            <a
-              href={`${config.userPoolDomain}/logout?client_id=${config.userPoolWebClientId}&logout_uri=${config.logoutCallbackUrl}`}
-            >
-              Abmelden
-            </a>
-          </Typography>
+          <Link href="/logout">Abmelden</Link>
         </MobileNavItem>
       </Box>
     </>
@@ -144,18 +138,12 @@ const Navbar = () => {
                 Account
               </DropDownItem>
             </Link>
-            <Typography
-              onClick={() => {
-                router.replace(
-                  `${config.userPoolDomain}/logout?client_id=${config.userPoolWebClientId}&logout_uri=${config.logoutCallbackUrl}`,
-                );
-              }}
-            >
+            <Link href="/logout">
               <DropDownItem>
                 <Logout style={{width: '1em', marginRight: spacing.scale200}} />
                 Abmelden
               </DropDownItem>
-            </Typography>
+            </Link>
           </Box>
         </DropDown>
       </NavItem>
