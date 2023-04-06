@@ -3,11 +3,12 @@ import {useForm, useFieldArray} from 'react-hook-form';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {useTheme} from 'styled-components';
 import {object, array, string} from 'yup';
-import {HeadingS, Box} from 'components';
+import {HeadingS, Box, DialogFooter} from 'components';
 import {Button, Input, Textarea, Checkbox} from 'components';
 import {Form} from '../StyledForm.sc';
 import {yupResolver} from '@hookform/resolvers';
 import {DnDOptionContainer} from './DnDOptionContainer';
+import {Add} from 'icons';
 
 type FormValues = {
   label: string;
@@ -107,7 +108,10 @@ export const EditOptionsFormFields: FC<Props> = ({
         })}
       </Box>
       <div>
-        <Button onClick={() => append({label: '', value: ''})}>Neues Item</Button>
+        <Button kind="minimal" onClick={() => append({label: '', value: ''})}>
+          <Add style={{marginRight: spacing.scale200}} fill="currentColor" />
+          Neues Item
+        </Button>
       </div>
       <div>
         <Button disabled={!formState.isValid} type="submit">

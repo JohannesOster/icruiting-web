@@ -107,7 +107,6 @@ const applicationFormSourceFields: DnDItem[] = [
       options: [
         {option: uuid(), label: 'Option-1', value: 'Option-1'},
         {option: uuid(), label: 'Option-2', value: 'Option-2'},
-        ,
       ],
     },
   },

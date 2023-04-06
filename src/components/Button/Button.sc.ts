@@ -19,7 +19,7 @@ export const BaseButton = styled.button<BaseButtonProps>`
 
   ${({theme}) => theme.typography.button}
 
-  transition-property: background-color;
+  transition-property: background-color color;
   transition-duration: ${({theme}) => theme.animations.timing100};
   transition-timing-function: ${({theme}) => theme.animations.linearCurve};
 

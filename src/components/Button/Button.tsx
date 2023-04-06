@@ -22,7 +22,15 @@ export const Button: React.FC<ButtonProps> = ({
 
   return (
     <BaseButton isLoading={isLoading} disabled={disabled} onClick={_onClick} type={type} {...props}>
-      <span style={isLoading ? {opacity: 0, height: 0} : {display: 'flex'}}>{children}</span>
+      <span
+        style={
+          isLoading
+            ? {opacity: 0, height: 0}
+            : {display: 'flex', alignItems: 'center', justifyContent: 'center'}
+        }
+      >
+        {children}
+      </span>
       {isLoading && (
         <LoadingSpinnerContainer>
           <Spinner
