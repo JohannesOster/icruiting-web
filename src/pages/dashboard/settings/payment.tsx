@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {
   Box,
   HeadingL,
-  HeadingS,
   DataTable,
   TColumn,
   FlexGrid,
