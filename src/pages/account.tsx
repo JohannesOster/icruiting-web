@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import Link from 'next/link';
 import {useTheme} from 'styled-components';
-import {HeadingL, Box, HeadingS, Typography, DialogBody, DialogFooter} from 'components';
+import {HeadingL, Box, DialogBody, DialogFooter} from 'components';
 import {useAuth, useToaster} from 'context';
 import {API} from 'services';
 import {Dialog, Button, withAuth} from 'components';
