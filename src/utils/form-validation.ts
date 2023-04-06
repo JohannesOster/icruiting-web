@@ -6,15 +6,11 @@ export const email = string()
 
 export const password = string()
   .min(6, 'Passwort muss mindestens 6 Zeichen lang sein.')
-  .test(
-    'hasLowerCase',
-    'Passwort muss mindestens einen Kleinbuchstaben beinhalten.',
-    (value) => /[a-z]/.test(value),
+  .test('hasLowerCase', 'Passwort muss mindestens einen Kleinbuchstaben beinhalten.', (value) =>
+    /[a-z]/.test(value),
   )
-  .test(
-    'hasUpperCase',
-    'Passwort muss mindestens einen Großbuchstaben beinhalten.',
-    (value) => /[A-Z]/.test(value),
+  .test('hasUpperCase', 'Passwort muss mindestens einen Großbuchstaben beinhalten.', (value) =>
+    /[A-Z]/.test(value),
   )
   .test(
     'hasSpecialCharacter',
@@ -22,11 +18,6 @@ export const password = string()
     (value) => /[^A-Za-z0-9]/.test(value),
   )
   .required('Passwort ist verpflichtend.');
-
-export const passwordConfirm = string().oneOf(
-  [ref('password')],
-  'Passwörter stimmen nicht überein.',
-);
 
 export const tenantName = string()
   .min(3, 'Tenantname muss  mindestens 3 Zeichen lang sein.')

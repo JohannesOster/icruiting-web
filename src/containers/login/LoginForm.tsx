@@ -68,15 +68,11 @@ export const LoginForm: React.FC<Props> = ({onSubmit}) => {
         }}
       >
         <Typography kind="secondary">
-          <span style={{marginRight: spacing.scale200}}>
-            Noch keinen Account?
-          </span>
+          <span style={{marginRight: spacing.scale200}}>Noch keinen Account?</span>
           <Link href="/signup">Registrieren</Link>
         </Typography>
         <Button
-          disabled={
-            !formState.isValid || !Object.keys(formState.touched).length
-          }
+          disabled={!formState.isValid || !Object.keys(formState.touched).length}
           isLoading={formState.isSubmitting}
           type="submit"
         >
