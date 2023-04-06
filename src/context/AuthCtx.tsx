@@ -6,7 +6,7 @@ interface AuthContext {
   isAuthenticating: boolean;
   currentUser?: User;
   refetchUser: () => void;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
 
 const [useCtx, CtxProvider] = createCtx<AuthContext>();
@@ -33,12 +33,7 @@ const AuthProvider = (props) => {
     return refetchUser();
   };
 
-  return (
-    <CtxProvider
-      value={{isAuthenticating, currentUser, refetchUser, logout}}
-      {...props}
-    />
-  );
+  return <CtxProvider value={{isAuthenticating, currentUser, refetchUser, logout}} {...props} />;
 };
 
 export {AuthProvider, useCtx as useAuth};

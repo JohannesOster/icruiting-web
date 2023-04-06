@@ -21,6 +21,16 @@ export const RadioLabel = styled.label`
   padding: ${({theme}) => `${theme.spacing.scale300} ${theme.spacing.scale400}`};
   border-radius: ${({theme}) => theme.borders.radius100};
   cursor: pointer;
+
+  background-color: ${({theme}) => theme.colors.surfaceDefault};
+
+  transition-property: background-color;
+  transition-duration: ${({theme}) => theme.animations.timing100};
+  transition-timing-function: ${({theme}) => theme.animations.linearCurve};
+
+  &:hover {
+    background-color: ${({theme}) => theme.colors.surfacePrimarySubdued};
+  }
 `;
 
 export const Radio = styled.input`

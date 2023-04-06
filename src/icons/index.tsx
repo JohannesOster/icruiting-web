@@ -40,3 +40,4 @@ export {ReactComponent as File} from './file.svg';
 export {ReactComponent as Enter} from './enter.svg';
 export {ReactComponent as Path} from './path.svg';
 export {ReactComponent as Report} from './report.svg';
+export {ReactComponent as Add} from './add.svg';

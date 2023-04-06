@@ -51,7 +51,7 @@ const DashboardLayout = ({children}) => {
             />
           </Link>
         </LogoContainer>
-        <Box display="flex" flexDirection="column" justifyContent="space-between" height="100%">
+        <Box display="flex" flexDirection="column" justifyContent="space-between" flex={1}>
           {currentUser?.userRole === 'admin' ? (
             <NavList>
               <NavLink href="/dashboard/jobs">
@@ -76,7 +76,7 @@ const DashboardLayout = ({children}) => {
             </NavList>
           )}
           <NavList>
-            <NavLink href="/account">
+            <NavLink href="/dashboard/account">
               <Account style={iconsStyles} />
               Account
             </NavLink>
@@ -97,7 +97,7 @@ const DashboardLayout = ({children}) => {
               textOverflow="ellipsis"
               overflow="hidden"
             >
-              {currentUser.email}
+              {currentUser?.email}
             </Box>
           </NavList>
         </Box>
@@ -127,8 +127,8 @@ const DashboardLayout = ({children}) => {
         )}
 
         <MobileTabBarItem>
-          <Link href="/account">
-            <Account style={tabBarIconStyles} fill={tabIconFill('/account')} />
+          <Link href="/dashboard/account">
+            <Account style={tabBarIconStyles} fill={tabIconFill('/dashboard/account')} />
           </Link>
         </MobileTabBarItem>
 

@@ -1,54 +1,32 @@
 import React from 'react';
 import {Box, HeadingS, Button, Input, Textarea, Select, Checkbox} from 'components';
-import {useForm, useFieldArray} from 'react-hook-form';
+import {useFieldArray} from 'react-hook-form';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
 import {array, mixed, number, object, string} from 'yup';
-import {Form} from './StyledForm.sc';
-import {Trash} from 'icons';
+import {Add, Trash} from 'icons';
 import {useTheme} from 'styled-components';
 import {FormFieldIntent} from 'services';
+import {EditFormFieldsProps} from '../EditFormFieldForm';
 
-type FormValues = {
-  label: string;
-  description: string;
-  /** The id of the jobRequirement the rating group should refer to */
-  jobRequirementOptions: {label: string; value: string}[];
-  /** The currently selected JobRequirementId */
-  jobRequirementId: string;
-  options: {label: string; value: string}[];
-  intent: FormFieldIntent;
-  required: boolean;
-  defaultValue?: string;
-};
-
-type Props = {
-  /** Submit handler for the form */
-  onSubmit: (values: FormValues) => void;
-} & FormValues;
-
-export const EditACRatingGroupFormFields: React.FC<Props> = ({
-  onSubmit,
-  jobRequirementOptions,
-  ...formValues
-}) => {
-  const {register, formState, errors, handleSubmit, control} = useForm<FormValues>({
-    mode: 'onChange',
-    criteriaMode: 'all',
-    defaultValues: formValues,
-    resolver: yupResolver(
+export const EditACRatingGroupFormFieldsResolver = yupResolver(
+  object({
+    label: string().required('Label ist verpflichtend'),
+    options: array().of(
       object({
-        label: string().required('Label ist verpflichtend'),
-        options: array().of(
-          object({
-            label: string().required('Option ist verpflichtend auszufüllen oder zu löschen'),
-            value: number().typeError('Geben sie einen eindeutigen Zahlenwert an!'),
-          }),
-        ),
-        defaultValue: mixed().transform((val) => (val ? val : null)),
+        label: string().required('Option ist verpflichtend auszufüllen oder zu löschen'),
+        value: number().typeError('Geben sie einen eindeutigen Zahlenwert an!'),
       }),
     ),
-  });
+    defaultValue: mixed().transform((val) => (val ? val : null)),
+  }),
+);
+export const EditACRatingGroupFormFieldsForm: React.FC<EditFormFieldsProps> = ({
+  register,
+  errors,
+  control,
+  initialValues: {jobRequirementOptions},
+}) => {
   const {spacing} = useTheme();
 
   const {fields, append, remove} = useFieldArray({
@@ -57,7 +35,7 @@ export const EditACRatingGroupFormFields: React.FC<Props> = ({
   });
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <>
       <Textarea
         name="label"
         label="Label"
@@ -111,6 +89,12 @@ export const EditACRatingGroupFormFields: React.FC<Props> = ({
             columnGap={spacing.scale300}
             key={option.id}
           >
+            <input
+              defaultValue={option.optionId}
+              name={`options[${idx}].optionId`}
+              ref={register}
+              hidden
+            />
             <Input
               name={`options[${idx}].label`}
               placeholder="Label"
@@ -134,18 +118,16 @@ export const EditACRatingGroupFormFields: React.FC<Props> = ({
         );
       })}
       <div>
-        <Button onClick={() => append({label: '', value: ''})}>Neues Item</Button>
+        <Button kind="minimal" onClick={() => append({label: '', value: ''})}>
+          <Add style={{marginRight: spacing.scale200}} fill="currentColor" />
+          Neues Item
+        </Button>
       </div>
       <Checkbox
         name="required"
         ref={register}
         options={[{label: 'Verpflichtend', value: 'required'}]}
       />
-      <div>
-        <Button disabled={!formState.isValid} type="submit">
-          Speichern
-        </Button>
-      </div>
-    </Form>
+    </>
   );
 };

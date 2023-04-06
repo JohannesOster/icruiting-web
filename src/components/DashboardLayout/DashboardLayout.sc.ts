@@ -28,11 +28,14 @@ export const SideNav = styled.aside`
 `;
 
 export const LogoContainer = styled.div`
+  height: 80px;
   display: flex;
-  padding: ${({theme}) => theme.spacing.scale500};
+  padding: ${({theme}) => `0 ${theme.spacing.scale500}`};
   cursor: pointer;
-  zindex: 25;
+  z-index: 25;
   border-bottom: 1px solid ${({theme}) => theme.colors.borderSubdued};
+  height: 80px !important;
+  align-items: center;
 `;
 
 export const NavList = styled.div`

@@ -3,7 +3,6 @@ import styled, {css} from 'styled-components';
 export const BaseToast = styled.div<{fadeOut: boolean}>`
   display: inline-flex;
   align-items: center;
-  line-height: 0; // to center text vertically
   background: white;
   box-shadow: 1px 1px 5px 0px rgba(64, 64, 64, 0.3);
   margin: 8px;

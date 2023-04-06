@@ -25,14 +25,17 @@ export const Suggestions = styled.div`
   border-radius: ${({theme}) => theme.borders.radius100};
 `;
 
-export const CommandItem = styled.div`
+export const CommandItem = styled.div<{isSelected: boolean}>`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: ${({theme}) => theme.spacing.scale300};
   cursor: pointer;
   border-radius: ${({theme}) => theme.borders.radius100};
+  background-color: ${({theme, isSelected}) =>
+    isSelected ? theme.colors.surfacePrimarySubdued : theme.colors.surfaceDefault};
+
   &:hover {
-    background: ${({theme}) => theme.colors.surfacePrimarySubdued};
+    background-color: ${({theme}) => theme.colors.surfacePrimarySubdued};
   }
 `;

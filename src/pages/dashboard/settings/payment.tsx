@@ -1,5 +1,14 @@
 import React, {useState} from 'react';
-import {Box, HeadingL, HeadingS, DataTable, TColumn, FlexGrid, Typography} from 'components';
+import {
+  Box,
+  HeadingL,
+  HeadingS,
+  DataTable,
+  TColumn,
+  FlexGrid,
+  Typography,
+  getDashboardLayout,
+} from 'components';
 import {PaymentMethodForm} from 'containers';
 import {useTheme} from 'styled-components';
 import {useAuth, useToaster} from 'context';
@@ -161,4 +170,5 @@ const Wrapper = (props: any) => {
   );
 };
 
+Wrapper.getLayout = getDashboardLayout;
 export default withAdmin(Wrapper);

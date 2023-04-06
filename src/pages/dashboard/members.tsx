@@ -165,7 +165,7 @@ export const Members = () => {
       },
     },
     {
-      title: 'Entfernen',
+      title: 'Aktion',
       // eslint-disable-next-line react/display-name
       cell: (row) => (
         <Button
@@ -250,7 +250,7 @@ export const Members = () => {
           marginBottom={spacing.scale300}
         >
           <HeadingL>Mitarbeiter:innen</HeadingL>
-          <Button onClick={() => setShowNewMembereForm(true)}>Hinzufügen</Button>
+          <Button onClick={() => setShowNewMembereForm(true)}>Einladen</Button>
         </FlexGrid>
         <DataTable columns={columns} data={members || []} isLoading={!(members || error)} />
       </main>

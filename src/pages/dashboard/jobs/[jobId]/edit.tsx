@@ -15,7 +15,7 @@ import {
   Input,
   Spinner,
 } from 'components';
-import {Trash} from 'icons';
+import {Add, Trash} from 'icons';
 import {useTheme} from 'styled-components';
 import {useToaster} from 'context';
 import {useRouter} from 'next/router';
@@ -48,38 +48,37 @@ const EditJob = () => {
     {revalidateOnFocus: false},
   );
 
-  const {register, errors, control, handleSubmit, formState, reset} =
-    useForm<TJobRequest>({
-      mode: 'onChange',
-      criteriaMode: 'all',
-      defaultValues: {...job},
-      resolver: yupResolver(
-        object().shape({
-          jobTitle: string()
-            .min(5, 'Stellentitle muss mindestens 5 Zeichen lang sein.')
-            .max(50, 'Stellentitle darf maximal 50 Zeichen lang sein.')
-            .required('Stellentitel ist verpflichtend.'),
-          // for each item add validationrule for the label
-          jobRequirements: array().of(
-            object().shape({
-              requirementLabel: string().required(
-                'Item ist verpflichtend auszufüllen oder zu löschen',
-              ),
-              minValue: number()
-                .nullable()
-                .transform((value: string, originalValue?: string) => {
-                  if (!originalValue) return null;
-                  if (typeof originalValue === 'string') {
-                    return originalValue?.trim() === '' ? null : value;
-                  }
+  const {register, errors, control, handleSubmit, formState, reset} = useForm<TJobRequest>({
+    mode: 'onChange',
+    criteriaMode: 'all',
+    defaultValues: {...job},
+    resolver: yupResolver(
+      object().shape({
+        jobTitle: string()
+          .min(5, 'Stellentitle muss mindestens 5 Zeichen lang sein.')
+          .max(50, 'Stellentitle darf maximal 50 Zeichen lang sein.')
+          .required('Stellentitel ist verpflichtend.'),
+        // for each item add validationrule for the label
+        jobRequirements: array().of(
+          object().shape({
+            requirementLabel: string().required(
+              'Item ist verpflichtend auszufüllen oder zu löschen',
+            ),
+            minValue: number()
+              .nullable()
+              .transform((value: string, originalValue?: string) => {
+                if (!originalValue) return null;
+                if (typeof originalValue === 'string') {
+                  return originalValue?.trim() === '' ? null : value;
+                }
 
-                  return value;
-                }),
-            }),
-          ),
-        }),
-      ),
-    });
+                return value;
+              }),
+          }),
+        ),
+      }),
+    ),
+  });
 
   const onSave = (job: TJobRequest) => {
     setStatus('submitting');
@@ -145,10 +144,7 @@ const EditJob = () => {
                         placeholder="Kriterium"
                         defaultValue={item.requirementLabel}
                         ref={register()}
-                        errors={errorsFor(
-                          errors,
-                          `jobRequirements[${idx}].requirementLabel`,
-                        )}
+                        errors={errorsFor(errors, `jobRequirements[${idx}].requirementLabel`)}
                       />
                       <input
                         name={`jobRequirements[${idx}].jobRequirementId`}
@@ -163,10 +159,7 @@ const EditJob = () => {
                       name={`jobRequirements[${idx}].minValue`}
                       ref={register()}
                       defaultValue={item.minValue}
-                      errors={errorsFor(
-                        errors,
-                        `jobRequirements[${idx}].minValue`,
-                      )}
+                      errors={errorsFor(errors, `jobRequirements[${idx}].minValue`)}
                     />
                     {/* There must be at least 1 item */}
                     {idx > 0 && (
@@ -185,7 +178,8 @@ const EditJob = () => {
               })}
             </Box>
             <Box>
-              <Button onClick={() => append({requirementLabel: ''})}>
+              <Button kind="minimal" onClick={() => append({requirementLabel: ''})}>
+                <Add style={{marginRight: spacing.scale200}} fill="currentColor" />
                 Neues Item
               </Button>
             </Box>

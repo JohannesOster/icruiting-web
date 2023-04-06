@@ -2,11 +2,7 @@ import React from 'react';
 import {useForm} from 'react-hook-form';
 import {Button, Input} from 'components';
 import {AuthForm, Typography} from 'components';
-import {
-  confirmationCode,
-  password,
-  passwordConfirm,
-} from 'utils/form-validation';
+import {confirmationCode, password} from 'utils/form-validation';
 import {object} from 'yup';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {yupResolver} from '@hookform/resolvers';
@@ -15,7 +11,6 @@ export type PasswordFormValues = {
   confirmationCode: string;
   email: string;
   password: string;
-  passwordConfirm: string;
 };
 
 type Props = {
@@ -24,16 +19,9 @@ type Props = {
 };
 
 export const PasswordForm: React.FC<Props> = ({onSubmit, email}) => {
-  const {
-    register,
-    errors,
-    formState,
-    handleSubmit,
-  } = useForm<PasswordFormValues>({
+  const {register, errors, formState, handleSubmit} = useForm<PasswordFormValues>({
     mode: 'onChange',
-    resolver: yupResolver(
-      object({confirmationCode, password, passwordConfirm}),
-    ),
+    resolver: yupResolver(object({confirmationCode, password})),
     criteriaMode: 'all',
   });
 
@@ -61,19 +49,9 @@ export const PasswordForm: React.FC<Props> = ({onSubmit, email}) => {
         ref={register}
         errors={errorsFor(errors, 'password')}
       />
-      <Input
-        type="password"
-        name="passwordConfirm"
-        label="Passwort bestätigen"
-        placeholder="Passwort bestätigen"
-        ref={register}
-        errors={errorsFor(errors, 'passwordConfirm')}
-      />
       <span style={{margin: '0 auto'}}>
         <Button
-          disabled={
-            !formState.isValid || !Object.keys(formState.touched).length
-          }
+          disabled={!formState.isValid || !Object.keys(formState.touched).length}
           isLoading={formState.isSubmitting}
           type="submit"
         >

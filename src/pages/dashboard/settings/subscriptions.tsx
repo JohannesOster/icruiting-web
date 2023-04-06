@@ -1,28 +1,22 @@
 import React, {useState} from 'react';
-import {Box, HeadingL, DataTable, TColumn} from 'components';
+import {Box, HeadingL, DataTable, TColumn, getDashboardLayout} from 'components';
 import {useTheme} from 'styled-components';
 import {useAuth, useToaster} from 'context';
 import {API} from 'services';
 import {Button, withAdmin} from 'components';
 import {useFetch, mutate} from 'components/useFetch';
 
-const Subscriptions: React.FC = () => {
+const Subscriptions = () => {
   const {spacing} = useTheme();
   const {currentUser} = useAuth();
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [addingId, setAddingId] = useState<string | null>(null);
   const {danger, success} = useToaster();
 
-  const {data: prices, error: pricesError} = useFetch(
-    'GET /stripe/prices',
-    API.stripe.prices.list,
-  );
+  const {data: prices, error: pricesError} = useFetch('GET /stripe/prices', API.stripe.prices.list);
 
   const {data: subscriptions, error: subscriptionsError} = useFetch(
-    [
-      `GET /tenants/${currentUser?.tenantId}/subscriptions`,
-      currentUser?.tenantId,
-    ],
+    [`GET /tenants/${currentUser?.tenantId}/subscriptions`, currentUser?.tenantId],
     (_key, tenantId) => API.tenants.subscriptions.list(tenantId),
   );
 
@@ -106,12 +100,11 @@ const Subscriptions: React.FC = () => {
       <DataTable
         columns={columns}
         data={prices || []}
-        isLoading={
-          !(prices || subscriptions) && !(pricesError || subscriptionsError)
-        }
+        isLoading={!(prices || subscriptions) && !(pricesError || subscriptionsError)}
       />
     </Box>
   );
 };
 
+Subscriptions.getLayout = getDashboardLayout;
 export default withAdmin(Subscriptions);
