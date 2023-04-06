@@ -70,10 +70,8 @@ export const CommandPalette: FC<Props> = ({commands, onSelect}) => {
             return (
               <CommandItem
                 key={label}
-                style={{
-                  background:
-                    selectedFieldId === id ? colors.surfacePrimarySubdued : colors.surfaceDefault,
-                }}
+                isSelected={selectedFieldId === id}
+                onClick={() => onSelect(fields[idxOfSelectedField])}
               >
                 <Box
                   display="flex"
