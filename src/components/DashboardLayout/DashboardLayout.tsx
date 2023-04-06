@@ -51,7 +51,7 @@ const DashboardLayout = ({children}) => {
             />
           </Link>
         </LogoContainer>
-        <Box display="flex" flexDirection="column" justifyContent="space-between" height="100%">
+        <Box display="flex" flexDirection="column" justifyContent="space-between" flex={1}>
           {currentUser?.userRole === 'admin' ? (
             <NavList>
               <NavLink href="/dashboard/jobs">
