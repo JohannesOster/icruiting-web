@@ -8,7 +8,7 @@ import {Dialog, Button, withAuth} from 'components';
 
 const Account: React.FC = () => {
   const {currentUser, refetchUser} = useAuth();
-  const {spacing, colors} = useTheme();
+  const {spacing} = useTheme();
   const {success, danger} = useToaster();
 
   type Status = 'idle' | 'shouldDelete' | 'isDeleting';
@@ -30,6 +30,8 @@ const Account: React.FC = () => {
   return (
     <Box
       margin={`${spacing.scale300} ${spacing.scale500}`}
+      marginTop={0}
+      paddingTop={106}
       display="grid"
       rowGap={spacing.scale300}
     >
