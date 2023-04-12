@@ -36,13 +36,17 @@ export const Table = styled.table`
       th {
         padding: ${({theme}) => `${theme.spacing.scale300} ${theme.spacing.scale200}`};
         max-width: 30vw;
-        background: ${({theme}) => theme.colors.surfaceDefault};
 
         &:last-child {
           border: none;
         }
       }
 
+      transition-property: background-color;
+      transition-duration: ${({theme}) => theme.animations.timing100};
+      transition-timing-function: ${({theme}) => theme.animations.linearCurve};
+
+      background: ${({theme}) => theme.colors.surfaceDefault};
       &:nth-child(even) {
         background-color: ${({theme}) => theme.colors.tableRowFill};
       }

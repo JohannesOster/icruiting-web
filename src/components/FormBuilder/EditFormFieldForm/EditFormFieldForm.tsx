@@ -43,6 +43,7 @@ type Props = {
    * @params values the values from the edit form
    */
   onSubmit: (values: any) => void;
+  onCancel: () => void;
   /** Category of the form that currently edited (relevant for AC vs screening) */
   formCategory: FormCategory;
   /** The job this form refers to (relevant for AC) */
@@ -52,6 +53,7 @@ type Props = {
 export const EditFormFieldForm: React.FC<Props> = ({
   componentToEdit,
   onSubmit,
+  onCancel,
   formCategory,
   job,
 }) => {
@@ -133,6 +135,9 @@ export const EditFormFieldForm: React.FC<Props> = ({
         </FormFieldsContainer>
       </DialogBody>
       <DialogFooter>
+        <Button kind="secondary" onClick={onCancel}>
+          Abbrechen
+        </Button>
         <Button type="submit" disabled={!(formState.isValid && formState.isDirty)}>
           Speichern
         </Button>
