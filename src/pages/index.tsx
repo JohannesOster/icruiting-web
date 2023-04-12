@@ -186,6 +186,24 @@ const LandingPage: React.FC = () => {
               </Typography>
             </Box>
           </Box> */}
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="start"
+            gap={spacing.scale600}
+            marginBottom={200}
+          >
+            <Box>
+              <HeadingM>Du kommst von Mosaik?</HeadingM>
+              <Typography color="secondary">Richtig cool, dass du dabei bist!</Typography>
+            </Box>
+            <Box display="flex" flexDirection="column" gap={spacing.scale200}>
+              Du überlegst wen du zu deinem Projektfavoriten wählen solltest?
+              <Link href="https://time-dracopelta-297.notion.site/Warum-du-icruiting-nicht-zu-deinem-Favoriten-w-hlen-solltest-e1a32e75348b4e6a94d063f913f33890">
+                Klick mich 🔘
+              </Link>
+            </Box>
+          </Box>
           {/* CONTACT */}
           <Box
             id="contact"
