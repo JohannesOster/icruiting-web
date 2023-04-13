@@ -8,7 +8,7 @@ import {useForm} from 'react-hook-form';
 
 import styled, {css} from 'styled-components';
 import config from 'config';
-import {useToaster} from 'context';
+import {useAnalytics, useToaster} from 'context';
 import {object, string} from 'yup';
 import {yupResolver} from '@hookform/resolvers';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
@@ -60,6 +60,7 @@ const LandingPage: React.FC = () => {
   const formRef = useRef<HTMLFormElement>();
   const {success, danger} = useToaster();
   const [loading, setLoading] = useState(false);
+  const {analytics} = useAnalytics();
 
   const mosaikLinkRef = useRef<HTMLAnchorElement>();
 
