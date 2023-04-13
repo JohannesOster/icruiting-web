@@ -115,6 +115,28 @@ const Privacy: FC = () => {
           des Betriebes und des Erhalts der Betriebssicherheit dieser Webseiten gemäß Art. 6 Abs. 1
           S. 1 lit. f DSGVO.
         </Typography>
+        <HeadingS>Einsatz von Segment.io</HeadingS>
+        <Typography>
+          Diese Website verwendet Software der Segment.io, Inc. 101 15th St San Francisco, CA 94103
+          USA. Um unser Angebot kontinuierlich zu verbessern und zu optimieren, nutzen wir
+          Segment.io Analytics, um das Nutzerverhalten auf unserer Webseite zu analysieren und
+          statistische Daten zu erheben Dabei werden Informationen über die Benutzung der Webseite,
+          wie besuchte Seiten, Verweildauer oder technische Daten wie Browser und Betriebssystem,
+          erfasst und an Segment.io übermittelt. Rechtsgrundlage für die Verarbeitung ist Art. 6
+          Abs. 1 UAbs. 1 Buchst. f) DSGVO. Unser berechtigtes Interesse besteht in der Verbesserung
+          unserer Webseite und der Inhalte. Diese Daten werden anonymisiert und können nicht direkt
+          einer bestimmten Person zugeordnet werden. Segment.io verwendet Cookies, die auf Ihrem
+          Endgerät gespeichert werden und die eine Analyse Ihrer Nutzung der Webseite ermöglichen.
+          Die durch den Cookie erzeugten Informationen werden in der Regel an einen Server von
+          Segment.io in den USA übertragen und dort gespeichert. Sie können die Erfassung und
+          Verarbeitung Ihrer Daten durch Segment.io verhindern, indem Sie in Ihren
+          Browsereinstellungen das Speichern von Cookies deaktivieren oder ein Browser-Add-on zur
+          Deaktivierung von Segment.io verwenden. Weitere Informationen zum Datenschutz und Ihren
+          diesbezüglichen Rechten finden Sie in den Datenschutzbestimmungen von Segment.io unter
+          <a href="https://segment.com/docs/legal/privacy/">
+            https://segment.com/docs/legal/privacy/
+          </a>
+        </Typography>
       </Box>
     </Box>
   );

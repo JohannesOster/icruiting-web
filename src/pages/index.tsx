@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useTheme} from 'styled-components';
 import {useRouter} from 'next/router';
 import Link from 'next/link';
@@ -61,6 +61,8 @@ const LandingPage: React.FC = () => {
   const {success, danger} = useToaster();
   const [loading, setLoading] = useState(false);
 
+  const mosaikLinkRef = useRef<HTMLAnchorElement>();
+
   const {handleSubmit, register, formState, errors} = useForm({
     mode: 'onChange',
     criteriaMode: 'all',
@@ -93,26 +95,9 @@ const LandingPage: React.FC = () => {
       });
   };
 
-  const features = [
-    {
-      title: 'Bewerber:innenmanagement',
-      description: 'Hinfort mit E-Mail, Google Drive und co. husch, husch!',
-    },
-    {
-      title: 'Bewertungsformulare',
-      description:
-        'Gib deinen Interviews die nötige Struktur halte die Wahrnehmungen deiens Teams über individuelle Formulare fest.',
-    },
-    {
-      title: 'Rankings & Gutachten ',
-      description: 'Du bringts die Augen und Ohren, wir die Mathematik.',
-    },
-    {
-      title: 'Cookies 🍪',
-      description:
-        'icruiting verwendet zwar keine Cookies, wenn du uns aber in Wien besuchst, kaufen wir dir welche.',
-    },
-  ];
+  useEffect(() => {
+    analytics.trackLink(mosaikLinkRef.current, 'Clicked Mosaik Notion Link');
+  }, []);
 
   return (
     <>
@@ -143,49 +128,6 @@ const LandingPage: React.FC = () => {
               <Button onClick={() => router.push('/signup')}>Registrieren</Button>
             </Box>
           </Hero>
-          {/* FEATURES */}
-          {/* <Box
-            display="flex"
-            flexDirection="column"
-            gap={spacing.scale600}
-            marginTop={-200}
-          >
-            <Box>
-              <HeadingM>Was kann icruiting?</HeadingM>
-              <Typography color="secondary">Cha-Cha-Cha 2, 3 🕺</Typography>
-            </Box>
-            <FeaturesGrid>
-              {features.map(({title, description}, idx) => (
-                <Box
-                  padding={spacing.scale400}
-                  boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
-                  borderRadius={4}
-                  key={idx}
-                >
-                  <HeadingS style={{wordBreak: 'break-all'}}>{title}</HeadingS>
-                  <Typography>{description}</Typography>
-                </Box>
-              ))}
-            </FeaturesGrid>
-          </Box>
-          {/*  */}
-          {/*<Box display="flex" flexDirection="column" gap={spacing.scale600}>
-            <HeadingM>FAQ</HeadingM>
-            <Box>
-              <HeadingS>Ist icruiting für mich?</HeadingS>{' '}
-              <Typography color="secondary">
-                Probieren geht über studieren. Du kannst (glaub ich) wenig
-                kaputt machen. 👉 <Link href="/signup">Registrieren</Link>
-              </Typography>
-            </Box>
-            <Box>
-              <HeadingS>Was kostet der Spaß? 💸</HeadingS>
-              <Typography>
-                <b>60€ / Monat</b>. <br />
-                Gegenvorschläge? Wir feilschen gerne.
-              </Typography>
-            </Box>
-          </Box> */}
           <Box
             display="flex"
             flexDirection="column"
@@ -199,7 +141,11 @@ const LandingPage: React.FC = () => {
             </Box>
             <Box display="flex" flexDirection="column" gap={spacing.scale200}>
               Du überlegst wen du zu deinem Projektfavoriten wählen solltest?
-              <Link href="https://time-dracopelta-297.notion.site/Warum-du-icruiting-nicht-zu-deinem-Favoriten-w-hlen-solltest-e1a32e75348b4e6a94d063f913f33890">
+              <Link
+                href="https://time-dracopelta-297.notion.site/Warum-du-icruiting-nicht-zu-deinem-Favoriten-w-hlen-solltest-e1a32e75348b4e6a94d063f913f33890"
+                target="_blank"
+                ref={mosaikLinkRef}
+              >
                 Klick mich 🔘
               </Link>
             </Box>
