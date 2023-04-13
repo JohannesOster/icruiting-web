@@ -11,6 +11,7 @@ import 'styles/normalize.css';
 import 'styles/reset.locals.css';
 import 'styles/typography.css';
 import {useRouter} from 'next/router';
+import {AnalyticsProvider, useAnalytics} from 'context/AnalyticsCtx';
 
 Amplify.configure({...config, ssr: true});
 
@@ -24,6 +25,7 @@ const GlobalStyles = createGlobalStyle`
 const App = ({Component, pageProps}) => {
   const {isAuthenticating} = useAuth();
   const router = useRouter();
+  const {analytics} = useAnalytics();
 
   const getLayout =
     Component.getLayout ||
@@ -35,17 +37,11 @@ const App = ({Component, pageProps}) => {
     ));
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.analytics) {
-      const handleRouteChange = () => {
-        analytics.page();
-      };
-
-      router.events.on('routeChangeComplete', handleRouteChange);
-
-      return () => {
-        router.events.off('routeChangeComplete', handleRouteChange);
-      };
-    }
+    const handleRouteChange = () => analytics.page();
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
   }, [router]);
 
   return (
@@ -71,12 +67,14 @@ const App = ({Component, pageProps}) => {
   );
 };
 
-const AuthWrapper = (props) => {
+const Wrapper = (props) => {
   return (
-    <AuthProvider>
-      <App {...props} />
-    </AuthProvider>
+    <AnalyticsProvider>
+      <AuthProvider>
+        <App {...props} />
+      </AuthProvider>
+    </AnalyticsProvider>
   );
 };
 
-export default AuthWrapper;
+export default Wrapper;
