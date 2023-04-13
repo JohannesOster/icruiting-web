@@ -39,6 +39,7 @@ const App = ({Component, pageProps}) => {
   useEffect(() => {
     const handleRouteChange = () => analytics.page();
     if (document.referrer === '') handleRouteChange();
+    console.log(process.env.NEXT_PUBLIC_SEGMENT_WRITEKEY);
 
     router.events.on('routeChangeComplete', handleRouteChange);
     return () => {
