@@ -38,6 +38,7 @@ const App = ({Component, pageProps}) => {
 
   useEffect(() => {
     const handleRouteChange = () => analytics.page();
+    if (document.referrer === '') handleRouteChange();
     router.events.on('routeChangeComplete', handleRouteChange);
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange);
