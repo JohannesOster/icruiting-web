@@ -28,15 +28,7 @@ const RankingsOverview = () => {
   return (
     <main style={{display: 'grid', rowGap: spacing.scale600}}>
       <Box display="grid" rowGap={spacing.scale200}>
-        <div
-          style={{cursor: 'pointer'}}
-          onClick={() => router.push(`/dashboard/jobs/${jobId}/edit`)}
-        >
-          <FlexGrid gap={spacing.scale300} alignItems="center">
-            <HeadingS>Anforderungsprofil</HeadingS>
-            <Edit />
-          </FlexGrid>
-        </div>
+        <HeadingS>Anforderungsprofil</HeadingS>
         {isFetching && <Spinner />}
         {!isFetching && (
           <Table>

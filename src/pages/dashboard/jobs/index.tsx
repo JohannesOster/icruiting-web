@@ -57,7 +57,7 @@ export const Jobs = () => {
     },
     {
       title: 'Aktion',
-      cell: (row) => <Link href={`${router.pathname}/${row.jobId}/edit`}>bearbeiten</Link>,
+      cell: (row) => <Link href={`${router.pathname}/${row.jobId}/settings`}>bearbeiten</Link>,
     },
     {
       title: 'Aktion',

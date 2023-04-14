@@ -4,7 +4,7 @@ import Link from 'next/link';
 import {useRouter} from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
-import {Path, Report} from 'icons';
+import {Path, Report, Settings} from 'icons';
 
 const TabBar = styled.div`
   display: flex;
@@ -71,6 +71,13 @@ const JobsLayout = ({children}) => {
             <TabBarItem isActive={router.pathname.endsWith('rankings-overview')}>
               <Report />
               Rankings / Gutachten
+            </TabBarItem>
+          </Link>
+
+          <Link href={`/dashboard/jobs/${jobId}/settings`} style={{textDecoration: 'none'}}>
+            <TabBarItem isActive={router.pathname.endsWith('settings')}>
+              <Settings />
+              Einstellungen
             </TabBarItem>
           </Link>
         </TabBar>
