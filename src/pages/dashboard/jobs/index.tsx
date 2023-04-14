@@ -30,9 +30,6 @@ export const Jobs = () => {
   const {spacing} = useTheme();
   const router = useRouter();
   const toaster = useToaster();
-  const [deletingJobId, setDeletingJobId] = useState<string | null>(null);
-  const [shouldDeleteJobId, setShouldDeleteJobId] = useState<string | null>(null);
-  const [exportingJobId, setExportingJobId] = useState<string | null>(null);
   const [showNewJobDialog, setShowNewJobDialog] = useState(false);
   const [status, setStatus] = useState<'idle' | 'submitting'>('idle');
 
@@ -42,52 +39,14 @@ export const Jobs = () => {
 
   const {data: jobs, error, revalidate} = useFetch('GET /jobs', API.jobs.list);
 
-  const onDelete = () => {
-    if (!shouldDeleteJobId) return;
-    setDeletingJobId(shouldDeleteJobId);
-    API.jobs.del(shouldDeleteJobId).finally(() => {
-      revalidate().then(() => setDeletingJobId(null));
-    });
-  };
-
   const columns: TColumn[] = [
     {
-      title: 'Bezeichnung',
+      title: 'Stellentitel',
       cell: (row) => <Link href={`${router.pathname}/${row.jobId}`}>{row.jobTitle}</Link>,
     },
     {
-      title: 'Aktion',
-      cell: (row) => <Link href={`${router.pathname}/${row.jobId}/settings`}>bearbeiten</Link>,
-    },
-    {
-      title: 'Aktion',
-      cell: ({jobId}) => (
-        <Button
-          kind="minimal"
-          isLoading={deletingJobId === jobId}
-          onClick={() => {
-            setShouldDeleteJobId(jobId);
-          }}
-        >
-          löschen
-        </Button>
-      ),
-    },
-    {
-      title: 'JSON Export',
-      cell: ({jobId}) => (
-        <Button
-          kind="minimal"
-          isLoading={exportingJobId === jobId}
-          onClick={async () => {
-            setExportingJobId(jobId);
-            await API.jobs.exportJSON(jobId);
-            setExportingJobId(null);
-          }}
-        >
-          JSON Export
-        </Button>
-      ),
+      title: 'Einstellungen',
+      cell: (row) => <Link href={`${router.pathname}/${row.jobId}/settings`}>Einstellungen</Link>,
     },
   ];
 
@@ -159,39 +118,6 @@ export const Jobs = () => {
 
   return (
     <Box display="grid" rowGap={spacing.scale300}>
-      {shouldDeleteJobId && (
-        <Dialog
-          onClose={() => {
-            setShouldDeleteJobId(null);
-          }}
-          title="Stelle wirklich unwiderruflich löschen?"
-        >
-          <DialogBody>
-            Sind Sie sicher, dass Sie die alle mit dieser Stelle in Verbingung stehenden Daten
-            löschen wollen? Das inkludiert <b>alle Bewerber:innen</b> dieser Stelle! Dieser Vorgang
-            kann nicht rückgängig gemacht werden.
-          </DialogBody>
-          <DialogFooter>
-            <Button
-              onClick={() => {
-                setShouldDeleteJobId(null);
-              }}
-              kind="secondary"
-            >
-              Abbrechen
-            </Button>
-            <Button
-              onClick={() => {
-                onDelete();
-                setShouldDeleteJobId(null);
-              }}
-              destructive
-            >
-              Löschen
-            </Button>
-          </DialogFooter>
-        </Dialog>
-      )}
       {showNewJobDialog && (
         <Dialog onClose={() => setShowNewJobDialog(false)} title="Neue Stelle">
           <form>
