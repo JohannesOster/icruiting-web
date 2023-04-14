@@ -77,6 +77,7 @@ const getButtonStylesForKind = (
           cursor: not-allowed;
           background-color: ${theme.colors.surfacePrimaryDisabled};
           color: ${theme.colors.textDisabled};
+          border-color: transparent;
         }
 
         &:active {
