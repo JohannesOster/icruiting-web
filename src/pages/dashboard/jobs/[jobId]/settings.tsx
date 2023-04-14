@@ -105,10 +105,18 @@ const EditJob = () => {
   const onSave = (job: TJobRequest) => {
     setStatus('submitting');
     const _job = {...job, jobId} as unknown as TJob;
-    API.jobs.update(_job).then(() => {
-      toaster.success('Stelle erfolgreich bearbeitet.');
-      router.back();
-    });
+    API.jobs
+      .update(_job)
+      .then(() => {
+        toaster.success('Stelle erfolgreich bearbeitet.');
+      })
+      .catch((error) => {
+        toaster.danger('Stelle konnte nicht bearbeitet werden.');
+        console.error(error);
+      })
+      .finally(() => {
+        setStatus('idle');
+      });
   };
 
   const onExport = async () => {

@@ -1,11 +1,10 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Link from 'next/link';
 import {
   HeadingL,
   TColumn,
   DataTable,
   Box,
-  FlexGrid,
   getDashboardLayout,
   Button,
   Dialog,
@@ -13,6 +12,8 @@ import {
   withAdmin,
   DialogBody,
   DialogFooter,
+  Typography,
+  Spinner,
 } from 'components';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {useToaster} from 'context';
@@ -34,6 +35,7 @@ export const Jobs = () => {
   const [status, setStatus] = useState<'idle' | 'submitting'>('idle');
 
   const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<FileList | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -116,33 +118,58 @@ export const Jobs = () => {
     setStatus('idle');
   };
 
+  useEffect(() => {
+    if (files?.length && files[0]) {
+      uploadJob().then(() => {
+        formRef?.current?.reset();
+        setShowNewJobDialog(false);
+      });
+    }
+  }, [files]);
+
   return (
     <Box display="grid" rowGap={spacing.scale300}>
       {showNewJobDialog && (
         <Dialog onClose={() => setShowNewJobDialog(false)} title="Neue Stelle">
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <DialogBody>
-              <Input
-                name="jobTitle"
-                label="Stellentitel"
-                placeholder="Stellentitel"
-                description="Die Bezeichnung der Stelle."
-                ref={register}
-                errors={errorsFor(errors, 'jobTitle')}
-                autoFocus
-                required
-              />
+              <Box display="flex" flexDirection="column" gap={spacing.scale400}>
+                <Input
+                  name="jobTitle"
+                  label="Stellentitel"
+                  placeholder="Stellentitel"
+                  description="Die Bezeichnung der Stelle."
+                  ref={register}
+                  errors={errorsFor(errors, 'jobTitle')}
+                  autoFocus
+                  required
+                />
+
+                <Box>
+                  <label htmlFor="file" style={{textDecoration: 'underline', cursor: 'pointer'}}>
+                    {isUploading ? <Spinner /> : 'Vorlage hochladen'}
+                  </label>
+                  <input
+                    id="file"
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".json"
+                    onChange={({target: {files}}) => setFiles(files)}
+                    hidden
+                  />
+                </Box>
+              </Box>
             </DialogBody>
             <DialogFooter>
               <Button onClick={() => setShowNewJobDialog(false)} kind="secondary">
                 Abbrechen
               </Button>
               <Button
-                onClick={handleSubmit(onSubmit)}
                 disabled={!(formState.isValid && formState.isDirty)}
                 isLoading={status === 'submitting'}
                 type="submit"
               >
+                {`${formState.isValid}`}
                 Speichern
               </Button>
             </DialogFooter>
@@ -153,31 +180,8 @@ export const Jobs = () => {
         <HeadingL>Stellen</HeadingL>
         <Button onClick={() => setShowNewJobDialog(true)}>Hinzufügen</Button>
       </Box>
+
       <DataTable columns={columns} data={jobs || []} isLoading={!(jobs || error)} />
-      <form
-        ref={formRef}
-        onSubmit={async (event) => {
-          event.preventDefault();
-          await uploadJob();
-          formRef?.current?.reset();
-        }}
-      >
-        <FlexGrid flexGap={spacing.scale300}>
-          <Box maxWidth="200px" overflow="hidden">
-            <Input
-              type="file"
-              accept=".json"
-              onChange={(event) => {
-                const {files} = event.target;
-                setFiles(files);
-              }}
-            />
-          </Box>
-          <Button kind="minimal" type="submit" isLoading={isUploading} disabled={!files?.length}>
-            hochladen
-          </Button>
-        </FlexGrid>
-      </form>
     </Box>
   );
 };
