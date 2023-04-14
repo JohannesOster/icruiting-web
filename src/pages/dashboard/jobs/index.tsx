@@ -12,7 +12,6 @@ import {
   withAdmin,
   DialogBody,
   DialogFooter,
-  Typography,
   Spinner,
 } from 'components';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
@@ -169,7 +168,6 @@ export const Jobs = () => {
                 isLoading={status === 'submitting'}
                 type="submit"
               >
-                {`${formState.isValid}`}
                 Speichern
               </Button>
             </DialogFooter>
