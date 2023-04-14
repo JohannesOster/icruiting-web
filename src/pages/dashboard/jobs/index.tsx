@@ -1,11 +1,10 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Link from 'next/link';
 import {
   HeadingL,
   TColumn,
   DataTable,
   Box,
-  FlexGrid,
   getDashboardLayout,
   Button,
   Dialog,
@@ -13,6 +12,7 @@ import {
   withAdmin,
   DialogBody,
   DialogFooter,
+  Spinner,
 } from 'components';
 import {errorsFor} from 'utils/react-hook-form-errors-for';
 import {useToaster} from 'context';
@@ -30,64 +30,24 @@ export const Jobs = () => {
   const {spacing} = useTheme();
   const router = useRouter();
   const toaster = useToaster();
-  const [deletingJobId, setDeletingJobId] = useState<string | null>(null);
-  const [shouldDeleteJobId, setShouldDeleteJobId] = useState<string | null>(null);
-  const [exportingJobId, setExportingJobId] = useState<string | null>(null);
   const [showNewJobDialog, setShowNewJobDialog] = useState(false);
   const [status, setStatus] = useState<'idle' | 'submitting'>('idle');
 
   const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<FileList | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
   const {data: jobs, error, revalidate} = useFetch('GET /jobs', API.jobs.list);
 
-  const onDelete = () => {
-    if (!shouldDeleteJobId) return;
-    setDeletingJobId(shouldDeleteJobId);
-    API.jobs.del(shouldDeleteJobId).finally(() => {
-      revalidate().then(() => setDeletingJobId(null));
-    });
-  };
-
   const columns: TColumn[] = [
     {
-      title: 'Bezeichnung',
+      title: 'Stellentitel',
       cell: (row) => <Link href={`${router.pathname}/${row.jobId}`}>{row.jobTitle}</Link>,
     },
     {
-      title: 'Aktion',
-      cell: (row) => <Link href={`${router.pathname}/${row.jobId}/edit`}>bearbeiten</Link>,
-    },
-    {
-      title: 'Aktion',
-      cell: ({jobId}) => (
-        <Button
-          kind="minimal"
-          isLoading={deletingJobId === jobId}
-          onClick={() => {
-            setShouldDeleteJobId(jobId);
-          }}
-        >
-          löschen
-        </Button>
-      ),
-    },
-    {
-      title: 'JSON Export',
-      cell: ({jobId}) => (
-        <Button
-          kind="minimal"
-          isLoading={exportingJobId === jobId}
-          onClick={async () => {
-            setExportingJobId(jobId);
-            await API.jobs.exportJSON(jobId);
-            setExportingJobId(null);
-          }}
-        >
-          JSON Export
-        </Button>
-      ),
+      title: 'Einstellungen',
+      cell: (row) => <Link href={`${router.pathname}/${row.jobId}/settings`}>Einstellungen</Link>,
     },
   ];
 
@@ -157,62 +117,53 @@ export const Jobs = () => {
     setStatus('idle');
   };
 
+  useEffect(() => {
+    if (files?.length && files[0]) {
+      uploadJob().then(() => {
+        formRef?.current?.reset();
+        setShowNewJobDialog(false);
+      });
+    }
+  }, [files]);
+
   return (
     <Box display="grid" rowGap={spacing.scale300}>
-      {shouldDeleteJobId && (
-        <Dialog
-          onClose={() => {
-            setShouldDeleteJobId(null);
-          }}
-          title="Stelle wirklich unwiderruflich löschen?"
-        >
-          <DialogBody>
-            Sind Sie sicher, dass Sie die alle mit dieser Stelle in Verbingung stehenden Daten
-            löschen wollen? Das inkludiert <b>alle Bewerber:innen</b> dieser Stelle! Dieser Vorgang
-            kann nicht rückgängig gemacht werden.
-          </DialogBody>
-          <DialogFooter>
-            <Button
-              onClick={() => {
-                setShouldDeleteJobId(null);
-              }}
-              kind="secondary"
-            >
-              Abbrechen
-            </Button>
-            <Button
-              onClick={() => {
-                onDelete();
-                setShouldDeleteJobId(null);
-              }}
-              destructive
-            >
-              Löschen
-            </Button>
-          </DialogFooter>
-        </Dialog>
-      )}
       {showNewJobDialog && (
         <Dialog onClose={() => setShowNewJobDialog(false)} title="Neue Stelle">
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <DialogBody>
-              <Input
-                name="jobTitle"
-                label="Stellentitel"
-                placeholder="Stellentitel"
-                description="Die Bezeichnung der Stelle."
-                ref={register}
-                errors={errorsFor(errors, 'jobTitle')}
-                autoFocus
-                required
-              />
+              <Box display="flex" flexDirection="column" gap={spacing.scale400}>
+                <Input
+                  name="jobTitle"
+                  label="Stellentitel"
+                  placeholder="Stellentitel"
+                  description="Die Bezeichnung der Stelle."
+                  ref={register}
+                  errors={errorsFor(errors, 'jobTitle')}
+                  autoFocus
+                  required
+                />
+
+                <Box>
+                  <label htmlFor="file" style={{textDecoration: 'underline', cursor: 'pointer'}}>
+                    {isUploading ? <Spinner /> : 'Vorlage hochladen'}
+                  </label>
+                  <input
+                    id="file"
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".json"
+                    onChange={({target: {files}}) => setFiles(files)}
+                    hidden
+                  />
+                </Box>
+              </Box>
             </DialogBody>
             <DialogFooter>
               <Button onClick={() => setShowNewJobDialog(false)} kind="secondary">
                 Abbrechen
               </Button>
               <Button
-                onClick={handleSubmit(onSubmit)}
                 disabled={!(formState.isValid && formState.isDirty)}
                 isLoading={status === 'submitting'}
                 type="submit"
@@ -227,31 +178,8 @@ export const Jobs = () => {
         <HeadingL>Stellen</HeadingL>
         <Button onClick={() => setShowNewJobDialog(true)}>Hinzufügen</Button>
       </Box>
+
       <DataTable columns={columns} data={jobs || []} isLoading={!(jobs || error)} />
-      <form
-        ref={formRef}
-        onSubmit={async (event) => {
-          event.preventDefault();
-          await uploadJob();
-          formRef?.current?.reset();
-        }}
-      >
-        <FlexGrid flexGap={spacing.scale300}>
-          <Box maxWidth="200px" overflow="hidden">
-            <Input
-              type="file"
-              accept=".json"
-              onChange={(event) => {
-                const {files} = event.target;
-                setFiles(files);
-              }}
-            />
-          </Box>
-          <Button kind="minimal" type="submit" isLoading={isUploading} disabled={!files?.length}>
-            hochladen
-          </Button>
-        </FlexGrid>
-      </form>
     </Box>
   );
 };
