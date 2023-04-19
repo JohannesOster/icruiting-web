@@ -25,3 +25,4 @@ export * from './Checkbox';
 export * from './Dialog';
 
 export * from './CommandPalette';
+export * from './AdvancedSelect';

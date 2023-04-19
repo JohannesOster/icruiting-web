@@ -11,16 +11,15 @@ import {
   HeadingL,
   FlexGrid,
   getDashboardLayout,
-  Select,
   Button,
   Dialog,
   withAuth,
   DialogBody,
   DialogFooter,
+  AdvancedSelect,
 } from 'components';
 import {useQueryReducer} from 'components/useQueryReducer';
 import {useFetch} from 'components/useFetch';
-import {AdvancedSelect} from 'components/Advanced Select';
 
 const Applicants = () => {
   const router = useRouter();

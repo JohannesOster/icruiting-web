@@ -5,7 +5,14 @@ import {Box} from 'components/Box';
 import {SelectSymbol} from 'icons';
 import {Container, ConentContainer, Label, Select} from './AdvancedSelect.sc';
 
-const AdvancedSelect: FC<SelectProps> = ({label, description, options, errors = [], ...props}) => {
+const AdvancedSelect: FC<SelectProps> = ({
+  label,
+  description,
+  options,
+  icon,
+  errors = [],
+  ...props
+}) => {
   const {spacing} = useTheme();
 
   const getSelectedOption = (options: Array<{label: string; value: string}>, value: string) => {
@@ -27,7 +34,9 @@ const AdvancedSelect: FC<SelectProps> = ({label, description, options, errors = 
       </Select>
       <ConentContainer>
         <Box display="flex" gap={spacing.scale200}>
-          <Label>{label}</Label>
+          <Label>
+            {icon} {label}
+          </Label>
           <span>{getSelectedOption(options, props.value).label}</span>
         </Box>
         <SelectSymbol />
