@@ -20,6 +20,7 @@ import {
 } from 'components';
 import {useQueryReducer} from 'components/useQueryReducer';
 import {useFetch} from 'components/useFetch';
+import {AdvancedSelect} from 'components/Advanced Select';
 
 const Applicants = () => {
   const router = useRouter();
@@ -289,7 +290,8 @@ const Applicants = () => {
       >
         <HeadingL>Bewerbungen</HeadingL>
         {jobs && (
-          <Select
+          <AdvancedSelect
+            label="Stelle:"
             options={jobs.map((job) => ({
               label: job.jobTitle,
               value: job.jobId,
