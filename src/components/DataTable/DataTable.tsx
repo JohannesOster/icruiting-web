@@ -16,6 +16,7 @@ import {Columns, Filter, Sort} from 'icons';
 import {useOutsideClick} from 'components/useOutsideClick';
 import {Props} from './types';
 import {useForm} from 'react-hook-form';
+import {Searchbox} from 'components/Searchbox';
 
 export const DataTable: React.FC<Props> = ({
   isLoading,
@@ -175,6 +176,7 @@ export const DataTable: React.FC<Props> = ({
     <>
       {(actions?.length || showSortAndColsBtns) && (
         <FlexGrid alignItems="center" flexGap={spacing.scale200} marginBottom={spacing.scale200}>
+          {/* <Searchbox /> */}
           {actions?.length && (
             <Box
               display="grid"
@@ -200,8 +202,6 @@ export const DataTable: React.FC<Props> = ({
           {showSortAndColsBtns && (
             <Box
               margin="0 0 0 auto"
-              marginTop={action.length ? 0 : spacing.scale200}
-              marginBottom={action.length ? 0 : spacing.scale200}
               display="grid"
               gridAutoFlow="column"
               columnGap={spacing.scale200}
