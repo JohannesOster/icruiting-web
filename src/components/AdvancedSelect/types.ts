@@ -3,6 +3,7 @@ import {ChangeEvent, FocusEvent} from 'react';
 export interface SelectProps {
   name?: string;
   label?: string;
+  icon?: React.ReactNode;
   autoFocus?: boolean;
   description?: string;
   required?: boolean;

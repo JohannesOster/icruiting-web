@@ -9,12 +9,14 @@ import {
   Select,
   Checkbox,
   Input,
+  AdvancedSelect,
 } from 'components';
 import {useTheme} from 'styled-components';
 import {Columns, Filter, Sort} from 'icons';
 import {useOutsideClick} from 'components/useOutsideClick';
 import {Props} from './types';
 import {useForm} from 'react-hook-form';
+import {Searchbox} from 'components/Searchbox';
 
 export const DataTable: React.FC<Props> = ({
   isLoading,
@@ -174,6 +176,7 @@ export const DataTable: React.FC<Props> = ({
     <>
       {(actions?.length || showSortAndColsBtns) && (
         <FlexGrid alignItems="center" flexGap={spacing.scale200} marginBottom={spacing.scale200}>
+          {/* <Searchbox /> */}
           {actions?.length && (
             <Box
               display="grid"
@@ -199,52 +202,32 @@ export const DataTable: React.FC<Props> = ({
           {showSortAndColsBtns && (
             <Box
               margin="0 0 0 auto"
-              marginTop={action.length ? 0 : spacing.scale200}
-              marginBottom={action.length ? 0 : spacing.scale200}
               display="grid"
               gridAutoFlow="column"
               columnGap={spacing.scale200}
               position="relative"
             >
               <Box position="relative" display="flex" alignItems="center">
-                <div ref={sortPopupRef}>
-                  <Button kind="minimal" onClick={() => setShowSortPopup((curr) => !curr)}>
-                    <Sort />
-                  </Button>
-                  {showSortPopup && (
-                    <Box
-                      position="absolute"
-                      right={0}
-                      top={spacing.scale600}
-                      background="white"
-                      padding={spacing.scale400}
-                      boxShadow="1px 1px 5px 0px rgba(64, 64, 64, 0.3)"
-                      display="flex"
-                      zIndex={30}
-                      minWidth={200}
-                    >
-                      <Select
-                        options={
-                          isLoading
-                            ? [{label: '-'.repeat(10), value: ''}]
-                            : _columns.map(({title}) => ({
-                                label: title,
-                                value: title,
-                              }))
-                        }
-                        onChange={(event) => {
-                          const {value} = event.target;
-                          onOrderByChange(value);
-                        }}
-                        value={orderBy}
-                      />
-                    </Box>
-                  )}
-                </div>
+                <AdvancedSelect
+                  icon={<Sort style={{height: '16px', color: colors.textDefault}} />}
+                  options={
+                    isLoading
+                      ? [{label: '-'.repeat(10), value: ''}]
+                      : _columns.map(({title}) => ({
+                          label: title,
+                          value: title,
+                        }))
+                  }
+                  onChange={(event) => {
+                    const {value} = event.target;
+                    onOrderByChange(value);
+                  }}
+                  value={orderBy}
+                />
               </Box>
               <Box position="relative" display="flex" alignItems="center">
                 <div ref={colsPopupRef}>
-                  <Button kind="minimal" onClick={() => setShowColsPopup((curr) => !curr)}>
+                  <Button kind="secondary" onClick={() => setShowColsPopup((curr) => !curr)}>
                     <Columns />
                   </Button>
                   {showColsPopUp && (
