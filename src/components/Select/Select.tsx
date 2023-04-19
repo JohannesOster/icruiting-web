@@ -4,9 +4,7 @@ import {SelectProps} from './types';
 
 const Select = forwardRef<HTMLSelectElement, SelectProps>(
   ({label, description, options, errors = [], ...props}, ref) => {
-    const _errors = errors.map((error, idx) => (
-      <span key={idx}>• {error}</span>
-    ));
+    const _errors = errors.map((error, idx) => <span key={idx}>• {error}</span>);
 
     return (
       <Container>
@@ -16,9 +14,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
             {props.required && '*'}
           </Label>
         )}
-        {description && (
-          <Description error={!!errors.length}>{description}</Description>
-        )}
+        {description && <Description error={!!errors.length}>{description}</Description>}
         <BaseSelect {...props} ref={ref}>
           {options.map(({label, value}, idx) => {
             return (
