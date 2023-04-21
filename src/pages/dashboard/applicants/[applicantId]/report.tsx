@@ -116,7 +116,8 @@ const ApplicantReport = () => {
                 if (!file)
                   return (
                     <tr key={idx}>
-                      <td>{label} nicht vorhanden</td>
+                      <td>{label}</td>
+                      <td>nicht vorhanden</td>
                     </tr>
                   );
                 return (
