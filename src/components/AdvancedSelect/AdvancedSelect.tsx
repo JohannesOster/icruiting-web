@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import {SelectProps} from './types';
 import {useTheme} from 'styled-components';
 import {Box} from 'components/Box';
@@ -11,9 +11,17 @@ const AdvancedSelect: FC<SelectProps> = ({
   options,
   icon,
   errors = [],
+  onChange,
   ...props
 }) => {
   const {spacing} = useTheme();
+
+  const [_value, _setValue] = useState(props.value || '');
+
+  const _onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (props.value === undefined) _setValue(e.target.value);
+    onChange?.(e);
+  };
 
   const getSelectedOption = (options: Array<{label: string; value: string}>, value: string) => {
     let selectedOption = options.find((option) => value === option.value);
@@ -23,21 +31,21 @@ const AdvancedSelect: FC<SelectProps> = ({
 
   return (
     <Container>
-      <Select {...props}>
-        {options.map(({label, value}, idx) => {
-          return (
-            <option key={idx} value={value}>
-              {label}
-            </option>
-          );
-        })}
+      <Select {...props} onChange={_onChange}>
+        {options.map(({label, value}, idx) => (
+          <option key={idx} value={value}>
+            {label}
+          </option>
+        ))}
       </Select>
       <ConentContainer>
         <Box display="flex" gap={spacing.scale200}>
-          <Label>
-            {icon} {label}
-          </Label>
-          <span>{getSelectedOption(options, props.value).label}</span>
+          {(icon || label) && (
+            <Label>
+              {icon} {label}
+            </Label>
+          )}
+          <span style={{whiteSpace: 'nowrap'}}>{getSelectedOption(options, _value).label}</span>
         </Box>
         <SelectSymbol />
       </ConentContainer>
