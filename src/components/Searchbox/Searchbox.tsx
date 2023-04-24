@@ -59,11 +59,6 @@ const Select = styled.select`
   border: none;
 `;
 
-const Label = styled.label`
-  ${({theme}) => theme.typography.bodySmall};
-  color: ${({theme}) => theme.colors.textSubdued};
-`;
-
 const Searchbox = () => {
   const {spacing} = useTheme();
 
