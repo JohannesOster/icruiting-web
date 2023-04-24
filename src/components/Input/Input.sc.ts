@@ -1,10 +1,6 @@
 import styled, {css} from 'styled-components';
 import {BaseInputProps, LabelProps, DescriptionProps} from './types';
-
-export const Container = styled.div`
-  display: grid;
-  grid-row-gap: ${({theme}) => theme.spacing.scale200};
-`;
+import {getInputGroupContainerStyles} from 'components/InputGroupContainer';
 
 export const BaseInput = styled.input<BaseInputProps>`
   border: 1px solid;
@@ -16,9 +12,16 @@ export const BaseInput = styled.input<BaseInputProps>`
   ${({theme}) => theme.typography.bodySmall};
 
   &:focus {
-    outline: none !important;
-    border-color: ${({theme}) => theme.colors.inputBorderFocus};
+    border-color: ${({theme}) => theme.colors.focus};
+    box-shadow: ${({theme}) => theme.shadows.focus};
+    border-inline-end-width: 1px;
+    outline: 0;
+    z-index: 100;
   }
+
+  transition-property: border-color box-shadow;
+  transition-duration: ${({theme}) => theme.animations.timing100};
+  transition-timing-function: ${({theme}) => theme.animations.linearCurve};
 
   ${({theme, error}) =>
     error &&
@@ -40,6 +43,13 @@ export const BaseInput = styled.input<BaseInputProps>`
       background-color: transparent;
       ${error && {color: theme.colors.typographyPrimaryError}}
     `};
+`;
+
+export const Container = styled.div`
+  display: grid;
+  grid-row-gap: ${({theme}) => theme.spacing.scale200};
+
+  ${getInputGroupContainerStyles(BaseInput)}
 `;
 
 export const Label = styled.label<LabelProps>`
