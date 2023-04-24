@@ -7,7 +7,6 @@ export const ConentContainer = styled.div`
   display: flex;
   align-items: center;
   gap: ${({theme}) => theme.spacing.scale600};
-  width: 100%;
   padding: ${({theme}) => `${theme.spacing.scale200} ${theme.spacing.scale300}`};
 
   border: 1px solid ${({theme}) => theme.colors.inputBorder};
