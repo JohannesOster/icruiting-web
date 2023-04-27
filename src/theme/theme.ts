@@ -10,6 +10,8 @@ export const theme = {
     textPrimary: '#006280',
     textDanger: colors.negative500,
 
+    focus: '#458FFF',
+
     surfaceDefault: '#FFFFFF',
     surfaceSubdued: '#FAFBFB',
 
@@ -72,5 +74,6 @@ export const theme = {
   breakpoints,
   shadows: {
     card: '0px 0px 5px rgba(0, 0, 0, 0.05), 0px 1px 2px rgba(0, 0, 0, 0.15)',
+    focus: '0 0 0 2px #E3EEFF',
   },
 };

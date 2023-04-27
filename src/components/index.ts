@@ -26,3 +26,5 @@ export * from './Dialog';
 
 export * from './CommandPalette';
 export * from './AdvancedSelect';
+
+export * from './InputGroupContainer';

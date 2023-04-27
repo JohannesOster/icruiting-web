@@ -237,7 +237,7 @@ const JobDetails = () => {
                 <td>
                   <Box
                     display="grid"
-                    gridColumnGap={spacing.scale200}
+                    columnGap={spacing.scale200}
                     gridAutoFlow="column"
                     justifyContent="left"
                     alignItems="center"

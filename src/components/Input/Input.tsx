@@ -4,9 +4,7 @@ import {InputProps} from './types';
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   ({label, description, errors = [], ...props}, ref) => {
-    const _errors = errors.map((error, idx) => (
-      <span key={idx}>• {error}</span>
-    ));
+    const _errors = errors.map((error, idx) => <span key={idx}>• {error}</span>);
 
     return (
       <Container>
@@ -16,15 +14,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             {props.required && '*'}
           </Label>
         )}
-        {description && (
-          <Description error={!!errors.length}>{description}</Description>
-        )}
-        <BaseInput
-          id={props.name}
-          error={!!errors.length}
-          ref={ref}
-          {...props}
-        />
+        {description && <Description error={!!errors.length}>{description}</Description>}
+        <BaseInput id={props.name} error={!!errors.length} ref={ref} {...props} />
         {!!errors.length && <Errors>{_errors}</Errors>}{' '}
       </Container>
     );

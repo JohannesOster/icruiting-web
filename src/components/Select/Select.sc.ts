@@ -1,11 +1,6 @@
 import styled from 'styled-components';
 import {LabelProps, DescriptionProps} from './types';
 
-export const Container = styled.div`
-  display: grid;
-  grid-row-gap: ${({theme}) => theme.spacing.scale200};
-`;
-
 export const BaseSelect = styled.select`
   border: 1px solid ${({theme}) => theme.colors.inputBorder};
   border-radius: ${({theme}) => theme.borders.radius100};
@@ -13,6 +8,7 @@ export const BaseSelect = styled.select`
   cursor: pointer;
   outline: none;
   // width: 100%; commented out since currently these two lines shrink filtering select in applicants overview
+  width: auto;
   // min-width: 50px;
   padding: ${({theme}) => `${theme.spacing.scale200} ${theme.spacing.scale300}`};
   padding-right: ${({theme}) => theme.spacing.scale700};
@@ -20,9 +16,16 @@ export const BaseSelect = styled.select`
   ${({theme}) => theme.typography.bodySmall};
 
   &:focus {
-    border-color: ${({theme}) => theme.colors.inputBorderFocus};
-    box-shadow: 0 0 1px ${({theme}) => theme.colors.inputBorder};
+    border-color: ${({theme}) => theme.colors.focus};
+    box-shadow: ${({theme}) => theme.shadows.focus};
+    border-inline-end-width: 1px;
+    outline: 0;
+    z-index: 100;
   }
+
+  transition-property: border-color box-shadow;
+  transition-duration: ${({theme}) => theme.animations.timing100};
+  transition-timing-function: ${({theme}) => theme.animations.linearCurve};
 
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -32,6 +35,11 @@ export const BaseSelect = styled.select`
   background-repeat: no-repeat;
   background-position: right ${({theme}) => theme.spacing.scale200} top 50%;
   background-color: ${({theme}) => theme.colors.surfaceDefault};
+`;
+
+export const Container = styled.div`
+  display: grid;
+  grid-row-gap: ${({theme}) => theme.spacing.scale200};
 `;
 
 export const Label = styled.label<LabelProps>`

@@ -43,3 +43,4 @@ export {ReactComponent as Report} from './report.svg';
 export {ReactComponent as Add} from './add.svg';
 export {ReactComponent as SelectSymbol} from './select-symbol.svg';
 export {ReactComponent as Clear} from './clear.svg';
+export {ReactComponent as Search} from './search.svg';
