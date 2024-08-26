@@ -93,10 +93,7 @@ export const LoginForm: React.FC<Props> = ({onSubmit}) => {
           className={styles.googleBtn}
         >
           <div className={styles.googleIconWrapper}>
-            <img
-              className={styles.googleIcon}
-              src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-            />
+            <img className={styles.googleIcon} src="/google-logo.svg" />
           </div>
           <b className={styles.btnText}>Mit Google anmelden</b>
         </a>
