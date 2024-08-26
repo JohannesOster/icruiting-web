@@ -1,5 +1,6 @@
 import styled, {css, DefaultTheme} from 'styled-components';
 import {ButtonKind, BaseButtonProps} from './types';
+import {getInputGroupContainerStyles} from 'components/InputGroupContainer';
 
 export const BaseButton = styled.button<BaseButtonProps>`
   display: inline-flex;
@@ -30,6 +31,8 @@ export const BaseButton = styled.button<BaseButtonProps>`
     `}
 
   ${({theme, kind, destructive}) => getButtonStylesForKind(theme, kind, destructive)};
+
+  ${getInputGroupContainerStyles()}
 `;
 
 export const LoadingSpinnerContainer = styled.div`

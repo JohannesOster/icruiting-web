@@ -1,8 +1,5 @@
+import {getInputGroupContainerStyles} from 'components/InputGroupContainer';
 import styled from 'styled-components';
-
-export const Container = styled.div`
-  position: relative;
-`;
 
 export const ConentContainer = styled.div`
   position: relative;
@@ -10,7 +7,6 @@ export const ConentContainer = styled.div`
   display: flex;
   align-items: center;
   gap: ${({theme}) => theme.spacing.scale600};
-  width: 100%;
   padding: ${({theme}) => `${theme.spacing.scale200} ${theme.spacing.scale300}`};
 
   border: 1px solid ${({theme}) => theme.colors.inputBorder};
@@ -18,6 +14,22 @@ export const ConentContainer = styled.div`
   background: white;
 
   ${({theme}) => theme.typography.bodySmall};
+
+  transition-property: border-color box-shadow;
+  transition-duration: ${({theme}) => theme.animations.timing100};
+  transition-timing-function: ${({theme}) => theme.animations.linearCurve};
+`;
+
+export const Container = styled.div`
+  position: relative;
+  ${getInputGroupContainerStyles(ConentContainer)}
+
+  &:focus-within ${ConentContainer} {
+    border-color: ${({theme}) => theme.colors.focus};
+    box-shadow: ${({theme}) => theme.shadows.focus};
+    border-inline-end-width: 1px;
+    z-index: 2;
+  }
 `;
 
 export const Select = styled.select`
@@ -38,4 +50,6 @@ export const Select = styled.select`
 export const Label = styled.label`
   ${({theme}) => theme.typography.bodySmall};
   color: ${({theme}) => theme.colors.textSubdued};
+
+  white-space: no-wrap;
 `;

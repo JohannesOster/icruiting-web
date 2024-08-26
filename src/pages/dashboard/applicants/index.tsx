@@ -86,7 +86,7 @@ const Applicants = () => {
 
   // Checking for undefined because empty array should lead to loading indicator
   const loadingJob = jobs === undefined && !jobsError;
-  const loadingApplicants = applicantsResponse === undefined && !applicantsError;
+  const loadingApplicants = jobs && applicantsResponse === undefined && !applicantsError; // if jobs are empty, applicants request never starts due null key useFetch
   const isLoading = loadingJob || loadingApplicants;
 
   enum BulkAction {
