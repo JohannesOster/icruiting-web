@@ -130,7 +130,7 @@ const applicationFormSourceFields: DnDItem[] = [
     label: 'Datei',
     as: Input,
     component: 'file_upload',
-    props: {type: 'file', label: 'Fileupload', accept: 'application/pdf'},
+    props: {type: 'file', label: 'Datei', accept: 'application/pdf'},
   },
 ];
 

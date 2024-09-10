@@ -253,8 +253,7 @@ const EditJob = () => {
                 >
                   <Typography kind="secondary">
                     Lade diese Stelle herunter, um sie später als Vorlage verwenden zu können.{' '}
-                    <b>Wichtig:</b>
-                    Bewerber:innen werden NICHT heruntergeladen.
+                    <b>Wichtig:</b> Bewerber:innen werden NICHT heruntergeladen.
                   </Typography>
                   <Button kind="minimal" onClick={onExport} isLoading={status === 'exporting'}>
                     <Download
