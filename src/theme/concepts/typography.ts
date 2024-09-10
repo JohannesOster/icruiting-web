@@ -38,7 +38,7 @@ export const typography = {
   headingS: {
     fontFamily: defaultFontFamily,
     fontWeight: 700,
-    fonSize: '17px',
+    fontSize: '17px',
     letterSpacing: '0.15px',
     textTransform: 'uppercase' as 'uppercase',
   },
