@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {useDrag} from 'react-dnd';
 import {DnDItem} from '../types';
 import styled from 'styled-components';
@@ -21,11 +21,16 @@ type Props = {
 /** A dragable component which acts as a source for the dnd-form builder  */
 export const DnDSourceItem: React.FC<Props> = ({item: sourceItem, ...props}) => {
   const {icon, label, ...item} = sourceItem; // ignore icon and title parameters of DnDSourceItem
+  const ref = useRef<HTMLDivElement>(null);
   const [{isDragging}, drag] = useDrag({
     item,
     options: {dropEffect: 'copy'},
     collect: (monitor) => ({isDragging: monitor.isDragging()}),
   });
 
-  return <Item ref={drag} style={{opacity: isDragging ? 0.5 : 1}} {...props} />;
+  useEffect(() => {
+    if (ref.current) drag(ref.current);
+  }, [drag]);
+
+  return <Item ref={ref} style={{opacity: isDragging ? 0.5 : 1}} {...props} />;
 };
