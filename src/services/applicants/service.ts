@@ -1,11 +1,5 @@
 import API from '../request';
-import {
-  Applicant,
-  ApplicantAPI,
-  AssessmentsAttribute,
-  ListResponse,
-  Report,
-} from './types';
+import {Applicant, ApplicantAPI, AssessmentsAttribute, ListResponse, Report} from './types';
 import {convertAPIApplicant} from './convert';
 
 export const Applicants = () => {
@@ -52,18 +46,29 @@ export const Applicants = () => {
     return API.del(`/applicants/${applicantId}`);
   };
 
-  const retrieveReport = (
-    applicantId: string,
-    formCategory: string,
-  ): Promise<Report> => {
-    return API.get(
-      `/applicants/${applicantId}/report?formCategory=${formCategory}`,
-    );
+  const retrieveReport = (applicantId: string, formCategory: string): Promise<Report> => {
+    return API.get(`/applicants/${applicantId}/report?formCategory=${formCategory}`);
+  };
+
+  const downloadReport = (applicantId: string, formCategory: string, applicantName: string) => {
+    return API.get(`/applicants/${applicantId}/report/pdf?formCategory=${formCategory}`, {
+      responseType: 'arraybuffer',
+    }).then(async (buffer) => {
+      const blob = new Blob([buffer], {type: 'application/pdf'});
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${applicantName}_report.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    });
   };
 
   const confirm = (applicantId: string) => {
     return API.put(`/applicants/${applicantId}/confirm`);
   };
 
-  return {list, find, del, retrieveReport, confirm};
+  return {list, find, del, retrieveReport, confirm, downloadReport};
 };
