@@ -267,21 +267,33 @@ const FormBuilder: React.FC = () => {
       <Box display="flex" position="relative" marginBottom={spacing.scale700}>
         <DnDSection
           onHover={formBuilder.onOutsideHover}
-          render={(targetID, drop) => <Overlay id={targetID} ref={drop} />}
+          render={(targetID, drop) => {
+            const ref = useRef<HTMLDivElement>(null);
+            useEffect(() => {
+              if (ref.current) drop(ref.current);
+            }, [ref.current]);
+            return <Overlay id={targetID} ref={ref} />;
+          }}
         />
 
         <DnDSection
           onDrop={_onDrop}
-          render={(targetID, drop) => (
-            <DnDTargetSection id={targetID} ref={drop}>
-              <FormGrid>
-                {Form}
-                <div>
-                  <Button>Absenden</Button>
-                </div>
-              </FormGrid>
-            </DnDTargetSection>
-          )}
+          render={(targetID, drop) => {
+            const ref = useRef<HTMLDivElement>(null);
+            useEffect(() => {
+              if (ref.current) drop(ref.current);
+            }, [ref.current]);
+            return (
+              <DnDTargetSection id={targetID} ref={ref}>
+                <FormGrid>
+                  {Form}
+                  <div>
+                    <Button>Absenden</Button>
+                  </div>
+                </FormGrid>
+              </DnDTargetSection>
+            );
+          }}
         />
         <Box
           display="flex"
@@ -299,80 +311,86 @@ const FormBuilder: React.FC = () => {
           </Box>
           <DnDSection
             onHover={formBuilder.onOutsideHover}
-            render={(targetID, drop) => (
-              <DnDSourceSection id={targetID} ref={drop}>
-                <Box display="grid" rowGap={spacing.scale300}>
-                  {(['assessment', 'onboarding'].includes(formCategory) ||
-                    ['assessment', 'onboarding'].includes(formToEdit?.formCategory)) && (
-                    <Input
-                      label="Formulartitel"
-                      placeholder="z.B. Einzelinterview"
-                      name="formTitle"
-                      ref={register({
-                        required: 'Formulartitel ist verpflichtend!',
-                      })}
-                      errors={errorsFor(errors, 'formTitle')}
-                    />
-                  )}
-                  <HeadingS style={{marginTop: 0}}>Drag &amp; Drop</HeadingS>
-                  <DragAndDropList>{FormSource}</DragAndDropList>
-                  <Box
-                    marginTop={spacing.scale400}
-                    display="flex"
-                    flexDirection="column"
-                    gap={spacing.scale300}
-                  >
-                    {(formCategory === 'application' ||
-                      formToEdit?.formCategory === 'application') && (
-                      <Box display="flex" flexDirection="column">
-                        <Typography
-                          style={{
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                          }}
-                          onClick={copyCode}
-                        >
-                          iFrame kopieren
-                          <Clipboard
-                            style={{
-                              marginLeft: spacing.scale200,
-                              height: spacing.scale400,
-                              width: 'auto',
-                            }}
-                          />
-                        </Typography>
-                        <FormCodeTextarea
-                          id="form-code"
-                          rows={10}
-                          onClick={copyCode}
-                          defaultValue={formCode}
-                        />
-                      </Box>
+            render={(targetID, drop) => {
+              const ref = useRef<HTMLDivElement>(null);
+              useEffect(() => {
+                if (ref.current) drop(ref.current);
+              }, [ref.current]);
+              return (
+                <DnDSourceSection id={targetID} ref={ref}>
+                  <Box display="grid" rowGap={spacing.scale300}>
+                    {(['assessment', 'onboarding'].includes(formCategory) ||
+                      ['assessment', 'onboarding'].includes(formToEdit?.formCategory)) && (
+                      <Input
+                        label="Formulartitel"
+                        placeholder="z.B. Einzelinterview"
+                        name="formTitle"
+                        ref={register({
+                          required: 'Formulartitel ist verpflichtend!',
+                        })}
+                        errors={errorsFor(errors, 'formTitle')}
+                      />
                     )}
-                    <Input
-                      type="file"
-                      label=".json Datei importieren"
-                      onChange={(event) => {
-                        const {files} = event.target;
-                        const file = files[0];
-                        if (!file) return;
-                        const fileReader = new FileReader();
-                        fileReader.onload = () => {
-                          const json = fileReader.result as string;
-                          const result = JSON.parse(json);
-                          const _formFields = result.formFields
-                            .map(converter.toDnDItem)
-                            .sort((one, two) => one.rowIndex - two.rowIndex);
-                          formFields.reset(_formFields);
-                        };
-                        fileReader.readAsText(file);
-                      }}
-                    />
+                    <HeadingS style={{marginTop: 0}}>Drag &amp; Drop</HeadingS>
+                    <DragAndDropList>{FormSource}</DragAndDropList>
+                    <Box
+                      marginTop={spacing.scale400}
+                      display="flex"
+                      flexDirection="column"
+                      gap={spacing.scale300}
+                    >
+                      {(formCategory === 'application' ||
+                        formToEdit?.formCategory === 'application') && (
+                        <Box display="flex" flexDirection="column">
+                          <Typography
+                            style={{
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                            }}
+                            onClick={copyCode}
+                          >
+                            iFrame kopieren
+                            <Clipboard
+                              style={{
+                                marginLeft: spacing.scale200,
+                                height: spacing.scale400,
+                                width: 'auto',
+                              }}
+                            />
+                          </Typography>
+                          <FormCodeTextarea
+                            id="form-code"
+                            rows={10}
+                            onClick={copyCode}
+                            defaultValue={formCode}
+                          />
+                        </Box>
+                      )}
+                      <Input
+                        type="file"
+                        label=".json Datei importieren"
+                        onChange={(event) => {
+                          const {files} = event.target;
+                          const file = files[0];
+                          if (!file) return;
+                          const fileReader = new FileReader();
+                          fileReader.onload = () => {
+                            const json = fileReader.result as string;
+                            const result = JSON.parse(json);
+                            const _formFields = result.formFields
+                              .map(converter.toDnDItem)
+                              .sort((one, two) => one.rowIndex - two.rowIndex);
+                            formFields.reset(_formFields);
+                          };
+                          fileReader.readAsText(file);
+                        }}
+                      />
+                    </Box>
                   </Box>
-                </Box>
-              </DnDSourceSection>
-            )}
+                </DnDSourceSection>
+              );
+            }}
           />
         </Box>
       </Box>

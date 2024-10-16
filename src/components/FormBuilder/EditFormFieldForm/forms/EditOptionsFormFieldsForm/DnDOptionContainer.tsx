@@ -1,4 +1,4 @@
-import React, {FC, useRef} from 'react';
+import React, {FC, useEffect, useRef} from 'react';
 import {useTheme} from 'styled-components';
 import {useDrag, useDrop, XYCoord} from 'react-dnd';
 import {Move, Trash} from 'icons';
@@ -12,11 +12,12 @@ export const DnDOptionContainer: FC<DnDOptionContainerProps> = ({
   children,
 }) => {
   const {spacing} = useTheme();
-  const ref = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<HTMLDivElement>(null);
   const [, drop] = useDrop({
     accept: ItemType,
     hover(item: DragItem, monitor) {
-      if (!ref.current) return;
+      if (!containerRef.current) return;
 
       const dragIndex = item.index;
       const hoverIndex = index;
@@ -27,11 +28,10 @@ export const DnDOptionContainer: FC<DnDOptionContainerProps> = ({
       }
 
       // Determine rectangle on screen
-      const hoverBoundingRect = ref.current?.getBoundingClientRect();
+      const hoverBoundingRect = containerRef.current?.getBoundingClientRect();
 
       // Get vertical middle
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 
       // Determine mouse position
       const clientOffset = monitor.getClientOffset();
@@ -67,13 +67,16 @@ export const DnDOptionContainer: FC<DnDOptionContainerProps> = ({
     }),
   });
 
-  preview(drop(ref));
+  useEffect(() => {
+    if (containerRef.current) preview(drop(containerRef.current));
+    if (dragRef.current) drag(dragRef.current);
+  }, [preview, drop, drag]);
 
   return (
-    <OptionContainer ref={ref} style={{opacity}}>
+    <OptionContainer ref={containerRef} style={{opacity}}>
       {children}
       <ActionBar style={{marginLeft: spacing.scale300}}>
-        <div ref={drag} style={{cursor: 'move'}}>
+        <div ref={dragRef} style={{cursor: 'move'}}>
           <Move style={{width: 'auto', height: spacing.scale300}} />
         </div>
         {onDelete && (

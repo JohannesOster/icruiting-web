@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {useDrag, useDrop} from 'react-dnd';
 import {XYCoord} from 'dnd-core';
 import {ItemTypes} from './ItemTypes';
@@ -99,7 +99,8 @@ export const DnDFormField: React.FC<Props> = ({
   onEdit,
   onDuplicate,
 }) => {
-  const ref = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<HTMLDivElement>(null);
   const {spacing} = useTheme();
 
   /* The following section was hardly inspired by
@@ -107,7 +108,7 @@ export const DnDFormField: React.FC<Props> = ({
   const [, drop] = useDrop({
     accept: ItemTypes.FORM_FIELD,
     hover(item: DnDItem, monitor) {
-      if (!ref.current) return;
+      if (!containerRef.current) return;
 
       // A new item is hovering this
       if (item.rowIndex === -1) {
@@ -123,7 +124,7 @@ export const DnDFormField: React.FC<Props> = ({
       if (dragIndex === hoverIndex) return;
 
       // Determine rectangle on screen
-      const hoverBoundingRect = ref.current.getBoundingClientRect();
+      const hoverBoundingRect = containerRef.current.getBoundingClientRect();
 
       // Get vertical middle of the hovered element (this)
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
@@ -162,14 +163,16 @@ export const DnDFormField: React.FC<Props> = ({
     }),
   });
 
-  drop(ref);
-  preview(ref);
+  useEffect(() => {
+    if (containerRef.current) preview(drop(containerRef.current));
+    if (dragRef.current) drag(dragRef.current);
+  }, [preview, drop, drag]);
 
   const iconsStyles = {width: 'auto', height: spacing.scale400};
 
   return (
-    <Container ref={ref} style={{opacity: isDragging ? 0.6 : 1}}>
-      <DragArea ref={drag}>
+    <Container ref={containerRef} style={{opacity: isDragging ? 0.6 : 1}}>
+      <DragArea ref={dragRef}>
         <Drag />
       </DragArea>
       <OptionBar>
