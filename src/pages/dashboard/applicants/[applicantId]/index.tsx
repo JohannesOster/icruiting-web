@@ -219,7 +219,7 @@ const ApplicantDetails = () => {
           <Link
             href={`/dashboard/applicants/${applicant?.applicantId}/personal-report?formCategory=assessment`}
           >
-            Persöhnliche Gesamtübersicht
+            Persönliche Gesamtübersicht
           </Link>
         </Box>
         <DataTable
@@ -244,7 +244,7 @@ const ApplicantDetails = () => {
           <Link
             href={`/dashboard/applicants/${applicant?.applicantId}/personal-report?formCategory=onboarding`}
           >
-            Persöhnliche Gesamtübersicht
+            Persönliche Gesamtübersicht
           </Link>
         </Box>
         <DataTable
