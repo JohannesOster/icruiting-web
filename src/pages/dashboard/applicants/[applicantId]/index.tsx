@@ -213,8 +213,15 @@ const ApplicantDetails = () => {
           </Box>
         )}
       </form>
-      <section>
-        <HeadingS>Assessment-Formulare</HeadingS>
+      <Box display="flex" flexDirection="column" gap={8}>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <HeadingS>Assessment-Formulare</HeadingS>
+          <Link
+            href={`/dashboard/applicants/${applicant?.applicantId}/personal-report?formCategory=assessment`}
+          >
+            Persöhnliche Gesamtübersicht
+          </Link>
+        </Box>
         <DataTable
           data={forms.assessment || []}
           columns={[
@@ -230,9 +237,16 @@ const ApplicantDetails = () => {
             },
           ]}
         />
-      </section>
-      <section>
-        <HeadingS>Onboarding-Formulare</HeadingS>
+      </Box>
+      <Box display="flex" flexDirection="column" gap={8}>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <HeadingS>Onboarding-Formulare</HeadingS>
+          <Link
+            href={`/dashboard/applicants/${applicant?.applicantId}/personal-report?formCategory=onboarding`}
+          >
+            Persöhnliche Gesamtübersicht
+          </Link>
+        </Box>
         <DataTable
           data={forms.onboarding || []}
           columns={[
@@ -248,7 +262,7 @@ const ApplicantDetails = () => {
             },
           ]}
         />
-      </section>
+      </Box>
     </Box>
   );
 };

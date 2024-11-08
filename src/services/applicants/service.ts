@@ -50,6 +50,10 @@ export const Applicants = () => {
     return API.get(`/applicants/${applicantId}/report?formCategory=${formCategory}`);
   };
 
+  const retrievePersonalReport = (applicantId: string, formCategory: string): Promise<Report> => {
+    return API.get(`/applicants/${applicantId}/personal-report?formCategory=${formCategory}`);
+  };
+
   const downloadReport = (applicantId: string, formCategory: string, applicantName: string) => {
     return API.get(`/applicants/${applicantId}/report/pdf?formCategory=${formCategory}`, {
       responseType: 'arraybuffer',
@@ -70,5 +74,5 @@ export const Applicants = () => {
     return API.put(`/applicants/${applicantId}/confirm`);
   };
 
-  return {list, find, del, retrieveReport, confirm, downloadReport};
+  return {list, find, del, retrieveReport, confirm, downloadReport, retrievePersonalReport};
 };
