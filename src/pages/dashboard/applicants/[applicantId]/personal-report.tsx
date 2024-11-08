@@ -1,7 +1,7 @@
 import React, {useEffect, useReducer, useState} from 'react';
 import {API, TForm} from 'services';
 import {buildRadarChart} from 'utils/report-utils';
-import {HeadingL, HeadingS, Table, Box, FlexGrid, getDashboardLayout, withAdmin} from 'components';
+import {HeadingL, HeadingS, Table, Box, FlexGrid, getDashboardLayout, withAuth} from 'components';
 import {useTheme} from 'styled-components';
 import {Arrow} from 'icons';
 import {Radar} from 'react-chartjs-2';
@@ -387,4 +387,4 @@ const ApplicantReport = () => {
 };
 
 ApplicantReport.getLayout = getDashboardLayout;
-export default withAdmin(ApplicantReport);
+export default withAuth(ApplicantReport);
