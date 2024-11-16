@@ -83,7 +83,11 @@ export const Ranking = () => {
         .catch((err) => console.log(err));
     });
 
-    Promise.all(promises).finally(() => setIsDownloadingReports(false));
+    Promise.all(promises).finally(() => {
+      setSelectedForm('');
+      setIsDownloadingReports(false);
+      setIsFormSelectionOpen(false);
+    });
   };
   const onFormSelectionClose = () => {
     if (isDownloadingReports) return;
