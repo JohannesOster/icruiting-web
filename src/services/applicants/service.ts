@@ -54,8 +54,16 @@ export const Applicants = () => {
     return API.get(`/applicants/${applicantId}/personal-report?formCategory=${formCategory}`);
   };
 
-  const downloadReport = (applicantId: string, formCategory: string, applicantName: string) => {
-    return API.get(`/applicants/${applicantId}/report/pdf?formCategory=${formCategory}`, {
+  const downloadReport = (
+    applicantId: string,
+    formCategory: string,
+    applicantName: string,
+    formId?: string,
+  ) => {
+    const baseUrl = `/applicants/${applicantId}/report/pdf`;
+    const params = {formCategory, ...(formId && {formId})};
+    const url = baseUrl + '?' + new URLSearchParams(params);
+    return API.get(url, {
       responseType: 'arraybuffer',
     }).then(async (buffer) => {
       const blob = new Blob([buffer], {type: 'application/pdf'});
