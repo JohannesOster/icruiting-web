@@ -1,6 +1,17 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Link from 'next/link';
-import {HeadingL, DataTable, TColumn, Box, getDashboardLayout, Button} from 'components';
+import {
+  HeadingL,
+  DataTable,
+  TColumn,
+  Box,
+  getDashboardLayout,
+  Button,
+  Dialog,
+  DialogBody,
+  DialogFooter,
+  Select,
+} from 'components';
 import {API} from 'services';
 import {useTheme} from 'styled-components';
 import {withAdmin} from 'components';
@@ -10,6 +21,8 @@ import {useFetch} from 'components/useFetch';
 export const Ranking = () => {
   const router = useRouter();
   const [isDownloadingReports, setIsDownloadingReports] = React.useState(false);
+  const [isFormSelectionOpen, setIsFormSelectionOpen] = React.useState(false);
+  const [selectedForm, setSelectedForm] = React.useState('');
   const {jobId, formCategory} = router.query as {
     jobId: string;
     formCategory: string;
@@ -26,7 +39,16 @@ export const Ranking = () => {
     (_key: string, jobId: string, formCategory: string) => API.rankings.find(jobId, formCategory),
   );
 
-  const isLoading = !(ranking || rankingError) || !(applicants || applicantsError);
+  const {data: forms, error: formsError} = useFetch(
+    [`GET /forms/${jobId}`, jobId, formCategory],
+    (_key: string, jobId: string) =>
+      API.forms.list(jobId).then(
+        (forms) => forms.filter((form) => form.formCategory === formCategory && !form.replicaOf), // replcas can't be downloaded individually
+      ),
+  );
+
+  const isLoading =
+    !(ranking || rankingError) || !(applicants || applicantsError) || !(forms || formsError);
 
   const columns: TColumn[] = [
     {title: 'Rang', cell: (row) => row.rank},
@@ -50,16 +72,23 @@ export const Ranking = () => {
     return {...applicant, ...row, index};
   });
 
-  const downloadAllPdfReports = () => {
+  const onFormSelectionSubmit = () => {
+    const formId = selectedForm === '' ? undefined : selectedForm;
+    console.log(formId);
     setIsDownloadingReports(true);
     const promises = data.map((row) => {
       return API.applicants
-        .downloadReport(row.applicantId, formCategory, row.name)
+        .downloadReport(row.applicantId, formCategory, row.name, formId)
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
     });
 
     Promise.all(promises).finally(() => setIsDownloadingReports(false));
+  };
+  const onFormSelectionClose = () => {
+    if (isDownloadingReports) return;
+    setIsFormSelectionOpen(false);
+    setSelectedForm('');
   };
 
   return (
@@ -76,13 +105,40 @@ export const Ranking = () => {
           }
         </HeadingL>
         <Button
-          isLoading={isDownloadingReports}
           disabled={!applicants?.applicants.length}
-          onClick={() => downloadAllPdfReports()}
+          onClick={() => setIsFormSelectionOpen(true)}
         >
           PDF Reports herunterladen
         </Button>
       </Box>
+
+      {isFormSelectionOpen && (
+        <Dialog title="Formular auswählen" onClose={onFormSelectionClose}>
+          <DialogBody>
+            <Box display="flex" flexDirection="column" rowGap={8}>
+              Wähle ein Formular aus für das du die Reports herunterladen möchtest.
+              <Select
+                options={[
+                  {label: 'Alle Formulare', value: ''},
+                  ...forms?.map((form) => ({
+                    label: form.formTitle || 'Unbenanntes Formular',
+                    value: form.formId,
+                  })),
+                ]}
+                onChange={({target}) => setSelectedForm(target.value)}
+              />
+            </Box>
+          </DialogBody>
+          <DialogFooter>
+            <Button kind="secondary" onClick={onFormSelectionClose}>
+              Abbrechen
+            </Button>
+            <Button type="submit" isLoading={isDownloadingReports} onClick={onFormSelectionSubmit}>
+              Speichern
+            </Button>
+          </DialogFooter>
+        </Dialog>
+      )}
 
       <DataTable columns={columns} data={data || []} isLoading={isLoading} />
     </Box>
