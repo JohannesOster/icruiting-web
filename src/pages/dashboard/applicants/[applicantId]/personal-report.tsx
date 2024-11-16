@@ -234,6 +234,8 @@ const ApplicantReport = () => {
                       {formScore.possibleMaxFormScore}]
                     </th>
                   </tr>
+
+                  {/* ===================== Toggle Quantiative fields */}
                   {(toggleState.openForms as string[]).includes(formScore.formId) && (
                     <>
                       {toggleState.replicasFor === formScore.formId && (
@@ -258,45 +260,25 @@ const ApplicantReport = () => {
                                       </th>
                                       <th></th>
                                     </tr>
-                                    {replica.formFieldScores.map((formFieldScore) => (
-                                      <tr key={formFieldScore.formFieldId}>
-                                        <td>{formFieldScore.label}</td>
-                                        <td>
-                                          {formFieldScore.intent === 'aggregate' && (
-                                            <ul
-                                              style={{
-                                                listStylePosition: 'outside',
-                                                listStyle: 'circle',
-                                                paddingLeft: '1em',
-                                              }}
-                                            >
-                                              {formFieldScore.aggregatedValues?.map(
-                                                (value: string, idx) => (
-                                                  <li
-                                                    key={idx}
-                                                    style={{
-                                                      whiteSpace: 'pre-line',
-                                                    }}
-                                                  >
-                                                    {value}
+                                    {replica.formFieldScores
+                                      .filter(({intent}) => intent !== 'aggregate')
+                                      .map((formFieldScore) => (
+                                        <tr key={formFieldScore.formFieldId}>
+                                          <td>{formFieldScore.label}</td>
+                                          <td>
+                                            {formFieldScore.intent === 'sum_up' &&
+                                              `${formFieldScore.formFieldScore}`}
+                                            {formFieldScore.intent === 'count_distinct' &&
+                                              Object.entries(formFieldScore.countDistinct).map(
+                                                ([key, value], idx) => (
+                                                  <li key={idx}>
+                                                    {key}: {value}
                                                   </li>
                                                 ),
                                               )}
-                                            </ul>
-                                          )}
-                                          {formFieldScore.intent === 'sum_up' &&
-                                            `${formFieldScore.formFieldScore}`}
-                                          {formFieldScore.intent === 'count_distinct' &&
-                                            Object.entries(formFieldScore.countDistinct).map(
-                                              ([key, value], idx) => (
-                                                <li key={idx}>
-                                                  {key}: {value}
-                                                </li>
-                                              ),
-                                            )}
-                                        </td>
-                                      </tr>
-                                    ))}
+                                          </td>
+                                        </tr>
+                                      ))}
                                   </React.Fragment>
                                 ))}
                                 <tr>
@@ -308,40 +290,124 @@ const ApplicantReport = () => {
                           </td>
                         </tr>
                       )}
-                      {formScore.formFieldScores.map((formFieldScore) => (
+                      {formScore.formFieldScores
+                        .filter(({intent}) => intent !== 'aggregate')
+                        .map((formFieldScore) => (
+                          <tr key={formFieldScore.formFieldId}>
+                            <td>{formFieldScore.label}</td>
+                            <td>
+                              {formFieldScore.intent === 'aggregate' && (
+                                <ul
+                                  style={{
+                                    listStylePosition: 'outside',
+                                    listStyle: 'circle',
+                                    paddingLeft: '1em',
+                                  }}
+                                >
+                                  {formFieldScore.aggregatedValues?.map(
+                                    (value: any, idx: number) => (
+                                      <li key={idx} style={{whiteSpace: 'pre-line'}}>
+                                        {value}
+                                      </li>
+                                    ),
+                                  )}
+                                </ul>
+                              )}
+                              {formFieldScore.intent === 'sum_up' &&
+                                `${formFieldScore.formFieldScore}`}
+                              {formFieldScore.intent === 'count_distinct' &&
+                                Object.entries(formFieldScore.countDistinct).map(
+                                  ([key, value], idx) => (
+                                    <li key={idx}>
+                                      {key}: {value}
+                                    </li>
+                                  ),
+                                )}
+                            </td>
+                          </tr>
+                        ))}
+                    </>
+                  )}
+
+                  {/* ===================== Show Aggregate fields separately */}
+                  <>
+                    {toggleState.replicasFor === formScore.formId && (
+                      <tr>
+                        <td>
+                          <Table>
+                            <tbody>
+                              {formScore.replicas?.map((replica) => (
+                                <React.Fragment key={replica.formId}>
+                                  <tr key={replica.formId}>
+                                    <th>
+                                      {replica.formTitle ||
+                                        {
+                                          screening: 'Screening',
+                                          assessment: 'Assessment',
+                                          onboarding: 'Onboarding',
+                                        }[formCategory]}
+                                    </th>
+                                    <th></th>
+                                  </tr>
+                                  {replica.formFieldScores
+                                    .filter(({intent}) => intent === 'aggregate')
+                                    .map((formFieldScore) => (
+                                      <tr key={formFieldScore.formFieldId}>
+                                        <td>{formFieldScore.label}</td>
+                                        <td>
+                                          <ul
+                                            style={{
+                                              listStylePosition: 'outside',
+                                              listStyle: 'circle',
+                                              paddingLeft: '1em',
+                                            }}
+                                          >
+                                            {formFieldScore.aggregatedValues?.map(
+                                              (value: string, idx) => (
+                                                <li
+                                                  key={idx}
+                                                  style={{
+                                                    whiteSpace: 'pre-line',
+                                                  }}
+                                                >
+                                                  {value}
+                                                </li>
+                                              ),
+                                            )}
+                                          </ul>
+                                        </td>
+                                      </tr>
+                                    ))}
+                                </React.Fragment>
+                              ))}
+                            </tbody>
+                          </Table>
+                        </td>
+                      </tr>
+                    )}
+                    {formScore.formFieldScores
+                      .filter(({intent}) => intent === 'aggregate')
+                      .map((formFieldScore) => (
                         <tr key={formFieldScore.formFieldId}>
                           <td>{formFieldScore.label}</td>
                           <td>
-                            {formFieldScore.intent === 'aggregate' && (
-                              <ul
-                                style={{
-                                  listStylePosition: 'outside',
-                                  listStyle: 'circle',
-                                  paddingLeft: '1em',
-                                }}
-                              >
-                                {formFieldScore.aggregatedValues?.map((value: any, idx: number) => (
-                                  <li key={idx} style={{whiteSpace: 'pre-line'}}>
-                                    {value}
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                            {formFieldScore.intent === 'sum_up' &&
-                              `${formFieldScore.formFieldScore}`}
-                            {formFieldScore.intent === 'count_distinct' &&
-                              Object.entries(formFieldScore.countDistinct).map(
-                                ([key, value], idx) => (
-                                  <li key={idx}>
-                                    {key}: {value}
-                                  </li>
-                                ),
-                              )}
+                            <ul
+                              style={{
+                                listStylePosition: 'outside',
+                                listStyle: 'circle',
+                                paddingLeft: '1em',
+                              }}
+                            >
+                              {formFieldScore.aggregatedValues?.map((value: any, idx: number) => (
+                                <li key={idx} style={{whiteSpace: 'pre-line'}}>
+                                  {value}
+                                </li>
+                              ))}
+                            </ul>
                           </td>
                         </tr>
                       ))}
-                    </>
-                  )}
+                  </>
                 </React.Fragment>
               ))}
             </tbody>
