@@ -123,7 +123,7 @@ const LandingPage: React.FC = () => {
             </Box>
           </Hero>
           {/* CONTACT */}
-          <Box
+          {/* <Box
             id="contact"
             display="flex"
             flexDirection="column"
@@ -176,7 +176,7 @@ const LandingPage: React.FC = () => {
                 </Button>
               </Box>
             </form>
-          </Box>
+          </Box> */}
         </Box>
         <Footer style={{position: 'relative'}}>
           <Bunny
