@@ -1,8 +1,3 @@
-# Netlify configuration for Next.js SSR
-[build]
-  command = "npm run build"
-  publish = ".next"
-
 # Use Netlify's Next.js runtime for proper SSR support
 [[plugins]]
   package = "@netlify/plugin-nextjs"
